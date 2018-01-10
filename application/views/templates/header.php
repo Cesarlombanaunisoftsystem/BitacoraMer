@@ -15,7 +15,7 @@
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="<?= base_url('dist/img/silueta.png')?>" class="user-image get-user-image" alt="Imagen">
-            <span class="hidden-xs get-user-name">user</span>
+            <span class="hidden-xs get-user-name"><?= $name ?></span>
           </a>
           <ul class="dropdown-menu">
             <!-- User image -->
@@ -23,7 +23,7 @@
                 <img src="<?= base_url('dist/img/silueta.png')?>" class="img-circle get-user-image" alt="Imagen">
               <p>
                 <b class="get-user-name">user</b>
-                <small class="get-user-enterprise">Admin</small>
+                <small class="get-user-enterprise"><?= $profile ?></small>
               </p>
             </li>
             <li class="user-footer">

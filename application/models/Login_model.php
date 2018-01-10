@@ -7,9 +7,13 @@ if (!defined('BASEPATH')) {
 class Login_model extends CI_Model {
 
     public function login_user($username, $password) {
-        $this->db->where('email', $username);
-        $this->db->where('password', $password);
-        $query = $this->db->get('tbl_users');
+        //$sql = "SELECT t1.*,t2.name as profile FROM tbl_users t1 JOIN tbl_users_profile t2 ON t2.id=t1.id"
+        $this->db->select('tbl_users.*,tbl_users_profile.name as profile');    
+        $this->db->from('tbl_users');
+        $this->db->join('tbl_users_profile', 'tbl_users.idUserProfile = tbl_users_profile.id');
+        $this->db->where('tbl_users.email', $username);
+        $this->db->where('tbl_users.password', $password);
+        $query = $this->db->get();
         if ($query->num_rows() == 1) {
             return $query->row();
         } else {

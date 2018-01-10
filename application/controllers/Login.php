@@ -52,7 +52,8 @@ class Login extends CI_Controller {
                         'is_logued_in' => TRUE,
                         'id_usuario' => $check_user->id,
                         'perfil' => $check_user->idUserProfile,
-                        'username' => $check_user->username,
+                        'username' => $check_user->name,
+                        'profile' => $check_user->profile,
                     );
                     $this->session->set_userdata($data);
                     $this->index();

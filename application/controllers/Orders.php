@@ -18,6 +18,8 @@ class Orders extends CI_Controller {
         if ($this->session->userdata('perfil') == FALSE || $this->session->userdata('perfil') != 1) {
             redirect(base_url() . 'login');
         }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('profile');
         $data['activities'] = $this->Activities_model->get_activities_bts();
         $data['titulo'] = 'Registro Orden de servicio';
         $this->load->view('admin/register-orders', $data);

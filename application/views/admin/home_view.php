@@ -32,7 +32,7 @@
                                         <h3 id="winery-count">?</h3>
                                         <p>Ordenes</p>
                                     </div>
-                                    <a href="orders.php" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Orders')?>" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                                         <h3 id="product-count">?</h3>
                                         <p>Actividades</p>
                                     </div>
-                                    <a href="activities.php" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="#" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -54,7 +54,7 @@
                                         <h3 id="providers-count">?</h3>
                                         <p>Coordinadores</p>
                                     </div>
-                                    <a href="coordinators.php" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="#" class="small-box-footer">ver info<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

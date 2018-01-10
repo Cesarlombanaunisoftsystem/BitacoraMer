@@ -12,7 +12,7 @@
       <ul class="sidebar-menu">
         <li class="header">Menu Principal</li>
         <li>
-          <a href="principal.php">
+          <a href="<?= base_url('Home')?>">
             <span>Inicio</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>

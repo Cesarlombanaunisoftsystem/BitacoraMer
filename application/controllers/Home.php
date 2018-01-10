@@ -24,6 +24,8 @@ class Home extends CI_Controller {
         if ($this->session->userdata('perfil') == FALSE || $this->session->userdata('perfil') != 1) {
             redirect(base_url() . 'login');
         }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('profile');
         $data['titulo'] = 'Admin | bitacora';
         $this->load->view('admin/home_view', $data);
     }
