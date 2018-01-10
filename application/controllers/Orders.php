@@ -11,12 +11,14 @@ class Orders extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
+        $this->load->model(array('Activities_model'));
     }
 
     function index() {
         if ($this->session->userdata('perfil') == FALSE || $this->session->userdata('perfil') != 1) {
             redirect(base_url() . 'login');
         }
+        $data['activities'] = $this->Activities_model->get_activities_bts();
         $data['titulo'] = 'Registro Orden de servicio';
         $this->load->view('admin/register-orders', $data);
     }

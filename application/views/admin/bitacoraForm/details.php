@@ -14,12 +14,21 @@
     <tr>
       <td>
         <div class="input-group">
-          <select class="form-control activities" name="idActivities" required></select>
+          <select class="form-control activities" name="idActivities" id="idActivities" required>          
+          <option value="">Seleccionar</option>
+          <?php if(isset($activities)){ ?>
+           <?php foreach($activities as $activitie){ ?>
+           <option value="<?= $activitie->id ?>"><?= $activitie->name ?></option>
+           <?php
+              }
+            }
+          ?>
+          </select>          
         </div>
       </td>
       <td>
         <div class="input-group">
-          <select class="form-control services" name="idServices" onchange="getServicePrice(this.value)" required></select>
+          <select class="form-control services" name="idServices" id="idServices" required></select>
         </div>
       </td>
       <td>
