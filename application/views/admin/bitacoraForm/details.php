@@ -15,7 +15,7 @@
       <td width="200">
         <div class="input-group">
           <select class="form-control activities" name="idActivities" id="idActivities" required>          
-          <option value="">Seleccionar</option>
+          <option>Seleccionar</option>
           <?php if(isset($activities)){ ?>
            <?php foreach($activities as $activitie){ ?>
            <option value="<?= $activitie->id ?>"><?= $activitie->name ?></option>
@@ -27,19 +27,20 @@
         </div>
       </td>
       <td width="200">
-          <select class="form-control" name="idServices" id="idServices" required></select>        
+          <select class="form-control" name="idServices" id="idServices" required>
+          </select>        
       </td>
       <td width="10">
-          <input type="number" class="form-control" name="count"  min="1" onkeyup="priceForCount(this.value)" required/>        
+          <input type="number" class="form-control" name="count" id="count"  min="1" required/>        
       </td>
       <td width="100">
           <input type="text" class="form-control" name="site" autocomplete="off" required/>
       </td>
       <td width="10">
-          <input type="text" class="form-control" name="price" readonly required/>        
+          <div id="price"></div>      
       </td>
       <td width="115">
-          <input type="text" class="form-control" name="total" readonly required/>        
+          <input type="text" class="form-control" name="total" id="vrTotal" readonly required/>        
       </td>
       <td>
           <button type="submit" class="btn-transparent"><i class="fa fa-check" aria-hidden="true"></i></button>        

@@ -19,9 +19,9 @@ class Activities extends CI_Controller {
 			$services = $this->Services_model->get_services($activities);
 			foreach ($services as $fila) {
                         $options .= '<option value="'.$fila->id.'">'.$fila->name.'</option>';
-		}
-                echo $options;
-            }
+		    }
+            echo '<option>Seleccionar</option>'.$options;
+        }
 	}
 
 }

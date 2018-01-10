@@ -14,4 +14,12 @@ class Services_model extends CI_Model {
             return $localidades->result();
         }
     }
+
+    public function get_service_price($service) {
+        $this->db->where('id', $service);
+        $price = $this->db->get('tbl_services');
+        if ($price->num_rows() > 0) {
+            return $price->result();
+        }
+    }
 }
