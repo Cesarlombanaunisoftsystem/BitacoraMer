@@ -1,18 +1,18 @@
-<table id="orders-items-table" class="table " style="margin-left: 17px;">
+<table id="orders-items-table" class="table table-responsive">
   <thead>
     <tr>
-      <th class="color-blue">Actividad</th>
-      <th class="color-blue">Servicio</th>
-      <th class="color-blue">Sitio</th>
-      <th class="color-blue">Cantidad</th>
-      <th class="color-blue">Precio unitario</th>
-      <th class="color-blue">Total</th>
-      <th class="color-blue">Acción</th>
+      <th class="color-blue" width="50">ACTIVIDAD</th>
+      <th class="color-blue" width="50">SERVICIO</th>  
+      <th class="color-blue" width="10">CANTIDAD</th>
+      <th class="color-blue" width="30">SITIO</th>
+      <th class="color-blue" width="10">VR.UNITARIO</th>
+      <th class="color-blue" width="20">VR.TOTAL</th>
+      <th class="color-blue"></th>
     </tr>
   </thead>
   <form action="javascript:orderAddItem(0);" id="form-addItem">
     <tr>
-      <td>
+      <td width="200">
         <div class="input-group">
           <select class="form-control activities" name="idActivities" id="idActivities" required>          
           <option value="">Seleccionar</option>
@@ -26,35 +26,23 @@
           </select>          
         </div>
       </td>
-      <td>
-        <div class="input-group">
-          <select class="form-control services" name="idServices" id="idServices" required></select>
-        </div>
+      <td width="200">
+          <select class="form-control" name="idServices" id="idServices" required></select>        
       </td>
-      <td>
-        <div class="input-group">
+      <td width="10">
+          <input type="number" class="form-control" name="count"  min="1" onkeyup="priceForCount(this.value)" required/>        
+      </td>
+      <td width="100">
           <input type="text" class="form-control" name="site" autocomplete="off" required/>
-        </div>
+      </td>
+      <td width="10">
+          <input type="text" class="form-control" name="price" readonly required/>        
+      </td>
+      <td width="115">
+          <input type="text" class="form-control" name="total" readonly required/>        
       </td>
       <td>
-        <div class="input-group">
-          <input type="number" class="form-control" name="count" min="1" onkeyup="priceForCount(this.value)" required/>
-        </div>
-      </td>
-      <td>
-        <div class="input-group">
-          <input type="text" class="form-control set-service-price" name="price" readonly required/>
-        </div>
-      </td>
-      <td>
-        <div class="input-group">
-          <input type="text" class="form-control set-total" name="total" readonly required/>
-        </div>
-      </td>
-      <td>
-        <div class="center block">
-          <button type="submit" class="btn-transparent"><i class="fa fa-check" aria-hidden="true"></i></button>
-        </div>
+          <button type="submit" class="btn-transparent"><i class="fa fa-check" aria-hidden="true"></i></button>        
       </td>
     </tr>
   </form>

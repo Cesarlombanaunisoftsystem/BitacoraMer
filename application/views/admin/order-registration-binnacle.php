@@ -4,7 +4,6 @@
       <input type="hidden" name="idOrderState" value="2"/>
       <?php $this->load->view('admin/bitacoraForm/header'); ?>
     </form>
-    <hr>
     <div class="col-xs-12 col-md-11 col-md-offset-1">
     <?php $this->load->view('admin/bitacoraForm/details'); ?>
     </div>

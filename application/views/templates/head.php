@@ -18,3 +18,4 @@
   <link rel="stylesheet" href="<?= base_url('plugins/iCheck/all.css')?>">
   <link rel="stylesheet" href="<?= base_url('dist/css/AdminLTE.css')?>">
   <link rel="stylesheet" href="<?= base_url('dist/css/skins/_all-skins.min.css')?>">
+  <link rel="stylesheet" href="<?= base_url('dist/css/style.css')?>">
