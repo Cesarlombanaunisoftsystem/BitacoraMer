@@ -10,87 +10,17 @@
         </div>
       </div>
       <ul class="sidebar-menu">
-        <li class="header">Menu Principal</li>
-        <li>
-          <a href="<?= base_url('Home')?>">
-            <span>Inicio</span>
+      <a href="<?= base_url('home') ?>"><li class="header">Menu Principal</li></a>
+        <?php foreach($datos as $fila){ ?>
+          <li>
+          <a href="<?= base_url($fila->name_controller); ?>">
+            <span><?= $fila->name_permit; ?></span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
         </li>
-        <li>
-            <a href="<?= base_url('Orders')?>">
-            <i class="fa fa-star"></i>
-            <span>Registro de orden</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="schedule-visits.php">
-            <i class="fa fa-star"></i>
-            <span>Programación de visitas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="contractors.php">
-            <i class="fa fa-star"></i>
-            <span>Visitas inicial al sitio</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="recordsvisits.php">
-            <i class="fa fa-star"></i>
-            <span>Validación Visitas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="design.php">
-            <i class="fa fa-star"></i>
-            <span>Registro de diseño</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="audit.php">
-            <i class="fa fa-star"></i>
-            <span>Auditoria de diseño</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="budget1.php">
-            <i class="fa fa-star"></i>
-            <span>PL-Auditoria #1</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="budget2.php">
-            <i class="fa fa-star"></i>
-            <span>PL-Auditoria #2</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-        </li>
+        <?php } ?>
       </ul>
     </section>
   </aside>

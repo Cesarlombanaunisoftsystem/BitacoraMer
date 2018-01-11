@@ -1,7 +1,7 @@
 <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <title> <?= $titulo ?></title>
+  <title> <?php if(isset($profile)&& $titulo) { echo $profile . '|' . $titulo;} else if(isset($profile)){ echo $profile; } else { echo $titulo; }  ?></title>
 
   <!-- Plugins  -->
   <!-- alertify -->

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php $this->load->view('templates/head') ?>
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+            <?php $this->load->view('templates/header') ?>
+            <!-- Left side column. contains the logo and sidebar -->
+            <?php $this->load->view('templates/menu-right') ?>
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        Dashboard
+                        <small>Panel de control </small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                        <li class="active">Dashboard</li>
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="wineries.php" style="color:#fff;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="winery-count"><i class="fa fa-users"></i></h3>
+                                        <p>Usuarios</p>
+                                    </div>
+                                    <a href="<?= base_url('Users')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="products.php" style="color:#FF7840;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="product-count"><i class="fa fa-dollar"></i></h3>
+                                        <p>Precio de Venta</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="providers.php" style="color:#FFFF40;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-address-card"></i></h3>
+                                        <p>Coordinadores</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="providers.php" style="color:#40BCFF;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-credit-card"></i></h3>
+                                        <p>Formas de Pago</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="providers.php" style="color:#863AE8;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-info"></i></h3>
+                                        <p>Impuestos</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="providers.php" style="color:#FF4C4C;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-file-pdf"></i></h3>
+                                        <p>Documentos</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="providers.php" style="color:#E8A13A;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-caret-up"></i></h3>
+                                        <p>Áreas</p>
+                                    </div>
+                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+            <?php $this->load->view('templates/footer.html') ?>
+        </div>
+        <!-- ./wrapper -->
+        <?php $this->load->view('templates/libs') ?>
+        <?php $this->load->view('templates/js') ?>
+    </body>
+</html>

@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @author jhon
  */
-class Home extends CI_Controller {
+class Parametrization extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -27,10 +27,10 @@ class Home extends CI_Controller {
         }
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
-        $data['titulo'] = 'Inicio';
+        $data['titulo'] = 'Administración';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_data($id_user);
-        $this->load->view('admin/home_view', $data);
+        $this->load->view('admin/admin_view', $data);
     }
 
 }

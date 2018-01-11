@@ -21,5 +21,13 @@ class Users_model extends CI_Model {
             return FALSE;
         }
     }
+    public function get_user_data($id_user) {
+        $query = $this->db->get_where('tbl_permits', array('id_user_assign_permit' => $id_user));
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
 
 }

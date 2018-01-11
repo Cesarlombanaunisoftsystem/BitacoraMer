@@ -12,25 +12,13 @@ class Login extends CI_Controller {
     }
 
     function index() {
-        switch ($this->session->userdata('perfil')) {
-            case '':
-                $data['token'] = $this->token();
-                $data['titulo'] = 'Login | bitacora';
-                $this->load->view('login/login_view', $data);
-                break;
-            case 1:
-                redirect(base_url() . 'home');
-                break;
-            case 2:
-                redirect(base_url() . 'editor');
-                break;
-            case 3:
-                redirect(base_url() . 'suscriptor');
-                break;
-            default:
-                $data['titulo'] = 'Login | bitacora';
-                $this->load->view('login/login_view', $data);
-                break;
+        if($this->session->userdata('id_usuario')){
+            redirect(base_url('home'));
+        } 
+        else {
+            $data['token'] = $this->token();
+            $data['titulo'] = 'Login | bitacora';
+            $this->load->view('login/login_view', $data); 
         }
     }
 
@@ -51,9 +39,8 @@ class Login extends CI_Controller {
                     $data = array(
                         'is_logued_in' => TRUE,
                         'id_usuario' => $check_user->id,
-                        'perfil' => $check_user->idUserProfile,
-                        'username' => $check_user->name,
-                        'profile' => $check_user->profile,
+                        'perfil' => $check_user->profile,
+                        'username' => $check_user->name
                     );
                     $this->session->set_userdata($data);
                     $this->index();

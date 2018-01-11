@@ -22,7 +22,7 @@
             <li class="user-header">
                 <img src="<?= base_url('dist/img/silueta.png')?>" class="img-circle get-user-image" alt="Imagen">
               <p>
-                <b class="get-user-name">user</b>
+                <b class="get-user-name"><?= $name ?></b>
                 <small class="get-user-enterprise"><?= $profile ?></small>
               </p>
             </li>
