@@ -15,7 +15,7 @@
       <td width="200">
         <div class="input-group">
           <select class="form-control activities" name="idActivities" id="idActivities" required>          
-          <option>Seleccionar</option>
+          <option>Seleccionar</option>          
           <?php if(isset($activities)){ ?>
            <?php foreach($activities as $activitie){ ?>
            <option value="<?= $activitie->id ?>"><?= $activitie->name ?></option>

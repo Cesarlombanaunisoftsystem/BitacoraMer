@@ -29,7 +29,7 @@ class Parametrization extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Administración';
         $id_user = $this->session->userdata('id_usuario');
-        $data['datos'] = $this->Users_model->get_user_data($id_user);
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $this->load->view('admin/admin_view', $data);
     }
 
