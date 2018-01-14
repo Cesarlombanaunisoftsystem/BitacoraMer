@@ -76,8 +76,7 @@ if ($permisos) {
                         Permisos Usuario <?php echo $perfil->name; ?>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Dashboard</li>
+                        <li><a href="<?= base_url('Users') ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
                     </ol>
                 </section>
                 <section class="content">
@@ -218,6 +217,7 @@ if ($permisos) {
                             success: function (resp) {
                                 if (resp === "error") {
                                     alertify.error('Erro en BBDD');
+                                    location.reload();
                                 }
                                 if (resp === "ok") {
                                     alertify.success('Permiso removido');
@@ -226,7 +226,8 @@ if ($permisos) {
                             }
                         })
                     }, function () {
-                        alertify.error('Acción cancelada')
+                        alertify.error('Acción cancelada');
+                        location.reload();
                     });
                 }
             </script>

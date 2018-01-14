@@ -13,12 +13,11 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Dashboard
-                        <small>Panel de control </small>
+                        Modulo de administración
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Dashboard</li>
+                        <li class="active">Panel de control</li>
                     </ol>
                 </section>
 
@@ -26,7 +25,7 @@
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="wineries.php" style="color:#fff;">
+                            <a href="<?= base_url('Users')?>" style="color:#fff;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="winery-count"><i class="fa fa-users"></i></h3>
@@ -37,46 +36,35 @@
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="products.php" style="color:#FF7840;">
+                            <a href="<?= base_url('Parametrization/activities')?>" style="color:#FF7840;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="product-count"><i class="fa fa-dollar"></i></h3>
                                         <p>Precio de Venta</p>
                                     </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/prices')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="providers.php" style="color:#FFFF40;">
-                                <div class="small-box color-default">
-                                    <div class="inner" style="margin: 10px;">
-                                        <h3 id="providers-count"><i class="fa fa-address-card"></i></h3>
-                                        <p>Coordinadores</p>
-                                    </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="providers.php" style="color:#40BCFF;">
+                            <a href="<?= base_url('Parametrization/payment_methods')?>" style="color:#40BCFF;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-credit-card"></i></h3>
                                         <p>Formas de Pago</p>
                                     </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/payment_methods')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="providers.php" style="color:#863AE8;">
+                            <a href="<?= base_url('Parametrization/taxes')?>" style="color:#863AE8;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-info"></i></h3>
                                         <p>Impuestos</p>
                                     </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/taxes')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

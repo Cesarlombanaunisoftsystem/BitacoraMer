@@ -10,37 +10,36 @@
             <?php $this->load->view('templates/menu-right') ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
+                <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
                         Administración Usuarios
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Dashboard</li>
+                        <li><a href="<?= base_url('Parametrization'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
                     </ol>
                 </section>
                 <section class="content">
-                    <h2><button type="buttom" class="btn btn-success">Añadir Usuario</button></h2>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <table id="users-table" class="display" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr><th>Nombre</th><th>Perfil</th><th>Permisos</th><th>Acciones</th></tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach($usuarios as $celda){ ?>                                            
-                                            <tr>
-                                                <td><?= $celda->name ?></td>
-                                                <td><?= $celda->profile ?></td>
-                                                <td><a href="<?= base_url('Users/get_user_permits/') . $celda->id ?>"><i class="fa fa-magic fa-2x"  style="color:green" aria-hidden="true"></i></a></td>
-                                                <td><a href="<?= base_url()?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="<?= base_url()?>"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
-                                            </tr>                                                                                    
-                                            <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>                  
+                    <h2><button type="buttom" class="btn btn-success" data-toggle="modal" data-target="#add-user">Añadir Usuario</button></h2>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table id="data-table" class="display" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr><th>Nombre</th><th>Perfil</th><th>Permisos</th><th>Acciones</th></tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($usuarios as $celda) { ?>                                            
+                                        <tr>
+                                            <td><?= $celda->name ?></td>
+                                            <td><?= $celda->profile ?></td>
+                                            <td><a href="<?= base_url('Users/get_user_permits/') . $celda->id ?>"><i class="fa fa-magic fa-2x"  style="color:green" aria-hidden="true"></i></a></td>
+                                            <td><a href="<?= base_url('Users/get_user/') . $celda->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteUser(<?= $celda->id ?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
+                                        </tr>                                                                                    
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                  
                 </section>
             </div>
             <!-- /.content-wrapper -->
@@ -49,35 +48,104 @@
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
+        <!-- Modal -->
+        <div id="add-user" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 30%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title" id="exampleModalLongTitle">Añadir Usuario</h3>
+                    </div>
+                    <form id="frmAddUser" action="javascript:addUser()" method="post">
+                        <div class="modal-body">                        
+                            <div class="form-group">
+                                <label for="name">Nombre Completo</label>
+                                <input type="text" class="form-control" name="name" placeholder="Nombre Completo" required="">                                
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Ingresa email" required="">
+                                <small id="emailHelp" class="form-text text-muted">Nunca compartiremos su correo electrónico con nadie más.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="passw">Contraseña</label>
+                                <input type="password" class="form-control" name="passw" placeholder="Ingresa contraseña" required="">
+                            </div>
+                            <div class="form-group">
+                                <label for="cel">Celular</label>
+                                <input type="tel" class="form-control" name="cel" placeholder="Ingresa número">
+                            </div>
+                            <div class="form-group">
+                                <label for="tel">Telefono Fijo</label>
+                                <input type="tel" class="form-control" name="tel" placeholder="Ingresa número">
+                            </div>
+                            <div class="form-group">
+                                <label for="rol">Rol</label>
+                                <select class="form-control" name="rol" required="">
+                                    <?php foreach ($roles as $rol) { ?>
+                                        <option value="<?= $rol->id ?>"><?= $rol->name ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <input type="submit" class="btn btn-primary" value="Añadir Usuario">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $('#users-table').DataTable({
-                    language: {
-                        "sProcessing":     "Procesando...",
-                        "sLengthMenu":     "Mostrar _MENU_ registros",
-                        "sZeroRecords":    "No se encontraron resultados",
-                        "sEmptyTable":     "Ningún dato disponible en esta tabla",
-                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix":    "",
-                        "sSearch":         "Buscar:",
-                        "sUrl":            "",
-                        "sInfoThousands":  ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst":    "Primero",
-                            "sLast":     "Último",
-                            "sNext":     "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            function addUser() {
+                url = get_base_url() + "Users/add_user";
+                $.ajax({
+                    url: url,
+                    type: $("#frmAddUser").attr("method"),
+                    data: $("#frmAddUser").serialize(),
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                            location.reload();
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Usuario agregado exitosamente');
+                            location.reload();
+                        }
+                        if (resp === "ko") {
+                            alertify.error('Error! el email ya existe, ingrese uno valido diferente');
                         }
                     }
                 });
-            });
+            }
+            function deleteUser(id) {
+                alertify.confirm('Esta seguro de eliminar este usuario?, esta acción no podra ser removida.', function () {
+                    url = get_base_url() + "Users/delete_user";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idUser: id},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en bbdd');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Usuario eliminado');
+                                location.reload();
+                            }
+                        }
+                    })
+                }, function () {
+                    alertify.error('Acción cancelada');
+                    location.reload();
+                });
+            }
         </script>
     </body>
 </html>
