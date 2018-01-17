@@ -149,29 +149,35 @@
             }
 
             function registerOrder() {
+                var id = $("#id").val();
                 var idOrder = $('#idOrder').val();
                 var idCentCost = $('#idCentCost').val();
                 var idCoordExt = $('#idCoordExt').val();
                 var idCoordInt = $('#idCoordInt').val();
-                var price = $('#price').val();
-                var count = $('#count').val();
-                var total = $('#total').val();
                 var idFormPay = $('#idFormPay').val();
                 var subtotal = $('#subtotal').val();
                 var discount = $('#discount').val();
-                var iva = $('#iva').val();
+                var tax = $('#tax').val();
                 var total = $('#total').val();
+                var idArea = $('#idArea').val();
+                var doc1 = $('#idTypeDocument1').val();
+                var doc2 = $('#idTypeDocument2').val();
+                var doc3 = $('#idTypeDocument3').val();
+                var doc4 = $('#idTypeDocument4').val();
+                var obsv = $('#obsv').val();
+                
                 url = get_base_url() + "Orders/register_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder:idOrder, idCentCost:idCentCost, idCoordExt:idCoordExt, idCoordInt:idCoordInt, price:price, count:count, total:total, idFormPay:idFormPay, subtotal:subtotal, discount:discount, iva:iva, total:total},
+                    data: {id:id, idOrder:idOrder, idCentCost:idCentCost, idCoordExt:idCoordExt, idCoordInt:idCoordInt, idFormPay:idFormPay, subtotal:subtotal, discount:discount, tax:tax, total:total, idArea:idArea, doc1:doc1, doc2:doc2, doc3:doc3, doc4:doc4, obsv:obsv},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
                         }
                         if (resp === "ok") {
-                            alertify.success('Detalle agregado exitosamente');
+                            alertify.success('Orden completa agregada y pasada a siguiente area exitosamente');
+                            location.reload();
                         }
                     }
                 });

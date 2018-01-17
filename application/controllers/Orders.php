@@ -48,7 +48,7 @@ class Orders extends CI_Controller {
         $data = array(
             'uniquecode' => $this->input->post('order'),
             'uniqueCodeCentralCost' => $this->input->post('centCost'),
-            'dataSave' => date('Y-m-d H:i:s')
+            'dateSave' => date('Y-m-d H:i:s')
                 );
         $res = $this->Orders_model->add_order($data);
         if($res == true){
@@ -80,6 +80,44 @@ class Orders extends CI_Controller {
     public function remove_order_detail(){
         $id = $this->input->post('id');
         $res = $this->Orders_model->remove_order_detail($id);
+        if($res == true){
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function register_order(){
+        $id = $this->input->post('id');
+        $data = array(
+            'idCoordinatorExt' => $this->input->post('idCoordExt'),
+            'idCoordinatorInt' => $this->input->post('idCoordInt'),
+            'idFormPay' => $this->input->post('idFormPay'),
+            'subtotal' => $this->input->post('subtotal'),
+            'discount' => $this->input->post('discount'),
+            'iva' => $this->input->post('tax'),
+            'total' => $this->input->post('total'),
+            'idArea' => $this->input->post('idArea'),
+            'observations' => $this->input->post('obsv'),
+            'idUser' => $this->session->userdata('id_usuario')
+                );
+                $dataDoc1 = array(
+                    'idTypeDocument' => $this->input->post('doc1'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc2 = array(
+                    'idTypeDocument' => $this->input->post('doc2'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc3 = array(
+                    'idTypeDocument' => $this->input->post('doc3'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc4 = array(
+                    'idTypeDocument' => $this->input->post('doc4'),
+                    'idOrder' => $this->input->post('id')
+                );
+        $res = $this->Orders_model->register_order($id,$data,$dataDoc1,$dataDoc2,$dataDoc3,$dataDoc4);
         if($res == true){
             echo 'ok';
         } else {

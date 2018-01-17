@@ -48,7 +48,7 @@
         </tr>
 
         <tbody id="orders-items-data">
-            <?php if(isset($details)){
+            <?php if($details){
                 $subtotal = 0;
                 foreach($details as $detail){
                      ?>

@@ -38,7 +38,7 @@
   <div class="form-group">
     <label class="col-sm-4 color-blue">ÁREA DE ENVÍO SIGUIENTE PASO</label>    
     <div class="col-sm-4">
-      <select class="form-control" name="idArea" required>
+      <select class="form-control" name="idArea" id="idArea" required>
         <option>Seleccione</option>
         <?php foreach($areas as $area){ ?>
           <option value="<?= $area->id?>"><?= $area->name_area?></option>
@@ -78,11 +78,11 @@
 <div class="row col-sm-12">
     <label class="col-sm-4 color-blue">OBSERVACIONES DE REGISTRO</label>
     <div class="col-sm-8">
-      <textarea class="form-control" name="observations" rows="1" cols="80"></textarea>
+      <textarea class="form-control" name="observations" id="obsv" rows="1" cols="80"></textarea>
     </div>
 </div>
 <div class="col-xs-12">
   <div class="center block text-center">
-    <button type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
+    <button type="button" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;" onclick="registerOrder();">Registrar</button>
   </div>
 </div> 
