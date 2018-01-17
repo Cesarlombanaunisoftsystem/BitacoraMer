@@ -73,7 +73,7 @@ if ($permisos) {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Permisos Usuario <?php echo $perfil->name; ?>
+                        Permisos Usuario <?php echo $perfil->name_user; ?>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('Users') ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>

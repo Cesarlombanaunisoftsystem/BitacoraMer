@@ -75,7 +75,7 @@
                                         <h3 id="providers-count"><i class="fa fa-file-pdf"></i></h3>
                                         <p>Documentos</p>
                                     </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/docs')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -86,7 +86,7 @@
                                         <h3 id="providers-count"><i class="fa fa-caret-up"></i></h3>
                                         <p>Áreas</p>
                                     </div>
-                                    <a href="#" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/areas')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

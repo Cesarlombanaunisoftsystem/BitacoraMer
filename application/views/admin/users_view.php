@@ -28,12 +28,12 @@
                                     <tr><th>Nombre</th><th>Perfil</th><th>Permisos</th><th>Acciones</th></tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($usuarios as $celda) { ?>                                            
+                                    <?php foreach ($usuarios as $usuario) { ?>                                            
                                         <tr>
-                                            <td><?= $celda->name ?></td>
-                                            <td><?= $celda->profile ?></td>
-                                            <td><a href="<?= base_url('Users/get_user_permits/') . $celda->id ?>"><i class="fa fa-magic fa-2x"  style="color:green" aria-hidden="true"></i></a></td>
-                                            <td><a href="<?= base_url('Users/get_user/') . $celda->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteUser(<?= $celda->id ?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
+                                            <td><?= $usuario->name_user ?></td>
+                                            <td><?= $usuario->name_profile ?></td>
+                                            <td><a href="<?= base_url('Users/get_user_permits/') . $usuario->id ?>"><i class="fa fa-magic fa-2x"  style="color:green" aria-hidden="true"></i></a></td>
+                                            <td><a href="<?= base_url('Users/get_user/') . $usuario->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteUser(<?= $usuario->id ?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
                                         </tr>                                                                                    
                                     <?php } ?>
                                 </tbody>
@@ -86,7 +86,7 @@
                                 <label for="rol">Rol</label>
                                 <select class="form-control" name="rol" required="">
                                     <?php foreach ($roles as $rol) { ?>
-                                        <option value="<?= $rol->id ?>"><?= $rol->name ?>
+                                        <option value="<?= $rol->id ?>"><?= $rol->name_profile ?>
                                         </option>
                                         <?php
                                     }

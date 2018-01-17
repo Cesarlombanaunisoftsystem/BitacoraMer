@@ -12,16 +12,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  * @author jhon
  */
+class Orders extends CI_Controller {
 
-class Orders extends CI_Controller{
-    public function __construct(){
+    public function __construct() {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Activities_model','Users_model'));
+        $this->load->model(array('Activities_model', 'Users_model'));
     }
 
-    public function index(){
+    public function index() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
         }
@@ -33,4 +33,5 @@ class Orders extends CI_Controller{
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $this->load->view('admin/register-orders', $data);
     }
+
 }

@@ -1,5 +1,7 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * Description of Orders
  *
@@ -13,14 +15,12 @@ class Services extends CI_Controller {
     }
 
     public function get_service_price() {
-		if ($this->input->post('idServices')) {
-			$service = $this->input->post('idServices');
-			$price = $this->Services_model->get_service_price($service);
-			foreach ($price as $fila) {
-                $input = '<input type="text" class="form-control" name="price" id="vrUnit" value="'.$fila->price.'" readonly required/>';
-		    }
+        if ($this->input->post('idServices')) {
+            $service = $this->input->post('idServices');
+            $price = $this->Services_model->get_service($service);
+            $input = '<input type="number" class="form-control" name="price" id="vrUnit" value="' . $price->price . '" readonly required/>';
             echo $input;
         }
-	}
+    }
 
 }

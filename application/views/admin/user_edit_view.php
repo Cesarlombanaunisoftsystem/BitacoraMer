@@ -23,7 +23,7 @@
                     <form id="frmEditUser" action="javascript:editUser()" method="post">                                                
                         <div class="form-group">
                             <label for="name">Nombre Completo</label>
-                            <input type="text" class="form-control" name="name" value="<?= $perfil->name ?>" required="">
+                            <input type="text" class="form-control" name="name" value="<?= $perfil->name_user ?>" required="">
                             <input type="hidden" name="id" value="<?= $perfil->id ?>">                                
                         </div>
                         <div class="form-group">
@@ -45,10 +45,10 @@
                                 foreach ($roles as $rol) {
                                     if ($perfil->idUserProfile === $rol->id) {
                                         ?>
-                                        <option value="<?= $rol->id ?>" selected><?= $rol->name ?>
+                                        <option value="<?= $rol->id ?>" selected><?= $rol->name_profile ?>
                                         </option>
                                     <?php } else { ?>
-                                        <option value="<?= $rol->id ?>"><?= $rol->name ?>
+                                        <option value="<?= $rol->id ?>"><?= $rol->name_profile ?>
                                         </option>
                                         <?php
                                     }

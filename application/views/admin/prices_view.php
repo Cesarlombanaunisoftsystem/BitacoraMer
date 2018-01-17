@@ -25,7 +25,7 @@
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="<?= base_url('Parametrization')?>" style="color:#fff;">
+                            <a href="<?= base_url('Parametrization')?>" style="color:cyan;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="winery-count"><i class="fa fa-object-group" aria-hidden="true"></i></h3>

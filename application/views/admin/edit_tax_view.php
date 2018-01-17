@@ -13,23 +13,23 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Edición de Categoria
+                        Edición de impuesto
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?= base_url('Parametrization/get_categories'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
+                        <li><a href="<?= base_url('Parametrization/taxes'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
                     </ol>
                 </section>
                 <section class="content">
-                    <form id="frmEditCategory" action="javascript:editCategory()" method="post">                                                
+                    <form id="frmEditTax" action="javascript:editTax()" method="post">                                                
                         <div class="form-group">
                             <label for="name">Nombre</label>
-                            <input type="text" class="form-control" name="name" value="<?= $category->name_category ?>" required="">
-                            <input type="hidden" name="id" value="<?= $category->id ?>">                                
-                        </div>
+                            <input type="text" class="form-control" name="name" value="<?= $tax->name_tax ?>" required=""> 
+                            <input type="hidden" name="id" value="<?= $tax->id ?>">                            
+                        </div>  
                         <div class="form-group">
-                            <label for="desc">Descripción</label>
-                            <textarea class="form-control" name="desc" required=""><?= $category->description ?></textarea>
-                        </div>
+                            <label for="name">Porcentaje</label>
+                            <input type="number" class="form-control" name="percent" value="<?= $tax->percent_tax ?>" required="">
+                        </div>  
                         <button type="submit" class="btn btn-primary">Actualizar</button>                       
                     </form>                 
                 </section>
@@ -41,19 +41,18 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            function editCategory() {
-                url = get_base_url() + "Parametrization/edit_category";
+            function editTax() {
+                url = get_base_url() + "Parametrization/edit_tax";
                 $.ajax({
                     url: url,
-                    type: $("#frmEditCategory").attr("method"),
-                    data: $("#frmEditCategory").serialize(),
+                    type: $("#frmEditTax").attr("method"),
+                    data: $("#frmEditTax").serialize(),
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
-                            location.reload();
                         }
                         if (resp === "ok") {
-                            alertify.success('Categoria actualizada exitosamente');
+                            alertify.success('Impuesto actualizado exitosamente');
                             location.reload();
                         }
                     }

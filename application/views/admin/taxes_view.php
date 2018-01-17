@@ -23,15 +23,16 @@
                     <h2><button type="buttom" class="btn btn-success" data-toggle="modal" data-target="#add-tax">Añadir Impuesto</button></h2>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table id="users-table" class="display" cellspacing="0" width="100%">
+                            <table id="data-table" class="display" cellspacing="0" width="100%">
                                 <thead>
-                                    <tr><th>Nombre</th><th>Acciones</th></tr>
+                                    <tr><th>Nombre</th><th>Porcentaje</th><th>Acciones</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($taxes as $tax) { ?>                                            
                                         <tr>
-                                            <td><?= $tax->iva ?></td>
-                                            <td><a href="<?= base_url('Parametrization/get_taxes/') . $tax->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="<?= base_url() ?>"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
+                                            <td><?= $tax->name_tax ?></td>
+                                            <td><?= $tax->percent_tax ?></td>
+                                            <td><a href="<?= base_url('Parametrization/get_tax/') . $tax->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteTax(<?= $tax->id ?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
                                         </tr>                                                                                    
                                     <?php } ?>
                                 </tbody>
@@ -57,20 +58,66 @@
                         </button>
                         <h3 class="modal-title" id="exampleModalLongTitle">Añadir Impuesto</h3>
                     </div>
-                    <form>
+                    <form id="frmAddTax" action="javascript:addTax()" method="post">
                         <div class="modal-body">                        
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input type="text" class="form-control" name="name" placeholder="Nombre Completo">                                
+                                <input type="text" class="form-control" name="name" placeholder="Nombre Impuesto">                                
+                            </div>
+                        </div>
+                        <div class="modal-body">                        
+                            <div class="form-group">
+                                <label for="percent">Porcentaje</label>
+                                <input type="number" class="form-control" name="percent" placeholder="Porcentaje Impuesto">                                
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Añadir</button>
+                            <button type="submit" class="btn btn-primary">Añadir</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            function addTax() {
+                url = get_base_url() + "Parametrization/add_tax";
+                $.ajax({
+                    url: url,
+                    type: $("#frmAddTax").attr("method"),
+                    data: $("#frmAddTax").serialize(),
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Impuesto agregado exitosamente');
+                            location.reload();
+                        }
+                    }
+                });
+            }
+            function deleteTax(id) {
+                alertify.confirm('Esta seguro de eliminar este impuesto?, esta acción no podra ser removida.', function () {
+                    url = get_base_url() + "Parametrization/delete_tax";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idTax: id},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en bbdd');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Impuesto eliminado correctamente');
+                                location.reload();
+                            }
+                        }
+                    });
+                }, function () {
+                    alertify.error('Acción cancelada');
+                });
+            }
+        </script>
     </body>
 </html>

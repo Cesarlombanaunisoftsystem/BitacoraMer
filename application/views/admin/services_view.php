@@ -13,30 +13,31 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Administración Actividades
+                        Administración Servicios
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('Parametrization'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
                     </ol>
                 </section>
                 <section class="content">
-                    <h2><button type="buttom" class="btn btn-success" data-toggle="modal" data-target="#add-activitie">Añadir Actividad</button></h2>
+                    <h2><button type="buttom" class="btn btn-success" data-toggle="modal" data-target="#add-service">Añadir Servicio</button></h2>
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <table id="data-table" class="display" cellspacing="0" width="100%">
                                 <thead>
-                                    <tr><th>Nombre</th><th>Observaciones</th><th>Creada por</th><th>Categoria</th><th>Estado</th><th>Fecha creación</th><th>Acciones</th></tr>
+                                    <tr><th>Nombre</th><th>Actividad</th><th>Observaciones</th><th>Precio</th><th>Impuesto</th><th>Creado por</th><th>Estado</th><th>Acciones</th></tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($activities as $activitie) { ?>                                            
+                                    <?php foreach ($services as $service) { ?>                                            
                                         <tr>
-                                            <td><?= $activitie->name_activitie ?></td>
-                                            <td><?= $activitie->observations ?></td>
-                                            <td><?= $activitie->name_user ?></td>
-                                            <td><?= $activitie->name_category ?></td>
-                                            <td><?= $activitie->name_state ?></td>
-                                            <td><?= $activitie->dateSave ?></td>
-                                            <td><a href="<?= base_url('Parametrization/get_activitie/') . $activitie->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteActivitie(<?= $activitie->id?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
+                                            <td><?= $service->name_service ?></td>
+                                            <td><?= $service->name_activitie ?></td>
+                                            <td><?= $service->observations ?></td>
+                                            <td><?= $service->price ?></td>
+                                            <td><?= $service->name_tax ?></td>
+                                            <td><?= $service->name_user ?></td>
+                                            <td><?= $service->name_state ?></td>
+                                            <td><a href="<?= base_url('Parametrization/get_service/') . $service->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deleteService(<?= $service->id?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
                                         </tr>                                                                                    
                                     <?php } ?>
                                 </tbody>
@@ -52,7 +53,7 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <!-- Modal -->
-        <div id="add-activitie" class="modal fade" role="dialog">
+        <div id="add-service" class="modal fade" role="dialog">
             <div class="modal-dialog" style="width: 30%;">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -60,29 +61,45 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h3 class="modal-title" id="exampleModalLongTitle">Añadir Actividad</h3>
+                        <h3 class="modal-title" id="exampleModalLongTitle">Añadir Servicio</h3>
                     </div>
-                    <form id="frmAddActivitie" action="javascript:addActivitie()" method="post">
+                    <form id="frmAddService" action="javascript:addService()" method="post">
                         <div class="modal-body">                        
                             <div class="form-group">
                                 <label for="name">Nombre</label>
-                                <input type="text" class="form-control" name="name" placeholder="Nombre Actividad" required="">                                
+                                <input type="text" class="form-control" name="name" placeholder="Nombre Servicio" required="">                                
                             </div>
                             <div class="form-group">
-                                <label for="email">observaciones</label>
+                                <label for="obsv">Observaciones</label>
                                 <textarea class="form-control" name="obsv" placeholder="Observaciones"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="category">Categoria</label>
-                                <select class="form-control" name="category" required="">
-                                    <?php foreach ($categories as $categorie) { ?>
-                                        <option value="<?= $categorie->id ?>"><?= $categorie->name_category ?>
+                                <label for="price">Precio</label>
+                                <input type="text" class="form-control" name="price" placeholder="Precio" required=""/>
+                            </div>
+                            <div class="form-group">
+                                <label for="tax">Impuesto</label>
+                                <select class="form-control" name="tax" required="">
+                                    <?php foreach ($taxes as $tax) { ?>
+                                        <option value="<?= $tax->id ?>"><?= $tax->name_tax ?> <?= $tax->percent_tax ?>%
                                         </option>
                                         <?php
                                     }
                                     ?>
                                 </select>
-                                <small id="categoryHelp" class="form-text text-muted"><a href="<?= base_url('Parametrization/get_categories')?>"> + Crear Categoria</a></small>
+                                <small id="taxHelp" class="form-text text-muted"><a href="<?= base_url('Parametrization/get_taxes')?>"> + Crear Impuesto</a></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="activitie">Actividad</label>
+                                <select class="form-control" name="activitie" required="">
+                                    <?php foreach ($activities as $activitie) { ?>
+                                        <option value="<?= $activitie->id ?>"><?= $activitie->name_activitie ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                                <small id="activitieHelp" class="form-text text-muted"><a href="<?= base_url('Parametrization/get_activities')?>"> + Crear Actividad</a></small>
                             </div>
                             <div class="form-group">
                                 <label for="state">Estado</label>
@@ -105,37 +122,36 @@
             </div>
         </div>
         <script type="text/javascript">
-            function addActivitie() {
-                url = get_base_url() + "Parametrization/add_activitie";
+            function addService() {
+                url = get_base_url() + "Parametrization/add_service";
                 $.ajax({
                     url: url,
-                    type: $("#frmAddActivitie").attr("method"),
-                    data: $("#frmAddActivitie").serialize(),
+                    type: $("#frmAddService").attr("method"),
+                    data: $("#frmAddService").serialize(),
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
-                            location.reload();
                         }
                         if (resp === "ok") {
-                            alertify.success('Actividad agregada exitosamente');
+                            alertify.success('Servicio agregado exitosamente');
                             location.reload();
                         }
                     }
                 });
             }
-            function deleteActivitie(id) {
-                alertify.confirm('Esta seguro de eliminar esta actividad?, esta acción no podra ser removida.', function () {
-                    url = get_base_url() + "Parametrization/delete_activitie";
+            function deleteService(id) {
+                alertify.confirm('Esta seguro de eliminar este servicio?, esta acción no podra ser removida.', function () {
+                    url = get_base_url() + "Parametrization/delete_service";
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: {idActivitie: id},
+                        data: {idService: id},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en bbdd');
                             }
                             if (resp === "ok") {
-                                alertify.success('Actividad eliminada');
+                                alertify.success('Servicio eliminado');
                                 location.reload();
                             }
                         }

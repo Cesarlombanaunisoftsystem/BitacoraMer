@@ -13,23 +13,19 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Edición de Categoria
+                        Edición de metodo de pago
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?= base_url('Parametrization/get_categories'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
+                        <li><a href="<?= base_url('Parametrization/payment_methods'); ?>"><i class="fa fa-arrow-left" aria-hidden="true"></i>Volver</a></li>
                     </ol>
                 </section>
                 <section class="content">
-                    <form id="frmEditCategory" action="javascript:editCategory()" method="post">                                                
+                    <form id="frmEditPay" action="javascript:editPay()" method="post">                                                
                         <div class="form-group">
                             <label for="name">Nombre</label>
-                            <input type="text" class="form-control" name="name" value="<?= $category->name_category ?>" required="">
-                            <input type="hidden" name="id" value="<?= $category->id ?>">                                
-                        </div>
-                        <div class="form-group">
-                            <label for="desc">Descripción</label>
-                            <textarea class="form-control" name="desc" required=""><?= $category->description ?></textarea>
-                        </div>
+                            <input type="text" class="form-control" name="name" value="<?= $pay->name_pay ?>" required=""> 
+                            <input type="hidden" name="id" value="<?= $pay->id ?>">                            
+                        </div>                        
                         <button type="submit" class="btn btn-primary">Actualizar</button>                       
                     </form>                 
                 </section>
@@ -41,19 +37,18 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            function editCategory() {
-                url = get_base_url() + "Parametrization/edit_category";
+            function editPay() {
+                url = get_base_url() + "Parametrization/edit_pay";
                 $.ajax({
                     url: url,
-                    type: $("#frmEditCategory").attr("method"),
-                    data: $("#frmEditCategory").serialize(),
+                    type: $("#frmEditPay").attr("method"),
+                    data: $("#frmEditPay").serialize(),
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
-                            location.reload();
                         }
                         if (resp === "ok") {
-                            alertify.success('Categoria actualizada exitosamente');
+                            alertify.success('Metodo de pago actualizado exitosamente');
                             location.reload();
                         }
                     }

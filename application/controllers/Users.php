@@ -52,7 +52,7 @@ class Users extends CI_Controller {
 
     public function add_user() {
         $data = array(
-            'name' => $this->input->post('name'),
+            'name_user' => $this->input->post('name'),
             'email' => $this->input->post('email'),
             'password' => sha1($this->input->post('passw')),
             'mobile' => $this->input->post('cel'),
@@ -73,7 +73,7 @@ class Users extends CI_Controller {
     public function edit_user() {
         $id_user = $this->input->post('id');
         $data = array(
-            'name' => $this->input->post('name'),
+            'name_user' => $this->input->post('name'),
             'email' => $this->input->post('email'),
             'mobile' => $this->input->post('cel'),
             'phone' => $this->input->post('tel'),

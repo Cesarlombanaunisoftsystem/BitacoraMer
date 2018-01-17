@@ -14,7 +14,7 @@
 class Users_model extends CI_Model {
 
     public function get_user_xid($id) {
-        $this->db->select('tbl_users.*,tbl_users_profile.name as profile');
+        $this->db->select('tbl_users.*,tbl_users_profile.name_profile');
         $this->db->from('tbl_users');
         $this->db->join('tbl_users_profile', 'tbl_users.idUserProfile = tbl_users_profile.id');
         $this->db->where('tbl_users.id', $id);
@@ -92,7 +92,7 @@ class Users_model extends CI_Model {
     }
 
     public function get_users() {
-        $this->db->select('tbl_users.*,tbl_users_profile.name as profile');
+        $this->db->select('tbl_users.*,tbl_users_profile.name_profile');
         $this->db->from('tbl_users');
         $this->db->join('tbl_users_profile', 'tbl_users.idUserProfile = tbl_users_profile.id');
         $query = $this->db->get();

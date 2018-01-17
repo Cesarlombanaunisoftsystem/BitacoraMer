@@ -55,5 +55,37 @@
         </div>
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
+        <script type="text/javascript">
+            function addDetailOrder() {                
+                var idAct = $("#idActivities").val();
+                var act = $("#idActivities option:selected").text();
+                var idServ = $("#idServices").val();
+                var serv = $("#idServices option:selected").text();
+                var cant = $("#count").val();
+                var site = $("#site").val();
+                var vrUnit = $("#vrUnit").val();
+                var vrTotal = $("#vrTotal").val();
+                $('#orders-items-data').append('<tr id="line'+idAct+'"><td>' + act + '</td><td>' + serv + '</td><td>' + cant + '</td><td>' + site + '</td><td>' + vrUnit + '</td><td class="subtotal">' + vrTotal + '</td><td><button type="button" class="btn-transparent" onclick="removeDetailOrder(' + idAct + ');"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td></tr>');
+                $('#idActivities').prop('selectedIndex', 0);
+                $('#idServices').prop('selectedIndex', 0);
+                $("#count").val('');
+                $("#site").val('');
+                $("#vrUnit").val('');
+                $("#vrTotal").val('');
+                subtotal();
+            }
+
+            function subtotal(){
+                var sum=0;
+                $('.subtotal').each(function() {
+                    sum += Number($(this).html());
+                });
+                $('#subtotal').val(sum)
+            }
+
+            function removeDetailOrder(id) {
+                $("#line" + id).remove();
+            }
+        </script>
     </body>
 </html>

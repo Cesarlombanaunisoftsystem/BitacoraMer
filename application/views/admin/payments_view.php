@@ -23,16 +23,16 @@
                     <h2><button type="buttom" class="btn btn-success" data-toggle="modal" data-target="#add-pay">Añadir Forma de Pago</button></h2>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table id="users-table" class="display" cellspacing="0" width="100%">
+                            <table id="data-table" class="display" cellspacing="0" width="100%">
                                 <thead>
                                     <tr><th>Nombre</th><th>Fecha de creación</th><th>Acciones</th></tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($payments as $pay) { ?>                                            
                                         <tr>
-                                            <td><?= $pay->name ?></td>
+                                            <td><?= $pay->name_pay ?></td>
                                             <td><?= $pay->dateSave ?></td>
-                                            <td><a href="<?= base_url('Parametrization/get_pay/') . $pay->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="<?= base_url() ?>"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
+                                            <td><a href="<?= base_url('Parametrization/get_pay/') . $pay->id ?>"><i class="fa fa-pencil fa-2x"  style="color:blue" aria-hidden="true"></i></a> <a href="javascript:deletePay(<?= $pay->id ?>)"><i class="fa fa-trash-o fa-2x" style="color:red" aria-hidden="true"></i></a></td>
                                         </tr>                                                                                    
                                     <?php } ?>
                                 </tbody>
@@ -58,7 +58,7 @@
                         </button>
                         <h3 class="modal-title" id="exampleModalLongTitle">Añadir forma de pago</h3>
                     </div>
-                    <form>
+                    <form id="frmAddPay" action="javascript:addPay()" method="post">
                         <div class="modal-body">                        
                             <div class="form-group">
                                 <label for="name">Nombre</label>
@@ -67,11 +67,51 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary">Añadir</button>
+                            <button type="submit" class="btn btn-primary">Añadir</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            function addPay() {
+                url = get_base_url() + "Parametrization/add_pay";
+                $.ajax({
+                    url: url,
+                    type: $("#frmAddPay").attr("method"),
+                    data: $("#frmAddPay").serialize(),
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Metodo de pago agregado exitosamente');
+                            location.reload();
+                        }
+                    }
+                });
+            }
+            function deletePay(id) {
+                alertify.confirm('Esta seguro de eliminar este metodo de pago?, esta acción no podra ser removida.', function () {
+                    url = get_base_url() + "Parametrization/delete_pay";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idPay: id},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en bbdd');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Metodo de pago eliminado');
+                                location.reload();
+                            }
+                        }
+                    });
+                }, function () {
+                    alertify.error('Acción cancelada');
+                });
+            }
+        </script>
     </body>
 </html>
