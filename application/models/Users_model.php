@@ -35,6 +35,23 @@ class Users_model extends CI_Model {
         }
     }
 
+    public function get_coordinators_int() {
+        $query = $this->db->get_where('tbl_users', array('idUserProfile' => 3));
+        if ($query->num_rows() != 0) {
+            return $query->result();  //retorna array de resultados
+        } else {
+            return FALSE;
+        }
+    }
+    public function get_coordinators_ext() {
+        $query = $this->db->get_where('tbl_users', array('idUserProfile' => 4));
+        if ($query->num_rows() != 0) {
+            return $query->result();  //retorna array de resultados
+        } else {
+            return FALSE;
+        }
+    }
+
     public function add_user($data) {
         $sql = $this->db->get_where('tbl_users', array('email' => $data['email']));
         if ($sql->num_rows() > 0) {

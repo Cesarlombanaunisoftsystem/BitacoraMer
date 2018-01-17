@@ -56,35 +56,125 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            function addDetailOrder() {                
-                var idAct = $("#idActivities").val();
+            $( document ).ready(function() {
+            $( "#idOrder" ).focus();
+            var subtotal = $("#sumSubtotal").val();
+            $('#subtotal').val(subtotal);
+            });
+
+            function discountOrder(){
+                var subtotal = $("#sumSubtotal").val();
+                var tax = $('#tax').val();
+                var discount = $('#discount').val();
+                var calcDiscount = (subtotal * discount) / 100;
+                var subTotalDiscount = subtotal - calcDiscount;
+                var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
+                var total = subTotalDiscount + taxSubtotalDiscount;
+                $('#total').val(total);
+            }
+
+            function addIdOrder(){
+                if($('#idOrder').val() == ""){
+                    alertify.error('Debes asignar un número de ordén para continuar!');
+                    location.reload();
+                } else {
+                    var uniqueCentCost = Math.round(Math.random()*100000);
+                    $('#idCentCost').val(uniqueCentCost);
+                }
+            }
+
+            function generateOrder(){
+                var order = $('#idOrder').val();
+                var centCost = $('#idCentCost').val();
+                url = get_base_url() + "Orders/add_order";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {order:order,centCost:centCost},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Orden generada, puede continuar');
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+            function addDetail() {
+                var idOrder = $("#id").val();
+                var idActivities = $("#idActivities").val();
                 var act = $("#idActivities option:selected").text();
-                var idServ = $("#idServices").val();
+                var idServices = $("#idServices").val();
                 var serv = $("#idServices option:selected").text();
                 var cant = $("#count").val();
                 var site = $("#site").val();
-                var vrUnit = $("#vrUnit").val();
-                var vrTotal = $("#vrTotal").val();
-                $('#orders-items-data').append('<tr id="line'+idAct+'"><td>' + act + '</td><td>' + serv + '</td><td>' + cant + '</td><td>' + site + '</td><td>' + vrUnit + '</td><td class="subtotal">' + vrTotal + '</td><td><button type="button" class="btn-transparent" onclick="removeDetailOrder(' + idAct + ');"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td></tr>');
-                $('#idActivities').prop('selectedIndex', 0);
-                $('#idServices').prop('selectedIndex', 0);
-                $("#count").val('');
-                $("#site").val('');
-                $("#vrUnit").val('');
-                $("#vrTotal").val('');
-                subtotal();
-            }
-
-            function subtotal(){
-                var sum=0;
-                $('.subtotal').each(function() {
-                    sum += Number($(this).html());
+                var price = $("#vrUnit").val();
+                var total = $("#vrTotal").val();
+                url = get_base_url() + "Orders/add_order_detail";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder:idOrder, idActivities:idActivities, idServices:idServices, site:site, price:price, count:cant, total:total},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Detalle agregado exitosamente');
+                            location.reload();
+                        }
+                    }
                 });
-                $('#subtotal').val(sum)
             }
 
             function removeDetailOrder(id) {
-                $("#line" + id).remove();
+                url = get_base_url() + "Orders/remove_order_detail";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {id:id},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (resp === "ok") {
+                            location.reload();
+                            alertify.success('Detalle eliminado exitosamente');
+                        }
+                    }
+                });
+            }
+
+            function registerOrder() {
+                var idOrder = $('#idOrder').val();
+                var idCentCost = $('#idCentCost').val();
+                var idCoordExt = $('#idCoordExt').val();
+                var idCoordInt = $('#idCoordInt').val();
+                var price = $('#price').val();
+                var count = $('#count').val();
+                var total = $('#total').val();
+                var idFormPay = $('#idFormPay').val();
+                var subtotal = $('#subtotal').val();
+                var discount = $('#discount').val();
+                var iva = $('#iva').val();
+                var total = $('#total').val();
+                url = get_base_url() + "Orders/register_order";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder:idOrder, idCentCost:idCentCost, idCoordExt:idCoordExt, idCoordInt:idCoordInt, price:price, count:count, total:total, idFormPay:idFormPay, subtotal:subtotal, discount:discount, iva:iva, total:total},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Detalle agregado exitosamente');
+                        }
+                    }
+                });
             }
         </script>
     </body>

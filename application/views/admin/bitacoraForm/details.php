@@ -43,11 +43,19 @@
                 <input type="number" class="form-control" name="total" id="vrTotal" readonly required/>        
             </td>
             <td>
-                <button type="button" class="btn-transparent" onclick="addDetailOrder();"><i class="fa fa-check" aria-hidden="true"></i></button>        
+                <button type="button" class="btn-transparent" onclick="addDetail();"><i class="fa fa-check" aria-hidden="true"></i></button>        
             </td>
         </tr>
 
         <tbody id="orders-items-data">
-
+            <?php if(isset($details)){
+                $subtotal = 0;
+                foreach($details as $detail){
+                     ?>
+                <?php $subtotal = $subtotal + $detail->total; ?>
+                    <tr><td><?= $detail->idActivities?></td><td><?= $detail->idServices?></td><td><?= $detail->count?></td><td><?= $detail->site?></td><td><?= $detail->price?></td><td><?= $detail->total?></td><td><button type="button" class="btn-transparent" onclick="removeDetailOrder(<?= $detail->id?>);"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td></tr>
+               <?php } ?>
+               <input type="hidden" id="sumSubtotal" value="<?= $subtotal ?>"/>
+            <?php } ?>
         </tbody>      
     </table>

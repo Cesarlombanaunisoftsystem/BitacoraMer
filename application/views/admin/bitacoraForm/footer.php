@@ -7,11 +7,15 @@
 </div>
 <div class="col-sm-2">
   <label class="color-blue">DESCUENTO</label>
-    <input type="number" class="form-control bg-white" onkeyup="discountOrder(this.value)" name="discount"/> 
+    <input type="number" class="form-control bg-white" onkeyup="discountOrder()" name="discount" id="discount"/> 
 </div>
 <div class="col-sm-2">
-  <label class="color-blue">I.V.A</label>
-    <input type="text" class="form-control bg-white iva" name="iva"  readonly/>
+  <label class="color-blue">IMPUESTO</label>
+  <select class="form-control" name="idTax" id="tax">
+  <?php foreach($taxes as $tax){ ?>
+    <option value="<?= $tax->percent_tax?>"><?= $tax->name_tax?> <?= $tax->percent_tax?> %</option>
+  <?php } ?>
+  </select>
 </div>
 <div class="col-sm-2">
   <label class="color-blue">TOTAL</label>
@@ -34,7 +38,12 @@
   <div class="form-group">
     <label class="col-sm-4 color-blue">ÁREA DE ENVÍO SIGUIENTE PASO</label>    
     <div class="col-sm-4">
-      <select class="form-control" name="idArea" required></select>
+      <select class="form-control" name="idArea" required>
+        <option>Seleccione</option>
+        <?php foreach($areas as $area){ ?>
+          <option value="<?= $area->id?>"><?= $area->name_area?></option>
+        <?php } ?>
+      </select>
     </div>
   </div>
 </div>
