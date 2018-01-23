@@ -156,15 +156,24 @@
                 });
             }
 
-            function details(idOrder) {
-                url = get_base_url() + "Orders/details_orders_tray";
-                $.post(url, {idOrder: idOrder}, function (data) {
-                    var result = JSON.parse(data);
-                    $.each(result, function (i, val) {
-                        $(".contenedor_json").append('<td>' + val.name_activitie + '</td>');
-                    });
-                });
-            }
+            /*function details() {
+                var contenido = $(this).next(".accordion-content");
+                if (contenido.css("display") === "none") { //open		
+                    contenido.slideDown(250);
+                    $(this).addClass("open");
+                } else { //close		
+                    contenido.slideUp(250);
+                    $(this).removeClass("open");
+                }
+                /*url = get_base_url() + "Orders/details_orders_tray";
+                 $.post(url, {idOrder: idOrder}, function (data) {
+                 var result = JSON.parse(data);
+                 $.each(result, function (i, val) {                        
+                 $(".contenedor_json").append('<td>' + val.name_activitie + '</td>');
+                 $(".contenedor_json").slideToggle("slow");
+                 });
+                 });*/
+            //}
 
             function registerOrder() {
                 var id = $("#id").val();

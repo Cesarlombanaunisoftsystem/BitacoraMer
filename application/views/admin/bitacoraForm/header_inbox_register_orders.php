@@ -15,12 +15,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if ($ordersTray) { ?> 
-                    <tr class="contenedor_json"></tr>
+                <?php if ($ordersTray) { ?>
                     <?php
                     foreach ($ordersTray as $orderTray) {
                         ?>
-                        <tr onclick="details(<?= $orderTray->id ?>);">
+                        <tr>
                             <td><?= $orderTray->uniquecode ?></td>
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
