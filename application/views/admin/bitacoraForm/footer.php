@@ -7,7 +7,7 @@
 </div>
 <div class="col-sm-2">
   <label class="color-blue">DESCUENTO</label>
-    <input type="number" class="form-control bg-white" onkeyup="discountOrder()" name="discount" id="discount"/> 
+  <input type="number" class="form-control bg-white" name="discount" onkeyup="discountOrder();" id="discount"/> 
 </div>
 <div class="col-sm-2">
   <label class="color-blue">IMPUESTO</label>

@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="<?= base_url('plugins/font-awesome-4.7.0/css/font-awesome.min.css')?>">
   <!-- DataTables -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
+  <!-- Datepicker -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- custom -->
   <link rel="stylesheet" href="<?= base_url('plugins/iCheck/all.css')?>">
   <link rel="stylesheet" href="<?= base_url('dist/css/AdminLTE.css')?>">

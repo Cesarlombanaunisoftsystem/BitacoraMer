@@ -53,7 +53,7 @@
                 foreach($details as $detail){
                      ?>
                 <?php $subtotal = $subtotal + $detail->total; ?>
-                    <tr><td><?= $detail->idActivities?></td><td><?= $detail->idServices?></td><td><?= $detail->count?></td><td><?= $detail->site?></td><td><?= $detail->price?></td><td><?= $detail->total?></td><td><button type="button" class="btn-transparent" onclick="removeDetailOrder(<?= $detail->id?>);"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td></tr>
+                    <tr><td><?= $detail->name_activitie?></td><td><?= $detail->name_service?></td><td><?= $detail->count?></td><td><?= $detail->site?></td><td><?= $detail->price?></td><td><?= $detail->total?></td><td><button type="button" class="btn-transparent" onclick="removeDetailOrder(<?= $detail->id?>);"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td></tr>
                <?php } ?>
                <input type="hidden" id="sumSubtotal" value="<?= $subtotal ?>"/>
             <?php } ?>

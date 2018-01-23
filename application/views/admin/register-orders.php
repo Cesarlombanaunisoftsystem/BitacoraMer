@@ -17,12 +17,12 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#binnacle" onclick="loadPreOrder(1)" aria-controls="binnacle" role="tab" data-toggle="tab">BTS</a></li>
-                                        <li role="presentation"><a href="#binnacle" onclick="loadPreOrder(2)" aria-controls="binnacle" role="tab" data-toggle="tab">DAS</a></li>
-                                        <li role="presentation"><a href="#binnacle" onclick="loadPreOrder(3)" aria-controls="binnacle" role="tab" data-toggle="tab">Mantenimiento</a></li>
-                                        <li role="presentation"><a href="#binnacle" onclick="loadPreOrder(4)" aria-controls="binnacle" role="tab" data-toggle="tab">Venta de producto</a></li>
-                                        <li role="presentation"><a href="#binnacle" onclick="loadPreOrder(5)" aria-controls="binnacle" role="tab" data-toggle="tab">QMC</a></li>
-                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab" onclick="orders()">Registros procesados</a></li>
+                                        <li role="presentation" class="active"><a href="#binnacle" aria-controls="binnacle" role="tab" data-toggle="tab">BTS</a></li>
+                                        <li role="presentation"><a href="#das" aria-controls="binnacle" role="tab" data-toggle="tab">DAS</a></li>
+                                        <li role="presentation"><a href="#man" aria-controls="binnacle" role="tab" data-toggle="tab">Mantenimiento</a></li>
+                                        <li role="presentation"><a href="#sale" aria-controls="binnacle" role="tab" data-toggle="tab">Venta de producto</a></li>
+                                        <li role="presentation"><a href="#qmc" aria-controls="binnacle" role="tab" data-toggle="tab">QMC</a></li>
+                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">BANDEJA DE ENTRADA</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -56,13 +56,19 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $( document ).ready(function() {
-            $( "#idOrder" ).focus();
-            var subtotal = $("#sumSubtotal").val();
-            $('#subtotal').val(subtotal);
+            $(document).ready(function () {
+                $("#idOrder").focus();
+                var subtotal = $("#sumSubtotal").val();
+                $('#subtotal').val(subtotal);
+                var tax = $('#tax').val();
+                var discount = $('#discount').val();
+                var calcDiscount = (subtotal * discount) / 100;
+                var subTotalDiscount = subtotal - calcDiscount;
+                var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
+                var total = subTotalDiscount + taxSubtotalDiscount;
+                $('#total').val(total);
             });
-
-            function discountOrder(){
+            function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
                 var tax = $('#tax').val();
                 var discount = $('#discount').val();
@@ -73,24 +79,23 @@
                 $('#total').val(total);
             }
 
-            function addIdOrder(){
-                if($('#idOrder').val() == ""){
+            function addIdOrder() {
+                if ($('#idOrder').val() === "") {
                     alertify.error('Debes asignar un número de ordén para continuar!');
-                    location.reload();
                 } else {
-                    var uniqueCentCost = Math.round(Math.random()*100000);
+                    var uniqueCentCost = Math.round(Math.random() * 100000);
                     $('#idCentCost').val(uniqueCentCost);
                 }
             }
 
-            function generateOrder(){
+            function generateOrder() {
                 var order = $('#idOrder').val();
                 var centCost = $('#idCentCost').val();
                 url = get_base_url() + "Orders/add_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {order:order,centCost:centCost},
+                    data: {order: order, centCost: centCost},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
@@ -106,28 +111,31 @@
             function addDetail() {
                 var idOrder = $("#id").val();
                 var idActivities = $("#idActivities").val();
-                var act = $("#idActivities option:selected").text();
                 var idServices = $("#idServices").val();
-                var serv = $("#idServices option:selected").text();
                 var cant = $("#count").val();
                 var site = $("#site").val();
                 var price = $("#vrUnit").val();
                 var total = $("#vrTotal").val();
-                url = get_base_url() + "Orders/add_order_detail";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder:idOrder, idActivities:idActivities, idServices:idServices, site:site, price:price, count:cant, total:total},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
+                if (cant === "") {
+                    alertify.error('Debes asignar una cantidad!');
+                } else {
+
+                    url = get_base_url() + "Orders/add_order_detail";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, count: cant, total: total},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Detalle agregado exitosamente');
+                                location.reload();
+                            }
                         }
-                        if (resp === "ok") {
-                            alertify.success('Detalle agregado exitosamente');
-                            location.reload();
-                        }
-                    }
-                });
+                    });
+                }
             }
 
             function removeDetailOrder(id) {
@@ -135,7 +143,7 @@
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {id:id},
+                    data: {id: id},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
@@ -145,6 +153,16 @@
                             alertify.success('Detalle eliminado exitosamente');
                         }
                     }
+                });
+            }
+
+            function details(idOrder) {
+                url = get_base_url() + "Orders/details_orders_tray";
+                $.post(url, {idOrder: idOrder}, function (data) {
+                    var result = JSON.parse(data);
+                    $.each(result, function (i, val) {
+                        $(".contenedor_json").append('<td>' + val.name_activitie + '</td>');
+                    });
                 });
             }
 
@@ -165,12 +183,11 @@
                 var doc3 = $('#idTypeDocument3').val();
                 var doc4 = $('#idTypeDocument4').val();
                 var obsv = $('#obsv').val();
-                
                 url = get_base_url() + "Orders/register_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {id:id, idOrder:idOrder, idCentCost:idCentCost, idCoordExt:idCoordExt, idCoordInt:idCoordInt, idFormPay:idFormPay, subtotal:subtotal, discount:discount, tax:tax, total:total, idArea:idArea, doc1:doc1, doc2:doc2, doc3:doc3, doc4:doc4, obsv:obsv},
+                    data: {id: id, idOrder: idOrder, idCentCost: idCentCost, idCoordExt: idCoordExt, idCoordInt: idCoordInt, idFormPay: idFormPay, subtotal: subtotal, discount: discount, tax: tax, total: total, idArea: idArea, doc1: doc1, doc2: doc2, doc3: doc3, doc4: doc4, obsv: obsv},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');

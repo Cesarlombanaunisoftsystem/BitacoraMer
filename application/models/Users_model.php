@@ -51,6 +51,15 @@ class Users_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_tecs() {
+        $query = $this->db->get_where('tbl_users', array('idUserProfile' => 5));
+        if ($query->num_rows() != 0) {
+            return $query->result();  //retorna array de resultados
+        } else {
+            return FALSE;
+        }
+    }
 
     public function add_user($data) {
         $sql = $this->db->get_where('tbl_users', array('email' => $data['email']));
