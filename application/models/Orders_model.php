@@ -31,9 +31,14 @@ class Orders_model extends CI_Model{
     }
     
     public function get_orders_tray(){
-        $this->db->select('tbl_orders.*,tbl_users.name_user');
+        $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS `idOrderDetail`,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
+                . 'tbl_orders_details.price,tbl_orders_details.count,tbl_orders_details.total AS `totalDetail`,tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders');
         $this->db->join('tbl_users','tbl_orders.idCoordinatorExt=tbl_users.id');
+        $this->db->join('tbl_orders_details','tbl_orders.id=tbl_orders_details.idOrder');
+        $this->db->join('tbl_activities','tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services','tbl_orders_details.idServices=tbl_services.id');
+        $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();
         if($query->num_rows()>0){
             return $query->result();
@@ -111,6 +116,20 @@ class Orders_model extends CI_Model{
         $this->db->trans_complete();
         if ($this->db->trans_status() === TRUE) {
             return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_docs($idOrder){
+        $this->db->select('tbl_orders_documents.*,tbl_orders.id,tbl_type_documents.name_type');
+        $this->db->from('tbl_orders_documents');
+        $this->db->join('tbl_orders','tbl_orders_documents.idOrder=tbl_orders.id');
+        $this->db->join('tbl_type_documents','tbl_orders_documents.idTypeDocument=tbl_type_documents.id');
+        $this->db->where('tbl_orders_documents.idOrder', $idOrder);
+        $query = $this->db->get();
+        if($query->num_rows()>0){
+            return $query->result();
         } else {
             return FALSE;
         }

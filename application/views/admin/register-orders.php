@@ -177,10 +177,10 @@
                 var tax = $('#tax').val();
                 var total = $('#total').val();
                 var idArea = $('#idArea').val();
-                var doc1 = $('#idTypeDocument1').val();
-                var doc2 = $('#idTypeDocument2').val();
-                var doc3 = $('#idTypeDocument3').val();
-                var doc4 = $('#idTypeDocument4').val();
+                var doc1 = $('#idTypeDocument1:checked').val();
+                var doc2 = $('#idTypeDocument2:checked').val();
+                var doc3 = $('#idTypeDocument3:checked').val();
+                var doc4 = $('#idTypeDocument4:checked').val();
                 var obsv = $('#obsv').val();
                 url = get_base_url() + "Orders/register_order";
                 $.ajax({

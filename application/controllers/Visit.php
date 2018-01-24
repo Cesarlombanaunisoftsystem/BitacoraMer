@@ -90,5 +90,39 @@ class Visit extends CI_Controller {
             echo 'error';
         }
     }
+    
+    public function return_order_assign() {
+        $idOrder = $this->input->post('idOrder');
+        $obsv = $this->input->post('obsvGen');
+        $data = array(
+            'idArea' => 1,
+            'observations' => $obsv);
+        $res = $this->Visits_model->return_order_register($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function site_init() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Registro de datos visitas inicial al sitio';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['visits'] = $this->Visits_model->get_orders_assign_technics();
+        $this->load->view('visit_init_register_data_view', $data);
+    }
+
+    public function get_docs_visit_init_register() {
+        $idOrder = $this->input->get('idOrder');
+        $data['docs'] = $this->Orders_model->get_docs($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
 }
