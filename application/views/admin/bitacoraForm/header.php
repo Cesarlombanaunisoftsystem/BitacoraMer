@@ -10,14 +10,14 @@
     if($order){
     echo $order->uniquecode;
     }
-    ?>" onfocusout="addIdOrder();" required/>
+    ?>" onfocusout="addIdOrder();" required readonly/>
   </div>
   <div class="col-sm-2">Centro de Costos No.</div>
   <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="number" class="form-control sinborde" name="uniqueCodeCentralCost" id="idCentCost" value="<?php
     if($order){
-    echo $order->uniqueCodeCentralCost;
+    echo $order->id;
     }
-    ?>" onfocusout="generateOrder();" required/>
+    ?>" required/>
   </div>
   <div class="col-sm-2">Fecha de Creación</div>
   <div class="col-sm-2" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="text" class="form-control sinborde" name="date" id="dateSave" value="<?php

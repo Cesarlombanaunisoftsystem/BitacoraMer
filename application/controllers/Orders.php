@@ -48,7 +48,6 @@ class Orders extends CI_Controller {
     public function add_order() {
         $data = array(
             'uniquecode' => $this->input->post('order'),
-            'uniqueCodeCentralCost' => $this->input->post('centCost'),
             'idUser' => $this->session->userdata('id_usuario'),
             'dateSave' => date('Y-m-d H:i:s')
         );
@@ -98,6 +97,7 @@ class Orders extends CI_Controller {
     public function register_order() {
         $id = $this->input->post('id');
         $data = array(
+            'uniqueCodeCentralCost' => $this->input->post('idCentCost'),
             'idCoordinatorExt' => $this->input->post('idCoordExt'),
             'idCoordinatorInt' => $this->input->post('idCoordInt'),
             'idFormPay' => $this->input->post('idFormPay'),

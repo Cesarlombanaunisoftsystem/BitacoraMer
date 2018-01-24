@@ -62,7 +62,7 @@
                                             if ($visit->date != NULL) {
                                                 $date = $visit->date;
                                             } else {
-                                                $date = '<input type="date" id="date_' . $visit->id . '" size="15" required>';
+                                                $date = '<input type="date" class="date" id="date_' . $visit->id . '" size="15" required>';
                                             }
                                             ?> 
                                             <tr>
@@ -107,7 +107,7 @@
 <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                $("input").datepicker({dateFormat: 'yy-mm-dd'});
+                $(".date").datepicker({dateFormat: 'yy-mm-dd'});
             });
             function assign(idOrder) {
                 var idTech = $("#idTech_" + idOrder).val();
@@ -125,7 +125,7 @@
                                 alertify.error('Erro en BBDD');
                             }
                             if (resp === "ok") {
-                                alertify.success('Visita asignada al técnico exitosamente');
+                                alertify.success('Visita asignada al técnico exitosamente, correo de aviso enviado.');
                                 location.reload();
                             }
                         }

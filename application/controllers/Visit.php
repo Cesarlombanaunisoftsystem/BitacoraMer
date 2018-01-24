@@ -13,7 +13,7 @@ class Visit extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model'));
+        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model', 'Utils'));
     }
 
     public function program() {
@@ -53,26 +53,8 @@ class Visit extends CI_Controller {
         $res = $this->Visits_model->assign_order_technic($idOrder, $data);
         if ($res === TRUE) {
             $technical = $this->Users_model->get_user_xid($idUser);
-            $content['content'] = $this->Orders_model->get_order_by_id_email($idOrder);
-            $config['charset'] = 'utf-8';
-            $config['newline'] = "\r\n";
-            $config['mailtype'] = 'html';
-            $config['protocol'] = 'mail';
-            $config['smtp_host'] = 'mail.instasoft.com.co';
-            $config['smtp_port'] = '465';
-            $config['smtp_user'] = 'jhon.valdes@instasoft.com.co';
-            $config['smtp_pass'] = 'jhV_3103';
-            $config['validation'] = TRUE;
-            $this->email->initialize($config);
-            $this->email->clear();
-            $this->email->from('jhon.valdes@instasoft.com.co', 'Unisoft');
-            $this->email->to($technical->email);
-            //$this->email->cc($destination);
-            //$this->email->bcc($destination);
-            $this->email->subject('Programación de visita a sitio');
-            $body = $this->load->view('templates/email_tecnico.php', $content, TRUE);
-            $this->email->message($body);
-            $this->email->send();
+            $content = $this->Orders_model->get_order_by_id_email($idOrder);
+            $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $content);            
             echo 'ok';
         } else {
             echo $res;
@@ -90,7 +72,7 @@ class Visit extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function return_order_assign() {
         $idOrder = $this->input->post('idOrder');
         $obsv = $this->input->post('obsvGen');

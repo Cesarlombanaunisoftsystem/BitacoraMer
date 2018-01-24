@@ -57,7 +57,9 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#idOrder").focus();
+                if ($('#idOrder').val() === "") {
+                    $('#idOrder').removeAttr("readonly");
+                }                            
                 var subtotal = $("#sumSubtotal").val();
                 $('#subtotal').val(subtotal);
                 var tax = $('#tax').val();
@@ -92,19 +94,17 @@
                 if ($('#idOrder').val() === "") {
                     alertify.error('Debes asignar un número de ordén para continuar!');
                 } else {
-                    var uniqueCentCost = Math.round(Math.random() * 100000);
-                    $('#idCentCost').val(uniqueCentCost);
+                    generateOrder();
                 }
             }
 
             function generateOrder() {
                 var order = $('#idOrder').val();
-                var centCost = $('#idCentCost').val();
                 url = get_base_url() + "Orders/add_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {order: order, centCost: centCost},
+                    data: {order: order},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
