@@ -4,7 +4,7 @@
     </div>
     <input type="hidden" id="id" value=""/>
     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">         
-        <table id="data-table" class="table table-responsive">
+        <table class="table table-responsive">
             <thead>
                 <tr>
                     <th style="color: #00B0F0">Número de Orden</th>
@@ -19,13 +19,14 @@
                     <?php
                     foreach ($ordersTray as $orderTray) {
                         ?>
-                        <tr>
+                        <tr class="view" id="tr_<?= $orderTray->id ?>">
                             <td><?= $orderTray->uniquecode ?></td>
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
                             <td><?= $orderTray->dateSave ?></td>
                             <td><?= $orderTray->total ?></td>
                         </tr>
+                        <tr id="accordian_<?= $orderTray->id ?>" style="display: none"><td>Hola</td></tr>
                     <?php } ?>                        
                 <?php } ?>
             </tbody>

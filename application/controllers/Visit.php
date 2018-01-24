@@ -13,7 +13,7 @@ class Visit extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Visits_model'));
+        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model'));
     }
 
     public function program() {
@@ -42,22 +42,44 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_assign_view', $data);
     }
-    
-    public function assign() {   
-        $idOrder = $this->input->post('idOrder');     
+
+    public function assign() {
+        $idOrder = $this->input->post('idOrder');
+        $idUser = $this->input->post('idTech');
         $data = array(
-            'idTechnicals' => $this->input->post('idTech'),
+            'idTechnicals' => $idUser,
             'date' => $this->input->post('date'),
             'idArea' => 2);
         $res = $this->Visits_model->assign_order_technic($idOrder, $data);
         if ($res === TRUE) {
+            $technical = $this->Users_model->get_user_xid($idUser);
+            $content['content'] = $this->Orders_model->get_order_by_id_email($idOrder);
+            $config['charset'] = 'utf-8';
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = 'html';
+            $config['protocol'] = 'mail';
+            $config['smtp_host'] = 'mail.instasoft.com.co';
+            $config['smtp_port'] = '465';
+            $config['smtp_user'] = 'jhon.valdes@instasoft.com.co';
+            $config['smtp_pass'] = 'jhV_3103';
+            $config['validation'] = TRUE;
+            $this->email->initialize($config);
+            $this->email->clear();
+            $this->email->from('jhon.valdes@instasoft.com.co', 'Unisoft');
+            $this->email->to($technical->email);
+            //$this->email->cc($destination);
+            //$this->email->bcc($destination);
+            $this->email->subject('Programación de visita a sitio');
+            $body = $this->load->view('templates/email_tecnico.php', $content, TRUE);
+            $this->email->message($body);
+            $this->email->send();
             echo 'ok';
         } else {
-            echo 'error';
+            echo $res;
         }
     }
-    
-    public function return_order_register() {   
+
+    public function return_order_register() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idArea' => NULL);

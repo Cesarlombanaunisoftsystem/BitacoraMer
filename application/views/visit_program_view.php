@@ -57,39 +57,41 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($visits as $visit) {
-                                        if ($visit->date != NULL) {
-                                            $date = $visit->date;
-                                        } else {
-                                            $date = '<input type="date" id="date_'.$visit->id.'" size="15" required>';
-                                        }
-                                        ?> 
-                                        <tr>
-                                            <td><a href="javascript:return_order(<?= $visit->id?>)"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a></td>
-                                            <td><?= $visit->dateSave ?></td>
-                                            <td><?= $visit->uniquecode ?></td>
-                                            <td><?= $visit->name_activitie ?></td>
-                                            <td><?= $visit->name_service ?></td>
-                                            <td><select class="form-control" id="idTech_<?=$visit->id?>">
-                                                    <?php
-                                                    foreach ($tecs as $tec) {
-                                                        if ($visit->idTechnicals === $tec->id) {
-                                                            ?>
-                                                            <option value="<?= $tec->id ?>" selected><?= $tec->name_user ?>
-                                                            </option>
-                                                        <?php } else { ?>
-                                                            <option value="<?= $tec->id ?>"><?= $tec->name_user ?>
-                                                            </option>
-                                                            <?php
+                                    if ($visits) {
+                                        foreach ($visits as $visit) {
+                                            if ($visit->date != NULL) {
+                                                $date = $visit->date;
+                                            } else {
+                                                $date = '<input type="date" id="date_' . $visit->id . '" size="15" required>';
+                                            }
+                                            ?> 
+                                            <tr>
+                                                <td><a href="javascript:return_order(<?= $visit->id ?>)"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a></td>
+                                                <td><?= $visit->dateSave ?></td>
+                                                <td><?= $visit->uniquecode ?></td>
+                                                <td><?= $visit->name_activitie ?></td>
+                                                <td><?= $visit->name_service ?></td>
+                                                <td><select class="form-control" id="idTech_<?= $visit->id ?>">
+                                                        <?php
+                                                        foreach ($tecs as $tec) {
+                                                            if ($visit->idTechnicals === $tec->id) {
+                                                                ?>
+                                                                <option value="<?= $tec->id ?>" selected><?= $tec->name_user ?>
+                                                                </option>
+                                                            <?php } else { ?>
+                                                                <option value="<?= $tec->id ?>"><?= $tec->name_user ?>
+                                                                </option>
+                                                                <?php
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
-                                                </select></td>
-                                            <td><?= $visit->observations ?></td>
-                                            <td><?= $date ?></td>
-                                            <td><a href="javascript:assign(<?= $visit->id?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
-                                        </tr> 
-                                    <?php } ?> 
+                                                        ?>
+                                                    </select></td>
+                                                <td><?= $visit->observations ?></td>
+                                                <td><?= $date ?></td>
+                                                <td><a href="javascript:assign(<?= $visit->id ?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
+                                            </tr> 
+                                        <?php }
+                                    } ?> 
                                 </tbody>
                             </table>
                         </div>
@@ -98,18 +100,18 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <?php $this->load->view('templates/footer.html') ?>
+<?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
-        <?php $this->load->view('templates/js') ?>
+<?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
                 $("input").datepicker({dateFormat: 'yy-mm-dd'});
             });
             function assign(idOrder) {
-                var idTech = $("#idTech_"+idOrder).val();
-                var date = $("#date_"+idOrder).val();
+                var idTech = $("#idTech_" + idOrder).val();
+                var date = $("#date_" + idOrder).val();
                 if (date === "") {
                     alertify.error('Debes indicar fecha de visita');
                 } else {

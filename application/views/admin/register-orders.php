@@ -67,6 +67,15 @@
                 var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
                 var total = subTotalDiscount + taxSubtotalDiscount;
                 $('#total').val(total);
+                var id = $(".view").attr("id");
+                $("#tr_"+id).click(function () {
+                    $("#accordian_"+id).slideUp();
+                    //slide down the link list below the h3 clicked - only if its closed
+                    if (!$(this).next().is(":visible"))
+                    {
+                        $(this).next().slideDown();
+                    }
+                });
             });
             function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
@@ -155,25 +164,6 @@
                     }
                 });
             }
-
-            /*function details() {
-                var contenido = $(this).next(".accordion-content");
-                if (contenido.css("display") === "none") { //open		
-                    contenido.slideDown(250);
-                    $(this).addClass("open");
-                } else { //close		
-                    contenido.slideUp(250);
-                    $(this).removeClass("open");
-                }
-                /*url = get_base_url() + "Orders/details_orders_tray";
-                 $.post(url, {idOrder: idOrder}, function (data) {
-                 var result = JSON.parse(data);
-                 $.each(result, function (i, val) {                        
-                 $(".contenedor_json").append('<td>' + val.name_activitie + '</td>');
-                 $(".contenedor_json").slideToggle("slow");
-                 });
-                 });*/
-            //}
 
             function registerOrder() {
                 var id = $("#id").val();

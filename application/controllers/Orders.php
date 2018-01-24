@@ -49,6 +49,7 @@ class Orders extends CI_Controller {
         $data = array(
             'uniquecode' => $this->input->post('order'),
             'uniqueCodeCentralCost' => $this->input->post('centCost'),
+            'idUser' => $this->session->userdata('id_usuario'),
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order($data);
