@@ -49,7 +49,8 @@ class Visit extends CI_Controller {
         $data = array(
             'idTechnicals' => $idUser,
             'date' => $this->input->post('date'),
-            'idArea' => 2);
+            'idArea' => 1,
+            'idOrderState' => 3);
         $res = $this->Visits_model->assign_order_technic($idOrder, $data);
         if ($res === TRUE) {
             $technical = $this->Users_model->get_user_xid($idUser);
@@ -64,7 +65,8 @@ class Visit extends CI_Controller {
     public function return_order_register() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idArea' => NULL);
+            'idArea' => NULL,
+            'idOrderState' => 1);
         $res = $this->Visits_model->return_order_register($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -78,8 +80,24 @@ class Visit extends CI_Controller {
         $obsv = $this->input->post('obsvGen');
         $data = array(
             'idArea' => 1,
+            'idOrderState' => 2,
             'observations' => $obsv);
         $res = $this->Visits_model->return_order_register($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function register_order_validate() {
+        $idOrder = $this->input->post('idOrder');
+        $obsv = $this->input->post('obsvGen');
+        $data = array(
+            'idArea' => 1,
+            'idOrderState' => 4,
+            'observations' => $obsv);
+        $res = $this->Visits_model->register_order_validate($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -106,5 +124,4 @@ class Visit extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-
 }

@@ -91,19 +91,39 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, docs) {
-                        $("#frmDocsRegVisitInit").append('<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4"><u>ADJUNTAR ' + docs.name_type + '</u></div><div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">OBSERVACIONES:</div><div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6"><input type="text" id="obsvRegPic" name="obsvRegPic" class="form-control"></div>');                       
-                        $("#return").html('<a href="javascript:return_order('+docs.idOrder+')" title="devolver a asignación de visita inicial"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a>');
+                        $("#frmDocsRegVisitInit").append('<div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4"><u>ADJUNTAR ' + docs.name_type + '</u></div><div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">OBSERVACIONES:</div><div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6"><input type="text" id="obsvRegPic" name="obsvRegPic" class="form-control"></div>');
+                        $("#register").html('<a href="javascript:register_order(' + docs.idOrder + ')" title="registrar" style="color: #00B1EC">REGISTRAR</a>');
+                        $("#return").html('<a href="javascript:return_order(' + docs.idOrder + ')" title="devolver a asignación de visita inicial"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a>');
                     });
                 });
             }
             
+            function register_order(idOrder) {
+                var obsvGen = $('#obsvGen').val();
+                url = get_base_url() + "Visit/register_order_validate";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder: idOrder, obsvGen: obsvGen},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Orden registrada exitosamente');
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
             function return_order(idOrder) {
-            var obsvGen = $('#obsvGen').val();
+                var obsvGen = $('#obsvGen').val();
                 url = get_base_url() + "Visit/return_order_assign";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder, obsvGen:obsvGen},
+                    data: {idOrder: idOrder, obsvGen: obsvGen},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
@@ -126,7 +146,7 @@
                              border-style: solid;
                              border-radius: 10px;">
                             <form class="form-horizontal" id="frmDocsRegVisitInit">                                
-                                
+
                             </form>
                             <form class="form-horizontal" id="frmRegVisitInit">                                
                                 <div class="form-group col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -135,11 +155,11 @@
                                 <div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                     <input type="text" id="obsvGen" name="obsvGen" class="form-control">
                                 </div>
-                                <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <a href="#" style="color: #00B1EC">REGISTRAR</a>                                    
+                                <div class="form-group col-xs-2 col-sm-2 col-md-2 col-lg-2" id="register">
+
                                 </div>
                                 <div class="form-group col-xs-1 col-sm-1 col-md-1 col-lg-1" id="return">
-                                    
+
                                 </div>
                             </form>
                         </div>                   

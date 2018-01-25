@@ -3,7 +3,7 @@
 /**
  * Description of Utils
  *
- * @author jhon
+ * @author jhonj
  */
 class Utils extends CI_Model {
 

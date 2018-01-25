@@ -59,7 +59,7 @@
             $(document).ready(function () {
                 if ($('#idOrder').val() === "") {
                     $('#idOrder').removeAttr("readonly");
-                }                            
+                }
                 var subtotal = $("#sumSubtotal").val();
                 $('#subtotal').val(subtotal);
                 var tax = $('#tax').val();
@@ -70,8 +70,8 @@
                 var total = subTotalDiscount + taxSubtotalDiscount;
                 $('#total').val(total);
                 var id = $(".view").attr("id");
-                $("#tr_"+id).click(function () {
-                    $("#accordian_"+id).slideUp();
+                $("#tr_" + id).click(function () {
+                    $("#accordian_" + id).slideUp();
                     //slide down the link list below the h3 clicked - only if its closed
                     if (!$(this).next().is(":visible"))
                     {
