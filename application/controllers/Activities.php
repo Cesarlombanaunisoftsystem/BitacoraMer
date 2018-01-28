@@ -22,7 +22,7 @@ class Activities extends CI_Controller {
             foreach ($services as $fila) {
                 $options .= '<option value="' . $fila->id . '">' . $fila->name_service . '</option>';
             }
-            echo '<option>Seleccione actividad</option>' . $options;
+            echo '<option>Seleccionar Servicio</option> ' . $options;
         }
     }
 

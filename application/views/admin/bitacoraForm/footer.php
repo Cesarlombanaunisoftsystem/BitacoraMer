@@ -22,17 +22,9 @@
         <input type="text" class="form-control bg-white" name="total" id="total" readonly/>
     </div>
     <div class="col-sm-1">
-        <div class="form-group">
-            <form enctype="multipart/form-data" id="frmPdfUser" action="<?= base_url('Orders/upload_attached_record') ?>" method="post">  
-                <label class="col-xs-4 control-label" for="file-order"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="dist/img/clip.png" style="width: 30px;margin-top: 10px;margin-right: 4px;"></div></label>   
-                <input type="file"  name="userfile" id="file-order" style="display: none" accept=".doc,.docx,.txt,.pdf" size="2048">
-                <input type="hidden" name="idOrder" value="<?php
-                if ($order) {
-                    echo $order->id;
-                }
-                ?>"/>      
-                <input type="submit" class="form-control" name="upload" value="Enviar"/>      
-            </form>
+        <div class="form-group">  
+            <label class="col-xs-4 control-label" for="file-order"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="dist/img/clip.png" style="width: 30px;margin-top: 10px;margin-right: 4px;"></div></label>   
+            <input type="file"  name="userfile" id="userfile" style="display: none" accept=".doc,.docx,.txt,.pdf" size="2048">
         </div>
     </div>
 </div>
@@ -41,7 +33,7 @@
         <label class="col-sm-4 color-blue">ÁREA DE ENVÍO SIGUIENTE PASO</label>    
         <div class="col-sm-4">
             <select class="form-control" name="idArea" id="idArea" required>
-                <option>Seleccione</option>
+                <option></option>
                 <?php foreach ($areas as $area) { ?>
                     <option value="<?= $area->id ?>"><?= $area->name_area ?></option>
                 <?php } ?>
@@ -85,6 +77,6 @@
 </div>
 <div class="col-xs-12">
     <div class="center block text-center">
-        <button type="button" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;" onclick="registerOrder();">Registrar</button>
+        <button type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
     </div>
-</div> 
+</div>

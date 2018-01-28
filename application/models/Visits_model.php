@@ -12,7 +12,7 @@ class Visits_model extends CI_Model {
             tbl_activities.name_activitie,tbl_services.name_service from tbl_orders join tbl_orders_details
             on tbl_orders.id = tbl_orders_details.idOrder join tbl_activities on 
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on
-            tbl_orders_details.idServices = tbl_services.id where tbl_orders.idArea=1 and (tbl_orders.idOrderState=2 or tbl_orders.idOrderState=3) group by tbl_orders.id';
+            tbl_orders_details.idServices = tbl_services.id where tbl_orders.idArea=1 and tbl_orders.idOrderState=2 group by tbl_orders.id';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

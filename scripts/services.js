@@ -13,7 +13,8 @@ $(document).ready(function () {
     $("#count").change(function () {
         var cant = $("#count").val();
         var vrUnit = $("#vrUnit").val();
-        var vrTotal = cant * vrUnit;
-        $("#vrTotal").val(vrTotal);
+        $("#vrTotal").val(cant * vrUnit);
+        var vrCostUnit = $("#cost").val();
+        $("#vrTotalCost").val(cant * vrCostUnit);
     });
 });

@@ -44,6 +44,14 @@ class Orders extends CI_Controller {
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/register-orders', $data);
     }
+    
+    public function get_details_order() {
+        $idOrder = $this->input->get('idOrder');
+        $data['details'] = $this->Orders_model->get_docs($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+        
+    }
 
     public function add_order() {
         $data = array(
@@ -68,8 +76,10 @@ class Orders extends CI_Controller {
             'idServices' => $this->input->post('idServices'),
             'site' => $this->input->post('site'),
             'price' => $this->input->post('price'),
+            'cost' => $this->input->post('cost'),
             'count' => $this->input->post('count'),
             'total' => $this->input->post('total'),
+            'total_cost' => $this->input->post('totalCost'),
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order_detail($data);
@@ -99,33 +109,34 @@ class Orders extends CI_Controller {
     public function register_order() {
         $id = $this->input->post('id');
         $data = array(
-            'uniqueCodeCentralCost' => $this->input->post('idCentCost'),
-            'idCoordinatorExt' => $this->input->post('idCoordExt'),
-            'idCoordinatorInt' => $this->input->post('idCoordInt'),
+            'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
+            'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
+            'idCoordinatorInt' => $this->input->post('idCoordinatorInt'),
             'idFormPay' => $this->input->post('idFormPay'),
             'subtotal' => $this->input->post('subtotal'),
             'discount' => $this->input->post('discount'),
-            'iva' => $this->input->post('tax'),
+            'iva' => $this->input->post('idTax'),
             'total' => $this->input->post('total'),
+            'totalCost' => $this->input->post('sumTotalCost'),
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => 2,
-            'observations' => $this->input->post('obsv'),
+            'observations' => $this->input->post('observations'),
             'idUser' => $this->session->userdata('id_usuario')
         );
         $dataDoc1 = array(
-            'idTypeDocument' => $this->input->post('doc1'),
+            'idTypeDocument' => $this->input->post('idTypeDocument1'),
             'idOrder' => $this->input->post('id')
         );
         $dataDoc2 = array(
-            'idTypeDocument' => $this->input->post('doc2'),
+            'idTypeDocument' => $this->input->post('idTypeDocument2'),
             'idOrder' => $this->input->post('id')
         );
         $dataDoc3 = array(
-            'idTypeDocument' => $this->input->post('doc3'),
+            'idTypeDocument' => $this->input->post('idTypeDocument3'),
             'idOrder' => $this->input->post('id')
         );
         $dataDoc4 = array(
-            'idTypeDocument' => $this->input->post('doc4'),
+            'idTypeDocument' => $this->input->post('idTypeDocument4'),
             'idOrder' => $this->input->post('id')
         );
         $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);

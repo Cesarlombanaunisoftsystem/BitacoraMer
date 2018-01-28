@@ -59,7 +59,7 @@
                                         foreach ($visits as $visit) {
                                             ?> 
                                             <tr onclick="docsVisitInit(<?= $visit->id ?>)" data-toggle="modal" data-target="#modalRegisterVisitInit">
-                                                <td><?= $visit->date ?></td>
+                                                <td><?= $visit->dateSave ?></td>
                                                 <td><?= $visit->uniquecode ?></td>
                                                 <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                 <td><?= $visit->name_activitie ?></td>

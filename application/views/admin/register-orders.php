@@ -28,7 +28,7 @@
                             </div>
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="binnacle">
-                                    <?php $this->load->view('admin/order-registration-binnacle') ?>
+                                    <form id="frmRegisterOrder" method="POST" action="javascript:registerOrder()"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="das">
 
@@ -68,16 +68,12 @@
                 var subTotalDiscount = subtotal - calcDiscount;
                 var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
                 var total = subTotalDiscount + taxSubtotalDiscount;
-                $('#total').val(total);
-                var id = $(".view").attr("id");
-                $("#tr_" + id).click(function () {
-                    $("#accordian_" + id).slideUp();
-                    //slide down the link list below the h3 clicked - only if its closed
-                    if (!$(this).next().is(":visible"))
-                    {
-                        $(this).next().slideDown();
-                    }
-                });
+                if (!total) {
+                    $('#total').val();
+                } else {
+                    $('#total').val(total);
+                }
+
             });
             function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
@@ -124,7 +120,9 @@
                 var cant = $("#count").val();
                 var site = $("#site").val();
                 var price = $("#vrUnit").val();
+                var cost = $("#cost").val();
                 var total = $("#vrTotal").val();
+                var totalCost = $("#vrTotalCost").val();
                 if (cant === "") {
                     alertify.error('Debes asignar una cantidad!');
                 } else {
@@ -133,7 +131,7 @@
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, count: cant, total: total},
+                        data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, cost: cost, totalCost: totalCost, count: cant, total: total},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
@@ -166,13 +164,14 @@
             }
 
             function registerOrder() {
-                var id = $("#id").val();
+                /*var id = $("#id").val();
                 var idOrder = $('#idOrder').val();
                 var idCentCost = $('#idCentCost').val();
                 var idCoordExt = $('#idCoordExt').val();
                 var idCoordInt = $('#idCoordInt').val();
                 var idFormPay = $('#idFormPay').val();
                 var subtotal = $('#subtotal').val();
+                var totalOrderCost = $("#sumTotalCost").val();
                 var discount = $('#discount').val();
                 var tax = $('#tax').val();
                 var total = $('#total').val();
@@ -181,12 +180,12 @@
                 var doc2 = $('#idTypeDocument2:checked').val();
                 var doc3 = $('#idTypeDocument3:checked').val();
                 var doc4 = $('#idTypeDocument4:checked').val();
-                var obsv = $('#obsv').val();
+                var obsv = $('#obsv').val();*/
                 url = get_base_url() + "Orders/register_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {id: id, idOrder: idOrder, idCentCost: idCentCost, idCoordExt: idCoordExt, idCoordInt: idCoordInt, idFormPay: idFormPay, subtotal: subtotal, discount: discount, tax: tax, total: total, idArea: idArea, doc1: doc1, doc2: doc2, doc3: doc3, doc4: doc4, obsv: obsv},
+                    data: $('#frmRegisterOrder').serialize(),
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
@@ -201,3 +200,4 @@
         </script>
     </body>
 </html>
+<!-- {id: id, idOrder: idOrder, idCentCost: idCentCost, idCoordExt: idCoordExt, idCoordInt: idCoordInt, idFormPay: idFormPay, subtotal: subtotal, discount: discount, tax: tax, total: total, totalOrderCost: totalOrderCost, idArea: idArea, doc1: doc1, doc2: doc2, doc3: doc3, doc4: doc4, obsv: obsv},-->

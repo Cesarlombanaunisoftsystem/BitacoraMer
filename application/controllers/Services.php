@@ -18,7 +18,8 @@ class Services extends CI_Controller {
         if ($this->input->post('idServices')) {
             $service = $this->input->post('idServices');
             $price = $this->Services_model->get_service($service);
-            $input = '<input type="number" class="form-control" name="price" id="vrUnit" value="' . $price->price . '" readonly required/>';
+            $input = '<input type="number" class="form-control" name="price" id="vrUnit" value="' . $price->price . '" readonly required/>'
+                    . '<input type="hidden" name="cost" id="cost" value="' . $price->cost . '"/>';
             echo $input;
         }
     }

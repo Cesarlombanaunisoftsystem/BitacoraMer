@@ -14,7 +14,7 @@
 class Audits_model extends CI_Model {
     
     public function get_pl1() {
-        $sql = 'select tbl_orders.*,max(tbl_orders_details.idActivities),tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,sum(tbl_services.cost) as total_cost,sum(tbl_services.cost)-tbl_orders.total as util_percent,
+        $sql = 'select tbl_orders.*,max(tbl_orders_details.idActivities),tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,
             tbl_activities.name_activitie,tbl_services.name_service,tbl_users.name_user from tbl_orders join tbl_orders_details
             on tbl_orders.id = tbl_orders_details.idOrder join tbl_activities on 
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on
