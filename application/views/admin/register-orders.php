@@ -28,7 +28,7 @@
                             </div>
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="binnacle">
-                                    <form id="frmRegisterOrder" method="POST" action="javascript:registerOrder()"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
+                                    <form id="frmRegisterOrder" method="POST" enctype="multipart/form-data"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="das">
 
@@ -56,7 +56,8 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(function () {
+                
                 if ($('#idOrder').val() === "") {
                     $('#idOrder').removeAttr("readonly");
                 }
@@ -73,7 +74,33 @@
                 } else {
                     $('#total').val(total);
                 }
-
+                
+                $("#frmRegisterOrder").on("submit", function (e) {
+                    e.preventDefault();
+                    var f = $(this);
+                    var formData = new FormData(document.getElementById("frmRegisterOrder"));
+                    formData.append("dato", "valor");
+                    url = get_base_url() + "Orders/register_order";
+                    //formData.append(f.attr("name"), $(this)[0].files[0]);
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        dataType: "html",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    })
+                            .done(function (res) {
+                                if (res === "error") {
+                                    alertify.error('Error en BBDD');
+                                }
+                                if (res === "ok") {
+                                    alertify.success('Orden completa agregada y pasada a siguiente area exitosamente');
+                                    location.reload();
+                                }
+                            });
+                });
             });
             function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
@@ -163,29 +190,16 @@
                 });
             }
 
-            function registerOrder() {
-                /*var id = $("#id").val();
-                var idOrder = $('#idOrder').val();
-                var idCentCost = $('#idCentCost').val();
-                var idCoordExt = $('#idCoordExt').val();
-                var idCoordInt = $('#idCoordInt').val();
-                var idFormPay = $('#idFormPay').val();
-                var subtotal = $('#subtotal').val();
-                var totalOrderCost = $("#sumTotalCost").val();
-                var discount = $('#discount').val();
-                var tax = $('#tax').val();
-                var total = $('#total').val();
-                var idArea = $('#idArea').val();
-                var doc1 = $('#idTypeDocument1:checked').val();
-                var doc2 = $('#idTypeDocument2:checked').val();
-                var doc3 = $('#idTypeDocument3:checked').val();
-                var doc4 = $('#idTypeDocument4:checked').val();
-                var obsv = $('#obsv').val();*/
+            /*function registerOrder() {
                 url = get_base_url() + "Orders/register_order";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: $('#frmRegisterOrder').serialize(),
+                    dataType: "html",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
@@ -196,8 +210,7 @@
                         }
                     }
                 });
-            }
+            }*/
         </script>
     </body>
 </html>
-<!-- {id: id, idOrder: idOrder, idCentCost: idCentCost, idCoordExt: idCoordExt, idCoordInt: idCoordInt, idFormPay: idFormPay, subtotal: subtotal, discount: discount, tax: tax, total: total, totalOrderCost: totalOrderCost, idArea: idArea, doc1: doc1, doc2: doc2, doc3: doc3, doc4: doc4, obsv: obsv},-->

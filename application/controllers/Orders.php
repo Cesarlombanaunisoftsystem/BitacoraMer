@@ -44,13 +44,12 @@ class Orders extends CI_Controller {
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/register-orders', $data);
     }
-    
+
     public function get_details_order() {
         $idOrder = $this->input->get('idOrder');
         $data['details'] = $this->Orders_model->get_docs($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
-        
     }
 
     public function add_order() {
@@ -108,48 +107,64 @@ class Orders extends CI_Controller {
 
     public function register_order() {
         $id = $this->input->post('id');
-        $data = array(
-            'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
-            'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
-            'idCoordinatorInt' => $this->input->post('idCoordinatorInt'),
-            'idFormPay' => $this->input->post('idFormPay'),
-            'subtotal' => $this->input->post('subtotal'),
-            'discount' => $this->input->post('discount'),
-            'iva' => $this->input->post('idTax'),
-            'total' => $this->input->post('total'),
-            'totalCost' => $this->input->post('sumTotalCost'),
-            'idArea' => $this->input->post('idArea'),
-            'idOrderState' => 2,
-            'observations' => $this->input->post('observations'),
-            'idUser' => $this->session->userdata('id_usuario')
-        );
-        $dataDoc1 = array(
-            'idTypeDocument' => $this->input->post('idTypeDocument1'),
-            'idOrder' => $this->input->post('id')
-        );
-        $dataDoc2 = array(
-            'idTypeDocument' => $this->input->post('idTypeDocument2'),
-            'idOrder' => $this->input->post('id')
-        );
-        $dataDoc3 = array(
-            'idTypeDocument' => $this->input->post('idTypeDocument3'),
-            'idOrder' => $this->input->post('id')
-        );
-        $dataDoc4 = array(
-            'idTypeDocument' => $this->input->post('idTypeDocument4'),
-            'idOrder' => $this->input->post('id')
-        );
-        $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
-        if ($res == true) {
-            echo 'ok';
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+
+            //obtenemos el archivo a subir
+            $file = $_FILES['userfile']['name'];
+            //comprobamos si existe un directorio para subir el archivo
+            //si no es así, lo creamos
+            if (!is_dir("./uploads/"))
+                mkdir("./uploads/", 0777);
+            //comprobamos si el archivo ha subido
+            if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
+                $data = array(
+                    'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
+                    'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
+                    'idCoordinatorInt' => $this->input->post('idCoordinatorInt'),
+                    'idFormPay' => $this->input->post('idFormPay'),
+                    'subtotal' => $this->input->post('subtotal'),
+                    'discount' => $this->input->post('discount'),
+                    'iva' => $this->input->post('idTax'),
+                    'total' => $this->input->post('total'),
+                    'totalCost' => $this->input->post('sumTotalCost'),
+                    'idArea' => $this->input->post('idArea'),
+                    'idOrderState' => 2,
+                    'observations' => $this->input->post('observations'),
+                    'idUser' => $this->session->userdata('id_usuario')
+                );
+                $dataDoc1 = array(
+                    'idTypeDocument' => $this->input->post('idTypeDocument1'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc2 = array(
+                    'idTypeDocument' => $this->input->post('idTypeDocument2'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc3 = array(
+                    'idTypeDocument' => $this->input->post('idTypeDocument3'),
+                    'idOrder' => $this->input->post('id')
+                );
+                $dataDoc4 = array(
+                    'idTypeDocument' => $this->input->post('idTypeDocument4'),
+                    'idOrder' => $this->input->post('id')
+                );
+                sleep(3); //retrasamos la petición 3 segundos
+                $this->Orders_model->upload_pdf($id, $file);
+                $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
+                if ($res === true) {
+                    echo 'ok';
+                } else {
+                    echo 'error';
+                }
+            }
         } else {
-            echo 'error';
+            throw new Exception("Error Processing Request", 1);
         }
     }
 
     /* Funcion para cargar adjunto via ajax */
 
-    public function upload_attached_record() {    
+    public function upload_attached_record() {
         if ($this->input->post('upload')) {
             $idOrder = $this->input->post('idOrder');
             $config['upload_path'] = './uploads/';

@@ -23,7 +23,7 @@
     </div>
     <div class="col-sm-1">
         <div class="form-group">  
-            <label class="col-xs-4 control-label" for="file-order"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="dist/img/clip.png" style="width: 30px;margin-top: 10px;margin-right: 4px;"></div></label>   
+            <label class="col-xs-4 control-label" for="userfile"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="dist/img/clip.png" style="width: 30px;margin-top: 10px;margin-right: 4px;"></div></label>   
             <input type="file"  name="userfile" id="userfile" style="display: none" accept=".doc,.docx,.txt,.pdf" size="2048">
         </div>
     </div>

@@ -123,6 +123,14 @@ class Orders_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function upload_pdf($id,$imagen) {
+            $data = array(
+                'picture' => $imagen
+            );
+            $this->db->where('id', $id);
+            $this->db->update('tbl_orders', $data);
+    }
 
     public function get_docs($idOrder) {
         $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type');

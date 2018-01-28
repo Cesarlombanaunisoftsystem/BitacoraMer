@@ -62,7 +62,7 @@
                                             ?>                                            
                                             <tr onclick="details(<?= $row->id ?>)">
                                                 <td><?= $row->dateSave ?></td>
-                                        <td><?= $row->uniquecode ?></td>
+                                                <td><a href="#"><?= $row->uniquecode ?><img id="pdforder" src="<?= base_url('uploads/').$row->picture?>"></a></td>
                                         <td><?= $row->uniqueCodeCentralCost ?></td>
                                         <td><?= $row->name_activitie ?></td>
                                         <td><?= $row->count ?></td>
