@@ -47,12 +47,19 @@ class Orders extends CI_Controller {
 
     public function get_details_order() {
         $idOrder = $this->input->get('idOrder');
-        $data['details'] = $this->Orders_model->get_docs($idOrder);
+        $data['docs'] = $this->Orders_model->get_docs($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
-    public function add_order() {
+    public function get_order_materials() {
+        $idOrder = $this->input->get('idOrder');
+        $data['materials'] = $this->Orders_model->get_materials($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
+    function add_order() {
         $data = array(
             'uniquecode' => $this->input->post('order'),
             'idUser' => $this->session->userdata('id_usuario'),
@@ -61,7 +68,7 @@ class Orders extends CI_Controller {
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order($data);
-        if ($res == true) {
+        if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';
@@ -134,19 +141,23 @@ class Orders extends CI_Controller {
                 );
                 $dataDoc1 = array(
                     'idTypeDocument' => $this->input->post('idTypeDocument1'),
-                    'idOrder' => $this->input->post('id')
+                    'idOrder' => $this->input->post('id'),
+                    'dateSave' => date('Y-m-d')
                 );
                 $dataDoc2 = array(
                     'idTypeDocument' => $this->input->post('idTypeDocument2'),
-                    'idOrder' => $this->input->post('id')
+                    'idOrder' => $this->input->post('id'),
+                    'dateSave' => date('Y-m-d')
                 );
                 $dataDoc3 = array(
                     'idTypeDocument' => $this->input->post('idTypeDocument3'),
-                    'idOrder' => $this->input->post('id')
+                    'idOrder' => $this->input->post('id'),
+                    'dateSave' => date('Y-m-d')
                 );
                 $dataDoc4 = array(
                     'idTypeDocument' => $this->input->post('idTypeDocument4'),
-                    'idOrder' => $this->input->post('id')
+                    'idOrder' => $this->input->post('id'),
+                    'dateSave' => date('Y-m-d')
                 );
                 sleep(3); //retrasamos la petición 3 segundos
                 $this->Orders_model->upload_pdf($id, $file);

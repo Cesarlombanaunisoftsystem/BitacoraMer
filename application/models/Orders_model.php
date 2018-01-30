@@ -133,15 +133,32 @@ class Orders_model extends CI_Model {
     }
 
     public function get_docs($idOrder) {
-        $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type');
+        $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type,tbl_orders_details.dateSave as dateDetail');
         $this->db->from('tbl_orders_documents');
         $this->db->join('tbl_type_documents', 'tbl_orders_documents.idTypeDocument=tbl_type_documents.id');
+        $this->db->join('tbl_orders_details', 'tbl_orders_documents.idOrder=tbl_orders_details.idOrder');
         $this->db->where('tbl_orders_documents.idOrder', $idOrder);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
             return FALSE;
+        }
+    }
+    
+    public function get_materials($idOrder) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.idActivities', 5);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
         }
     }
 

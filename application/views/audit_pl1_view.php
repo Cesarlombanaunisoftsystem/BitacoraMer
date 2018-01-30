@@ -60,28 +60,26 @@
                                     if ($pl_1) {
                                         foreach ($pl_1 as $row) {
                                             ?>                                            
-                                            <tr onclick="details(<?= $row->id ?>)">
+                                            <tr onclick="details(<?= $row->id ?>)" data-toggle="modal" data-target="#modalPl1">
                                                 <td><?= $row->dateSave ?></td>
-                                                <td><a href="#"><?= $row->uniquecode ?><img id="pdforder" src="<?= base_url('uploads/').$row->picture?>"></a></td>
-                                        <td><?= $row->uniqueCodeCentralCost ?></td>
-                                        <td><?= $row->name_activitie ?></td>
-                                        <td><?= $row->count ?></td>
-                                        <td><?= $row->site ?></td>
-                                        <td><?= $row->name_user ?></td>                                                
-                                        <td><?= $row->totalCost ?></td>
-                                        <td><?php
-                                            $dif = $row->totalCost - $row->total;
-                                            $util = ($dif * 100) / $row->total;
-                                            echo $util . ' %';
-                                            ?></td>
-                                        <td><a href="#"><i class="fa fa-check-square" style="color: green"></i></a> <a href="#"><i class="fa fa-window-close" aria-hidden="true" style="color: red"></i></a></td>
-                                                                                        
-                                            <tr id="details_<?= $row->id ?>"></tr>
-                                        </tr>
-                                        <?php
+                                                <td><a href="#"><?= $row->uniquecode ?><img id="pdforder" src="<?= base_url('uploads/') . $row->picture ?>"></a></td>
+                                                <td><?= $row->uniqueCodeCentralCost ?></td>
+                                                <td><?= $row->name_activitie ?></td>
+                                                <td><?= $row->count ?></td>
+                                                <td><?= $row->site ?></td>
+                                                <td><?= $row->name_user ?></td>                                                
+                                                <td><?= $row->totalCost ?></td>
+                                                <td><?php
+                                                    $dif = $row->totalCost - $row->total;
+                                                    $util = ($dif * 100) / $row->total;
+                                                    echo $util . ' %';
+                                                    ?></td>
+                                                <td><a href="#"><i class="fa fa-check-square" style="color: green"></i></a> <a href="#"><i class="fa fa-window-close" aria-hidden="true" style="color: red"></i></a></td>
+                                            </tr>
+                                            <?php
+                                        }
                                     }
-                                }
-                                ?>                                                                         
+                                    ?>                                                                         
                                 </tbody>
                             </table>
                         </div>
@@ -97,21 +95,22 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             function details(idOrder) {
-                $('#details_' + idOrder).empty();
+                $('#frmPl1').empty();
                 url = get_base_url() + "Orders/get_details_order?jsoncallback=?";
-                var contenido = $('#details_' + idOrder);
-                if (contenido.css("display") === "none") { //open
-                    $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                        $.each(respuestaServer["details"], function (i, details) {
-                            $('#details_' + idOrder).append('<tr><td>FECHA REGISTRO:</td><td>' + details.dateSave + '</td><td><a href="#">' + details.name_type + '</a></td><td>Solicitud de Materiales</td></tr>');
-                        });
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["docs"], function (i, docs) {
+                        $('#frmPl1').append('<tr><td>FECHA REGISTRO:</td><td>' + docs.dateSave + '</td><td><a href="#"><u>' + docs.name_type + '</u></a></td><td onclick="materials('+docs.idOrder+')" data-toggle="modal" data-target="#modalMaterials"><a href="#"><u>SOLICITUD DE MATERIALES</u></a></td><td><u>OBSERVACIONES GENERALES</u></td></tr>');
                     });
-                    contenido.slideDown(500);
-                    $(this).addClass("open");
-                } else { //close		
-                    contenido.slideUp(500);
-                    $(this).removeClass("open");
-                }
+                });
+            }
+            function materials(idOrder) {
+                $('#bodyMaterials').empty();
+                url = get_base_url() + "Orders/get_order_materials?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["materials"], function (i, materials) {
+                        $('#bodyMaterials').append('<tr><td>' + materials.description + '</td><td>' + materials.count + '</td><td>' + materials.observations + '</td></tr>');
+                    });
+                });
             }
             function assign(idOrder) {
                 var idTech = $("#idTech_" + idOrder).val();
@@ -154,5 +153,46 @@
                 });
             }
         </script>
+        <!-- Modal Detalles-->
+        <div id="modalPl1" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 80%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row" style="text-align: center; margin-right: 5px; margin-left: 5px; padding: 8px; border-width: 1px; border-color: black;
+                             border-style: solid;
+                             border-radius: 10px;">
+                            <form class="form-horizontal">
+                                <table  id="frmPl1" class="table table-responsive"></table>                              
+                            </form>
+                        </div>                   
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Materiales-->
+        <div id="modalMaterials" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 80%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <form class="form-horizontal">
+                                <table class="table table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th style="background-color: blue; color: white">Descripción</th>
+                                        <th style="background-color: blue; color: white">Cantidad</th>
+                                        <th style="background-color: blue; color: white">Observaciones</th>
+                                    </tr>                                   
+                                </thead>
+                                <tbody  id="bodyMaterials"></tbody>
+                                </table>                                
+                            </form>
+                        </div>                   
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
