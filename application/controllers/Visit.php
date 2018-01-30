@@ -51,7 +51,7 @@ class Visit extends CI_Controller {
             'date' => $this->input->post('date'),
             'idArea' => 1,
             'idOrderState' => 3);
-        $res = $this->Visits_model->assign_order_technic($idOrder, $data);
+        $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             $technical = $this->Users_model->get_user_xid($idUser);
             $content = $this->Orders_model->get_order_by_id_email($idOrder);
@@ -67,7 +67,7 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => NULL,
             'idOrderState' => 1);
-        $res = $this->Visits_model->return_order_register($idOrder, $data);
+        $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -82,7 +82,7 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 2,
             'observations' => $obsv);
-        $res = $this->Visits_model->return_order_register($idOrder, $data);
+        $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -97,7 +97,7 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 4,
             'observations' => $obsv);
-        $res = $this->Visits_model->register_order_validate($idOrder, $data);
+        $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {

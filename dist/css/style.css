@@ -52,16 +52,4 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 input[type=number] { -moz-appearance:textfield; }
-a {
-    position: relative;
-}
-#pdforder {
-  position: absolute;
-  top: 100%;
-  left: 100%;
-  display: none;
-}
- 
-a:hover #pdforder {
-  display: block;
-}
+

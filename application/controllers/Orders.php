@@ -54,7 +54,15 @@ class Orders extends CI_Controller {
 
     public function get_order_materials() {
         $idOrder = $this->input->get('idOrder');
-        $data['materials'] = $this->Orders_model->get_materials($idOrder);
+        $date = $this->input->get('date');
+        $data['materials'] = $this->Orders_model->get_materials($idOrder,$date);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_observations_detail() {
+        $id = $this->input->get('id');
+        $data['obsv'] = $this->Orders_model->get_observations_detail($id);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
