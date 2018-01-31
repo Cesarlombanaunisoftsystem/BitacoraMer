@@ -28,8 +28,7 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Design/register') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Design/proccess') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -138,14 +137,13 @@
                         '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>'+
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>'+
                         '<td>OBSERVACIONES GENERALES</td>'+
-                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>'+
+                        '<td><a class="disable design' + d + '">DISEÑO</a></td>'+
                     '</tr>'+
                     '<tr>'+
-                        '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>'+
-                        '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>'+
                         '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>'+
                         '<td><input type="hidden" value="' + d + '" name="idOrder"></input>'+
-                        '<button type="submit" class="blue bold">REGISTRAR DISEÑO</button></td>'+
+                        '<button type="submit" class="blue bold">APROBAR DISEÑO</button></td>'+
+                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR DISEÑO</a></td>'+
                     '</tr>'+
                 '</table></form>';
             }
@@ -177,7 +175,7 @@
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder, state: 2},
+                    data: {idOrder: idOrder, state: 7},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
@@ -205,6 +203,11 @@
                             $(".tss" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
+                        }
+                        if(doc.idTypeDocument == "6"){
+                            $(".design" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".design" + idOrder).attr("target", "_blank");
+                            $(".design" + idOrder).removeClass("disable");
                         }
                         if(doc.idTypeDocument == "1"){
                             var html = '<input type="radio" name="radio-btn" id="img-'+pos+'" '+(pos == 1 ? 'checked' : '')+' />';

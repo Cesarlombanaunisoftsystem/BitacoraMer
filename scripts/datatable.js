@@ -1,5 +1,7 @@
 var dt;
 var order_id;
+var galery = false;
+var openRows = new Array();
 $(document).ready(function () {
     dt = $('#data-table').DataTable({
         language: {
@@ -28,5 +30,20 @@ $(document).ready(function () {
         }
     });
 });
+function closeOpenedRows(table, selectedRow) {
+    $.each(openRows, function (index, openRow) {
+        // not the selected row!
+        if ($.data(selectedRow) !== $.data(openRow)) {
+            var rowToCollapse = table.row(openRow);
+            rowToCollapse.child.hide();
+            openRow.removeClass('shown');
+            // replace icon to expand
+            $(openRow).find('td.details-control').html('<i class="fa fa-plus-square-o"></i>');
+            // remove from list
+            var index = $.inArray(selectedRow, openRows);
+            openRows.splice(index, 1);
+        }
+    });
+}
 
 

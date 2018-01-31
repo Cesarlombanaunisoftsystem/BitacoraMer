@@ -44,12 +44,26 @@ class Design extends CI_Controller {
         $this->load->view('design_list_view', $data);
     }
 
+    public function audit() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Auditoria de Diseño';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['orders'] = $this->Orders_model->get_orders_design(12);
+        $data['tecs'] = $this->Users_model->get_tecs();
+        $this->load->view('design_audit_view', $data);
+    }
+
     public function return_order_design() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idArea' => NULL,
-            'idOrderState' => 2);
-        $res = $this->Visits_model->return_order_register($idOrder, $data);
+            'idArea' => 2,
+            'idOrderState' => $this->input->post('state'));
+        $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -82,6 +96,14 @@ class Design extends CI_Controller {
             redirect(base_url() . 'Design/register');
             echo "¡Posible ataque de subida de ficheros!\n";
         }
+    }
+
+    function approved_order_design() {
+        $data = array(
+            'idOrderState' => '12'
+        );
+        $res = $this->Orders_model->update_order($_POST['idOrder'], $data);
+        redirect(base_url() . 'Design/audit?success');
     }
 
     function generateRandomString($length = 10) {
