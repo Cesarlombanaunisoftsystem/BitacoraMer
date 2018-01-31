@@ -101,19 +101,21 @@
                     $.each(respuestaServer["docs"], function (i, docs) {
                         $('#frmPl1').append('<tr><td>FECHA REGISTRO:</td><td>' + docs.dateSave +
                                 '</td><td><a href="#"><u>' + docs.name_type +
-                                '</u></a></td><td onclick="materials(' + docs.idOrder + ',' + String(docs.dateSave) + ')" data-toggle="modal" data-target="#modalMaterials"><a href="#"><u>SOLICITUD DE MATERIALES</u></a></td><td onclick="obsv(' + docs.id + ')" data-toggle="modal" data-target="#modalObsv"><a href="#"><u>OBSERVACIONES GENERALES</u></a></td></tr>');
+                                '</u></a></td><td onclick="materials(' + docs.idOrder + ')" data-toggle="modal" data-target="#modalMaterials"><a href="#"><u>SOLICITUD DE MATERIALES</u></a></td><td onclick="obsv(' + docs.id + ')" data-toggle="modal" data-target="#modalObsv"><a href="#"><u>OBSERVACIONES</u></a></td></tr>');
                     });
                 });
             }
-            function materials(idOrder, date) {
-                $('#bodyMaterials').empty('');
+            function materials(idOrder) {
+                $('#bodyMaterials').empty();
                 url = get_base_url() + "Orders/get_order_materials?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, date: date}).done(function (respuestaServer) {
+                url2 = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
-                        $('#bodyMaterials').append('<tr><td>' + materials.name_service + '</td><td>' + materials.count + '</td><td>' + materials.observation + '</td></tr>');
-                    });
-                    $('#bodyMaterials').append('<tr><td>Observaciones Generales de pedido</td></tr>');
-                    $('#bodyMaterials').append('<tr><td colspan="3"><textarea class="form-control"></textarea></td></tr>');
+                        $('#bodyMaterials').append('<tr><td>' + materials.name_service + '</td><td>' + materials.count + '</td><td>' + materials.observation + '</td></tr>');                                               
+                    });           
+                });
+                $.getJSON(url2, {idOrder: idOrder}).done(function (res) {
+                        $('#bodyMaterials').append('<tr><td>Observaciones Generales de pedido</td></tr><tr><td colspan="3"><textarea class="form-control">' + res.observation.observations + '</textarea></td></tr>');
                 });
             }
 
@@ -147,6 +149,7 @@
                     alertify.error('Acción cancelada');
                 }).set({labels: {ok: 'Aceptar', cancel: 'Cancelar'}, padding: false});
             }
+            
             function return_order(idOrder) {
                 alertify.confirm('En realidad desea devolver la ordén?', function () {
                     alertify.success('Accepted');

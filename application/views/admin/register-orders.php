@@ -77,9 +77,16 @@
 
                 $("#frmRegisterOrder").on("submit", function (e) {
                     e.preventDefault();
-                    var f = $(this);
+                    
                     var formData = new FormData(document.getElementById("frmRegisterOrder"));
-                    formData.append("dato", "valor");
+                    
+                    var id = $('#id').val();
+                url = get_base_url() + "Orders/get_details?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    
+                    
+                })
+
                     url = get_base_url() + "Orders/register_order";
                     $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
@@ -103,6 +110,7 @@
                             });
                 });
             });
+            
             function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
                 var tax = $('#tax').val();
@@ -124,19 +132,27 @@
 
             function generateOrder() {
                 var order = $('#idOrder').val();
-                url = get_base_url() + "Orders/add_order";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {order: order},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Erro en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Orden generada, puede continuar');
-                            location.reload();
-                        }
+                url = get_base_url() + "Orders/get_order?jsoncallback=?";
+                $.getJSON(url, {order: order}).done(function (res) {
+                    if (res.res === true) {
+                        alertify.error('El número de ordén digitado ya existe.');
+                        $("#idOrder").focus();
+                    } else {
+                        url = get_base_url() + "Orders/add_order";
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: {order: order},
+                            success: function (resp) {
+                                if (resp === "error") {
+                                    alertify.error('Erro en BBDD');
+                                }
+                                if (resp === "ok") {
+                                    alertify.success('Orden generada, puede continuar');
+                                    location.reload();
+                                }
+                            }
+                        });
                     }
                 });
             }

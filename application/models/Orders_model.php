@@ -15,6 +15,30 @@ class Orders_model extends CI_Model {
             return false;
         }
     }
+    
+    public function get_order($order) {
+        $this->db->select('uniquecode');
+        $this->db->from('tbl_orders');
+        $this->db->where('uniquecode', $order);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function get_observation_order($id) {
+        $this->db->select('observations');
+        $this->db->from('tbl_orders');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 
     public function get_order_by_id_email($idOrder) {
         $sql = 'SELECT tbl_orders.*,max(tbl_orders_details.idActivities),tbl_orders_details.idServices,tbl_orders_details.site,
@@ -145,14 +169,12 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_materials($idOrder, $date) {
+    public function get_materials($idOrder) {
         $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders_details');
-        $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.dateSave', $date);
         $this->db->where('tbl_orders_details.idActivities', 5);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {

@@ -44,6 +44,20 @@ class Orders extends CI_Controller {
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/register-orders', $data);
     }
+    
+    public function get_order() {
+        $order = $this->input->get('order');
+        $data['res'] = $this->Orders_model->get_order($order);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_details() {
+        $id = $this->input->get('id');
+        $data['res'] = $this->Orders_model->get_order_details($id);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function get_details_order() {
         $idOrder = $this->input->get('idOrder');
@@ -54,8 +68,14 @@ class Orders extends CI_Controller {
 
     public function get_order_materials() {
         $idOrder = $this->input->get('idOrder');
-        $date = $this->input->get('date');
-        $data['materials'] = $this->Orders_model->get_materials($idOrder,$date);
+        $data['materials'] = $this->Orders_model->get_materials($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_observation_order() {
+        $idOrder = $this->input->get('idOrder');
+        $data['observation'] = $this->Orders_model->get_observation_order($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -180,34 +200,4 @@ class Orders extends CI_Controller {
             throw new Exception("Error Processing Request", 1);
         }
     }
-
-    /* Funcion para cargar adjunto via ajax */
-
-    public function upload_attached_record() {
-        if ($this->input->post('upload')) {
-            $idOrder = $this->input->post('idOrder');
-            $config['upload_path'] = './uploads/';
-            $config['allowed_types'] = '*';
-            $config['max_size'] = '2048';
-            $config['max_width'] = '1600';
-            $config['max_height'] = '1600';
-
-            $this->load->library('upload', $config);
-            if (!$this->upload->do_upload()) {
-                header("Location:" . $_SERVER['HTTP_REFERER']);
-            } else {
-                //EN OTRO CASO SUBIMOS LA IMAGEN, CREAMOS LA MINIATURA Y HACEMOS
-                //ENVÍAMOS LOS DATOS AL MODELO PARA HACER LA INSERCIÓN
-                $file_info = $this->upload->data();
-                //USAMOS LA FUNCIÓN create_thumbnail Y LE PASAMOS EL NOMBRE DE LA IMAGEN,
-                //ASÍ YA TENEMOS LA IMAGEN REDIMENSIONADA
-
-                $arr = array('upload_data' => $this->upload->data());
-                $file = $file_info['file_name'];
-                $this->Orders_model->upload_attached_record($idOrder, $file);
-                header("Location:" . $_SERVER['HTTP_REFERER']);
-            }
-        }
-    }
-
 }
