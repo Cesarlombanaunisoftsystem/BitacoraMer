@@ -1,5 +1,7 @@
+var dt;
+var order_id;
 $(document).ready(function () {
-    $('#data-table').DataTable({
+    dt = $('#data-table').DataTable({
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",

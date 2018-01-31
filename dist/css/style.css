@@ -65,3 +65,19 @@ a {
 a:hover #pdforder {
   display: block;
 }
+
+.tbl-detail tbody tr td{
+    font-size: 10px;
+}
+.blue{
+    color: rgb(0, 176, 240)
+}
+.orange{
+    color: orange;
+}
+.bold{
+    font-weight: bold;
+}
+.file-input{
+    visibility: hidden;
+}
