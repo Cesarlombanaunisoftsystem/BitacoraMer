@@ -33,7 +33,6 @@
         <label class="col-sm-4 color-blue">ÁREA DE ENVÍO SIGUIENTE PASO</label>    
         <div class="col-sm-4">
             <select class="form-control" name="idArea" id="idArea" required>
-                <option></option>
                 <?php foreach ($areas as $area) { ?>
                     <option value="<?= $area->id ?>"><?= $area->name_area ?></option>
                 <?php } ?>

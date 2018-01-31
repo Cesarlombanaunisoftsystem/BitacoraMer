@@ -109,6 +109,19 @@ class Orders_model extends CI_Model {
             return false;
         }
     }
+    
+    public function get_details_service($id,$idService) {
+        $this->db->select('tbl_orders_details.idServices');
+        $this->db->from('tbl_orders_details');
+        $this->db->where('tbl_orders_details.idOrder', $id);
+        $this->db->where('tbl_orders_details.idServices', $idService);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function details_orders_tray($id) {
         $this->db->select('tbl_orders_details.*,tbl_orders.idArea,tbl_activities.name_activitie,tbl_services.name_service');

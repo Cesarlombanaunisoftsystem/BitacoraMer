@@ -77,40 +77,64 @@
 
                 $("#frmRegisterOrder").on("submit", function (e) {
                     e.preventDefault();
-                    
-                    var formData = new FormData(document.getElementById("frmRegisterOrder"));
-                    
-                    var id = $('#id').val();
-                url = get_base_url() + "Orders/get_details?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
-                    
-                    
-                })
 
-                    url = get_base_url() + "Orders/register_order";
-                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                    $.ajax({
-                        url: url,
-                        type: "post",
-                        dataType: "html",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    })
-                            .done(function (res) {
-                                $('#spinner').html("");
-                                if (res === "error") {
-                                    alertify.error('Error en BBDD');
-                                }
-                                if (res === "ok") {
-                                    alertify.success('Orden completa agregada y pasada a siguiente area exitosamente');
-                                    location.reload();
-                                }
-                            });
+                    var formData = new FormData(document.getElementById("frmRegisterOrder"));
+
+                    var id = $('#id').val();
+                    url = get_base_url() + "Orders/get_details?jsoncallback=?";
+                    $.getJSON(url, {id: id}).done(function (res) {
+                        if (res.res !== false) {
+                            url = get_base_url() + "Orders/register_order";
+                            $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                            $.ajax({
+                                url: url,
+                                type: "post",
+                                dataType: "html",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false
+                            })
+                                    .done(function (res) {
+                                        $('#spinner').html("");
+                                        if (res === "error") {
+                                            alertify.error('Error en BBDD');
+                                        }
+                                        if (res === "ok") {
+                                            alertify.success('Orden completa agregada y pasada a siguiente area exitosamente');
+                                            location.reload();
+                                        }
+                                    });
+                        } else {
+                            alertify.error('Debes incluir al menos una actividad.');
+                        }
+                    });
                 });
             });
-            
+
+            $('#idFormPay').bind("change keyup", function (e)
+            {
+                e.preventDefault();
+                var id = $('#id').val();
+                var idCoorExt = $("#idCoordExt").val();
+                var idCoorInt = $("#idCoordInt").val();
+                var idPay = $("#idFormPay").val();
+                url = get_base_url() + "Orders/update_head_order";
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    data: {id: id, idCoorExt: idCoorExt, idCoorInt: idCoorInt, idPay: idPay},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Erro en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Cabecera generada exitosamente.');
+                        }
+                    }
+                });
+            });
+
             function discountOrder() {
                 var subtotal = $("#sumSubtotal").val();
                 var tax = $('#tax').val();
@@ -158,6 +182,7 @@
             }
 
             function addDetail() {
+                var id = $('#id').val();
                 var idOrder = $("#id").val();
                 var idActivities = $("#idActivities").val();
                 var idServices = $("#idServices").val();
@@ -167,25 +192,31 @@
                 var cost = $("#cost").val();
                 var total = $("#vrTotal").val();
                 var totalCost = $("#vrTotalCost").val();
-                if (cant === "") {
-                    alertify.error('Debes asignar una cantidad!');
+                if (cant === "" || site === "") {
+                    alertify.error('Debes asignar una cantidad númerica correcta y un sitio!');
                 } else {
-
-                    url = get_base_url() + "Orders/add_order_detail";
-                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, cost: cost, totalCost: totalCost, count: cant, total: total},
-                        success: function (resp) {
-                            $('#spinner').html("");
-                            if (resp === "error") {
-                                alertify.error('Error en BBDD');
-                            }
-                            if (resp === "ok") {
-                                alertify.success('Detalle agregado exitosamente');
-                                location.reload();
-                            }
+                    url = get_base_url() + "Orders/get_details_service?jsoncallback=?";
+                    $.getJSON(url, {id: id, idServices: idServices}).done(function (res) {
+                        if (res.res === true) {
+                            alertify.error('Esta actividad ya se encuentra registrada!');
+                        } else {
+                            url = get_base_url() + "Orders/add_order_detail";
+                            $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, cost: cost, totalCost: totalCost, count: cant, total: total},
+                                success: function (resp) {
+                                    $('#spinner').html("");
+                                    if (resp === "error") {
+                                        alertify.error('Error en BBDD');
+                                    }
+                                    if (resp === "ok") {
+                                        alertify.success('Detalle agregado exitosamente');
+                                        location.reload();
+                                    }
+                                }
+                            });
                         }
                     });
                 }

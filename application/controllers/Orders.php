@@ -58,6 +58,14 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
+    
+    public function get_details_service() {
+        $id = $this->input->get('id');
+        $idService = $this->input->get('idServices');
+        $data['res'] = $this->Orders_model->get_details_service($id,$idService);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function get_details_order() {
         $idOrder = $this->input->get('idOrder');
@@ -96,6 +104,21 @@ class Orders extends CI_Controller {
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order($data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    function update_head_order() {
+        $id = $this->input->post('id');
+        $data = array(
+            'idCoordinatorExt' => $this->input->post('idCoorExt'),
+            'idCoordinatorint' => $this->input->post('idCoorInt'),
+            'idFormPay' => $this->input->post('idPay')
+        );
+        $res = $this->Orders_model->update_order($id,$data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
