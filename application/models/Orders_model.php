@@ -39,8 +39,8 @@ class Orders_model extends CI_Model {
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders.idArea',1);
-        $this->db->where('tbl_orders.idOrderState',2);
+        $this->db->where('tbl_orders.idArea', 1);
+        $this->db->where('tbl_orders.idOrderState', 2);
         $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -161,13 +161,13 @@ class Orders_model extends CI_Model {
             return FALSE;
         }
     }
-    
-    public function upload_pdf($id,$imagen) {
-            $data = array(
-                'picture' => $imagen
-            );
-            $this->db->where('id', $id);
-            $this->db->update('tbl_orders', $data);
+
+    public function upload_pdf($id, $imagen) {
+        $data = array(
+            'picture' => $imagen
+        );
+        $this->db->where('id', $id);
+        $this->db->update('tbl_orders', $data);
     }
 
     public function get_docs($idOrder) {
@@ -183,11 +183,40 @@ class Orders_model extends CI_Model {
         }
     }
 
+    public function get_materials($idOrder, $date) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.dateSave', $date);
+        $this->db->where('tbl_orders_details.idActivities', 5);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
     public function upload_attached_record($idOrder, $file) {
         $data = array(
             'picture' => $file);
-        $this->db->where('id',$idOrder);
+        $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data);
+    }
+
+    public function get_observations_detail($id) {
+        $this->db->select('observation');        
+        $this->db->from('tbl_orders_documents');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
     }
 
 }

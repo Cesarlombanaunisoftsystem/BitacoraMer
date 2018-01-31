@@ -36,7 +36,7 @@ class Visits_model extends CI_Model {
         }
     }
 
-    public function assign_order_technic($idOrder, $data) {
+    public function assign_order($idOrder, $data) {
         $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data);
         if ($this->db->affected_rows() > 0) {
@@ -46,7 +46,7 @@ class Visits_model extends CI_Model {
         }
     }
 
-    public function return_order_register($idOrder, $data) {
+    public function return_order($idOrder, $data) {
         $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data);
         if ($this->db->affected_rows() > 0) {

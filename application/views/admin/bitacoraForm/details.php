@@ -71,3 +71,4 @@
     <?php } ?>
 </tbody>      
 </table>
+<div id="spinner"></div>

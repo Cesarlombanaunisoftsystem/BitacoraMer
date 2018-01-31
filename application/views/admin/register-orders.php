@@ -57,7 +57,7 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                
+
                 if ($('#idOrder').val() === "") {
                     $('#idOrder').removeAttr("readonly");
                 }
@@ -74,14 +74,14 @@
                 } else {
                     $('#total').val(total);
                 }
-                
+
                 $("#frmRegisterOrder").on("submit", function (e) {
                     e.preventDefault();
                     var f = $(this);
                     var formData = new FormData(document.getElementById("frmRegisterOrder"));
                     formData.append("dato", "valor");
                     url = get_base_url() + "Orders/register_order";
-                    //formData.append(f.attr("name"), $(this)[0].files[0]);
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
                         url: url,
                         type: "post",
@@ -92,6 +92,7 @@
                         processData: false
                     })
                             .done(function (res) {
+                                $('#spinner').html("");
                                 if (res === "error") {
                                     alertify.error('Error en BBDD');
                                 }
@@ -155,11 +156,13 @@
                 } else {
 
                     url = get_base_url() + "Orders/add_order_detail";
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
                         url: url,
                         type: 'POST',
                         data: {idOrder: idOrder, idActivities: idActivities, idServices: idServices, site: site, price: price, cost: cost, totalCost: totalCost, count: cant, total: total},
                         success: function (resp) {
+                            $('#spinner').html("");
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
                             }
@@ -189,28 +192,6 @@
                     }
                 });
             }
-
-            /*function registerOrder() {
-                url = get_base_url() + "Orders/register_order";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    dataType: "html",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Orden completa agregada y pasada a siguiente area exitosamente');
-                            location.reload();
-                        }
-                    }
-                });
-            }*/
         </script>
     </body>
 </html>
