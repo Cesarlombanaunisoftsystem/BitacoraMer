@@ -2,11 +2,12 @@
 
 class Orders_model extends CI_Model {
 
-    public function get_order_bitacora($id) {
+    public function get_order_bitacora($id,$type) {
         $this->db->where('id', $id);
         $this->db->where('idArea', null);
         $this->db->where('idOrderState', 1);
-        $this->db->where('idOrderType', 1);
+        $this->db->where('idOrderType', $type);
+        $this->db->where('idUser', $this->session->userdata('id_usuario'));
         $this->db->from('tbl_orders');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -64,6 +65,7 @@ class Orders_model extends CI_Model {
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders.idArea', 1);
+        $this->db->where('tbl_orders.idOrderState', 1);
         $this->db->where('tbl_orders.idOrderState', 2);
         $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();
@@ -93,7 +95,7 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_order_details($id) {
+    public function get_order_details($id,$type) {
         $this->db->select('tbl_orders_details.*,tbl_orders.idArea,tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders_details');
         $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
@@ -101,7 +103,8 @@ class Orders_model extends CI_Model {
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $id);
         $this->db->where('tbl_orders.idArea', null);
-        $this->db->where('tbl_orders.idOrderState', 1);
+        $this->db->where('tbl_orders.idOrderState', 1);        
+        $this->db->where('tbl_orders.idOrderType', $type);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -205,6 +208,17 @@ class Orders_model extends CI_Model {
         );
         $this->db->where('id', $id);
         $this->db->update('tbl_orders', $data);
+    }
+    
+    public function upload_doc($idOrder, $idType, $data) {
+        $this->db->where('idTypeDocument', $idType);
+        $this->db->where('idOrder', $idOrder);
+        $this->db->update('tbl_orders_documents', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function get_docs($idOrder) {

@@ -60,12 +60,17 @@
                                     if ($visits) {
                                         foreach ($visits as $visit) {
                                             if ($visit->date != NULL) {
-                                                $date = $visit->date;
+                                                $date = '<input type="date" class="form form-control" id="date_' . $visit->id . '"  min="' . date("Y-m-d") . '" value="' . $visit->date . '" required>';
                                             } else {
-                                                $date = '<input type="date" class="date" id="date_' . $visit->id . '" size="15" required>';
+                                                $date = '<input type="date" class="form form-control" id="date_' . $visit->id . '"  min="' . date("Y-m-d") . '" required>';
+                                            }
+                                            if ($visit->historybackState === '1') {
+                                                $trcolor = '#FCF8E5';
+                                            } else {
+                                                $trcolor = '';
                                             }
                                             ?> 
-                                            <tr>
+                                            <tr style="background-color:<?= $trcolor ?>">
                                                 <td><a href="javascript:return_order(<?= $visit->id ?>)"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a></td>
                                                 <td><?= $visit->dateSave ?></td>
                                                 <td><?= $visit->uniquecode ?></td>
@@ -86,12 +91,14 @@
                                                         }
                                                         ?>
                                                     </select></td>
-                                                <td><?= $visit->observations ?></td>
+                                                <td><textarea class="form form-control"><?= $visit->observations ?></textarea></td>
                                                 <td><?= $date ?></td>
                                                 <td><a href="javascript:assign(<?= $visit->id ?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
                                             </tr> 
-                                        <?php }
-                                    } ?> 
+                                            <?php
+                                        }
+                                    }
+                                    ?> 
                                 </tbody>
                             </table>
                         </div>
@@ -100,15 +107,13 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-<?php $this->load->view('templates/footer.html') ?>
+            <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
-<?php $this->load->view('templates/js') ?>
+        <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $(function () {
-                $(".date").datepicker({dateFormat: 'yy-mm-dd'});
-            });
+
             function assign(idOrder) {
                 var idTech = $("#idTech_" + idOrder).val();
                 var date = $("#date_" + idOrder).val();

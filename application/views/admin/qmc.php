@@ -9,7 +9,7 @@
             <?php $this->load->view('templates/menu-right') ?>
             <div class="content-wrapper">
                 <section class="content-header">
-                    <h1>Registro ordenes de servicio</h1>        
+                    <h1>Registro das</h1>        
                 </section>
                 <section class="content">
                     <div class="row">
@@ -17,26 +17,40 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#binnacle" aria-controls="binnacle" role="tab" data-toggle="tab">BTS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Das') ?>" aria-controls="binnacle" role="tab" data-toggle="">DAS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Maintenance') ?>" aria-controls="binnacle" role="tab" data-toggle="">Mantenimiento</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Orders') ?>" aria-controls="binnacle" role="tab" data-toggle="">BTS</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Das') ?>" aria-controls="binnacle" role="" data-toggle="">DAS</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Maintenance') ?>" aria-controls="binnacle" role="" data-toggle="">Mantenimiento</a></li>
                                         <li role="presentation"><a href="<?= base_url('Sale') ?>" aria-controls="binnacle" role="tab" data-toggle="">Venta de producto</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Qmc') ?>" aria-controls="binnacle" role="tab" data-toggle="">QMC</a></li>
+                                        <li role="presentation" class="active"><a href="#qmc" aria-controls="binnacle" role="tab" data-toggle="tab">QMC</a></li>
                                         <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">BANDEJA DE ENTRADA</a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active" id="binnacle">
-                                    <form id="frmRegisterOrder" method="POST" enctype="multipart/form-data"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
+                                <div role="tabpanel" class="tab-pane" id="binnacle">
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="das">
+
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="man">
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="sale">
+
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="qmc">
+                                <div role="tabpanel" class="tab-pane active" id="qmc">
+                                    <form id="frmQmc" method="POST" enctype="multipart/form-data">
+                                        <div class="box box-primary">
+                                            <div class="box-body">
+                                                <?php $this->load->view('admin/qmc/header'); ?>
+                                                <div class="col-xs-12 col-md-11 col-md-offset-1">
+                                                    <?php $this->load->view('admin/qmc/details'); ?>
+                                                </div>
+                                                <div class="col-xs-12 col-md-11 col-md-offset-1">
+                                                    <?php $this->load->view('admin/qmc/footer'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="Bandeja">
                                     <?php $this->load->view('admin/order-registration-bandeja') ?>
@@ -71,10 +85,10 @@
                     $('#total').val(total);
                 }
 
-                $("#frmRegisterOrder").on("submit", function (e) {
+                $("#frmQmc").on("submit", function (e) {
                     e.preventDefault();
 
-                    var formData = new FormData(document.getElementById("frmRegisterOrder"));
+                    var formData = new FormData(document.getElementById("frmQmc"));
 
                     var id = $('#id').val();
                     var pdf = $('#pdf').val();

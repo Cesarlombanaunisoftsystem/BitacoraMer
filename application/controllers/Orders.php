@@ -28,7 +28,7 @@ class Orders extends CI_Controller {
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Registro orden de servicio';
-        $data['activities'] = $this->Activities_model->get_activities_bts();
+        $data['activities'] = $this->Activities_model->get_activities_bitacora(1);
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['formspay'] = $this->Payments_model->get_payments();
@@ -38,31 +38,31 @@ class Orders extends CI_Controller {
         $this->db->select_max('id');
         $result = $this->db->get('tbl_orders')->row_array();
         $idOrder = $result['id'];
-        $data['order'] = $this->Orders_model->get_order_bitacora($idOrder);
+        $data['order'] = $this->Orders_model->get_order_bitacora($idOrder,1);
         $data['ordersTray'] = $this->Orders_model->get_orders_tray();
-        $data['details'] = $this->Orders_model->get_order_details($idOrder);
+        $data['details'] = $this->Orders_model->get_order_details($idOrder,1);
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/register-orders', $data);
     }
-    
+
     public function get_order() {
         $order = $this->input->get('order');
         $data['res'] = $this->Orders_model->get_order($order);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_details() {
         $id = $this->input->get('id');
         $data['res'] = $this->Orders_model->get_order_details($id);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_details_service() {
         $id = $this->input->get('id');
         $idService = $this->input->get('idServices');
-        $data['res'] = $this->Orders_model->get_details_service($id,$idService);
+        $data['res'] = $this->Orders_model->get_details_service($id, $idService);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -80,14 +80,14 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_observation_order() {
         $idOrder = $this->input->get('idOrder');
         $data['observation'] = $this->Orders_model->get_observation_order($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_observations_detail() {
         $id = $this->input->get('id');
         $data['obsv'] = $this->Orders_model->get_observations_detail($id);
@@ -110,7 +110,7 @@ class Orders extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     function update_head_order() {
         $id = $this->input->post('id');
         $data = array(
@@ -118,7 +118,7 @@ class Orders extends CI_Controller {
             'idCoordinatorint' => $this->input->post('idCoorInt'),
             'idFormPay' => $this->input->post('idPay')
         );
-        $res = $this->Orders_model->update_order($id,$data);
+        $res = $this->Orders_model->update_order($id, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {

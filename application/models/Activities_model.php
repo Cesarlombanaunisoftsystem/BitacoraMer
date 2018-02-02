@@ -7,10 +7,10 @@ if (!defined('BASEPATH')) {
 class Activities_model extends CI_Model {
     
     public function get_activities() {
-        $this->db->select('tbl_activities.*,tbl_users.name_user,tbl_orders_category.name_category,tbl_state.name_state');            
+        $this->db->select('tbl_activities.*,tbl_users.name_user,tbl_orders_type.name_category,tbl_state.name_state');            
         $this->db->from('tbl_activities');
         $this->db->join('tbl_users', 'tbl_activities.idUser = tbl_users.id');
-        $this->db->join('tbl_orders_category', 'tbl_activities.idOrderCategory = tbl_orders_category.id');
+        $this->db->join('tbl_orders_type', 'tbl_activities.idOrderCategory = tbl_orders_type.id');
         $this->db->join('tbl_state', 'tbl_activities.idState = tbl_state.id');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -29,8 +29,8 @@ class Activities_model extends CI_Model {
         }
     }
     
-    public function get_activities_bts() {
-        $query = $this->db->get_where('tbl_activities', array('idOrderCategory'=>1));
+    public function get_activities_bitacora($type) {
+        $query = $this->db->get_where('tbl_activities', array('idOrderCategory' => $type));
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
