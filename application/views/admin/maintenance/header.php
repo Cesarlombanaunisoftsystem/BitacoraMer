@@ -30,6 +30,7 @@
     <div class="col-sm-2">Coordinador Externo</div>
     <div class="col-sm-2" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idCoordinatorExt" id="idCoordExt" required>
+            <option></option>
             <?php
             foreach ($coordinators_ext as $coordext) {
                 if ($order->idCoordinatorExt === $coordext->id) {
@@ -48,6 +49,7 @@
     <div class="col-sm-2">Coordinador Interno</div>
     <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idCoordinatorInt" id="idCoordInt" required>
+            <option></option>
             <?php
             foreach ($coordinators_int as $coordint) {
                 if ($order->idCoordinatorInt === $coordint->id) {
@@ -65,6 +67,7 @@
     <div class="col-sm-2">Forma de Pago</div>
     <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idFormPay" id="idFormPay" required>
+            <option></option>
             <option>Seleccione</option>
             <?php
             foreach ($formspay as $pay) {

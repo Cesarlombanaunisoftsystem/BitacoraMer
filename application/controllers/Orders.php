@@ -54,7 +54,8 @@ class Orders extends CI_Controller {
 
     public function get_details() {
         $id = $this->input->get('id');
-        $data['res'] = $this->Orders_model->get_order_details($id);
+        $type = $this->input->get('type');
+        $data['res'] = $this->Orders_model->get_order_details($id,$type);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -96,10 +97,11 @@ class Orders extends CI_Controller {
     }
 
     function add_order() {
+        $type = $this->input->post('type');
         $data = array(
             'uniquecode' => $this->input->post('order'),
             'idUser' => $this->session->userdata('id_usuario'),
-            'idOrderType' => 1,
+            'idOrderType' => $type,
             'idOrderState' => 1,
             'dateSave' => date('Y-m-d H:i:s')
         );

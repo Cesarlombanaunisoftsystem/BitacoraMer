@@ -30,7 +30,7 @@
                                 <div role="tabpanel" class="tab-pane" id="binnacle">
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="das">
-                                    
+
                                 </div>
                                 <div role="tabpanel" class="tab-pane  active" id="man">
                                     <form id="frmMaintenance" method="POST" enctype="multipart/form-data">
@@ -89,10 +89,15 @@
                     var formData = new FormData(document.getElementById("frmMaintenance"));
 
                     var id = $('#id').val();
-                    var pdf = $('#pdf').val();
+                    if ($("#userfile").val() === "") {
+                        alertify.error('Debes adjuntar el documento de la ordén !');
+                        return false;
+                    }
                     url = get_base_url() + "Orders/get_details?jsoncallback=?";
                     $.getJSON(url, {id: id}).done(function (res) {
-                        if (res.res !== false || pdf !== "") {
+                        if (res.res === false) {
+                            alertify.error('Debes incluir al menos una actividad!');
+                        } else {
                             url = get_base_url() + "Orders/register_order";
                             $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                             $.ajax({
@@ -114,12 +119,15 @@
                                             location.reload();
                                         }
                                     });
-                        } else {
-                            alertify.error('Debes incluir al menos una actividad y/o subir el documento de ordén en el icono clip!');
                         }
                     });
                 });
             });
+            
+            function getFileName(elm) {
+                var fn = $(elm).val();
+                $("#datofile").html(fn);
+            }
 
             $('#idFormPay').bind("change keyup", function (e)
             {
@@ -175,7 +183,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order},
+                            data: {order: order, type:'3'},
                             success: function (resp) {
                                 if (resp === "error") {
                                     alertify.error('Erro en BBDD');
