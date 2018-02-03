@@ -84,6 +84,7 @@
                 } else {
                     $('#total').val(total);
                 }
+               
 
                 $("#frmQmc").on("submit", function (e) {
                     e.preventDefault();
@@ -93,7 +94,9 @@
                     var id = $('#id').val();
                     var pdf = $('#pdf').val();
                     url = get_base_url() + "Orders/get_details?jsoncallback=?";
-                    $.getJSON(url, {id: id, type: '4'}).done(function (res) {
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                    $.getJSON(url, {id: id, type: '5'}).done(function (res) {
+                        $('#spinner').html("");
                         if (res.res === false) {
                             alertify.error('Debes incluir al menos una actividad!');
                         } else {
@@ -122,7 +125,7 @@
                     });
                 });
             });
-            
+
             function getFileName(elm) {
                 var fn = $(elm).val();
                 $("#datofile").html(fn);
@@ -136,11 +139,13 @@
                 var idCoorInt = $("#idCoordInt").val();
                 var idPay = $("#idFormPay").val();
                 url = get_base_url() + "Orders/update_head_order";
+                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                 $.ajax({
                     url: url,
                     type: "post",
                     data: {id: id, idCoorExt: idCoorExt, idCoorInt: idCoorInt, idPay: idPay},
                     success: function (resp) {
+                        $('#spinner').html("");
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
                         }
@@ -173,17 +178,21 @@
             function generateOrder() {
                 var order = $('#idOrder').val();
                 url = get_base_url() + "Orders/get_order?jsoncallback=?";
+                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                 $.getJSON(url, {order: order}).done(function (res) {
+                    $('#spinner').html("");
                     if (res.res === true) {
                         alertify.error('El número de ordén digitado ya existe.');
                         $("#idOrder").focus();
                     } else {
                         url = get_base_url() + "Orders/add_order";
+                        $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order, type:'5'},
+                            data: {order: order, type: '5'},
                             success: function (resp) {
+                                $('#spinner').html("");
                                 if (resp === "error") {
                                     alertify.error('Erro en BBDD');
                                 }
@@ -212,7 +221,9 @@
                     alertify.error('Debes asignar una cantidad númerica correcta y un sitio!');
                 } else {
                     url = get_base_url() + "Orders/get_details_service?jsoncallback=?";
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.getJSON(url, {id: id, idServices: idServices}).done(function (res) {
+                        $('#spinner').html("");
                         if (res.res === true) {
                             alertify.error('Esta actividad ya se encuentra registrada!');
                         } else {
@@ -240,11 +251,13 @@
 
             function removeDetailOrder(id) {
                 url = get_base_url() + "Orders/remove_order_detail";
+                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                 $.ajax({
                     url: url,
                     type: 'POST',
                     data: {id: id},
                     success: function (resp) {
+                        $('#spinner').html("");
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
                         }

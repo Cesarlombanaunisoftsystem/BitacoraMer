@@ -197,12 +197,12 @@
                     var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if(doc.idTypeDocument == "2"){
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
                         if(doc.idTypeDocument == "3"){
-                            $(".tss" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".tss" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file);
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }

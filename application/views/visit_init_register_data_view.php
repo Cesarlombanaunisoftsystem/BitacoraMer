@@ -124,12 +124,6 @@
         <?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $(function () {
-                $(document).on("click", ".photos", function() {
-                    if(galery)
-                        $('.modal').modal('show');
-                });
-            });
             function getFileNameRegFoto(elm) {
                 var fn = $(elm).val(); 
                 $("#p_1").html(fn); 
@@ -160,7 +154,7 @@
                 }
             });
             function format(d) {
-                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_docs">'+
+                return '<form enctype="multipart/form-data" method="post" name="form-register-visit" id="form-register-visit" action="register_docs">'+
                     '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">'+
                     '<tr>'+
                         '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>'+
@@ -246,12 +240,6 @@
                             $(".tss" + idOrder).addClass("pointer");
                         }
                         if(doc.idTypeDocument === "1"){
-                            /*var html = '<input type="radio" name="radio-btn" id="img-'+pos+'" '+(pos == 1 ? 'checked' : '')+' />';
-                            html += '<li class="slide-container"><div class="slide">';
-                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
-                            html += '<div class="nav"><label for="img-'+(pos == 1 ? 1 : pos - 1)+'" class="prev">&#x2039;</label>';
-                            html += '<label for="img-'+(pos + 1)+'" class="next">&#x203a;</label></div></li>';
-                            $(".slides").prepend(html);*/
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
                             galery = true;

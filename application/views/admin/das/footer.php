@@ -25,7 +25,7 @@
         <div class="form-group">  
             <label class="col-xs-4 control-label" for="userfile"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="dist/img/clip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></div></label>   
             <p id="datofile"></p>
-            <input type="file"  name="userfile" style="display: none" onchange="getFileName(this)" accept=".pdf" size="2048">
+            <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".pdf" size="2048">
         </div>
     </div>
 </div>

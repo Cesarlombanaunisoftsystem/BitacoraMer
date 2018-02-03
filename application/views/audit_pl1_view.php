@@ -40,9 +40,10 @@
                         </div>
                         <input type="hidden" id="id" value=""/>
                         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                            <table class="table table-responsive" id="data-table">
+                            <table  id="data-table" class="table table-responsive">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th style="color: #00B0F0">Fecha de ordén</th>
                                         <th style="color: #00B0F0">No. Ordén</th>
                                         <th style="color: #00B0F0">Centro de Costos</th>
@@ -57,10 +58,13 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    if ($pl_1) {
+                                    if (isset($pl_1) && $pl_1) {
                                         foreach ($pl_1 as $row) {
                                             ?>                                            
-                                            <tr onclick="details(<?= $row->id ?>)" data-toggle="modal" data-target="#modalPl1">
+                                            <tr>
+                                                <td class="details-control" id="<?php echo $row->id; ?>">
+                                                    <i class="fa fa-plus-square-o"></i>
+                                                </td>
                                                 <td><?= $row->dateSave ?></td>
                                                 <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode ?></a></td>
                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
@@ -72,7 +76,7 @@
                                                 <td><?php
                                                     $dif = $row->totalCost - $row->total;
                                                     $util = ($dif * 100) / $row->total;
-                                                    echo $util . ' %';
+                                                    echo round($util,2) . ' %';
                                                     ?></td>
                                                 <td><a href="#" onclick="assign(<?= $row->id ?>)"><i class="fa fa-check-square" style="color: green"></i></a> <a href="#" onclick="return_order(<?= $row->id ?>)"><i class="fa fa-window-close" aria-hidden="true" style="color: red"></i></a></td>
                                             </tr>
@@ -94,36 +98,97 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            function details(idOrder) {
-                $('#frmPl1').empty();
+            function getFileNameRegFot(elm) {
+                var fn = $(elm).val();
+                $("#filenameRegFoto").html(fn);
+            }
+            function getFileNamePsinm(elm) {
+                var fn = $(elm).val();
+                $("#filenamePsinm").html(fn);
+            }
+            function getFileNameTss(elm) {
+                var fn = $(elm).val();
+                $("#filenameTss").html(fn);
+            }
+            $('#data-table tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = dt.row(tr);
+                order_id = $(this).attr("id");
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    $(this).html('<i class="fa fa-plus-square-o"></i>');
+                } else {
+                    getDocs(order_id);
+                    closeOpenedRows(dt, tr);
+                    $(this).html('<i class="fa fa-minus-square-o"></i>');
+                    row.child(format(order_id)).show();
+                    tr.addClass('shown');
+                    openRows.push(tr);
+                }
+            });
+            function format(d) {
+                return '<form enctype="multipart/form-data" method="post" name="form-audit-pl1" id="form-audit-pl1" action="register_docs">' +
+                        '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<td>FECHA DE REGISTRO:</td>' +
+                        '<td><label class="blue bold upload_design" for="fileRegFoto' + d + '">' +
+                        '<a class="disable photos photo' + d + '"><u>REGISTRO FOTOGRAFICO</u></a></label>' +
+                        '<p id="filenameRegFoto"></p>' +
+                        '<input type="hidden" value="1" name="idTypeRegFoto">' +
+                        '<input style="display: none;" onchange="getFileNameRegFot(this)" type="file" name="fileRegFoto" id="fileRegFoto' + d + '">' +
+                        '</td><td><label class="blue bold upload_design" for="filePsinm' + d + '">' +
+                        '<a class="disable pisnm' + d + '"><u>FORMATO PISNM</u></a></label>' +
+                        '<p id="filenamePsinm"></p>' +
+                        '<input type="hidden" value="2" name="idTypePsinm">' +
+                        '<input style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filePsinm" id="filePsinm' + d + '">' +
+                        '</td>' + '<td><label class="blue bold upload_design" for="fileTss' + d + '">' +
+                        '<a class="disable tss' + d + '"><u>FORMATO TSS</u></a></label>' +
+                        '<p id="filenameTss"></p>' +
+                        '<input type="hidden" value="3" name="idTypeTss">' +
+                        '<input style="display: none;" onchange="getFileNameTss(this)" type="file" name="fileTss" id="fileTss' + d + '">' +
+                        '</td>' + '<td><label class="blue bold upload_design"><a href="#" data-toggle="modal" data-target="#modalMaterials">' +
+                        '<u>SOLICITUD DE MATERIALES/SERV</u></a></label><input type="hidden" value="' + d + '" name="idOrder">' +
+                        '</td>' + '<td><a href="#" onclick="getObservations(' + d + ')" data-toggle="modal" data-target="#modalObservations">' +
+                        '<u>OBSERVACIONES GENERALES</u></a></td></tr></table></form>';
+            }
+            function getDocs(idOrder) {
                 url = get_base_url() + "Orders/get_details_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    $.each(respuestaServer["docs"], function (i, docs) {
-                        $('#frmPl1').append('<tr><td>FECHA REGISTRO:</td><td>' + docs.dateSave +
-                                '</td><td><a href="#"><u>' + docs.name_type +
-                                '</u></a></td><td onclick="materials(' + docs.idOrder + ')" data-toggle="modal" data-target="#modalMaterials"><a href="#"><u>SOLICITUD DE MATERIALES</u></a></td><td onclick="obsv(' + docs.id + ')" data-toggle="modal" data-target="#modalObsv"><a href="#"><u>OBSERVACIONES</u></a></td></tr>');
+                    var pos = 1;
+                    $.each(respuestaServer["docs"], function (i, doc) {
+                        if (doc.idTypeDocument === "2") {
+                            $(".pisnm" + idOrder).removeClass("disable");
+                            $(".pisnm" + idOrder).addClass("pointer");
+                        }
+                        if (doc.idTypeDocument === "3") {
+                            $(".tss" + idOrder).removeClass("disable");
+                            $(".tss" + idOrder).addClass("pointer");
+                        }
+                        if (doc.idTypeDocument === "1") {
+                            $(".photo" + idOrder).removeClass("disable");
+                            $(".photo" + idOrder).addClass("pointer");
+                            galery = true;
+                            pos++;
+                        }
                     });
                 });
             }
             function materials(idOrder) {
                 $('#bodyMaterials').empty();
                 url = get_base_url() + "Orders/get_order_materials?jsoncallback=?";
-                url2 = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
-                        $('#bodyMaterials').append('<tr><td>' + materials.name_service + '</td><td>' + materials.count + '</td><td>' + materials.observation + '</td></tr>');                                               
-                    });           
-                });
-                $.getJSON(url2, {idOrder: idOrder}).done(function (res) {
-                        $('#bodyMaterials').append('<tr><td>Observaciones Generales de pedido</td></tr><tr><td colspan="3"><textarea class="form-control">' + res.observation.observations + '</textarea></td></tr>');
+                        $('#bodyMaterials').append('<tr><td>' + materials.name_service + '</td><td>' + materials.count + '</td><td>' + materials.observation + '</td></tr>');
+                    });
                 });
             }
 
-            function obsv(id) {
-                $('#obsv').html('');
-                url = get_base_url() + "Orders/get_observations_detail?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
-                    $('#obsv').html('<textarea class="form-control">' + res.obsv.observation + '</textarea>');
+            function getObservations(idOrder) {
+                $("#obsv").val("");
+                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsv").val(res.observation.observations);
                 });
             }
 
@@ -149,7 +214,7 @@
                     alertify.error('Acción cancelada');
                 }).set({labels: {ok: 'Aceptar', cancel: 'Cancelar'}, padding: false});
             }
-            
+
             function return_order(idOrder) {
                 alertify.confirm('En realidad desea devolver la ordén?', function () {
                     alertify.success('Accepted');
@@ -173,23 +238,6 @@
                 }).set({labels: {ok: 'Aceptar', cancel: 'Cancelar'}, padding: false});
             }
         </script>
-        <!-- Modal Detalles-->
-        <div id="modalPl1" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 80%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row" style="text-align: center; margin-right: 5px; margin-left: 5px; padding: 8px; border-width: 1px; border-color: black;
-                             border-style: solid;
-                             border-radius: 10px;">
-                            <form class="form-horizontal">
-                                <table  id="frmPl1" class="table table-responsive"></table>
-                            </form>
-                        </div>                   
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- Modal Materiales-->
         <div id="modalMaterials" class="modal fade" role="dialog">
             <div class="modal-dialog" style="width: 80%;">
@@ -221,14 +269,14 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Observaciones-->
-        <div id="modalObsv" class="modal fade" role="dialog">
+        <!-- Modal Materiales-->
+        <div id="modalObservations" class="modal fade" role="dialog">
             <div class="modal-dialog" style="width: 80%;">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
-                            <div id="obsv"></div>
+                            <textarea class="form form-control" id="obsv"></textarea>
                         </div>                   
                     </div>
                 </div>

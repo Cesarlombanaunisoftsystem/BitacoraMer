@@ -38,9 +38,9 @@ class Orders extends CI_Controller {
         $this->db->select_max('id');
         $result = $this->db->get('tbl_orders')->row_array();
         $idOrder = $result['id'];
-        $data['order'] = $this->Orders_model->get_order_bitacora($idOrder,1);
+        $data['order'] = $this->Orders_model->get_order_bitacora($idOrder, 1);
         $data['ordersTray'] = $this->Orders_model->get_orders_tray();
-        $data['details'] = $this->Orders_model->get_order_details($idOrder,1);
+        $data['details'] = $this->Orders_model->get_order_details($idOrder, 1);
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/register-orders', $data);
     }
@@ -55,7 +55,7 @@ class Orders extends CI_Controller {
     public function get_details() {
         $id = $this->input->get('id');
         $type = $this->input->get('type');
-        $data['res'] = $this->Orders_model->get_order_details($id,$type);
+        $data['res'] = $this->Orders_model->get_order_details($id, $type);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -177,6 +177,7 @@ class Orders extends CI_Controller {
                 mkdir("./uploads/", 0777);
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
+                $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
                     'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
@@ -187,8 +188,8 @@ class Orders extends CI_Controller {
                     'iva' => $this->input->post('idTax'),
                     'total' => $this->input->post('total'),
                     'totalCost' => $this->input->post('sumTotalCost'),
-                    'idArea' => $this->input->post('idArea'),
-                    'idOrderState' => 2,
+                    'idArea' => $veryState['idArea'],
+                    'idOrderState' => $veryState['idState'],
                     'observations' => $this->input->post('observations'),
                     'idUser' => $this->session->userdata('id_usuario')
                 );
@@ -212,17 +213,40 @@ class Orders extends CI_Controller {
                     'idOrder' => $this->input->post('id'),
                     'dateSave' => date('Y-m-d')
                 );
-                sleep(3); //retrasamos la petición 3 segundos
                 $this->Orders_model->upload_pdf($id, $file);
                 $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
-                if ($res === true) {
-                    echo 'ok';
-                } else {
-                    echo 'error';
-                }
+                echo $this->valida($res);
             }
         } else {
             throw new Exception("Error Processing Request", 1);
         }
     }
+
+    function verify_step($area) {
+        if ($area === '1') {
+            $data = array('idArea' => 1, 'idState' => 2);
+            return $data;
+        }
+        if ($area === '2') {
+            $data = array('idArea' => 2, 'idState' => 7);
+            return $data;
+        }
+        if ($area === '3') {
+            $data = array('idArea' => 3, 'idState' => 9);
+            return $data;
+        }
+        if ($area === '4') {
+            $data = array('idArea' => 4, 'idState' => 13);
+            return $data;
+        }
+    }
+
+    function valida($res) {
+        if ($res === true) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+    }
+
 }
