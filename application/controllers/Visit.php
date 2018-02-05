@@ -13,7 +13,7 @@ class Visit extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model', 'Utils'));
+        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model', 'Activities_model', 'Utils'));
     }
 
     public function program() {
@@ -116,6 +116,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Registro de datos visitas inicial al sitio';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_init_register_data_view', $data);
     }

@@ -105,4 +105,13 @@ class Payments_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function assign_pay($data) {
+        $this->db->insert('tbl_orders_pays', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 }

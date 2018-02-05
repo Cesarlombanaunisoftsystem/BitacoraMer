@@ -113,6 +113,20 @@ class Orders_model extends CI_Model {
         }
     }
     
+    public function get_details_xid($id) {
+        $this->db->select('tbl_orders_details.*, tbl_activities.name_activitie, tbl_services.name_service');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
+    
     public function get_details_service($id,$idService) {
         $this->db->select('tbl_orders_details.idServices');
         $this->db->from('tbl_orders_details');
@@ -235,7 +249,7 @@ class Orders_model extends CI_Model {
     }
 
     public function get_materials($idOrder) {
-        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service,tbl_services.unit_measurement');
         $this->db->from('tbl_orders_details');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');

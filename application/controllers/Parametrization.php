@@ -213,7 +213,8 @@ class Parametrization extends CI_Controller {
         $data = array(
             'name_service' => $this->input->post('name'),
             'observations' => $this->input->post('obsv'),
-            'price' => $this->input->post('price'),
+            'price' => $this->input->post('price'),            
+            'unit_measurement' => $this->input->post('unidadm'),
             'idTask' => $this->input->post('tax'),
             'idUser' => $this->session->userdata('id_usuario'),
             'idState' => $this->input->post('state'),
@@ -234,6 +235,7 @@ class Parametrization extends CI_Controller {
             'name_service' => $this->input->post('name'),
             'observations' => $this->input->post('obsv'),
             'price' => $this->input->post('price'),
+            'unit_measurement' => $this->input->post('unidadm'),
             'idTask' => $this->input->post('tax'),
             'idActivitie' => $this->input->post('activitie'),
             'idState' => $this->input->post('state')

@@ -35,6 +35,10 @@
                             <input type="number" class="form-control" name="price" value="<?= $service->price ?>" required="">                                                           
                         </div>
                         <div class="form-group">
+                                <label for="price">Unidad de medida</label>
+                                <input type="text" class="form-control" name="unidadm" value="<?= $service->unit_measurement ?>" required=""/>
+                            </div>
+                        <div class="form-group">
                             <label for="tax">Impuesto</label>
                             <select class="form-control" name="tax" required="">
                                 <?php

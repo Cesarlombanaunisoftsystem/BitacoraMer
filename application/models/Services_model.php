@@ -20,6 +20,13 @@ class Services_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_all_services() {
+        $query = $this->db->get('tbl_services');
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+    }
 
     public function get_services($activiti) {
         $this->db->where('idActivitie', $activiti);

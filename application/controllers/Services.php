@@ -23,5 +23,14 @@ class Services extends CI_Controller {
             echo $input;
         }
     }
+    
+    public function get_service_unit_measurement() {
+        if ($this->input->post('idServices')) {
+            $service = $this->input->post('idServices');
+            $unit = $this->Services_model->get_service($service);
+            $input = '<input type="text" class="form-control" name="unidadm" id="unidadm" value="' . $unit->unit_measurement . '" readonly required/>';   
+            echo $input;
+        }
+    }
 
 }

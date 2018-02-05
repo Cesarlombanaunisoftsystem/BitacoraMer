@@ -55,6 +55,30 @@ if ($permisos) {
                             <label for="chkvil" class="label-success"></label>
                         </div>';
         }
+        if ($value->id_permit == 10) {
+            $pl3 = '<div class="material-switch pull-right">
+                            <input id="chkpl3" name="chkpl3" type="checkbox" checked onclick="removePermit(10,' . $perfil->id . ')"/>
+                            <label for="chkpl3" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 11) {
+            $actInit = '<div class="material-switch pull-right">
+                            <input id="chkactinit" name="chkactinit" type="checkbox" checked onclick="removePermit(11,' . $perfil->id . ')"/>
+                            <label for="chkactinit" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 12) {
+            $coordPays = '<div class="material-switch pull-right">
+                            <input id="chkcoorpays" name="chkacoorpays" type="checkbox" checked onclick="removePermit(12,' . $perfil->id . ')"/>
+                            <label for="chkcoorpays" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 13) {
+            $materials = '<div class="material-switch pull-right">
+                            <input id="chkmaterials" name="chkmaterials" type="checkbox" checked onclick="removePermit(12,' . $perfil->id . ')"/>
+                            <label for="chkmaterials" class="label-success"></label>
+                        </div>';
+        }
     }
 }
 ?>
@@ -82,7 +106,7 @@ if ($permisos) {
                 <section class="content">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table class="table table-striped">
+                            <table class="table table-responsive">
                                 <thead class="thead-light">
                                     <tr>                                         
                                         <?php foreach ($titulos as $td) { ?>                                        
@@ -175,7 +199,43 @@ if ($permisos) {
                         </div>';
                                                 }
                                                 ?>
-                                        </td>
+                                        </td><td><?php
+                                            if (isset($pl3)) {
+                                                echo $pl3;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
+                            <input id="chkpl3" name="chkpl3" type="checkbox" onclick="addPermit(10,' . $perfil->id . ')"/>
+                            <label for="chkpl3" class="label-success"></label>
+                        </div>';
+                                            }
+                                            ?></td><td><?php
+                                            if (isset($actInit)) {
+                                                echo $actInit;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
+                            <input id="chkactinit" name="chkactinit" type="checkbox" onclick="addPermit(11,' . $perfil->id . ')"/>
+                            <label for="chkactinit" class="label-success"></label>
+                        </div>';
+                                            }
+                                            ?></td><td><?php
+                                                if (isset($coordPays)) {
+                                                    echo $coordPays;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkcoorpays" name="chkcoorpays" type="checkbox" onclick="addPermit(12,' . $perfil->id . ')"/>
+                            <label for="chkcoorpays" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td><td><?php
+                                                if (isset($materials)) {
+                                                    echo $materials;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkmaterials" name="chkmaterials" type="checkbox" onclick="addPermit(13,' . $perfil->id . ')"/>
+                            <label for="chkmaterials" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td>
                                     </tr>
                                 </tbody>
                             </table>

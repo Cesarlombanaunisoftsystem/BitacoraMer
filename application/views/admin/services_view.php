@@ -78,6 +78,10 @@
                                 <input type="text" class="form-control" name="price" placeholder="Precio" required=""/>
                             </div>
                             <div class="form-group">
+                                <label for="price">Unidad de medida</label>
+                                <input type="text" class="form-control" name="unidadm" placeholder="Unidad de medida" required=""/>
+                            </div>
+                            <div class="form-group">
                                 <label for="tax">Impuesto</label>
                                 <select class="form-control" name="tax" required="">
                                     <?php foreach ($taxes as $tax) { ?>
@@ -115,7 +119,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Añadir Actividad</button>
+                            <button type="submit" class="btn btn-primary">Añadir Servicio</button>
                         </div>
                     </form>
                 </div>

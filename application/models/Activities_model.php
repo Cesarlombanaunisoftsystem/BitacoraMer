@@ -29,7 +29,7 @@ class Activities_model extends CI_Model {
         }
     }
     
-    public function get_activities_bitacora($type) {
+    public function get_activities_xtype($type) {
         $query = $this->db->get_where('tbl_activities', array('idOrderCategory' => $type));
         if ($query->num_rows() > 0) {
             return $query->result();

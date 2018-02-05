@@ -28,7 +28,7 @@ class Orders extends CI_Controller {
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Registro orden de servicio';
-        $data['activities'] = $this->Activities_model->get_activities_bitacora(1);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['formspay'] = $this->Payments_model->get_payments();
