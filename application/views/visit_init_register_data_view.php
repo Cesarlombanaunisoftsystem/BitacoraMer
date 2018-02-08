@@ -41,7 +41,7 @@
                         <input type="hidden" id="id" value=""/>
                         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
 
-                            <table id="data-table" class="table table-responsive">
+                            <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>

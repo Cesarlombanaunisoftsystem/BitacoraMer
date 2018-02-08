@@ -1,4 +1,4 @@
-<table id="orders-items-table" class="table table-responsive">
+<table id="orders-items-table" class="table table-striped">
     <thead>
         <tr>
             <th class="color-blue" width="50">ACTIVIDAD</th>

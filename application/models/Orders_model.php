@@ -65,7 +65,6 @@ class Orders_model extends CI_Model {
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders.idArea', 1);
-        $this->db->where('tbl_orders.idOrderState', 1);
         $this->db->where('tbl_orders.idOrderState', 2);
         $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();

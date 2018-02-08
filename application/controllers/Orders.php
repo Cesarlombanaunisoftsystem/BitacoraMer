@@ -42,6 +42,7 @@ class Orders extends CI_Controller {
         $data['ordersTray'] = $this->Orders_model->get_orders_tray();
         $data['details'] = $this->Orders_model->get_order_details($idOrder, 1);
         $data['taxes'] = $this->Taxes_model->get_taxes();
+        $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('admin/register-orders', $data);
     }
 
@@ -182,6 +183,7 @@ class Orders extends CI_Controller {
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
                     'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
                     'idCoordinatorInt' => $this->input->post('idCoordinatorInt'),
+                    'idTechnicals' => $this->input->post('idTech'),
                     'idFormPay' => $this->input->post('idFormPay'),
                     'subtotal' => $this->input->post('subtotal'),
                     'discount' => $this->input->post('discount'),

@@ -82,16 +82,71 @@ class Audit extends CI_Controller {
         }
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
-        $data['titulo'] = 'COORDINACIÓN Y AUTORIZACIÓN DE PAGOS';
-        $data['controller'] = '_3';
+        $data['titulo'] = 'Autorización de pagos';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
+        $data['stateInArea'] = '1';
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '13';
         $data['pays'] = $this->Audits_model->get_pl(12);
         $this->load->view('coord_pays_view', $data);
+    }
+    
+    public function auth_pay_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Autorización de pagos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $data['stateInArea'] = '3';
+        $data['areaAssign'] = '';
+        $data['stateAssign'] = '';
+        $data['pays'] = $this->Audits_model->get_pl(13);
+        $this->load->view('coord_pays_view', $data);
+    }
+    
+    public function auth_pay_additional() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Autorización de pagos';
+        $data['controller'] = '_additional';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $data['stateInArea'] = '2';
+        $data['areaAssign'] = '3';
+        $data['stateAssign'] = '13';
+        $data['pays'] = $this->Audits_model->get_pl(14);
+        $this->load->view('coord_pays_view', $data);
+    }
+    
+    public function financial() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Financiero';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $data['stateInArea'] = '3';
+        $data['areaAssign'] = '';
+        $data['stateAssign'] = '';
+        $data['pays'] = $this->Audits_model->get_pl(13);
+        $this->load->view('financial_view', $data);
     }
 
     public function assign() {
@@ -113,15 +168,28 @@ class Audit extends CI_Controller {
     public function assign_percent() {
         $idOrder = $this->input->post('idOrder');
         $percent = $this->input->post('percent');
+        $value = $this->input->post('value');
         $data = array(
             'idOrder' => $idOrder,
-            'percent' => $percent);
-        $res = $this->Payments_model->assign_pay($data);
+            'percent' => $percent,
+            'value' => $value);
+        $data1 = array(
+            'idArea' => 3,
+            'idOrderState' => 13,
+            'historyBackState' => 0);
+        $res = $this->Payments_model->assign_pay($idOrder,$data,$data1);
         if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';
         }
+    }
+    
+    public function history_assign_percent() {
+        $idOrder = $this->input->get('idOrder');
+        $data['pays'] = $this->Payments_model->get_pays_order($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
     public function return_order_register_visit_site() {

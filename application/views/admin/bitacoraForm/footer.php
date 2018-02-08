@@ -41,7 +41,20 @@
         </div>
     </div>
 </div>
-
+<div id="divTechnical" class="row col-sm-12" style="display: none; margin-top: 4px;">
+    <div class="form-group">
+        <label class="col-sm-4 color-blue">SELECCIONAR TÉCNICO</label>    
+        <div class="col-sm-4">
+            <select class="form-control" name="idTech" id="idTech">
+                <option></option>
+                <?php foreach ($tecs as $tec) { ?>
+                    <option value="<?= $tec->id ?>"><?= $tec->name_user ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+</div>
 <div class="row col-sm-12">
     <div class="form-group">
         <label class="col-sm-4 color-blue">DOCUMENTOS RELACIONADOS</label>

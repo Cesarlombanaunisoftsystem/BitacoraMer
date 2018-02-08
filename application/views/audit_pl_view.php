@@ -40,7 +40,7 @@
                         </div>
                         <input type="hidden" id="id" value=""/>
                         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                            <table  id="data-table" class="table table-responsive">
+                            <table  id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -79,8 +79,8 @@
                                                 <td><?= $row->name_user ?></td>                                                
                                                 <td><?= $row->totalCost ?></td>
                                                 <td><?php
-                                                    $dif = $row->totalCost - $row->total;
-                                                    $util = ($dif * 100) / $row->total;
+                                                    $dif = $row->totalOrder - $row->totalCost;
+                                                    $util = ($dif * 100) / $row->totalCost;
                                                     echo round($util, 2) . ' %';
                                                     ?></td>
                                                 <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign ?>)">

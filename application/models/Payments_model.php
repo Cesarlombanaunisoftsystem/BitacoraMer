@@ -21,6 +21,15 @@ class Payments_model extends CI_Model {
         }
     }
     
+    public function get_pays_order($idOrder) {        
+        $query = $this->db->get_where('tbl_orders_pays', array('idOrder' => $idOrder));
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+    
     public function get_pay($id) {        
         $query = $this->db->get_where('tbl_form_pays', array('id' => $id));
         if ($query->num_rows() > 0) {
@@ -39,7 +48,7 @@ class Payments_model extends CI_Model {
         }
     }
     
-    public function edit_pay($id_pay, $data) {
+    public function edit_pay($id_pay, $data) {        
         $this->db->where('id', $id_pay);
         $this->db->update('tbl_form_pays', $data);
         if ($this->db->affected_rows() > 0) {
@@ -106,9 +115,13 @@ class Payments_model extends CI_Model {
         }
     }
     
-    public function assign_pay($data) {
+    public function assign_pay($idOrder,$data,$data1) {
+        $this->db->trans_start();
         $this->db->insert('tbl_orders_pays', $data);
-        if ($this->db->affected_rows() > 0) {
+        $this->db->where('id', $idOrder);
+        $this->db->update('tbl_orders', $data1);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
             return TRUE;
         } else {
             return FALSE;

@@ -75,8 +75,14 @@ if ($permisos) {
         }
         if ($value->id_permit == 13) {
             $materials = '<div class="material-switch pull-right">
-                            <input id="chkmaterials" name="chkmaterials" type="checkbox" checked onclick="removePermit(12,' . $perfil->id . ')"/>
+                            <input id="chkmaterials" name="chkmaterials" type="checkbox" checked onclick="removePermit(13,' . $perfil->id . ')"/>
                             <label for="chkmaterials" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 14) {
+            $financial = '<div class="material-switch pull-right">
+                            <input id="chkfinancial" name="chkfinancial" type="checkbox" checked onclick="removePermit(14,' . $perfil->id . ')"/>
+                            <label for="chkfinancial" class="label-success"></label>
                         </div>';
         }
     }
@@ -106,7 +112,7 @@ if ($permisos) {
                 <section class="content">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table class="table table-responsive">
+                            <table class="table table-striped">
                                 <thead class="thead-light">
                                     <tr>                                         
                                         <?php foreach ($titulos as $td) { ?>                                        
@@ -233,6 +239,16 @@ if ($permisos) {
                                                     echo '<div class="material-switch pull-right">
                             <input id="chkmaterials" name="chkmaterials" type="checkbox" onclick="addPermit(13,' . $perfil->id . ')"/>
                             <label for="chkmaterials" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td>
+                                        <td><?php
+                                                if (isset($financial)) {
+                                                    echo $financial;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkfinancial" name="chkfinancial" type="checkbox" onclick="addPermit(14,' . $perfil->id . ')"/>
+                            <label for="chkfinancial" class="label-success"></label>
                         </div>';
                                                 }
                                                 ?></td>

@@ -22,7 +22,7 @@
                                         <li role="presentation"><a href="<?= base_url('Maintenance') ?>" aria-controls="binnacle" role="tab" data-toggle="">Mantenimiento</a></li>
                                         <li role="presentation"><a href="<?= base_url('Sale') ?>" aria-controls="binnacle" role="tab" data-toggle="">Venta de producto</a></li>
                                         <li role="presentation"><a href="<?= base_url('Qmc') ?>" aria-controls="binnacle" role="tab" data-toggle="">QMC</a></li>
-                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">BANDEJA DE ENTRADA</a></li>
+                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">REGISTROS PROCESADOS</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </section>
-            </div>
+            </div>            
             <div class="control-sidebar-bg"></div>
             <?php $this->load->view('templates/footer.html') ?>
         </div>
@@ -70,7 +70,7 @@
                 } else {
                     $('#total').val(total);
                 }
-
+                
                 $("#frmRegisterOrder").on("submit", function (e) {
                     e.preventDefault();
 
@@ -112,6 +112,15 @@
                         }
                     });
                 });
+            });
+            
+            $("#idArea").change(function(){
+                var area = $("#idArea").val();
+                if (area !== '1') {
+                    $('#divTechnical').show();
+                } else {
+                    $('#divTechnical').hide();
+                }
             });
 
             function getFileName(elm) {
@@ -178,7 +187,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order, type:'1'},
+                            data: {order: order, type: '1'},
                             success: function (resp) {
                                 $('#spinner').html("");
                                 if (resp === "error") {
