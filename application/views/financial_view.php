@@ -91,8 +91,21 @@
                                     </div>
                                     <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <div class="input-daterange">
+                                            <div class="col-md-4">
+                                                <p style="color: gray">FILTRE SU BUSQUEDA POR:</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p style="color: blue">FECHA INICIAL</p>
+                                                <input type="text" name="start_date" id="start_date" class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p style="color: blue">FECHA FINAL</p>
+                                                <input type="text" name="end_date" id="end_date" class="form-control" />
+                                            </div>      
+                                        </div>
                                         <form>
-                                            <table  id="data-table" class="table table-striped">
+                                            <table id="table-paysges" class="table table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th style="color: #00B0F0">Fecha de Pago</th>
@@ -107,24 +120,24 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php /*
-                                                    if (isset($pays_process) && $pays_process) {
-                                                        foreach ($pays_process as $row) {
-                                                            ?>                                            
-                                                            <tr>
-                                                                <td><?= $row->uniquecode ?></td>
-                                                                <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                                <td><?= $row->name_activitie ?></td>
-                                                                <td><?= $row->count ?></td>
-                                                                <td><?= $row->site ?></td>
-                                                                <td><?= $row->name_user ?></td>
-                                                                <td><?= $row->totalCost ?></td>
-                                                                <td><?= $row->percent_pay ?>%</td>
-                                                                <td><?= $row->sumValue ?></td>
-                                                                <td><input type="checkbox" class="form-check-input"></td>
-                                                            </tr>
-                                                            <?php
-                                                        }
-                                                    } */
+                                                      if (isset($pays_process) && $pays_process) {
+                                                      foreach ($pays_process as $row) {
+                                                      ?>
+                                                      <tr>
+                                                      <td><?= $row->uniquecode ?></td>
+                                                      <td><?= $row->uniqueCodeCentralCost ?></td>
+                                                      <td><?= $row->name_activitie ?></td>
+                                                      <td><?= $row->count ?></td>
+                                                      <td><?= $row->site ?></td>
+                                                      <td><?= $row->name_user ?></td>
+                                                      <td><?= $row->totalCost ?></td>
+                                                      <td><?= $row->percent_pay ?>%</td>
+                                                      <td><?= $row->sumValue ?></td>
+                                                      <td><input type="checkbox" class="form-check-input"></td>
+                                                      </tr>
+                                                      <?php
+                                                      }
+                                                      } */
                                                     ?>
                                                 </tbody>
                                             </table>
@@ -146,7 +159,53 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
+            $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        var min = date($('#min').val());
+                        var max = date($('#max').val());
+                        var fecha = date(data[0]); // use data for the age column
 
+                        if ((min && max) ||
+                                (min && fecha <= max) ||
+                                (min <= fecha && max) ||
+                                (min <= fecha && fecha <= max))
+                        {
+                            return true;
+                        }
+                        return false;
+                    }
+            );
+            $(document).ready(function () {
+                $('#table-paysges').DataTable({
+                    language: {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                });
+                $('#min, #max').keyup(function () {
+                    table.draw();
+                });
+            });
         </script>
     </body>
 </html>

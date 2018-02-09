@@ -139,7 +139,6 @@ class Orders extends CI_Controller {
             'cost' => $this->input->post('cost'),
             'count' => $this->input->post('count'),
             'total' => $this->input->post('total'),
-            'total_cost' => $this->input->post('totalCost'),
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order_detail($data);
@@ -189,7 +188,6 @@ class Orders extends CI_Controller {
                     'discount' => $this->input->post('discount'),
                     'iva' => $this->input->post('idTax'),
                     'total' => $this->input->post('total'),
-                    'totalCost' => $this->input->post('sumTotalCost'),
                     'idArea' => $veryState['idArea'],
                     'idOrderState' => $veryState['idState'],
                     'observations' => $this->input->post('observations'),
