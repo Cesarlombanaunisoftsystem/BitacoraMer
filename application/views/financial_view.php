@@ -63,7 +63,7 @@
                                                         foreach ($pays as $row) {
                                                             ?>                                            
                                                             <tr>
-                                                                <td><?= $row->uniquecode ?></td>
+                                                                <td><input type="hidden" value="<?= $row->idTechnicals ?>" name="idpay<?= $row->id ?>"><?= $row->uniquecode ?></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
@@ -72,7 +72,7 @@
                                                                 <td><?= $row->totalCost ?></td>
                                                                 <td><?= $row->percent_pay ?>%</td>
                                                                 <td><?= $row->sumValue ?></td>
-                                                                <td><input type="checkbox" class="form-check-input"></td>
+                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->sumValue ?>" onclick="sumar(this.value,<?= $row->id ?>);"></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -80,6 +80,26 @@
                                                     ?>                                                                         
                                                 </tbody>
                                             </table>
+                                            <div id="spinner"></div>
+                                            <br><br>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-6"></div>
+                                                    <div class="col-sm-3">
+                                                        <label class="color-blue">SELECCIÓN TOTAL A PAGAR</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" class="form-control" style="color: red" id="total" readonly/>  
+                                                    </div>
+                                                </div>
+                                                <br><br>
+                                                <div class="col-sm-12">
+                                                    <div class="col-sm-8"></div>
+                                                    <div class="col-sm-4">
+                                                        <button id="btnAplicar" type="button" class="form-control btn btn-default color-blue" onclick="aplicar();" disabled="disabled"><b>APLICAR PAGOS</b></button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -89,21 +109,7 @@
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                         <img src="<?= base_url('dist/img/financial.png') ?>" style="width: 120px;">
                                     </div>
-                                    <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <div class="input-daterange">
-                                            <div class="col-md-4">
-                                                <p style="color: gray">FILTRE SU BUSQUEDA POR:</p>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <p style="color: blue">FECHA INICIAL</p>
-                                                <input type="text" name="start_date" id="start_date" class="form-control" />
-                                            </div>
-                                            <div class="col-md-4">
-                                                <p style="color: blue">FECHA FINAL</p>
-                                                <input type="text" name="end_date" id="end_date" class="form-control" />
-                                            </div>      
-                                        </div>
                                         <form>
                                             <table id="table-paysges" class="table table-striped">
                                                 <thead>
@@ -119,25 +125,23 @@
                                                     </tr>                                   
                                                 </thead>
                                                 <tbody>
-                                                    <?php /*
+                                                    <?php 
                                                       if (isset($pays_process) && $pays_process) {
                                                       foreach ($pays_process as $row) {
                                                       ?>
                                                       <tr>
+                                                      <td><?= $row->dateSave ?></td>
                                                       <td><?= $row->uniquecode ?></td>
                                                       <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                      <td><?= $row->name_activitie ?></td>
-                                                      <td><?= $row->count ?></td>
-                                                      <td><?= $row->site ?></td>
                                                       <td><?= $row->name_user ?></td>
-                                                      <td><?= $row->totalCost ?></td>
-                                                      <td><?= $row->percent_pay ?>%</td>
+                                                      <td><?php $iva = $row->sumValue * 0.19; echo $iva; ?></td>
+                                                      <td></td>
+                                                      <td></td>
                                                       <td><?= $row->sumValue ?></td>
-                                                      <td><input type="checkbox" class="form-check-input"></td>
                                                       </tr>
                                                       <?php
                                                       }
-                                                      } */
+                                                      }
                                                     ?>
                                                 </tbody>
                                             </table>
@@ -159,22 +163,6 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        var min = date($('#min').val());
-                        var max = date($('#max').val());
-                        var fecha = date(data[0]); // use data for the age column
-
-                        if ((min && max) ||
-                                (min && fecha <= max) ||
-                                (min <= fecha && max) ||
-                                (min <= fecha && fecha <= max))
-                        {
-                            return true;
-                        }
-                        return false;
-                    }
-            );
             $(document).ready(function () {
                 $('#table-paysges').DataTable({
                     language: {
@@ -202,10 +190,82 @@
                         }
                     }
                 });
-                $('#min, #max').keyup(function () {
-                    table.draw();
-                });
             });
+
+            function sumar(valor, id) {
+                if ($("#chk" + id).prop("checked") === true) {
+                    $("#btnAplicar").prop("disabled",false);
+                    var total = 0;
+                    valor = parseInt(valor); // Convertir el valor a un entero (número).
+
+                    total = $("#total").val();
+
+                    // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+                    total = (total == null || total == undefined || total == "") ? 0 : total;
+
+                    /* Esta es la suma. */
+                    total = (parseInt(total) + parseInt(valor));
+
+                    // Colocar el resultado de la suma en el control "span".
+                    $("#total").val(total);
+                    url = get_base_url() + "Audit/process_pays";
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {id: id},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Pago Seleccionado');
+                            }
+                        }
+                    });
+                } else {
+                    $("#idPay" + id).val() = "";
+                            var total = 0;
+                    valor = parseInt(valor); // Convertir el valor a un entero (número).
+
+                    total = $("#total").val();
+
+                    // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+                    total = (total == null || total == undefined || total == "") ? 0 : total;
+
+                    /* Esta es la suma. */
+                    total = (parseInt(total) - parseInt(valor));
+
+                    // Colocar el resultado de la suma en el control "span".
+                    $("#total").val(total);
+                    url = get_base_url() + "Audit/remove_process_pays";
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        data: {id: id},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Pago borrado');
+                            }
+                        }
+                    });
+                }
+            }
+
+            function aplicar() {
+                url = get_base_url() + "Audit/pdf_pays";
+                var a = document.createElement('a');
+                a.href = url;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);                
+                alertify.success('Pagos realizados exitosamente.');
+                alertify.success('PDF generado exitosamente');
+                location.reload();
+            }
         </script>
     </body>
 </html>

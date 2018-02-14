@@ -105,6 +105,7 @@ class Audit extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['pays'] = $this->Audits_model->get_pl(13);
+        $data['pays_process'] = $this->Payments_model->get_pays_process();
         $this->load->view('financial_view', $data);
     }
 
@@ -128,8 +129,10 @@ class Audit extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $percent = $this->input->post('percent');
         $value = $this->input->post('value');
+        $idTech = $this->input->post('idTech');
         $data = array(
             'idOrder' => $idOrder,
+            'idTechnical' => $idTech,
             'percent' => $percent,
             'value' => $value);
         $data1 = array(
@@ -137,6 +140,40 @@ class Audit extends CI_Controller {
             'idOrderState' => 13,
             'historyBackState' => 0);
         $res = $this->Payments_model->assign_pay($idOrder, $data, $data1);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function process_pays() {
+        $id = $this->input->post('id');
+        $data = array(
+            'idOrder' => $id,
+            'state' => 2,
+            'dateUpdate' => date('Y-m-d H:i:s'));
+        $data1 = array(
+            'idArea' => 3,
+            'idOrderState' => 12,
+            'historyBackState' => 0);
+        $res = $this->Payments_model->process_pays($id, $data, $data1);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function remove_process_pays() {
+        $id = $this->input->post('id');
+        $data = array(
+            'idOrder' => $id,
+            'state' => 0);
+        $data1 = array(
+            'idArea' => 3,
+            'idOrderState' => 13);
+        $res = $this->Payments_model->remove_process_pays($id, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -199,6 +236,16 @@ class Audit extends CI_Controller {
         } else {
             echo 'error';
         }
+    }
+
+    public function pdf_pays() {
+        $data['pays'] = $this->Payments_model->get_pays_xusers();
+        $arr = array('state' => 1);
+        $this->Payments_model->remove_pays_state($arr);
+        $this->load->library('pdfgenerator');
+        $html = $this->load->view('pays_report', $data, true);
+        $filename = 'report_' . time();
+        $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
     }
 
 }

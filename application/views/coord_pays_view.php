@@ -141,7 +141,7 @@
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
                                                                 <td><?= $row->site ?></td>
-                                                                <td><?= $row->name_user ?></td>
+                                                                <td><input type="hidden" name="idTech" id="idTech<?= $row->id ?>" value="<?= $row->idTechnicals ?>"><?= $row->name_user ?></td>
                                                                 <td>PRESUPUESTO</td>
                                                                 <td><?= $row->observations ?></td>                                                
                                                                 <td><input type="hidden" id="costOrder" value="<?= $row->totalCost ?>"><?= $row->totalCost ?></td>
@@ -394,6 +394,7 @@
                     var pay = $("#pay_" + idOrder).val();
                     var dif = max - pay;
                     var percent = $("#percent_" + idOrder).val();
+                    var idTech = $("#idTech" + idOrder).val();
                     if (percent > dif) {
                         alertify.error('No puedes superar el porcentaje maximo a pagar.');
                         return 0;
@@ -406,7 +407,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {idOrder: idOrder, percent: percent, value: value},
+                            data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
                             success: function (resp) {
                                 if (resp === "error") {
                                     alertify.error('Error en BBDD');

@@ -13,14 +13,14 @@ class Utils extends CI_Model {
         $config['newline'] = "\r\n";
         $config['mailtype'] = 'html';
         $config['protocol'] = 'mail';
-        $config['smtp_host'] = 'mail.hosting4world.com';
+        $config['smtp_host'] = 'mail.unisoftsystem.com.co';
         $config['smtp_port'] = '465';
-        $config['smtp_user'] = 'jhon.valdes@instasoft.com.co';
-        $config['smtp_pass'] = 'jhV_3103';
+        $config['smtp_user'] = 'jhonjairo.valdes@unisoftsystem.com.co';
+        $config['smtp_pass'] = 'Pcu2208*';
         $config['validation'] = TRUE;
         $this->email->initialize($config);
         $this->email->clear();
-        $this->email->from('jhon.valdes@instasoft.com.co', 'Unisoft');
+        $this->email->from('jhonjairo.valdes@unisoftsystem.com.co', 'Unisoft');
         $this->email->to($mail);
         //$this->email->cc($destination);
         //$this->email->bcc($destination);
