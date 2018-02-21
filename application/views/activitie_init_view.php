@@ -321,7 +321,7 @@
         </div>
         <!-- Modal Fotos-->
         <div id="modalshow" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-dialog" style="width: 70%;">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-body">
@@ -471,9 +471,10 @@
 
             function show(id) {
                 url = get_base_url() + "Projects/get_daily_management_xid?jsoncallback=?";
+                var pos = 1;
                 $.getJSON(url, {id: id}).done(function (response) {
                     $.each(response["res"], function (i, res) {
-                        $("#photo").html("<img src='" + get_base_url() + "uploads/'" + res.image + ">");
+                        $("#photo").html("<img src='" + get_base_url() + "uploads/" + res.image + "' width='800px' heigth='600px'>");
                     }
                     );
                 });
