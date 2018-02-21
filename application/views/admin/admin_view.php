@@ -69,7 +69,7 @@
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="providers.php" style="color:#FF4C4C;">
+                            <a href="#" style="color:#FF4C4C;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-file-pdf"></i></h3>
@@ -80,13 +80,24 @@
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="providers.php" style="color:#E8A13A;">
+                            <a href="#" style="color:#E8A13A;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-caret-up"></i></h3>
                                         <p>Áreas</p>
                                     </div>
                                     <a href="<?= base_url('Parametrization/areas')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="#" style="color:#032365;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-archive"></i></h3>
+                                        <p>Bodegas</p>
+                                    </div>
+                                    <a href="<?= base_url('Parametrization/cellar')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

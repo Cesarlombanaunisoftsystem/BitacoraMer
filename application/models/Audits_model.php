@@ -20,7 +20,7 @@ class Audits_model extends CI_Model {
             serv.name_service, tecn.name_user
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
-   idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
+   idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
    FROM tbl_orders_details
     GROUP BY idOrder) details
     ON tbl_orders.id = details.idOrder

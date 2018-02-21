@@ -39,6 +39,7 @@ class Login extends CI_Controller {
                     $data = array(
                         'is_logued_in' => TRUE,
                         'id_usuario' => $check_user->id,
+                        'id_profile' => $check_user->idUserProfile,
                         'perfil' => $check_user->name_profile,
                         'username' => $check_user->name_user
                     );

@@ -13,7 +13,9 @@ class Parametrization extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Categories_model', 'Areas_model', 'Docs_model', 'Activities_model', 'Payments_model', 'States_model', 'Services_model', 'Taxes_model'));
+        $this->load->model(array('Users_model', 'Categories_model',
+            'Areas_model', 'Docs_model', 'Activities_model', 'Payments_model',
+            'States_model', 'Services_model', 'Taxes_model', 'Cellars_model'));
     }
 
     public function index() {
@@ -505,6 +507,71 @@ class Parametrization extends CI_Controller {
     public function delete_tax() {
         $id_tax = $this->input->post('idTax');
         $res = $this->Payments_model->delete_tax($id_tax);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function cellar() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Bodegas';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['states'] = $this->States_model->get_states();
+        $data['cellars'] = $this->Cellars_model->get_cellars();
+        $this->load->view('admin/cellar_view', $data);
+    }
+    
+    public function get_cellar($id) {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Servicios';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['states'] = $this->States_model->get_states();
+        $data['cellar'] = $this->Cellars_model->get_cellar($id);
+        $this->load->view('admin/edit_cellar_view', $data);
+    }
+
+    public function add_cellar() {
+        $data = array(
+            'name_cellar' => $this->input->post('name'),
+            'idState' => $this->input->post('state')
+        );
+        $res = $this->Cellars_model->add_cellar($data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function edit_cellar() {
+        $id = $this->input->post('id');
+        $data = array(
+            'name_cellar' => $this->input->post('name'),
+            'idState' => $this->input->post('state')
+        );
+        $res = $this->Cellars_model->edit_tax($id, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function delete_cellar() {
+        $id = $this->input->post('id');
+        $res = $this->Cellars_model->delete_cellar($id);
         if ($res === TRUE) {
             echo 'ok';
         } else {

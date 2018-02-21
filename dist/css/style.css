@@ -1,5 +1,5 @@
 .sinborde {
-  border : 0;
+    border : 0;
 }
 .material-switch > input[type="checkbox"] {
     display: none;   
@@ -47,8 +47,8 @@
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+    -webkit-appearance: none; 
+    margin: 0; 
 }
 
 input[type=number] { -moz-appearance:textfield; }
@@ -56,14 +56,14 @@ a {
     position: relative;
 }
 #pdforder {
-  position: absolute;
-  top: 100%;
-  left: 100%;
-  display: none;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    display: none;
 }
- 
+
 a:hover #pdforder {
-  display: block;
+    display: block;
 }
 
 .tbl-detail tbody tr td{
@@ -137,7 +137,7 @@ a:hover #pdforder {
     display: none;
     position: absolute;
 
-	  opacity: 0;
+    opacity: 0;
     z-index: 9;
     cursor: pointer;
 
@@ -169,28 +169,28 @@ input:checked + .slide-container  .slide {
 input:checked + .slide-container .nav label { display: block; }
 
 .nav-dots {
-	width: 100%;
-	bottom: 9px;
-	height: 11px;
-	display: block;
-	position: absolute;
-	text-align: center;
+    width: 100%;
+    bottom: 9px;
+    height: 11px;
+    display: block;
+    position: absolute;
+    text-align: center;
 }
 
 .nav-dots .nav-dot {
-	top: -5px;
-	width: 11px;
-	height: 11px;
-	margin: 0 4px;
-	position: relative;
-	border-radius: 100%;
-	display: inline-block;
-	background-color: rgba(0, 0, 0, 0.6);
+    top: -5px;
+    width: 11px;
+    height: 11px;
+    margin: 0 4px;
+    position: relative;
+    border-radius: 100%;
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .nav-dots .nav-dot:hover {
-	cursor: pointer;
-	background-color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 input#img-1:checked ~ .nav-dots label#img-dot-1,
@@ -199,7 +199,7 @@ input#img-3:checked ~ .nav-dots label#img-dot-3,
 input#img-4:checked ~ .nav-dots label#img-dot-4,
 input#img-5:checked ~ .nav-dots label#img-dot-5,
 input#img-6:checked ~ .nav-dots label#img-dot-6 {
-	background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .modalDialog {
@@ -253,3 +253,4 @@ input#img-6:checked ~ .nav-dots label#img-dot-6 {
 .close:hover {
     background: #00d9ff;
 }
+

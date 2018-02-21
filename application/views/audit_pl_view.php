@@ -27,75 +27,130 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Audit/pl') . $controller ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Audit/pl_process_registers') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation" class="active"><a href="#bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">Bandeja de entrada</a></li>
+                                        <li role="presentation"><a href="#process" aria-controls="binnacle" role="tab" data-toggle="tab">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
-                        </div>
-                        <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                            <table  id="data-table" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th style="color: #00B0F0">Fecha de ordén</th>
-                                        <th style="color: #00B0F0">No. Ordén</th>
-                                        <th style="color: #00B0F0">Centro de Costos</th>
-                                        <th style="color: #00B0F0">Actividad</th>
-                                        <th style="color: #00B0F0">Cantidad</th>
-                                        <th style="color: #00B0F0">Sitio</th>
-                                        <th style="color: #00B0F0">Técnico</th>
-                                        <th style="color: #00B0F0">Costo de Orden</th>
-                                        <th style="color: #00B0F0">% Utilidad</th>
-                                        <th style="color: #00B0F0">Aprobar</th>
-                                    </tr>                                   
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (isset($pl) && $pl) {
-                                        foreach ($pl as $row) {
-                                            if ($row->historybackState === '1') {
-                                                $trcolor = '#FCF8E5';
-                                            } else {
-                                                $trcolor = '';
-                                            }
-                                            ?>                                            
-                                            <tr style="background-color:<?= $trcolor ?>">
-                                                <td class="details-control" id="<?php echo $row->id; ?>">
-                                                    <i class="fa fa-plus-square-o"></i>
-                                                </td>
-                                                <td><?= $row->dateSave ?></td>
-                                                <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode ?></a></td>
-                                                <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                <td><?= $row->name_activitie ?></td>
-                                                <td><?= $row->count ?></td>
-                                                <td><?= $row->site ?></td>
-                                                <td><?= $row->name_user ?></td>                                                
-                                                <td><?= $row->totalCost ?></td>
-                                                <td><?php
-                                                    $dif = $row->totalOrder - $row->totalCost;
-                                                    $util = ($dif * 100) / $row->totalCost;
-                                                    echo round($util, 2) . ' %';
-                                                    ?></td>
-                                                <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign ?>)">
-                                                        <i class="fa fa-check-square" style="color: green"></i>
-                                                    </a>
-                                                    <a href="#" onclick="return_order(<?= $row->id . "," . $areaReturn . "," . $stateReturn ?>)">
-                                                        <i class="fa fa-window-close" aria-hidden="true" style="color: red"></i>
-                                                    </a></td>
-                                            </tr>
-                                            <?php
-                                        }
-                                    }
-                                    ?>                                                                         
-                                </tbody>
-                            </table>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="bandeja">
+                                <div class="row">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
+                                    </div>
+                                    <input type="hidden" id="id" value=""/>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <table  id="data-table" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th style="color: #00B0F0">Fecha de ordén</th>
+                                                    <th style="color: #00B0F0">No. Ordén</th>
+                                                    <th style="color: #00B0F0">Centro de Costos</th>
+                                                    <th style="color: #00B0F0">Actividad</th>
+                                                    <th style="color: #00B0F0">Cantidad</th>
+                                                    <th style="color: #00B0F0">Sitio</th>
+                                                    <th style="color: #00B0F0">Técnico</th>
+                                                    <th style="color: #00B0F0">Costo de Orden</th>
+                                                    <th style="color: #00B0F0">% Utilidad</th>
+                                                    <th style="color: #00B0F0">Aprobar</th>
+                                                </tr>                                   
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (isset($pl) && $pl) {
+                                                    foreach ($pl as $row) {
+                                                        if ($row->historybackState === '1') {
+                                                            $trcolor = '#FCF8E5';
+                                                        } else {
+                                                            $trcolor = '';
+                                                        }
+                                                        ?>                                            
+                                                        <tr style="background-color:<?= $trcolor ?>">
+                                                            <td class="details-control" id="<?php echo $row->id; ?>">
+                                                                <i class="fa fa-plus-square-o"></i>
+                                                            </td>
+                                                            <td><?= $row->dateSave ?></td>
+                                                            <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode ?></a></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?></td>
+                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><?= $row->count ?></td>
+                                                            <td><?= $row->site ?></td>
+                                                            <td><?= $row->name_user ?></td>                                                
+                                                            <td><?= $row->totalCost ?></td>
+                                                            <td><?php
+                                                                $dif = $row->totalOrder - $row->totalCost;
+                                                                $util = ($dif * 100) / $row->totalCost;
+                                                                echo round($util, 2) . ' %';
+                                                                ?></td>
+                                                            <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign . "," . $row->idTechnicals ?>)">
+                                                                    <i class="fa fa-check-square" style="color: green"></i>
+                                                                </a>
+                                                                <a href="#" onclick="return_order(<?= $row->id . "," . $areaReturn . "," . $stateReturn ?>)">
+                                                                    <i class="fa fa-window-close" aria-hidden="true" style="color: red"></i>
+                                                                </a></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>                                                                         
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="process">
+                                <div class="row">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
+                                    </div>
+                                    <input type="hidden" id="id" value=""/>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <table  id="data-table" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: #00B0F0">Fecha de ordén</th>
+                                                    <th style="color: #00B0F0">No. Ordén</th>
+                                                    <th style="color: #00B0F0">Centro de Costos</th>
+                                                    <th style="color: #00B0F0">Actividad</th>
+                                                    <th style="color: #00B0F0">Cantidad</th>
+                                                    <th style="color: #00B0F0">Sitio</th>
+                                                    <th style="color: #00B0F0">Técnico</th>
+                                                    <th style="color: #00B0F0">Costo de Orden</th>
+                                                    <th style="color: #00B0F0">% Utilidad</th>
+                                                </tr>                                   
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (isset($plprocess) && $plprocess) {
+                                                    foreach ($plprocess as $row) {
+                                                        ?>                                            
+                                                        <tr>
+                                                            <td><?= $row->dateSave ?></td>
+                                                            <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode ?></a></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?></td>
+                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><?= $row->count ?></td>
+                                                            <td><?= $row->site ?></td>
+                                                            <td><?= $row->name_user ?></td>                                                
+                                                            <td><?= $row->totalCost ?></td>
+                                                            <td><?php
+                                                                $dif = $row->totalOrder - $row->totalCost;
+                                                                $util = ($dif * 100) / $row->totalCost;
+                                                                echo round($util, 2) . ' %';
+                                                                ?></td>                                                            
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>                                                                         
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -303,20 +358,20 @@
                 });
             }
 
-            function assign(idOrder, idArea, idState) {
-                alertify.confirm('En realidad desea pasar la ordén a siguiente auditor?', function () {
+            function assign(idOrder, idArea, idState, idTech) {
+                alertify.confirm('En realidad desea aprobar la ordén?', function () {
                     alertify.success('Accepted');
                     url = get_base_url() + "Audit/assign";
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: {idOrder: idOrder, idArea: idArea, idState: idState},
+                        data: {idOrder: idOrder, idArea: idArea, idState: idState, idTech: idTech},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
                             }
                             if (resp === "ok") {
-                                alertify.success('Ordén pasada a siguiente auditoria.');
+                                alertify.success('Ordén aprovada.');
                                 location.reload();
                             }
                         }

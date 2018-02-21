@@ -33,6 +33,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '10';
         $data['pl'] = $this->Audits_model->get_pl(9);
+        $data['plprocess'] = $this->Audits_model->get_pl(10);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -53,6 +54,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '11';
         $data['pl'] = $this->Audits_model->get_pl(10);
+        $data['plprocess'] = $this->Audits_model->get_pl(11);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -73,6 +75,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '12';
         $data['pl'] = $this->Audits_model->get_pl(11);
+        $data['plprocess'] = $this->Audits_model->get_pl(12);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -113,12 +116,17 @@ class Audit extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $idArea = $this->input->post('idArea');
         $idState = $this->input->post('idState');
+        $idTech = $this->input->post('idTech');
         $data = array(
             'idArea' => $idArea,
             'idOrderState' => $idState,
-            'historyBackState' => 0);
+            'historyBackState' => 0,
+            'dateAssign' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
+            $technical = $this->Users_model->get_user_xid($idTech);
+            $content = $this->Orders_model->get_order_by_id_email($idOrder);
+            $this->Utils->sendMail($technical->email, 'Inicio de Actividades - BITACORA', 'templates/email_activitie_init.php', $content);
             echo 'ok';
         } else {
             echo $res;

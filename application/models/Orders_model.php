@@ -28,6 +28,26 @@ class Orders_model extends CI_Model {
             return false;
         }
     }
+    
+    public function get_order_by_id($idOrder) {
+        $sql = "SELECT tbl_orders.*,max(tbl_orders_details.idActivities),
+            tbl_orders_details.idServices,tbl_orders_details.site,
+            tbl_orders_details.count,tbl_activities.name_activitie,
+            tbl_services.name_service,tbl_users.name_user,tbl_users.email,
+            tbl_users.identify_number,tbl_users.contact,tbl_users.address,
+            tbl_users.phone FROM tbl_orders JOIN tbl_orders_details
+            ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
+            tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
+            tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
+            tbl_orders.idTechnicals = tbl_users.id JOIN tbl_cellars
+            ON tbl_orders_details.idCellar = tbl_cellars.id WHERE tbl_orders.id='$idOrder'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 
     public function get_report_pays_xiduser($id) {
         $sql = "SELECT A.id, A.uniquecode, A.uniqueCodeCentralCost, A.idFormPay, A.idTechnicals, B.totalPays, C.name_user, C.identify_number,
@@ -83,12 +103,16 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     }
 
     public function get_order_by_id_email($idOrder) {
-        $sql = 'SELECT tbl_orders.*,max(tbl_orders_details.idActivities),tbl_orders_details.idServices,tbl_orders_details.site,
-            tbl_activities.name_activitie,tbl_services.name_service,tbl_users.name_user FROM tbl_orders JOIN tbl_orders_details
+        $sql = "SELECT tbl_orders.*,max(tbl_orders_details.idActivities),
+            tbl_orders_details.idServices,tbl_orders_details.site,
+            tbl_orders_details.count,tbl_activities.name_activitie,
+            tbl_services.name_service,tbl_users.name_user,tbl_users.email,
+            tbl_users.identify_number,tbl_users.contact,tbl_users.address,
+            tbl_users.phone FROM tbl_orders JOIN tbl_orders_details
             ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
-            tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON
+            tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
             tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
-            tbl_orders.idTechnicals = tbl_users.id WHERE tbl_orders.id=' . $idOrder . ' GROUP BY tbl_orders.id';
+            tbl_orders.idTechnicals = tbl_users.id WHERE tbl_orders.id='$idOrder'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -300,7 +324,24 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
-            return false;
+            return $query->result();
+        }
+    }
+    
+    public function get_materials_by_cellar($idOrder,$idCellar) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
+                . 'tbl_services.name_service,tbl_services.unit_measurement');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idCellar', $idCellar);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return $query->result();
         }
     }
 
@@ -320,6 +361,16 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return $query->row();
         } else {
             return false;
+        }
+    }
+    
+    public function assign_state($idOrder, $data) {
+        $this->db->where('id', $idOrder);
+        $this->db->update('tbl_orders', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
         }
     }
 

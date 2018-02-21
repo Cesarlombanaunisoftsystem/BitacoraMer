@@ -67,13 +67,9 @@
                                                         foreach ($pays as $row) {
                                                             ?>                                            
                                                             <tr>
-                                                                <?php if ($stateInArea === '2') { ?>
-                                                                    <td></td>
-                                                                <?php } else { ?>
-                                                                    <td class="details-control" id="<?php echo $row->id; ?>">
-                                                                        <i class="fa fa-plus-square-o"></i>
-                                                                    </td>
-                                                                <?php } ?>
+                                                                <td class="details-control" id="<?php echo $row->id; ?>">
+                                                                    <i class="fa fa-plus-square-o"></i>
+                                                                </td>
                                                                 <td><?= $row->dateSave ?></td>
                                                                 <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode ?></a></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
@@ -86,10 +82,8 @@
                                                                 <td><input type="hidden" id="costOrder" value="<?= $row->totalCost ?>"><?= $row->totalCost ?></td>
                                                                 <td onclick="historyPays(<?php echo $row->id; ?>)" data-toggle="modal" data-target="#modalHistoryPays">
                                                                     <input type="hidden" id="pay_<?= $row->id ?>" value="<?= $row->percent_pay ?>"><?= $row->percent_pay ?>%</td>
-                                                                <td><?php if ($stateInArea !== '3') { ?>
-                                                                        <input type="number" name="percent" id="percent_<?= $row->id ?>" class="form form-control" min="0" max="100" onchange="assignPercent('<?= $row->id ?>')">
-                                                                    <?php } else { ?><input type="number" name="percent" id="percent_<?= $row->id ?>" class="form form-control" readonly>
-                                                                    <?php } ?>
+                                                                <td>
+                                                                    <input type="number" name="percent" id="percent_<?= $row->id ?>" class="form form-control" min="0" max="100" onchange="assignPercent('<?= $row->id ?>')">                                                                    
                                                                 </td>
                                                             </tr>
                                                             <?php

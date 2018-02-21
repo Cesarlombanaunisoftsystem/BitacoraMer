@@ -85,6 +85,24 @@ if ($permisos) {
                             <label for="chkfinancial" class="label-success"></label>
                         </div>';
         }
+        if ($value->id_permit == 15) {
+            $cellarmer = '<div class="material-switch pull-right">
+                            <input id="chkcellarmer" name="chkcellarmer" type="checkbox" checked onclick="removePermit(15,' . $perfil->id . ')"/>
+                            <label for="chkcellarmer" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 16) {
+            $cellarext = '<div class="material-switch pull-right">
+                            <input id="chkcellarext" name="chkcellarext" type="checkbox" checked onclick="removePermit(16,' . $perfil->id . ')"/>
+                            <label for="chkcellarext" class="label-success"></label>
+                        </div>';
+        }
+        if ($value->id_permit == 17) {
+            $projects = '<div class="material-switch pull-right">
+                            <input id="chkprojects" name="chkprojects" type="checkbox" checked onclick="removePermit(17,' . $perfil->id . ')"/>
+                            <label for="chkprojects" class="label-success"></label>
+                        </div>';
+        }
     }
 }
 ?>
@@ -249,6 +267,36 @@ if ($permisos) {
                                                     echo '<div class="material-switch pull-right">
                             <input id="chkfinancial" name="chkfinancial" type="checkbox" onclick="addPermit(14,' . $perfil->id . ')"/>
                             <label for="chkfinancial" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td>
+                                        <td><?php
+                                                if (isset($cellarmer)) {
+                                                    echo $cellarmer;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkcellarmer" name="chkcellarmer" type="checkbox" onclick="addPermit(15,' . $perfil->id . ')"/>
+                            <label for="chkcellarmer" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td>
+                                        <td><?php
+                                                if (isset($cellarext)) {
+                                                    echo $cellarext;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkcellarext" name="chkcellarext" type="checkbox" onclick="addPermit(16,' . $perfil->id . ')"/>
+                            <label for="chkcellarext" class="label-success"></label>
+                        </div>';
+                                                }
+                                                ?></td>
+                                        <td><?php
+                                                if (isset($projects)) {
+                                                    echo $projects;
+                                                } else {
+                                                    echo '<div class="material-switch pull-right">
+                            <input id="chkprojects" name="chkprojects" type="checkbox" onclick="addPermit(17,' . $perfil->id . ')"/>
+                            <label for="chkprojects" class="label-success"></label>
                         </div>';
                                                 }
                                                 ?></td>

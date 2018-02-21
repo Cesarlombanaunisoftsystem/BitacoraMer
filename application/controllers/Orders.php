@@ -18,7 +18,8 @@ class Orders extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Activities_model', 'Users_model', 'Payments_model', 'Orders_model', 'Areas_model', 'Taxes_model'));
+        $this->load->model(array('Activities_model', 'Users_model', 'Payments_model',
+            'Orders_model', 'Areas_model', 'Taxes_model', 'Cellars_model'));
     }
 
     public function index() {
@@ -79,6 +80,15 @@ class Orders extends CI_Controller {
     public function get_order_materials() {
         $idOrder = $this->input->get('idOrder');
         $data['materials'] = $this->Orders_model->get_materials($idOrder);
+        $data['cellars'] = $this->Cellars_model->get_cellars();
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_order_materials_cellar() {
+        $idOrder = $this->input->get('idOrder');
+        $idCellar = $this->input->get('cellar');
+        $data['materials'] = $this->Orders_model->get_materials_by_cellar($idOrder,$idCellar);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
