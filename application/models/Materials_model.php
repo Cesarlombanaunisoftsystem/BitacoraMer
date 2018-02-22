@@ -45,13 +45,13 @@ class Materials_model extends CI_Model {
 
     public function get_data_cellar_order($order,$cellar) {
         $sql = "SELECT tbl_orders_details.*, serv.name_service, serv.unit_measurement,
-            bod.name_cellar, bod.contact_cellar
+            bod.name_cellar, bod.contact_cellar, bod.image
     FROM tbl_orders_details
     LEFT JOIN (SELECT id, name_service, unit_measurement
    FROM tbl_services
     GROUP BY id) serv
     ON tbl_orders_details.idServices= serv.id
-    LEFT JOIN (SELECT id, name_cellar, contact_cellar
+    LEFT JOIN (SELECT id, name_cellar, contact_cellar, image
    FROM tbl_cellars
     GROUP BY id) bod
     ON tbl_orders_details.idCellar= bod.id
