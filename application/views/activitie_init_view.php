@@ -208,7 +208,7 @@
                                                 <p style="color: #00B0F0">DETALLE DE GESTIÓN</p>
                                             </div>
                                             <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <textarea class="form form-control" name="detailgest" id="detailgest"></textarea>
+                                                <textarea class="form form-control" name="detailgest" id="detailgest" required=""></textarea>
                                             </div><br><br><br>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                 <p style="color: #00B0F0">% AVANCE EJECUCIÓN</p>
@@ -330,6 +330,41 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Detail-->
+        <div id="modalDetail" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 40%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div style="clear: inherit;
+                                 height: 600px;
+                                 width: 510px;
+                                 margin-right: 0px;
+                                 padding: 0px;
+                                 border-width: 4px;
+                                 border-color: blue;
+                                 border-style: solid;
+                                 border-radius: 20px;">
+                                <div style="height: 300px;
+                                     width: 430px; margin-left: 30px;">
+                                    <p style="text-align:left;">
+                                        <img src="<?= base_url('dist/img/logo_mail.png') ?>"
+                                             alt="logo Mer">
+                                        <img src="<?= base_url('dist/img/titulo_mail.png') ?>"
+                                             height="90px" width="250px" alt="titulo"/></p>
+                                    <p>
+                                        <img src="<?= base_url('dist/img/hr_mail.png') ?>" alt="hr">
+                                    </p>
+                                    <div id="detailsModal">
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>                                              
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
@@ -359,6 +394,17 @@
                             });
                 });
             });
+
+            $("#attendant").change(function () {
+                var val = $("#attendant").prop("checked");
+                if (val === true) {
+                    $("#attendant").val(1);
+                } else {
+                    $("#attendant").val(0);
+                }
+            }
+            );
+
             function upexe()
             {
                 var valor = parseInt($("#percentexe").html());
@@ -461,12 +507,20 @@
         </div></td><td><div class="progress">\n\
                         <div class="progress-bar progress-bar-warning" style="width: '
                                 + res.percent_materials + '%">' + res.percent_materials +
-                                '</div></div></td><td>' + res.detail + '</td><td>'
-                                + '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a></td></tr>'
+                                '</div></div></td><td>' +
+                                '<a data-toggle="modal" data-target="#modalDetail" onclick="detail(' + res.id + ')">\n\
+                    <input type="text" value="' + res.detail + '" id="detail_'+res.id+'" readonly></td><td>'
+                                + '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')">\n\
+<img src="' + get_base_url() + 'dist/img/camera.png"></a></td></tr>'
                                 );
                     });
                 }
                 );
+            }
+
+            function detail(id) {
+            var val = $("#detail_"+id).val();
+                $("#detailsModal").html("<p style='text-align:center; font-size: 16px'>" + val + "</p>");
             }
 
             function show(id) {

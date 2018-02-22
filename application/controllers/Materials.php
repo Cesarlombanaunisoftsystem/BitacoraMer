@@ -81,6 +81,14 @@ class Materials extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
+    
+    public function get_materials_cellar() {
+        $idOrder = $this->input->get('idOrder');
+        $data['materials'] = $this->Materials_model->get_materials_cellar($idOrder);
+        $data['cellars'] = $this->Cellars_model->get_cellars();
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function assign() {
         $id = $this->input->post('id');
@@ -152,9 +160,9 @@ class Materials extends CI_Controller {
 
     public function pdf_materials_sql($ccost) {
         $data['datos'] = $this->Orders_model->get_order_by_id($ccost);
-        $data['materials'] = $this->Materials_model->get_data_cellar_order($ccost);
+        $data['materials'] = $this->Materials_model->get_materials_cellar($ccost);
         $html = $this->load->view('materials_report', $data, true);
-        $this->pdf_materials($html);
+        $this->generate_pdf($html);
     }
 
     public function generate_pdf($data) {

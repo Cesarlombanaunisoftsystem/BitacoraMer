@@ -15,8 +15,7 @@
                         <?= $titulo ?>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?= base_url('Materials/') . $link ?>"><i class="fa fa-dashboard"></i> Volver</a></li>
-                        <li class="active"></li>
+                        <li><a href="<?= base_url('Materials/') . $link ?>"><i class="fa fa-refresh"></i></a></li>
                     </ol>
                 </section>
 

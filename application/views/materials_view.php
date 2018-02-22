@@ -359,7 +359,7 @@
                 $("#lblActivProcess").html(activ);
                 $("#lblcCostProcess").html(ccost);
                 $("#lblTechProcess").html(tech);
-                url = get_base_url() + "Materials/get_materials?jsoncallback=?";
+                url = get_base_url() + "Materials/get_materials_cellar?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
                         $('#bodyMaterialsProcess').append('<tr><td>' + '<input type="hidden" value=' + materials.id + ' name="id_' + materials.id + '"><input type="hidden" value=' + materials.idOrder + ' name="idOrder" id="idOrder">' + materials.name_service +

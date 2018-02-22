@@ -17,7 +17,7 @@ class Projects extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Orders_model', 'Projects_model'));
+        $this->load->model(array('Users_model', 'Orders_model', 'Projects_model', 'Utils'));
     }
 
     public function activitie_init() {
@@ -58,7 +58,7 @@ class Projects extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_daily_management_xid() {
         $id = $this->input->get('id');
         $data['res'] = $this->Projects_model->get_daily_management_xid($id);
@@ -69,6 +69,15 @@ class Projects extends CI_Controller {
     public function register_daily_management() {
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 
+            $idOrder = $this->input->post('idOrderDaily');
+            $attendant = $this->input->post('attendant');
+            $content = $this->input->post('detailgest');
+            $order = $this->Orders_model->get_order_by_id($idOrder);
+            $idcoordinator = $order->idCoordinatorInt;
+            $coordinator = $this->Users_model->get_user_xid($idcoordinator);
+            if ($attendant === '1') {
+                $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $idOrder, 'templates/email_coordinator.php', $content);
+            }
             //obtenemos el archivo a subir
             $file = $_FILES['userfile']['name'];
             //comprobamos si existe un directorio para subir el archivo
@@ -83,6 +92,7 @@ class Projects extends CI_Controller {
                     'detail' => $this->input->post('detailgest'),
                     'percent_execute' => $this->input->post('valpercentexe'),
                     'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
                     'image' => $file
                 );
                 $res = $this->Projects_model->register_daily_management_order($data);

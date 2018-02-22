@@ -83,5 +83,23 @@ class Materials_model extends CI_Model {
             return $query->result();
         }
     }
+    
+    public function get_materials_cellar($idOrder) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
+                . 'tbl_services.name_service,tbl_services.unit_measurement,'
+                . 'tbl_cellars.name_cellar, tbl_cellars.contact_cellar');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.idActivities', 5);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return $query->result();
+        }
+    }
 
 }

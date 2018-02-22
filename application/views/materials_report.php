@@ -20,26 +20,22 @@ and open the template in the editor.
         <main>
             <table>
                 <tr>
-                    <td>| Fecha de Documento | <?= date('d-m-Y') ?></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
-                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td>| Fecha de Documento | <?= date('d-m-Y') ?></td><td></td>
+                    <td></td><td></td></td><td></td><td></td></td><td></td><td></td>
+                    </td><td></td><td></td></td><td></td><td></td></td><td></td><td></td>
                     <td><h3>Orden de Entrega de Materiales No, <?= 'OM-' . $datos->id; ?></h3></td>
                 </tr>                       
             </table>
             <hr>
             <table>
                 <thead>
-                    <tr><td><h3>| Proveedor </h3></td>
-                        <td>| Razón social</td>
-                        <td>| Nit</td>
-                        <td>| Dirección</td>
-                        <td>| Teléfono</td>
-                        <td>| email</td>
-                        <td>| Contacto</td>
+                    <tr><td><h3>| Proveedor |</h3></td>
+                        <td style="color: blue">| Razón social</td>
+                        <td style="color: blue">| Nit</td>
+                        <td style="color: blue">| Dirección</td>
+                        <td style="color: blue">| Teléfono</td>
+                        <td style="color: blue">| email</td>
+                        <td style="color: blue">| Contacto</td>
                     </tr> 
                 </thead>
                 <tbody>
@@ -59,9 +55,9 @@ and open the template in the editor.
             </table>
             <table>
                 <thead>
-                    <tr><td><h3>| Actividad </h3></td>
-                        <td>| Centro de Costos</td>
-                        <td>| Actividad</td>
+                    <tr><td><h3>| Actividad |</h3></td>
+                        <td style="color: blue">| Centro de Costos</td>
+                        <td style="color: blue">| Actividad</td>
                     </tr> 
                 </thead>
                 <tbody>
@@ -75,25 +71,21 @@ and open the template in the editor.
             <table>
                 <thead>
                     <tr>
-                        <td><h3>| Bodega </h3></td>
-                        <td>| Nombre de Bodega</td>
-                        <td>| Contacto</td>
+                        <td><h3>| Bodega |</h3></td>
+                        <td style="color: blue">| Nombre de Bodega</td>
+                        <td style="color: blue">| Contacto</td>
                     </tr> 
                 </thead>
                 <tbody>
-                    <tr>
-                        <td></td>
-                        <td><?php
-                            foreach ($materials as $value) {
-                                echo $value->name_cellar;
-                            }
-                            ?></td>
-                        <td><?php
-                            foreach ($materials as $value) {
-                                echo $value->contact_cellar;
-                            }
-                            ?></td> 
-                    </tr>                    
+                    <?php
+                    foreach ($materials as $value) {
+                        ?>
+                        <tr>
+                            <td></td>
+                            <td><?= $value->name_cellar; ?></td>
+                            <td><?= $value->contact_cellar; ?></td> 
+                        </tr>  
+                    <?php } ?>
                 </tbody>
             </table>
             <hr>
@@ -110,15 +102,15 @@ and open the template in the editor.
                     </tr>  
                 </thead>            
                 <tbody>
-                    <tr>
-                        <?php foreach ($materials as $value) { ?>
-                            <td><?= $value->name_service ?></td>
-                            <td><?= $value->count ?></td>
-                            <td><?= $value->unit_measurement ?></td>
-                            <td><?= $value->observation ?></td>
-                        <?php }
-                        ?>
-                    </tr>
+                    <?php foreach ($materials as $value) { ?>
+                        <tr>                        
+                            <td><?= $value->name_service; ?></td>
+                            <td><?= $value->count; ?></td>
+                            <td><?= $value->unit_measurement; ?></td>
+                            <td><?= $value->observation; ?></td>                        
+                        </tr>
+                    <?php }
+                    ?>
                 </tbody>            
             </table><br><br><br><br><br><br><br><br>
             <hr>
