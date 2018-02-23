@@ -486,26 +486,21 @@
             function register(idOrder) {
                 var typeReg = $("#seltype_" + idOrder).val();
                 if (typeReg === "1") {
-                    alertify.prompt('Devolución Visita de Cierre',
-                            'Observaciones', 'Debes poner observaciones',
-                            function (evt, value) {
-                                url = get_base_url() + "Projects/back_closing_visit";
-                                $.ajax({
-                                    url: url,
-                                    type: 'POST',
-                                    data: {idOrder: idOrder, obsv: value},
-                                    success: function (resp) {
-                                        if (resp === "error") {
-                                            alertify.error('Error en BBDD');
-                                        }
-                                        if (resp === "ok") {
-                                            alertify.success('Ordén enviada a asignador de visitas.');
-                                            location.reload();
-                                        }
-                                    }
-                                })
-                            }, function () {
-                        alertify.error('Cancelar');
+                    var obsv = prompt('Observaciones');
+                    url = get_base_url() + "Projects/back_closing_visit";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder, obsv: obsv},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Ordén enviada a asignador de visitas.');
+                                location.reload();
+                            }
+                        }
                     });
                 } else {
                     url = get_base_url() + "Projects/mark_closing_visit";
