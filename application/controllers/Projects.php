@@ -33,6 +33,7 @@ class Projects extends CI_Controller {
         } else {
             $data['type'] = 'AUDITORIA COORDINADOR';
         }
+        $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_management(12);
         $data['registers'] = $this->Projects_model->get_daily_management(18);
@@ -59,6 +60,13 @@ class Projects extends CI_Controller {
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
+    public function get_accum_management() {
+        $idOrder = $this->input->get('idOrder');
+        $data['accums'] = $this->Projects_model->get_accum_management($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
     public function get_daily_management_xid() {
         $id = $this->input->get('id');
         $data['res'] = $this->Projects_model->get_daily_management_xid($id);
@@ -68,7 +76,6 @@ class Projects extends CI_Controller {
 
     public function register_daily_management() {
         if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-
             $idOrder = $this->input->post('idOrderDaily');
             $attendant = $this->input->post('attendant');
             $content = $this->input->post('detailgest');
@@ -84,11 +91,28 @@ class Projects extends CI_Controller {
             //si no es así, lo creamos
             if (!is_dir("./uploads/"))
                 mkdir("./uploads/", 0777);
-            //comprobamos si el archivo ha subido
-            if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file);
+            // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
+            if ($this->input->post('typegest') === '2') {
                 $data = array(
                     'idOrder' => $this->input->post('idOrderDaily'),
-                    'type_management' => $this->input->post('typegest'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $file
+                );
+                $data1 = array(
+                    'idOrderState' => 17
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+            } else {
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
                     'detail' => $this->input->post('detailgest'),
                     'percent_execute' => $this->input->post('valpercentexe'),
                     'percent_materials' => $this->input->post('valpercentmat'),
@@ -98,11 +122,51 @@ class Projects extends CI_Controller {
                 $res = $this->Projects_model->register_daily_management_order($data);
                 echo $this->valida($res);
             }
-        } else {
-            throw new Exception("Error Processing Request", 1);
         }
     }
-
+    
+    public function closing_visit_request() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Mis Proyectos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['types'] = $this->Projects_model->get_types_management();
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['projects'] = $this->Projects_model->get_daily_management(19);
+        $data['registers'] = $this->Projects_model->get_daily_management(20);
+        $this->load->view('closing_visit_request_view', $data);
+    }
+    
+    public function mark_closing_visit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => 20
+        );
+        $res = $this->Orders_model->assign_state($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function back_closing_visit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => 18,
+            'observations' => $this->input->post('obsv')
+        );
+        $res = $this->Orders_model->assign_state($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
     function valida($res) {
         if ($res === true) {
             return 'ok';

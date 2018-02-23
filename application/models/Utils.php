@@ -7,8 +7,9 @@
  */
 class Utils extends CI_Model {
 
-    public function sendMail($mail, $subject, $template, $content) {
+    public function sendMail($mail, $subject, $template, $content, $titulo) {
         $data['content'] = $content;
+        $data['titulo'] = $titulo;
         $config['charset'] = 'utf-8';
         $config['newline'] = "\r\n";
         $config['mailtype'] = 'html';

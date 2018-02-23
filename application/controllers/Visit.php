@@ -45,21 +45,50 @@ class Visit extends CI_Controller {
 
     public function assign() {
         $idOrder = $this->input->post('idOrder');
+        $state = $this->input->post('state');
         $idUser = $this->input->post('idTech');
-        $data = array(
-            'idTechnicals' => $idUser,
-            'date' => $this->input->post('date'),
-            'idArea' => 1,
-            'idOrderState' => 3,
-            'historybackState' => 0);
-        $res = $this->Visits_model->assign_order($idOrder, $data);
-        if ($res === TRUE) {
-            $technical = $this->Users_model->get_user_xid($idUser);
-            $content = $this->Orders_model->get_order_by_id_email($idOrder);
-            $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $content);            
-            echo 'ok';
-        } else {
-            echo $res;
+
+        if ($state === '2') {
+            $data = array(
+                'idTechnicals' => $idUser,
+                'date' => $this->input->post('date'),
+                'idArea' => 1,
+                'idOrderState' => 3,
+                'observations' => $this->input->post('obsv'),
+                'historybackState' => 0);
+            $res = $this->Visits_model->assign_order($idOrder, $data);
+            if ($res === TRUE) {
+                $technical = $this->Users_model->get_user_xid($idUser);
+                $content = $this->Orders_model->get_order_by_id_email($idOrder);
+                $titulo = '¡Has Sido Asignado para Realizar Visita En Sitio!';
+                $this->Utils->sendMail($technical->email,
+                        'Programación de visita a sitio',
+                        'templates/email_tecnico.php', $content, $titulo);
+                echo 'ok';
+            } else {
+                echo $res;
+            }
+        }
+        if ($state === '20') {
+            $data = array(
+                'idTechnicals' => $idUser,
+                'date' => $this->input->post('date'),
+                'idArea' => 3,
+                'idOrderState' => 21,
+                'observations' => $this->input->post('obsv'),
+                'historybackState' => 0);
+            $res = $this->Visits_model->assign_order($idOrder, $data);
+            if ($res === TRUE) {
+                $technical = $this->Users_model->get_user_xid($idUser);
+                $content = $this->Orders_model->get_order_by_id_email($idOrder);
+                $titulo = '¡Has Sido Asignado para Realizar Visita De Cierre!';
+                $this->Utils->sendMail($technical->email,
+                        'Programación de visita de cierre',
+                        'templates/email_tecnico.php', $content, $titulo);
+                echo 'ok';
+            } else {
+                echo 'error';
+            }
         }
     }
 
@@ -91,7 +120,7 @@ class Visit extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function register_order_validate() {
         $idOrder = $this->input->post('idOrder');
         $obsv = $this->input->post('obsvGen');
@@ -127,7 +156,7 @@ class Visit extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function register_docs() {
         $dir_subida = './uploads/';
         $filefoto = $this->generateRandomString() . $_FILES['fileregfoto']['name'];
@@ -139,33 +168,33 @@ class Visit extends CI_Controller {
         move_uploaded_file($_FILES['fileregfoto']['tmp_name'], $fichero1);
         move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
         move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
-            $dataFoto = array(
-                'file' => $filefoto,
-                'observation' => $_POST['obsvRegPic'],
-                'dateSave' => date('Y-m-d')
-            );            
-            $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeRegFoto'], $dataFoto);
-            $dataPsinm = array(
-                'file' => $filepsinm,
-                'observation' => $_POST['obsvPsinm'],
-                'dateSave' => date('Y-m-d')
-            );            
-            $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypePsinm'], $dataPsinm);
-            $dataTss = array(
-                'file' => $filetss,
-                'observation' => $_POST['obsvTss'],
-                'dateSave' => date('Y-m-d')
-            );            
-            $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeTss'], $dataTss);
-            $dataGen = array(  
-                'idArea' => 1,
-                'idOrderState' => 6,
-                'observations' => $_POST['obsvgen']
-            );   
-            $this->Orders_model->update_order($_POST['idOrder'],$dataGen);
-            redirect(base_url() . 'Visit/site_init');
+        $dataFoto = array(
+            'file' => $filefoto,
+            'observation' => $_POST['obsvRegPic'],
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeRegFoto'], $dataFoto);
+        $dataPsinm = array(
+            'file' => $filepsinm,
+            'observation' => $_POST['obsvPsinm'],
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypePsinm'], $dataPsinm);
+        $dataTss = array(
+            'file' => $filetss,
+            'observation' => $_POST['obsvTss'],
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeTss'], $dataTss);
+        $dataGen = array(
+            'idArea' => 1,
+            'idOrderState' => 6,
+            'observations' => $_POST['obsvgen']
+        );
+        $this->Orders_model->update_order($_POST['idOrder'], $dataGen);
+        redirect(base_url() . 'Visit/site_init');
     }
-    
+
     function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -175,4 +204,5 @@ class Visit extends CI_Controller {
         }
         return $randomString;
     }
+
 }

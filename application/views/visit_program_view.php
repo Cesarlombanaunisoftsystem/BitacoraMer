@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <?php $this->load->view('templates/head') ?>
@@ -71,7 +71,16 @@
                                             }
                                             ?> 
                                             <tr style="background-color:<?= $trcolor ?>">
-                                                <td><a href="javascript:return_order(<?= $visit->id ?>)"><i class="fa fa-undo" aria-hidden="true" style="color: orange"></i></a></td>
+                                                <td><?php
+                                                    if ($visit->idOrderState === '20') {
+                                                        echo "";
+                                                    } else {
+                                                        ?>
+                                                        <a href="javascript:return_order(<?= $visit->id ?>)">
+                                                            <i class="fa fa-undo" aria-hidden="true" style="color: orange">                                                        
+                                                            </i>
+                                                        </a><?php } ?>
+                                                </td>
                                                 <td><?= $visit->dateSave ?></td>
                                                 <td><?= $visit->uniquecode ?></td>
                                                 <td><?= $visit->name_activitie ?></td>
@@ -91,9 +100,9 @@
                                                         }
                                                         ?>
                                                     </select></td>
-                                                <td><textarea class="form form-control"><?= $visit->observations ?></textarea></td>
+                                                <td><textarea class="form form-control" id="obsv_<?= $visit->id ?>"><?= $visit->observations ?></textarea></td>
                                                 <td><?= $date ?></td>
-                                                <td><a href="javascript:assign(<?= $visit->id ?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
+                                                <td><a href="javascript:assign(<?= $visit->id . "," . $visit->idOrderState ?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
                                             </tr> 
                                             <?php
                                         }
@@ -101,6 +110,7 @@
                                     ?> 
                                 </tbody>
                             </table>
+                            <div id="spinner"></div>
                         </div>
                     </div>
                 </section>
@@ -114,20 +124,23 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
 
-            function assign(idOrder) {
+            function assign(idOrder, state) {
                 var idTech = $("#idTech_" + idOrder).val();
                 var date = $("#date_" + idOrder).val();
+                var obsv = $("#obsv_" + idOrder).val();
                 if (date === "") {
                     alertify.error('Debes indicar fecha de visita');
                 } else {
                     url = get_base_url() + "Visit/assign";
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
                         url: url,
                         type: 'POST',
-                        data: {idOrder: idOrder, idTech: idTech, date: date},
+                        data: {idOrder: idOrder, state: state, idTech: idTech, obsv: obsv, date: date},
                         success: function (resp) {
+                            $('#spinner').html("");
                             if (resp === "error") {
-                                alertify.error('Erro en BBDD');
+                                alertify.error('Error en BBDD');
                             }
                             if (resp === "ok") {
                                 alertify.success('Visita asignada al técnico exitosamente, correo de aviso enviado.');

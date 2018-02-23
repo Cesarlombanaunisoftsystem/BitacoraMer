@@ -47,9 +47,8 @@
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>
                                                     <th style="color: #00B0F0">Servicio</th>
-                                                    <th style="color: #00B0F0">Cantidad</th>
-                                                    <th style="color: #00B0F0">Sitio</th>
-                                                    <th style="color: #00B0F0">Tipo</th>
+                                                    <th style="color: #00B0F0">Para Gestionar</th>
+                                                    <th style="color: #00B0F0">Acción</th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
@@ -58,14 +57,22 @@
                                                     foreach ($projects as $row) {
                                                         ?>                                            
                                                         <tr>
-                                                            <td><a href="#" data-toggle="modal" data-target="#modal" onclick="generateid(<?= $row->id ?>);"><?= $row->dateAssign ?></a></td>
+                                                            <td><?= $row->dateAssign ?></td>
                                                             <td><?= $row->uniquecode ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->name_service ?></td>
-                                                            <td><?= $row->count ?></td>
-                                                            <td><?= $row->site ?></td>                                                
-                                                            <td><?= $type ?></td>
+                                                            <td><?= $row->type ?></td>
+                                                            <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="register(<?= $row->id ?>)">
+                                                                    <option></option>
+                                                                    <option value="0">
+                                                                        Asignar Visita de Cierre
+                                                                    </option>
+                                                                    <option value="1">
+                                                                        Devolución Visita de Cierre
+                                                                    </option>
+                                                                </select>
+                                                            </td>
                                                         </tr>
                                                         <?php
                                                     }
@@ -372,29 +379,6 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                $("#frmRegisterDaily").on("submit", function (e) {
-                    e.preventDefault();
-                    var formData = new FormData(document.getElementById("frmRegisterDaily"));
-                    url = get_base_url() + "Projects/register_daily_management";
-                    $.ajax({
-                        url: url,
-                        type: "post",
-                        dataType: "html",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false
-                    })
-                            .done(function (res) {
-                                if (res === "error") {
-                                    alertify.error('Error en BBDD');
-                                }
-                                if (res === "ok") {
-                                    alertify.success('Gestión registrada exitosamente');
-                                    location.reload();
-                                }
-                            });
-                });
             });
 
             $("#typegest").change(function () {
@@ -422,7 +406,7 @@
             function upexe()
             {
                 var valor = parseInt($("#percentexe").html());
-                if(isNaN(valor)){
+                if (isNaN(valor)) {
                     valor = 0;
                 }
                 if (valor < 100) {
@@ -449,7 +433,7 @@
             function upmat()
             {
                 var valor = parseInt($("#percentmat").html());
-                if(isNaN(valor)){
+                if (isNaN(valor)) {
                     valor = 0;
                 }
                 if (valor < 100) {
@@ -499,23 +483,47 @@
             function generateid(idOrder) {
                 $("#idOrder").val(idOrder);
             }
-            function init() {
-                var idOrder = $("#idOrder").val();
-                url = get_base_url() + "Projects/register_activitie";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder: idOrder},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
+            function register(idOrder) {
+                var typeReg = $("#seltype_" + idOrder).val();
+                if (typeReg === "1") {
+                    alertify.prompt('Devolución Visita de Cierre',
+                            'Observaciones', 'Debes poner observaciones',
+                            function (evt, value) {
+                                url = get_base_url() + "Projects/back_closing_visit";
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    data: {idOrder: idOrder, obsv: value},
+                                    success: function (resp) {
+                                        if (resp === "error") {
+                                            alertify.error('Error en BBDD');
+                                        }
+                                        if (resp === "ok") {
+                                            alertify.success('Ordén enviada a asignador de visitas.');
+                                            location.reload();
+                                        }
+                                    }
+                                })
+                            }, function () {
+                        alertify.error('Cancelar');
+                    });
+                } else {
+                    url = get_base_url() + "Projects/mark_closing_visit";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('Ordén enviada a asignador de visitas.');
+                                location.reload();
+                            }
                         }
-                        if (resp === "ok") {
-                            alertify.success('Paso a registro de actividad exitoso.');
-                            location.reload();
-                        }
-                    }
-                });
+                    });
+                }
             }
 
             function verPanelInferior(idOrder) {
