@@ -339,7 +339,20 @@
                         <ul class="slides"></ul> 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Registers -->
+        <div id="modalRegisters" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" id="bodyRegisters">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -378,7 +391,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>      
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
@@ -554,7 +567,7 @@
                         if (res.id_type_management === '2') {
                             var percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
                             var percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
-                            var detail = '<a href="#">Detalle</a>';
+                            var detail = '<a data-toggle="modal" data-target="#modalRegisters" onclick="showRegisters(' + idOrder + ')">Detalle</a>';
                         } else {
                             percentExecute = '<div class="progress">' +
                                     '<div class="progress-bar progress-bar-warning" style="width: '
@@ -590,7 +603,7 @@
                     for (var i = 0; i < image.length; i++) {
                         var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
                         html += '<li class="slide-container"><div class="slide">';
-                        html += '<img src="' + get_base_url() + "/uploads/" + image[i] + '" /></div> ';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
                         html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
                         html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
                         $(".slides").prepend(html);
@@ -599,8 +612,62 @@
                     }
 
                 });
+            }
 
-
+            function showRegisters(idOrder) {
+                $("#bodyRegisters").html('');
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    var pos = 1;
+                    $.each(respuestaServer["docs"], function (i, doc) {
+                        if (doc.idTypeDocument === "2") {
+                            $(".pisnm").removeClass("disable");
+                            $(".pisnm").addClass("pointer");
+                            $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file);
+                            $("#obsvPsinm").val(doc.observation);
+                        }
+                        if (doc.idTypeDocument === "3") {
+                            $(".tss").removeClass("disable");
+                            $(".tss").addClass("pointer");
+                            $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file);
+                            $("#obsvTss").val(doc.observation);
+                        }
+                        if (doc.idTypeDocument === "7") {
+                            $(".docs").removeClass("disable");
+                            $(".docs").addClass("pointer");
+                            $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file);
+                        }
+                        if (doc.idTypeDocument === "1") {
+                            var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                            html += '<li class="slide-container"><div class="slide">';
+                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
+                            html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                            html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                            $(".photo").removeClass("disable");
+                            $(".photo").addClass("pointer");
+                            $("#obsvRegPic").val(doc.observation);
+                            $(".slides").prepend(html);
+                            galery = true;
+                            pos++;
+                        }
+                    });
+                });
+                $("#bodyRegisters").html('<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr><td><label class="blue bold upload_design">' +
+                        '<a class="disable photos photo">VER REGISTRO FOTOGRAFICO</a></label>' +
+                        '<td>OBSERVACIONES</td>'
+                        + '<td><input type="text" class="form-control" size=40 id="obsvRegPic" readonly><td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm">' +
+                        'VER FORMATO 1</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss">VER FORMATO 2</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss" readonly></td>' +
+                        '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
+                        '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
+                        '<tr><td></td><td><a href="#" target="_blank" class="disable docs">' +
+                        '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
+                        '</table>');
             }
         </script>
     </body>

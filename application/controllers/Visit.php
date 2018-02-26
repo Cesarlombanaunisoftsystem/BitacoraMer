@@ -62,9 +62,7 @@ class Visit extends CI_Controller {
                 $technical = $this->Users_model->get_user_xid($idUser);
                 $content = $this->Orders_model->get_order_by_id_email($idOrder);
                 $titulo = '¡Has Sido Asignado para Realizar Visita En Sitio!';
-                $this->Utils->sendMail($technical->email,
-                        'Programación de visita a sitio',
-                        'templates/email_tecnico.php', $content, $titulo);
+                $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $content, $titulo);
                 echo 'ok';
             } else {
                 echo $res;
@@ -83,9 +81,7 @@ class Visit extends CI_Controller {
                 $technical = $this->Users_model->get_user_xid($idUser);
                 $content = $this->Orders_model->get_order_by_id_email($idOrder);
                 $titulo = '¡Has Sido Asignado para Realizar Visita De Cierre!';
-                $this->Utils->sendMail($technical->email,
-                        'Programación de visita de cierre',
-                        'templates/email_tecnico.php', $content, $titulo);
+                $this->Utils->sendMail($technical->email, 'Programación de visita de cierre', 'templates/email_tecnico.php', $content, $titulo);
                 echo 'ok';
             } else {
                 echo 'error';
@@ -150,7 +146,7 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_init_register_data_view', $data);
     }
-    
+
     public function validation_close() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -164,7 +160,7 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Projects_model->get_daily_management(21);
         $this->load->view('visit_close_register_data_view', $data);
     }
-    
+
     public function validation_close_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -223,29 +219,33 @@ class Visit extends CI_Controller {
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         redirect(base_url() . 'Visit/site_init');
     }
-    
+
     public function register_docs_visit_close() {
         $dir_subida = './uploads/';
-        $filefoto = $this->generateRandomString() . $_FILES['fileregfoto']['name'];
+        $quantity = count($_FILES['fileregfoto']['name']);
+        for ($i = 0; $i < $quantity; $i++) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['fileregfoto']['tmp_name'][$i], "./uploads/" . $_FILES['fileregfoto']['name'][$i]);
+            //guardamos en la base de datos el nombre
+            $image = $_FILES['fileregfoto']['name'][$i];
+            $dataFoto = array(
+                'idTypeDocument' => $this->input->post('idTypeRegFoto'),
+                'idOrder' => $this->input->post('idOrder'),
+                'file' => $image,
+                'observation' => $this->input->post('obsvRegPic'),
+                'dateSave' => date('Y-m-d')
+            );
+            $this->Orders_model->upload_docs($dataFoto);
+        }
         $filepsinm = $this->generateRandomString() . $_FILES['filepisnm']['name'];
         $filetss = $this->generateRandomString() . $_FILES['filetss']['name'];
         $filedoc = $this->generateRandomString() . $_FILES['userfile']['name'];
-        $fichero1 = $dir_subida . $filefoto;
         $fichero2 = $dir_subida . $filepsinm;
         $fichero3 = $dir_subida . $filetss;
         $fichero4 = $dir_subida . $filedoc;
-        move_uploaded_file($_FILES['fileregfoto']['tmp_name'], $fichero1);
         move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
         move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
         move_uploaded_file($_FILES['userfile']['tmp_name'], $fichero4);
-        $dataFoto = array(
-            'idTypeDocument' => $this->input->post('idTypeRegFoto'),
-            'idOrder' => $this->input->post('idOrder'),
-            'file' => $filefoto,
-            'observation' => $this->input->post('obsvRegPic'),
-            'dateSave' => date('Y-m-d')
-        );
-        $this->Orders_model->upload_docs($dataFoto);
         $dataPsinm = array(
             'idTypeDocument' => $this->input->post('idTypePsinm'),
             'idOrder' => $this->input->post('idOrder'),
@@ -275,6 +275,12 @@ class Visit extends CI_Controller {
             'observations' => $this->input->post('obsvgen')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
+        $dataDaily = array(
+            'idOrder' => $this->input->post('idOrder'),
+            'id_type_management' => 3,
+            'detail' => $this->input->post('obsvgen')
+        );
+        $this->Projects_model->register_daily_management_order($dataDaily);
         redirect(base_url() . 'Visit/validation_close');
     }
 

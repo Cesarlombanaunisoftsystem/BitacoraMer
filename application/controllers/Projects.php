@@ -149,7 +149,7 @@ class Projects extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['projects'] = $this->Projects_model->get_daily_management(19);
+        $data['projects'] = $this->Projects_model->get_daily_managements();
         $data['registers'] = $this->Projects_model->get_daily_management(20);
         $this->load->view('closing_visit_request_view', $data);
     }

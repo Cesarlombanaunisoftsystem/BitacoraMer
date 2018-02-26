@@ -83,212 +83,117 @@
                         </div>
                     </div>
                 </section>
-                <!-- /.content -->  
-                <!-- Modal Materiales-->
-                <div id="modalMaterials" class="modal fade" role="dialog">
-                    <div class="modal-dialog" style="width: 80%;">
-                        <!-- Modal content-->
+                <!-- Modal Galery -->
+                <div class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
-                                <div class="row">
-                                    <form class="form-horizontal" id="frmMaterials" method="post">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th style="background-color: #00B1EB; color: white">Categoria</th>
-                                                    <th style="background-color: #00B1EB; color: white">Producto</th>
-                                                    <th style="background-color: #00B1EB; color: white">Cantidad</th>
-                                                    <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <input type="hidden" name="idOrder" id="idOrder">
-                                                        <select name="idActivities" id="idActivities" class="form form-control">
-                                                            <option></option>
-                                                            <?php if (isset($activities)) { ?>
-                                                                <?php foreach ($activities as $activitie) { ?>
-                                                                    <option value="<?= $activitie->id ?>"><?= $activitie->name_activitie ?></option>
-                                                                    <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <select name="idServices" id="idServices" class="form form-control">
-                                                        </select>
-                                                    </td>
-                                                    <td><input type="number" name="count" id="count" class="form form-control"></td>
-                                                    <td><div id="unit_measurement"></div>
-                                                        <div id="price" style="display:none"></div>
-                                                        <input type="hidden" name="total" id="vrTotal"/>
-                                                        <input type="hidden" name="totalCost" id="vrTotalCost"/>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="materials">
-
-
-                                            </tbody>
-                                        </table> 
-                                        <div class="col-xs-12">
-                                            <div class="center block text-center">
-                                                <button type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>                   
+                                <ul class="slides"></ul> 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /.content-wrapper -->
-                <?php $this->load->view('templates/footer.html') ?>
+                <!-- /.content -->  
             </div>
-            <!-- ./wrapper -->
-            <?php $this->load->view('templates/libs') ?>
-            <?php $this->load->view('templates/js') ?>
-            <script type="text/javascript">
-                function getFileNameRegFoto(elm) {
-                    var fn = $(elm).val();
-                    $("#p_1").html(fn);
-                }
-                function getFileNamePsinm(elm) {
-                    var fn = $(elm).val();
-                    $("#p_2").html(fn);
-                }
-                function getFileNameTss(elm) {
-                    var fn = $(elm).val();
-                    $("#p_3").html(fn);
-                }
-                function getFileNameDoc(elm) {
-                    var fn = $(elm).val();
-                    $("#p_4").html(fn);
-                }
-                $('#data-table tbody').on('click', 'td.details-control', function () {
-                    var tr = $(this).closest('tr');
-                    var row = dt.row(tr);
-                    order_id = $(this).attr("id");
-                    if (row.child.isShown()) {
-                        row.child.hide();
-                        tr.removeClass('shown');
-                        $(this).html('<i class="fa fa-plus-square-o"></i>');
-                    } else {
-                        getDocs(order_id);
-                        closeOpenedRows(dt, tr);
-                        $(this).html('<i class="fa fa-minus-square-o"></i>');
-                        row.child(format(order_id)).show();
-                        tr.addClass('shown');
-                        openRows.push(tr);
-                    }
+            <!-- /.content-wrapper -->
+            <?php $this->load->view('templates/footer.html') ?>
+        </div>
+        <!-- ./wrapper -->
+        <?php $this->load->view('templates/libs') ?>
+        <?php $this->load->view('templates/js') ?>
+        <script type="text/javascript">
+            $(function () {
+                $(document).on("click", ".photos", function () {
+                    if (galery)
+                        $('.modal').modal('show');
                 });
-                function format(d) {
-                    return '<form enctype="multipart/form-data" method="post" name="form-register-visit-close" id="form-register-visit-close" action="register_docs_visit_close">' +
-                            '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
-                            '<tr>' +
-                            '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>' +
-                            '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto" id="fileregfoto"></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvRegPic"><td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td><label class="blue bold upload_design" for="filepisnm"><a class="disable pisnm' + d + '">ADJUNTAR FORMATO PISNM</a></label>' +
-                            '<p id="p_2"></p><input type="hidden" value="2" name="idTypePsinm"><input style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filepisnm" id="filepisnm"></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvPsinm"></td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td><label class="blue bold upload_design" for="filetss"><a class="disable tss' + d + '">ADJUNTAR FORMATO TSS</a></label>' +
-                            '<p id="p_3"></p><input type="hidden" value="3" name="idTypeTss"><input style="display: none;" onchange="getFileNameTss(this)" type="file" name="filetss" id="filetss"></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvTss"></td>' +
-                            '</tr>' + '<tr>' + '<td>OBSERVACIONES GENERALES</td>' +
-                            '<td colspan="3"><input type="hidden" value="' + d + '" name="idOrder"><input type="text" class="form-control" name="obsvgen" id="obsvgen"></td></tr>' +
-                            '<tr><td></td><td><button type="button" class="btn btn-default">Ver Adjuntos</button></td></tr>' +
-                            '</table></form>';
+            });
+            $('#data-table tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = dt.row(tr);
+                order_id = $(this).attr("id");
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    $(this).html('<i class="fa fa-plus-square-o"></i>');
+                } else {
+                    getDocs(order_id);
+                    closeOpenedRows(dt, tr);
+                    $(this).html('<i class="fa fa-minus-square-o"></i>');
+                    row.child(format(order_id)).show();
+                    tr.addClass('shown');
+                    openRows.push(tr);
                 }
-                function assign(idOrder) {
-                    var idTech = $("#idTech_" + idOrder).val();
-                    var date = $("#date_" + idOrder).val();
-                    if (date === "") {
-                        alertify.error('Debes indicar fecha de visita');
-                    } else {
-                        url = get_base_url() + "Visit/assign";
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: {idOrder: idOrder, idTech: idTech, date: date},
-                            success: function (resp) {
-                                if (resp === "error") {
-                                    alertify.error('Erro en BBDD');
-                                }
-                                if (resp === "ok") {
-                                    alertify.success('Visita asignada al técnico exitosamente, correo de aviso enviado.');
-                                    location.reload();
-                                }
-                            }
-                        });
-                    }
-                }
-                function getDocs(idOrder) {
-                    galery = false;
-                    $(".slides").html("");
-                    url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
-                    $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                        var pos = 1;
-                        $.each(respuestaServer["docs"], function (i, doc) {
-                            if (doc.idTypeDocument === "2") {
-                                $(".pisnm" + idOrder).removeClass("disable");
-                                $(".pisnm" + idOrder).addClass("pointer");
-                            }
-                            if (doc.idTypeDocument === "3") {
-                                $(".tss" + idOrder).removeClass("disable");
-                                $(".tss" + idOrder).addClass("pointer");
-                            }
-                            if (doc.idTypeDocument === "1") {
-                                $(".photo" + idOrder).removeClass("disable");
-                                $(".photo" + idOrder).addClass("pointer");
-                                galery = true;
-                                pos++;
-                            }
-                        });
-                    });
-                }
+            });
+            function format(d) {
+                return  '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<td><label class="blue bold upload_design"><a class="disable photos photo' + d + '">VER REGISTRO FOTOGRAFICO</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvRegPic' + d + '" readonly><td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm' + d + '">VER FORMATO 1</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvPsinm' + d + '" readonly></td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss' + d + '">VER FORMATO 2</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss' + d + '" readonly></td>' +
+                        '</tr>' + '<tr>' + '<td>OBSERVACIONES GENERALES</td>' +
+                        '<td colspan="3"><input type="hidden" value="' + d + '" name="idOrder"><input type="text" class="form-control" id="obsvgen' + d + '" readonly></td></tr>' +
+                        '<tr><td></td><td><a href="#" target="_blank" class="disable docs' + d + '">' +
+                        '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
+                        '</table>';
+            }
 
-                function addIdOrder(d) {
-                    $("#idOrder").val(d);
-                }
-
-                $("#count").change(function () {
-                    var price = $("#vrTotal").val();
-                    var cost = $("#cost").val();
-                    var cantidad = $("#count").val();
-                    var total = price * cantidad;
-                    var totalCost = cost * cantidad;
-                    $("#vrTotal").val(total);
-                    $("#vrTotalCost").val(totalCost);
-                });
-                $("#frmMaterials").submit(function (e) {
-                    e.preventDefault();
-                    var categoria = $("#idActivities option:selected").text();
-                    var producto = $("#idServices option:selected").text();
-                    var cantidad = $("#count").val();
-                    var unidadm = $("#unidadm").val();
-                    url = get_base_url() + "Orders/add_order_detail";
-                    $.ajax({
-                        url: url,
-                        type: $("#frmMaterials").attr("method"),
-                        data: $("#frmMaterials").serialize(),
-                        success: function (resp) {
-                            if (resp === "error") {
-                                alertify.error('Error en BBDD');
-                            }
-                            if (resp === "ok") {
-                                $("#materials").append("<tr><td>" + producto + "</td>" +
-                                        "<td>" + cantidad + "</td>" +
-                                        "<td>" + unidadm + "</td></tr>");
-                                alertify.success('Material agregado exitosamente');
-                            }
+            function getDocs(idOrder) {
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    var pos = 1;
+                    $.each(respuestaServer["docs"], function (i, doc) {
+                        if (doc.idTypeDocument === "2") {
+                            $(".pisnm" + idOrder).removeClass("disable");
+                            $(".pisnm" + idOrder).addClass("pointer");
+                            $(".pisnm" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
+                            $("#obsvPsinm" + idOrder).val(doc.observation);
+                        }
+                        if (doc.idTypeDocument === "3") {
+                            $(".tss" + idOrder).removeClass("disable");
+                            $(".tss" + idOrder).addClass("pointer");
+                            $(".tss" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
+                            $("#obsvTss" + idOrder).val(doc.observation);
+                        }
+                        if (doc.idTypeDocument === "7") {
+                            $(".docs" + idOrder).removeClass("disable");
+                            $(".docs" + idOrder).addClass("pointer");
+                            $(".docs" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
+                        }
+                        if (doc.idTypeDocument === "1") {
+                            var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                            html += '<li class="slide-container"><div class="slide">';
+                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
+                            html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                            html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                            $(".photo" + idOrder).removeClass("disable");
+                            $(".photo" + idOrder).addClass("pointer");
+                            $("#obsvRegPic" + idOrder).val(doc.observation);
+                            $(".slides").prepend(html);
+                            galery = true;
+                            pos++;
                         }
                     });
                 });
-            </script>
+            }
+            function generateid(idOrder) {
+                $("#idOrder").val(idOrder);
+            }
+            function addIdOrder(d) {
+                $("#idOrder").val(d);
+            }
+        </script>
     </body>
 </html>
