@@ -567,8 +567,7 @@
                         $('#bodyPanelGestion').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.type +
                                 '</td><td>' + percentExecute + '</td><td>' + percentMaterials + '<td>' +
-                                '<a class="photos photo' + res.id + '">' +
-                                '<input type="text" value="' + res.detail + '" id="detail_' + res.id + '" readonly></td><td>'
+                                '<input type="text" data-toggle="modal" data-target="#modalDetail" value="' + res.detail + '" id="detail_' + res.id + '" onclick="detail(' + res.id + ')" readonly></td><td>'
                                 + detail + '</td></tr>'
                                 );
                     });

@@ -106,7 +106,7 @@ class Projects extends CI_Controller {
             //guardamos en la base de datos el nombre
             $images .= $file[$i] . ",";
         }
-
+        $image = trim($images, ',');
         // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
         if ($this->input->post('typegest') === '2') {
             $data = array(
@@ -116,7 +116,7 @@ class Projects extends CI_Controller {
                 'percent_execute' => $this->input->post('valpercentexe'),
                 'percent_materials' => $this->input->post('valpercentmat'),
                 'check_attention' => $this->input->post('attendant'),
-                'image' => $images
+                'image' => $image
             );
             $data1 = array(
                 'observations' => $this->input->post('detailgest'),
@@ -132,7 +132,7 @@ class Projects extends CI_Controller {
                 'percent_execute' => $this->input->post('valpercentexe'),
                 'percent_materials' => $this->input->post('valpercentmat'),
                 'check_attention' => $this->input->post('attendant'),
-                'image' => $images
+                'image' => $image
             );
             $res = $this->Projects_model->register_daily_management_order($data);
             echo $this->valida($res);
