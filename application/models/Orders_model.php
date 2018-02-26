@@ -298,6 +298,15 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
+    
+    public function upload_docs($data) {
+        $this->db->insert('tbl_orders_documents', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 
     public function get_docs($idOrder) {
         $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type');

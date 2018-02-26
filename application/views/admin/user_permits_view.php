@@ -103,6 +103,12 @@ if ($permisos) {
                             <label for="chkprojects" class="label-success"></label>
                         </div>';
         }
+        if ($value->id_permit == 18) {
+            $visitclose = '<div class="material-switch pull-right">
+                            <input id="chkvisitclose" name="chkvisitclose" type="checkbox" checked onclick="removePermit(18,' . $perfil->id . ')"/>
+                            <label for="chkvisitclose" class="label-success"></label>
+                        </div>';
+        }
     }
 }
 ?>
@@ -261,45 +267,55 @@ if ($permisos) {
                                                 }
                                                 ?></td>
                                         <td><?php
-                                                if (isset($financial)) {
-                                                    echo $financial;
-                                                } else {
-                                                    echo '<div class="material-switch pull-right">
+                                            if (isset($financial)) {
+                                                echo $financial;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
                             <input id="chkfinancial" name="chkfinancial" type="checkbox" onclick="addPermit(14,' . $perfil->id . ')"/>
                             <label for="chkfinancial" class="label-success"></label>
                         </div>';
-                                                }
-                                                ?></td>
+                                            }
+                                            ?></td>
                                         <td><?php
-                                                if (isset($cellarmer)) {
-                                                    echo $cellarmer;
-                                                } else {
-                                                    echo '<div class="material-switch pull-right">
+                                            if (isset($cellarmer)) {
+                                                echo $cellarmer;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
                             <input id="chkcellarmer" name="chkcellarmer" type="checkbox" onclick="addPermit(15,' . $perfil->id . ')"/>
                             <label for="chkcellarmer" class="label-success"></label>
                         </div>';
-                                                }
-                                                ?></td>
+                                            }
+                                            ?></td>
                                         <td><?php
-                                                if (isset($cellarext)) {
-                                                    echo $cellarext;
-                                                } else {
-                                                    echo '<div class="material-switch pull-right">
+                                            if (isset($cellarext)) {
+                                                echo $cellarext;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
                             <input id="chkcellarext" name="chkcellarext" type="checkbox" onclick="addPermit(16,' . $perfil->id . ')"/>
                             <label for="chkcellarext" class="label-success"></label>
                         </div>';
-                                                }
-                                                ?></td>
+                                            }
+                                            ?></td>
                                         <td><?php
-                                                if (isset($projects)) {
-                                                    echo $projects;
-                                                } else {
-                                                    echo '<div class="material-switch pull-right">
+                                            if (isset($projects)) {
+                                                echo $projects;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
                             <input id="chkprojects" name="chkprojects" type="checkbox" onclick="addPermit(17,' . $perfil->id . ')"/>
                             <label for="chkprojects" class="label-success"></label>
                         </div>';
-                                                }
-                                                ?></td>
+                                            }
+                                            ?></td>
+                                        <td><?php
+                                            if (isset($visitclose)) {
+                                                echo $visitclose;
+                                            } else {
+                                                echo '<div class="material-switch pull-right">
+                            <input id="chkvisitclose" name="chkvisitclose" type="checkbox" onclick="addPermit(18,' . $perfil->id . ')"/>
+                            <label for="chkvisitclose" class="label-success"></label>
+                        </div>';
+                                            }
+                                            ?></td>
                                     </tr>
                                 </tbody>
                             </table>

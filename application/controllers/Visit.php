@@ -13,7 +13,8 @@ class Visit extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model', 'Activities_model', 'Utils'));
+        $this->load->model(array('Users_model', 'Visits_model', 'Orders_model',
+            'Activities_model', 'Utils', 'Projects_model'));
     }
 
     public function program() {
@@ -149,6 +150,34 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_init_register_data_view', $data);
     }
+    
+    public function validation_close() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Registro de datos visita de cierre';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
+        $data['visits'] = $this->Projects_model->get_daily_management(21);
+        $this->load->view('visit_close_register_data_view', $data);
+    }
+    
+    public function validation_close_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Registro de datos visita de cierre';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
+        $data['visits'] = $this->Projects_model->get_daily_management(18);
+        $this->load->view('visit_close_process_view', $data);
+    }
 
     public function get_docs_visit_init_register() {
         $idOrder = $this->input->get('idOrder');
@@ -170,29 +199,83 @@ class Visit extends CI_Controller {
         move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
         $dataFoto = array(
             'file' => $filefoto,
-            'observation' => $_POST['obsvRegPic'],
+            'observation' => $this->post('obsvRegPic'),
             'dateSave' => date('Y-m-d')
         );
-        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeRegFoto'], $dataFoto);
+        $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeRegFoto'), $dataFoto);
         $dataPsinm = array(
             'file' => $filepsinm,
-            'observation' => $_POST['obsvPsinm'],
+            'observation' => $this->input->post('obsvPsinm'),
             'dateSave' => date('Y-m-d')
         );
-        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypePsinm'], $dataPsinm);
+        $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypePsinm'), $dataPsinm);
         $dataTss = array(
             'file' => $filetss,
-            'observation' => $_POST['obsvTss'],
+            'observation' => $this->input->post('obsvTss'),
             'dateSave' => date('Y-m-d')
         );
-        $this->Orders_model->upload_doc($_POST['idOrder'], $_POST['idTypeTss'], $dataTss);
+        $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeTss'), $dataTss);
         $dataGen = array(
             'idArea' => 1,
             'idOrderState' => 6,
-            'observations' => $_POST['obsvgen']
+            'observations' => $this->input->post('obsvgen')
         );
-        $this->Orders_model->update_order($_POST['idOrder'], $dataGen);
+        $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         redirect(base_url() . 'Visit/site_init');
+    }
+    
+    public function register_docs_visit_close() {
+        $dir_subida = './uploads/';
+        $filefoto = $this->generateRandomString() . $_FILES['fileregfoto']['name'];
+        $filepsinm = $this->generateRandomString() . $_FILES['filepisnm']['name'];
+        $filetss = $this->generateRandomString() . $_FILES['filetss']['name'];
+        $filedoc = $this->generateRandomString() . $_FILES['userfile']['name'];
+        $fichero1 = $dir_subida . $filefoto;
+        $fichero2 = $dir_subida . $filepsinm;
+        $fichero3 = $dir_subida . $filetss;
+        $fichero4 = $dir_subida . $filedoc;
+        move_uploaded_file($_FILES['fileregfoto']['tmp_name'], $fichero1);
+        move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
+        move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
+        move_uploaded_file($_FILES['userfile']['tmp_name'], $fichero4);
+        $dataFoto = array(
+            'idTypeDocument' => $this->input->post('idTypeRegFoto'),
+            'idOrder' => $this->input->post('idOrder'),
+            'file' => $filefoto,
+            'observation' => $this->input->post('obsvRegPic'),
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_docs($dataFoto);
+        $dataPsinm = array(
+            'idTypeDocument' => $this->input->post('idTypePsinm'),
+            'idOrder' => $this->input->post('idOrder'),
+            'file' => $filepsinm,
+            'observation' => $this->input->post('obsvPsinm'),
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_docs($dataPsinm);
+        $dataTss = array(
+            'idTypeDocument' => $this->input->post('idTypeTss'),
+            'idOrder' => $this->input->post('idOrder'),
+            'file' => $filetss,
+            'observation' => $this->input->post('obsvTss'),
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_docs($dataTss);
+        $dataDoc = array(
+            'idTypeDocument' => $this->input->post('idTypeDoc'),
+            'idOrder' => $this->input->post('idOrder'),
+            'file' => $filedoc,
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_docs($dataDoc);
+        $dataGen = array(
+            'idArea' => 3,
+            'idOrderState' => 18,
+            'observations' => $this->input->post('obsvgen')
+        );
+        $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
+        redirect(base_url() . 'Visit/validation_close');
     }
 
     function generateRandomString($length = 10) {

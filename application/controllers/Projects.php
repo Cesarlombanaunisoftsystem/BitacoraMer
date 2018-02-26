@@ -36,7 +36,7 @@ class Projects extends CI_Controller {
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_management(12);
-        $data['registers'] = $this->Projects_model->get_daily_management(18);
+        $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('activitie_init_view', $data);
     }
 
@@ -75,56 +75,56 @@ class Projects extends CI_Controller {
     }
 
     public function register_daily_management() {
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-            $idOrder = $this->input->post('idOrderDaily');
-            $attendant = $this->input->post('attendant');
-            $content = $this->input->post('detailgest');
-            $order = $this->Orders_model->get_order_by_id($idOrder);
-            $idcoordinator = $order->idCoordinatorInt;
-            $coordinator = $this->Users_model->get_user_xid($idcoordinator);
-            if ($attendant === '1') {
-                $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $idOrder, 'templates/email_coordinator.php', $content);
-            }
-            //obtenemos el archivo a subir
-            $file = $_FILES['userfile']['name'];
-            //comprobamos si existe un directorio para subir el archivo
-            //si no es así, lo creamos
-            if (!is_dir("./uploads/"))
-                mkdir("./uploads/", 0777);
-            //subimos el archivo ha subido
-            move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file);
-            // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
-            if ($this->input->post('typegest') === '2') {
-                $data = array(
-                    'idOrder' => $this->input->post('idOrderDaily'),
-                    'id_type_management' => $this->input->post('typegest'),
-                    'detail' => $this->input->post('detailgest'),
-                    'percent_execute' => $this->input->post('valpercentexe'),
-                    'percent_materials' => $this->input->post('valpercentmat'),
-                    'check_attention' => $this->input->post('attendant'),
-                    'image' => $file
-                );
-                $data1 = array(
-                    'idOrderState' => 17
-                );
-                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
-                echo $this->valida($res);
-            } else {
-                $data = array(
-                    'idOrder' => $this->input->post('idOrderDaily'),
-                    'id_type_management' => $this->input->post('typegest'),
-                    'detail' => $this->input->post('detailgest'),
-                    'percent_execute' => $this->input->post('valpercentexe'),
-                    'percent_materials' => $this->input->post('valpercentmat'),
-                    'check_attention' => $this->input->post('attendant'),
-                    'image' => $file
-                );
-                $res = $this->Projects_model->register_daily_management_order($data);
-                echo $this->valida($res);
-            }
+        $idOrder = $this->input->post('idOrderDaily');
+        $attendant = $this->input->post('attendant');
+        $content = $this->input->post('detailgest');
+        $uniquecode = $this->input->post('uniquecode');
+        $order = $this->Orders_model->get_order_by_id($idOrder);
+        $idcoordinator = $order->idCoordinatorInt;
+        $coordinator = $this->Users_model->get_user_xid($idcoordinator);
+        if ($attendant === '1') {
+            $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $uniquecode, 'templates/email_coordinator.php', $content);
+        }
+        //obtenemos el archivo a subir
+        $file = $_FILES['userfile']['name'];
+        //comprobamos si existe un directorio para subir el archivo
+        //si no es así, lo creamos
+        if (!is_dir("./uploads/"))
+            mkdir("./uploads/", 0777);
+        //subimos el archivo ha subido
+        move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file);
+        // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
+        if ($this->input->post('typegest') === '2') {
+            $data = array(
+                'idOrder' => $this->input->post('idOrderDaily'),
+                'id_type_management' => $this->input->post('typegest'),
+                'detail' => $this->input->post('detailgest'),
+                'percent_execute' => $this->input->post('valpercentexe'),
+                'percent_materials' => $this->input->post('valpercentmat'),
+                'check_attention' => $this->input->post('attendant'),
+                'image' => $file
+            );
+            $data1 = array(
+                'observations' => $this->input->post('detailgest'),
+                'idOrderState' => 19
+            );
+            $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+            echo $this->valida($res);
+        } else {
+            $data = array(
+                'idOrder' => $this->input->post('idOrderDaily'),
+                'id_type_management' => $this->input->post('typegest'),
+                'detail' => $this->input->post('detailgest'),
+                'percent_execute' => $this->input->post('valpercentexe'),
+                'percent_materials' => $this->input->post('valpercentmat'),
+                'check_attention' => $this->input->post('attendant'),
+                'image' => $file
+            );
+            $res = $this->Projects_model->register_daily_management_order($data);
+            echo $this->valida($res);
         }
     }
-    
+
     public function closing_visit_request() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -139,7 +139,7 @@ class Projects extends CI_Controller {
         $data['registers'] = $this->Projects_model->get_daily_management(20);
         $this->load->view('closing_visit_request_view', $data);
     }
-    
+
     public function mark_closing_visit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
@@ -152,7 +152,7 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function back_closing_visit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
@@ -166,9 +166,9 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     function valida($res) {
-        if ($res === true) {
+        if ($res === TRUE) {
             return 'ok';
         } else {
             return 'error';

@@ -32,6 +32,7 @@
                                 </div>
                             </div>                            
                         </div>
+                        <div id="spinner"></div>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="bandeja">
                                 <div class="row">
@@ -177,7 +178,8 @@
                                                         <td style="color: #00B0F0">| Centro de Costos |</td>
                                                         <td>&nbsp;
                                                             <label id="lblCost"></label>
-                                                            <input type="hidden" name="idOrderDaily" id="lblcCost">                                                            
+                                                            <input type="hidden" name="idOrderDaily" id="lblcCost">
+                                                            <input type="hidden" name="uniquecode" id="uniquecode">                                                            
                                                         </td>
                                                     </tr>
                                                     <tr style="font-size: 12px;">
@@ -195,57 +197,66 @@
                                                         <td>&nbsp;<label id="lblSite"></label></td>
                                                     </tr>
                                                 </table>                                            
-                                            </div><br><br><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">TIPO DE GESTIÓN</p>
                                             </div>
-                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <select class="form form-control" name="typegest" id="typegest">
-                                                    <?php foreach ($types as $value) { ?>
-                                                        <option value="<?= $value->id ?>"><?= $value->type ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">DETALLE DE GESTIÓN</p>
-                                            </div>
-                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <textarea class="form form-control" name="detailgest" id="detailgest" required=""></textarea>
-                                            </div><br><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">% AVANCE EJECUCIÓN</p>
-                                            </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="progress">
-                                                    <div id="percentexe" class="progress-bar progress-bar-warning" style="width: 0%">
-                                                        0%
-                                                    </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <p style="color: #00B0F0">TIPO DE GESTIÓN</p>
                                                 </div>
-                                                <input type="hidden" name="valpercentexe" id="valpercentexe">
-                                            </div>
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
-                                                <i class="fa fa-sort-up" onclick="upexe();"></i><i class="fa fa-sort-down" onclick="downexe();"></i>
-                                            </div><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">% CONSUMO DE MATERIALES</p>
-                                            </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="progress">
-                                                    <div id="percentmat" class="progress-bar progress-bar-warning" style="width: 0%"> 
-                                                        0%
-                                                    </div>
+                                                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                    <select class="form form-control" name="typegest" id="typegest">
+                                                        <?php foreach ($types as $value) { ?>
+                                                            <option value="<?= $value->id ?>"><?= $value->type ?></option>
+                                                        <?php } ?>
+                                                    </select>
                                                 </div>
-                                                <input type="hidden" name="valpercentmat" id="valpercentmat">
                                             </div>
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
-                                                <i class="fa fa-sort-up" onclick="upmat();"></i><i class="fa fa-sort-down" onclick="downmat();"></i>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <p style="color: #00B0F0">DETALLE DE GESTIÓN</p>
+                                                </div>                                            
+                                                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                    <textarea class="form form-control" name="detailgest" id="detailgest" required="">                                                        
+                                                    </textarea>
+                                                </div>
                                             </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
-                                                    ADJUNTAR IMAGEN</label>   
-                                                <p id="datofile"></p>
-                                                <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048">
-                                            </div><br><br><br>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <p style="color: #00B0F0">% AVANCE EJECUCIÓN</p>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div class="progress">
+                                                        <div id="percentexe" class="progress-bar progress-bar-warning" style="width: 0%">
+                                                            0%
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="valpercentexe" id="valpercentexe">
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
+                                                    <i class="fa fa-sort-up" onclick="upexe();"></i><i class="fa fa-sort-down" onclick="downexe();"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <p style="color: #00B0F0">% CONSUMO DE MATERIALES</p>
+                                                </div>
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div class="progress">
+                                                        <div id="percentmat" class="progress-bar progress-bar-warning" style="width: 0%"> 
+                                                            0%
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="valpercentmat" id="valpercentmat">
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
+                                                    <i class="fa fa-sort-up" onclick="upmat();"></i><i class="fa fa-sort-down" onclick="downmat();"></i>
+                                                </div>
+                                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                    <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
+                                                        ADJUNTAR IMAGEN</label>   
+                                                    <p id="datofile"></p>
+                                                    <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048">
+                                                </div>
+                                            </div>                                            
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <p style="color: #00B0F0">
                                                     REQUIERE ATENCIÓN INMEDIATA DE COORDINADOR
@@ -376,6 +387,7 @@
                     e.preventDefault();
                     var formData = new FormData(document.getElementById("frmRegisterDaily"));
                     url = get_base_url() + "Projects/register_daily_management";
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
                         url: url,
                         type: "post",
@@ -384,16 +396,16 @@
                         cache: false,
                         contentType: false,
                         processData: false
-                    })
-                            .done(function (res) {
-                                if (res === "error") {
-                                    alertify.error('Error en BBDD');
-                                }
-                                if (res === "ok") {
-                                    alertify.success('Gestión registrada exitosamente');
-                                    location.reload();
-                                }
-                            });
+                    }).done(function (res) {
+                        $('#spinner').html("");
+                        if (res === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (res === "ok") {
+                            alertify.success('Gestión registrada exitosamente');
+                            location.reload();
+                        }
+                    });
                 });
             });
 
@@ -422,7 +434,7 @@
             function upexe()
             {
                 var valor = parseInt($("#percentexe").html());
-                if(isNaN(valor)){
+                if (isNaN(valor)) {
                     valor = 0;
                 }
                 if (valor < 100) {
@@ -449,7 +461,7 @@
             function upmat()
             {
                 var valor = parseInt($("#percentmat").html());
-                if(isNaN(valor)){
+                if (isNaN(valor)) {
                     valor = 0;
                 }
                 if (valor < 100) {
@@ -528,23 +540,30 @@
                 $("#lblActiv").html(activ);
                 $("#lblCost").html(ccost);
                 $("#lblcCost").val(ccost);
+                $("#uniquecode").val(order);
                 $("#lblSite").html(site);
                 url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                     $.each(response["res"], function (i, res) {
+                        if (res.id_type_management === '2') {
+                            var percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                            var percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                            var detail = '<a href="#">Detalle</a>';
+                        } else {
+                            percentExecute = '<div class="progress">' +
+                                    '<div class="progress-bar progress-bar-warning" style="width: '
+                                    + res.percent_execute + '%">' + res.percent_execute + '</div></div>';
+                            percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning" style="width: '
+                                    + res.percent_materials + '%">' + res.percent_materials +
+                                    '</div></div>';
+                            detail = '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a>';
+                        }
                         $('#bodyPanelGestion').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.type +
-                                '</td><td>' + '<div class="progress">' +
-                                '<div class="progress-bar progress-bar-warning" style="width: '
-                                + res.percent_execute + '%">' + res.percent_execute + '</div>\n\
-        </div></td><td><div class="progress">\n\
-                        <div class="progress-bar progress-bar-warning" style="width: '
-                                + res.percent_materials + '%">' + res.percent_materials +
-                                '</div></div></td><td>' +
+                                '</td><td>' + percentExecute + '</td><td>' + percentMaterials + '<td>' +
                                 '<a data-toggle="modal" data-target="#modalDetail" onclick="detail(' + res.id + ')">\n\
                     <input type="text" value="' + res.detail + '" id="detail_' + res.id + '" readonly></td><td>'
-                                + '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')">\n\
-<img src="' + get_base_url() + 'dist/img/camera.png"></a></td></tr>'
+                                + detail + '</td></tr>'
                                 );
                     });
                 }
