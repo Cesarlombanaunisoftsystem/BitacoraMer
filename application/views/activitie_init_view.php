@@ -254,7 +254,7 @@
                                                     <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
                                                         ADJUNTAR IMAGEN</label>   
                                                     <p id="datofile"></p>
-                                                    <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048">
+                                                    <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048" multiple>
                                                 </div>
                                             </div>                                            
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -323,7 +323,6 @@
                                             </div>                                                                                        
                                         </div>
                                     </div>
-
                                 </div> 
                             </div>                                              
                         </div>
@@ -332,13 +331,15 @@
             </div>
             <?php $this->load->view('templates/footer.html') ?>
         </div>
-        <!-- Modal Fotos-->
-        <div id="modalshow" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 70%;">
-                <!-- Modal content-->
+        <!-- Modal Galery -->
+        <div id="modalshow" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <div id="photo"></div>                
+                        <ul class="slides"></ul> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -383,6 +384,11 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
+                $(document).on("click", ".photos", function () {
+                    if (galery)
+                        $('#modalshow').modal('show');
+                });
+
                 $("#frmRegisterDaily").on("submit", function (e) {
                     e.preventDefault();
                     var formData = new FormData(document.getElementById("frmRegisterDaily"));
@@ -561,8 +567,8 @@
                         $('#bodyPanelGestion').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.type +
                                 '</td><td>' + percentExecute + '</td><td>' + percentMaterials + '<td>' +
-                                '<a data-toggle="modal" data-target="#modalDetail" onclick="detail(' + res.id + ')">\n\
-                    <input type="text" value="' + res.detail + '" id="detail_' + res.id + '" readonly></td><td>'
+                                '<a class="photos photo' + res.id + '">' +
+                                '<input type="text" value="' + res.detail + '" id="detail_' + res.id + '" readonly></td><td>'
                                 + detail + '</td></tr>'
                                 );
                     });
@@ -576,14 +582,26 @@
             }
 
             function show(id) {
-                url = get_base_url() + "Projects/get_daily_management_xid?jsoncallback=?";
-                var pos = 1;
-                $.getJSON(url, {id: id}).done(function (response) {
-                    $.each(response["res"], function (i, res) {
-                        $("#photo").html("<img src='" + get_base_url() + "uploads/" + res.image + "' width='800px' heigth='600px'>");
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Projects/get_photos_daily_xid?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "/uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
                     }
-                    );
+
                 });
+
+
             }
         </script>
     </body>

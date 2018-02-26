@@ -74,7 +74,15 @@ class Projects extends CI_Controller {
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
+    public function get_photos_daily_xid() {
+        $id = $this->input->get('id');
+        $res = $this->Projects_model->get_photos_daily_xid($id);
+        $resultadosJson = json_encode($res->image);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
     public function register_daily_management() {
+        $images = "";
         $idOrder = $this->input->post('idOrderDaily');
         $attendant = $this->input->post('attendant');
         $content = $this->input->post('detailgest');
@@ -87,12 +95,18 @@ class Projects extends CI_Controller {
         }
         //obtenemos el archivo a subir
         $file = $_FILES['userfile']['name'];
+        $quantity = count($file);
         //comprobamos si existe un directorio para subir el archivo
         //si no es así, lo creamos
         if (!is_dir("./uploads/"))
             mkdir("./uploads/", 0777);
-        //subimos el archivo ha subido
-        move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file);
+        for ($i = 0; $i < $quantity; $i++) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['userfile']['tmp_name'][$i], "./uploads/" . $file[$i]);
+            //guardamos en la base de datos el nombre
+            $images .= $file[$i] . ",";
+        }
+
         // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
         if ($this->input->post('typegest') === '2') {
             $data = array(
@@ -102,7 +116,7 @@ class Projects extends CI_Controller {
                 'percent_execute' => $this->input->post('valpercentexe'),
                 'percent_materials' => $this->input->post('valpercentmat'),
                 'check_attention' => $this->input->post('attendant'),
-                'image' => $file
+                'image' => $images
             );
             $data1 = array(
                 'observations' => $this->input->post('detailgest'),
@@ -118,7 +132,7 @@ class Projects extends CI_Controller {
                 'percent_execute' => $this->input->post('valpercentexe'),
                 'percent_materials' => $this->input->post('valpercentmat'),
                 'check_attention' => $this->input->post('attendant'),
-                'image' => $file
+                'image' => $images
             );
             $res = $this->Projects_model->register_daily_management_order($data);
             echo $this->valida($res);

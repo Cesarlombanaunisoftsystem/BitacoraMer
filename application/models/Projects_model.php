@@ -132,6 +132,16 @@ class Projects_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_photos_daily_xid($id) {
+        $sql = "SELECT image FROM tbl_daily_management WHERE id='$id'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 
     public function register_daily_management_order($data) {
         $this->db->insert('tbl_daily_management', $data);
