@@ -58,21 +58,35 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
-                                                            <td><?= $row->uniquecode ?></td>
+                                                            <td><a href="#" onclick="verDetalleReg(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->name_service ?></td>
-                                                            <td><?= $row->type ?></td>
-                                                            <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="register(<?= $row->id ?>)">
-                                                                    <option></option>
-                                                                    <option value="0">
-                                                                        Asignar Visita de Cierre
-                                                                    </option>
-                                                                    <option value="1">
-                                                                        Devolución Visita de Cierre
-                                                                    </option>
-                                                                </select>
-                                                            </td>
+                                                            <td><?php if ($row->idOrderState === '18') { ?>
+                                                                    SOLICITUD VISITA DE CIERRE</td>                                                            
+                                                                <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="register(<?= $row->id ?>)">
+                                                                        <option></option>
+                                                                        <option value="0">
+                                                                            Asignar Visita de Cierre
+                                                                        </option>
+                                                                        <option value="1">
+                                                                            Devolución Visita de Cierre
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+                                                            <?php } else { ?>
+                                                                SOLICITUD DE CIERRE DE PROYECTO</td>                                                            
+                                                                <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="registerAudit(<?= $row->id ?>)">
+                                                                        <option></option>
+                                                                        <option value="4">
+                                                                            ACEPTACIÓN AUD. VISITA DE CIERRE
+                                                                        </option>
+                                                                        <option value="5">
+                                                                            RECHAZO AUD. VISITA DE CIERRE
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+                                                            <?php } ?>
                                                         </tr>
                                                         <?php
                                                     }
@@ -81,6 +95,78 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="row" id="detallereg" hidden="">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    </div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
+                                            &nbsp;&nbsp;<a href="#" onclick="gestionReg();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
+                                        </ul>
+                                        <table  id="" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <td style="color: #00B0F0">Fecha de Gestión</td>
+                                                    <td style="color: #00B0F0">Tipo de Gestión</td>
+                                                    <td style="color: #00B0F0">Avance Ejecución</td>
+                                                    <td style="color: #00B0F0">Consumo de Materiales</td>
+                                                    <td style="color: #00B0F0">Gestión</td>
+                                                </tr>                                   
+                                            </thead>
+                                            <tbody id="bodyDetalleReg">  
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row" id="gestionreg" hidden="">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                       
+                                    </div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <ul class="nav nav-tabs nav-justified">
+                                            <li><a href="#" style="color: white">.</a></li>
+                                            <li class="active">
+                                                <a href="#" style="color: #00B0F0">
+                                                    <b>GESTIÓN DE AVANCE</b></a></li>
+                                            <li><a href="#" style="color: white">.</a></li>
+                                        </ul>
+                                        <br><br>                                                                              
+                                        <form id="frmRegisterDaily" enctype="multipart/form-data"> 
+                                            <input type="hidden" name="idOrderDaily" id="idOrderReg">
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <p style="color: #00B0F0">TIPO DE GESTIÓN</p>
+                                            </div>
+                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                <select class="form form-control" name="typegest" id="typegest">
+                                                    <?php foreach ($types as $value) { ?>
+                                                        <?php if ($value->id > 3) { ?>
+                                                            <option value="<?= $value->id ?>"><?= $value->type ?></option>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div><br><br>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <p style="color: #00B0F0">DETALLE DE GESTIÓN</p>
+                                            </div>
+                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                <textarea class="form form-control" name="detailgest" id="detailgest" required=""></textarea>
+                                            </div><br><br><br><br>  
+                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">                                                
+                                            </div> 
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
+                                                    ADJUNTAR IMAGEN</label>   
+                                                <p id="datofile"></p>
+                                                <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048" multiple>
+                                            </div><br><br><br><br>                                            
+                                            <div class="col-sm-7"></div>
+                                            <div class="col-sm-3">
+                                                <button type="submit" class="form-control btn btn-success"><b>REGISTRAR AVANCE</b></button>
+                                            </div>
+                                        </form>                                        
+                                    </div>                                    
                                 </div>
                             </div>
 
@@ -142,7 +228,7 @@
                                             <li class="active"><a href="#" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
                                             &nbsp;&nbsp;<a href="#" onclick="gestion();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
                                         </ul>
-                                        <table  id="data-table" class="table table-striped">
+                                        <table  id="" class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <td style="color: #00B0F0">Fecha de Gestión</td>
@@ -326,18 +412,20 @@
                     </div>
                 </div>
             </div>
-            <?php $this->load->view('templates/footer.html') ?>
-        </div>
-        <!-- Modal Fotos-->
-        <div id="modalshow" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 70%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div id="photo"></div>                
+            <!-- Modal Galery -->
+            <div id="modalshow" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <ul class="slides"></ul> 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
+            <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- Modal Detail-->
         <div id="modalDetail" class="modal fade" role="dialog">
@@ -379,6 +467,35 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
+                $(document).on("click", ".photos", function () {
+                    if (galery)
+                        $('#modalshow').modal('show');
+                });
+
+                $("#frmRegisterDaily").on("submit", function (e) {
+                    e.preventDefault();
+                    var formData = new FormData(document.getElementById("frmRegisterDaily"));
+                    url = get_base_url() + "Projects/register_daily_management_coord";
+                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                    $.ajax({
+                        url: url,
+                        type: "post",
+                        dataType: "html",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    }).done(function (res) {
+                        $('#spinner').html("");
+                        if (res === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (res === "ok") {
+                            alertify.success('Gestión registrada exitosamente');
+                            location.reload();
+                        }
+                    });
+                });
             });
 
             $("#typegest").change(function () {
@@ -480,6 +597,12 @@
                 }
                 );
             }
+
+            function gestionReg() {
+                $("#gestionreg").show();
+                $("#detallereg").hide();
+            }
+
             function generateid(idOrder) {
                 $("#idOrder").val(idOrder);
             }
@@ -521,6 +644,44 @@
                 }
             }
 
+            function registerAudit(idOrder) {
+                var typeReg = $("#seltype_" + idOrder).val();
+                if (typeReg === "5") {
+                    var obsv = prompt('Observaciones');
+                    url = get_base_url() + "Projects/back_closing_visit_audit";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder, obsv: obsv},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('SOLICITUD DEVUELTA.');
+                                location.reload();
+                            }
+                        }
+                    });
+                } else {
+                    url = get_base_url() + "Projects/mark_closing_visit_audit";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
+                            }
+                            if (resp === "ok") {
+                                alertify.success('SOLICITUD PROCESADA EXITOSAMENTE.');
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            }
+
             function verPanelInferior(idOrder) {
                 $("#panelinferior").show();
                 var order = $("#norder_" + idOrder).val();
@@ -554,19 +715,54 @@
                 );
             }
 
+            function verDetalleReg(idOrder) {
+                $("#detallereg").show();
+                $("#idOrderReg").val(idOrder);
+                url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (response) {
+                    $.each(response["res"], function (i, res) {
+                        $('#bodyDetalleReg').append('<tr><td>' + res.dateSave +
+                                '</td><td>' + res.type +
+                                '</td><td>' + '<div class="progress">' +
+                                '<div class="progress-bar progress-bar-warning" style="width: '
+                                + res.percent_execute + '%">' + res.percent_execute + '</div>\n\
+        </div></td><td><div class="progress">\n\
+                        <div class="progress-bar progress-bar-warning" style="width: '
+                                + res.percent_materials + '%">' + res.percent_materials +
+                                '</div></div></td><td>' +
+                                '<a data-toggle="modal" data-target="#modalDetail" onclick="detail(' + res.id + ')">\n\
+                    <input type="text" value="' + res.detail + '" id="detail_' + res.id + '" readonly></td><td>'
+                                + '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')">\n\
+<img src="' + get_base_url() + 'dist/img/camera.png"></a></td></tr>'
+                                );
+                    });
+                }
+                );
+            }
+
             function detail(id) {
                 var val = $("#detail_" + id).val();
                 $("#detailsModal").html("<p style='text-align:center; font-size: 16px'>" + val + "</p>");
             }
 
             function show(id) {
-                url = get_base_url() + "Projects/get_daily_management_xid?jsoncallback=?";
-                var pos = 1;
-                $.getJSON(url, {id: id}).done(function (response) {
-                    $.each(response["res"], function (i, res) {
-                        $("#photo").html("<img src='" + get_base_url() + "uploads/" + res.image + "' width='800px' heigth='600px'>");
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Projects/get_photos_daily_xid?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
                     }
-                    );
+
                 });
             }
         </script>

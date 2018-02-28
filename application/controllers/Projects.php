@@ -139,6 +139,52 @@ class Projects extends CI_Controller {
         }
     }
 
+    public function register_daily_management_coord() {
+        $images = "";
+        $idOrder = $this->input->post('idOrderDaily');
+        //obtenemos el archivo a subir
+        $file = $_FILES['userfile']['name'];
+        $quantity = count($file);
+        //comprobamos si existe un directorio para subir el archivo
+        //si no es así, lo creamos
+        if (!is_dir("./uploads/"))
+            mkdir("./uploads/", 0777);
+        for ($i = 0; $i < $quantity; $i++) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['userfile']['tmp_name'][$i], "./uploads/" . $file[$i]);
+            //guardamos en la base de datos el nombre
+            $images .= $file[$i] . ",";
+        }
+        $image = trim($images, ',');
+        // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
+        if ($this->input->post('typegest') === '4') {
+            $data = array(
+                'idOrder' => $idOrder,
+                'id_type_management' => $this->input->post('typegest'),
+                'detail' => $this->input->post('detailgest'),
+                'image' => $image
+            );
+            $data1 = array(
+                'observations' => $this->input->post('detailgest'),
+                'idOrderState' => 22
+            );
+            $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+            echo $this->valida($res);
+        } else {
+            $data = array(
+                'idOrder' => $idOrder,
+                'id_type_management' => $this->input->post('typegest'),
+                'detail' => $this->input->post('detailgest'),
+                'image' => $image
+            );
+            $data1 = array(
+                'idOrderState' => 21
+            );
+            $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+            echo $this->valida($res);
+        }
+    }
+
     public function closing_visit_request() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -150,7 +196,7 @@ class Projects extends CI_Controller {
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_managements();
-        $data['registers'] = $this->Projects_model->get_daily_management(20);
+        $data['registers'] = $this->Projects_model->get_daily_management(22);
         $this->load->view('closing_visit_request_view', $data);
     }
 
@@ -166,11 +212,38 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
+    
+    public function mark_closing_visit_audit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => 22
+        );
+        $res = $this->Orders_model->assign_state($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
 
     public function back_closing_visit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 18,
+            'observations' => $this->input->post('obsv')
+        );
+        $res = $this->Orders_model->assign_state($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function back_closing_visit_audit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => 19,
             'observations' => $this->input->post('obsv')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);

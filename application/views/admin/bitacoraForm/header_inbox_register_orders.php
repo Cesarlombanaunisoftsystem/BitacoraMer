@@ -7,6 +7,7 @@
         <table id="data-table" class="table table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th style="color: #00B0F0">Número de Orden</th>
                     <th style="color: #00B0F0">Centro de Costos No.</th>
                     <th style="color: #00B0F0">Coordinador Externo</th>
@@ -19,15 +20,18 @@
                     <?php
                     foreach ($ordersTray as $orderTray) {
                         ?>
-                        <tr onclick="details(<?= $orderTray->id ?>);">
+                        <tr>
+                            <td class="details-control" id="<?php echo $orderTray->id; ?>">
+                                <i class="fa fa-plus-square-o"></i>
+                            </td>
                             <td><?= $orderTray->uniquecode ?></td>
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
                             <td><?= $orderTray->dateSave ?></td>
                             <td><?= $orderTray->total ?></td>
                         </tr>
-                <?php } ?>                        
-            <?php } ?>
+                    <?php } ?>                        
+                <?php } ?>
             </tbody>
         </table>        
     </div>

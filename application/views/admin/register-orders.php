@@ -70,7 +70,7 @@
                 } else {
                     $('#total').val(total);
                 }
-                
+
                 $("#frmRegisterOrder").on("submit", function (e) {
                     e.preventDefault();
 
@@ -113,8 +113,8 @@
                     });
                 });
             });
-            
-            $("#idArea").change(function(){
+
+            $("#idArea").change(function () {
                 var area = $("#idArea").val();
                 if (area !== '1') {
                     $('#divTechnical').show();
@@ -263,6 +263,54 @@
                             alertify.success('Detalle eliminado exitosamente');
                         }
                     }
+                });
+            }
+
+            $('#data-table tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = dt.row(tr);
+                order_id = $(this).attr("id");
+                if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass('shown');
+                    $(this).html('<i class="fa fa-plus-square-o"></i>');
+                } else {
+                    getDocs(order_id);
+                    closeOpenedRows(dt, tr);
+                    $(this).html('<i class="fa fa-minus-square-o"></i>');
+                    row.child(format(order_id)).show();
+                    tr.addClass('shown');
+                    openRows.push(tr);
+                }
+            });
+            function format(d) {
+                return  '<table cellpadding="6" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<th>ACTIVIDAD</th><th>SERVICIO</th><th>CANTIDAD</th><th>SITIO</th>' +
+                        '<th>VR.UNITARIO</th><th>VR.TOTAL</th>' +
+                        '</tr>' +
+                        '<tbody></tobody></table>';
+            }
+
+
+            function getDocs(idOrder) {
+                url = get_base_url() + "Orders/get_details_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    var pos = 1;
+                    $.each(respuestaServer["docs"], function (i, doc) {
+                        $("#fecha_" + idOrder).html(doc.dateSave);
+                        if (doc.idTypeDocument === "2") {
+                            $(".pisnm" + idOrder).removeClass("disable");
+                        }
+                        if (doc.idTypeDocument === "3") {
+                            $(".tss" + idOrder).removeClass("disable");
+                        }
+                        if (doc.idTypeDocument === "1") {
+                            $(".photo" + idOrder).removeClass("disable");
+                            galery = true;
+                            pos++;
+                        }
+                    });
                 });
             }
         </script>

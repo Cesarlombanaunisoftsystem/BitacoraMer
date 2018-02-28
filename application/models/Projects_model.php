@@ -74,7 +74,7 @@ class Projects_model extends CI_Model {
    FROM tbl_services
     GROUP BY id) serv
     ON details.idServices= serv.id    
-    LEFT JOIN (SELECT idOrder, MAX(id_type_management) id_type_management
+    LEFT JOIN (SELECT idOrder, id_type_management
     FROM tbl_daily_management
     GROUP BY idOrder) daily
     ON tbl_orders.id = daily.idOrder
@@ -140,6 +140,7 @@ class Projects_model extends CI_Model {
         $this->db->from('tbl_daily_management');
         $this->db->join('tbl_type_management', 'tbl_daily_management.id_type_management=tbl_type_management.id');
         $this->db->where('tbl_daily_management.idOrder', $idOrder);
+        $this->db->order_by("tbl_daily_management.id", "desc"); 
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

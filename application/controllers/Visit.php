@@ -146,7 +146,21 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_init_register_data_view', $data);
     }
-
+    
+    public function validation() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Validación Registro de Visitas Inicial';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['orders'] = $this->Orders_model->get_orders_design(6);
+        $data['tecs'] = $this->Users_model->get_tecs();
+        $this->load->view('validation_visit_init_view', $data);
+    }
+    
     public function validation_close() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -271,7 +285,7 @@ class Visit extends CI_Controller {
         $this->Orders_model->upload_docs($dataDoc);
         $dataGen = array(
             'idArea' => 3,
-            'idOrderState' => 18,
+            'idOrderState' => 19,
             'observations' => $this->input->post('obsvgen')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
