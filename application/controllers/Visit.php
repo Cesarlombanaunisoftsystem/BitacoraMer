@@ -174,6 +174,7 @@ class Visit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(7);
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
+        $data['process'] = $this->Visits_model->get_orders_visit_validation();
         $this->load->view('visit_init_register_data_view', $data);
     }
 
@@ -186,7 +187,8 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Validación Registro de Visitas Inicial';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Visits_model->get_orders_visit_validtion();
+        $data['orders'] = $this->Visits_model->get_orders_visit_init_process();
+        $data['process'] = $this->Visits_model->get_orders_visit_validation();
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_view', $data);

@@ -57,7 +57,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    if (isset($orders)) {
+                                    if (isset($orders) && $orders) {
                                         foreach ($orders as $order) {?> 
                                             <tr>
                                                 <td class="details-control" id="<?php echo $order->id; ?>">

@@ -28,59 +28,108 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="#bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">Bandeja de entrada</a></li>
+                                        <li role="presentation"><a href="#regprocess" aria-controls="binnacle" role="tab" data-toggle="tab">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
-                        </div>
-                        <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="bandeja">
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="<?= base_url('dist/img/visitini.png') ?>" style="width: 120px;">
+                                </div>
+                                <input type="hidden" id="id" value=""/>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
 
-                            <table id="data-table" class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th style="color: #00B0F0">Fecha de ordén</th>
-                                        <th style="color: #00B0F0">No. Ordén</th>
-                                        <th style="color: #00B0F0">Centro de Costos</th>
-                                        <th style="color: #00B0F0">Actividad</th>
-                                        <th style="color: #00B0F0">Servicio</th>
-                                        <th style="color: #00B0F0">Cantidad</th>
-                                        <th style="color: #00B0F0">Sitio</th>
-                                        <th style="color: #00B0F0">Técnico</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (isset($orders) && $orders) {
-                                        foreach ($orders as $order) {
-                                            ?> 
+                                    <table id="data-table" class="table table-striped">
+                                        <thead>
                                             <tr>
-                                                <td class="details-control" id="<?php echo $order->id; ?>">
-                                                    <i class="fa fa-plus-square-o"></i>
-                                                </td>
-                                                <td><?= $order->dateSave ?></td>
-                                                <td><?= $order->uniquecode ?></td>
-                                                <td><?= $order->uniqueCodeCentralCost ?></td>
-                                                <td><?= $order->name_activitie ?></td>
-                                                <td><?= $order->name_service ?></td>
-                                                <td><?= $order->count ?></td>
-                                                <td><?= $order->site ?></td>
-                                                <td><?= $order->name_user ?></td>
-                                            </tr> 
+                                                <th></th>
+                                                <th style="color: #00B0F0">Fecha de ordén</th>
+                                                <th style="color: #00B0F0">No. Ordén</th>
+                                                <th style="color: #00B0F0">Centro de Costos</th>
+                                                <th style="color: #00B0F0">Actividad</th>
+                                                <th style="color: #00B0F0">Servicio</th>
+                                                <th style="color: #00B0F0">Cantidad</th>
+                                                <th style="color: #00B0F0">Sitio</th>
+                                                <th style="color: #00B0F0">Técnico</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             <?php
-                                        }
-                                    }
-                                    ?> 
-                                </tbody>
-                            </table>
+                                            if (isset($orders) && $orders) {
+                                                foreach ($orders as $order) {
+                                                    ?> 
+                                                    <tr>
+                                                        <td class="details-control" id="<?php echo $order->id; ?>">
+                                                            <i class="fa fa-plus-square-o"></i>
+                                                        </td>
+                                                        <td><?= $order->dateSave ?></td>
+                                                        <td><?= $order->uniquecode ?></td>
+                                                        <td><?= $order->uniqueCodeCentralCost ?></td>
+                                                        <td><?= $order->name_activitie ?></td>
+                                                        <td><?= $order->name_service ?></td>
+                                                        <td><?= $order->count ?></td>
+                                                        <td><?= $order->site ?></td>
+                                                        <td><?= $order->name_user ?></td>
+                                                    </tr> 
+                                                    <?php
+                                                }
+                                            }
+                                            ?> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="regprocess">
+                            <div class="row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="<?= base_url('dist/img/visitini.png') ?>" style="width: 120px;">
+                                </div>
+                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
+                                    <table id="data-table" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style="color: #00B0F0">Fecha de ordén</th>
+                                                <th style="color: #00B0F0">No. Ordén</th>
+                                                <th style="color: #00B0F0">Centro de Costos</th>
+                                                <th style="color: #00B0F0">Actividad</th>
+                                                <th style="color: #00B0F0">Servicio</th>
+                                                <th style="color: #00B0F0">Cantidad</th>
+                                                <th style="color: #00B0F0">Sitio</th>
+                                                <th style="color: #00B0F0">Técnico</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            if (isset($process) && $process) {
+                                                foreach ($process as $order) {
+                                                    ?> 
+                                                    <tr>
+                                                        <td><?= $order->dateSave ?></td>
+                                                        <td><?= $order->uniquecode ?></td>
+                                                        <td><?= $order->uniqueCodeCentralCost ?></td>
+                                                        <td><?= $order->name_activitie ?></td>
+                                                        <td><?= $order->name_service ?></td>
+                                                        <td><?= $order->count ?></td>
+                                                        <td><?= $order->site ?></td>
+                                                        <td><?= $order->name_user ?></td>
+                                                    </tr> 
+                                                    <?php
+                                                }
+                                            }
+                                            ?> 
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </section>
                 <!-- /.content -->
                 <!-- Modal Galery -->
