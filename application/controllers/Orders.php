@@ -258,5 +258,12 @@ class Orders extends CI_Controller {
             return 'error';
         }
     }
+    
+    public function get_reg_photos_xid() {
+        $id = $this->input->get('id');
+        $res = $this->Orders_model->get_reg_photos_xid($id);
+        $resultadosJson = json_encode($res->file);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
 }

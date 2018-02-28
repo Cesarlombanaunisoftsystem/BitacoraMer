@@ -24,7 +24,7 @@ and open the template in the editor.
                  width: 430px; margin-left: 30px;">
                 <p style="text-align:left;"><img src="<?= base_url('dist/img/logo_mail.png') ?>" alt="logo Mer"><img src="<?= base_url('dist/img/titulo_mail.png') ?>"  height="90px" width="250px" alt="titulo"/></p>
                 <p><img src="<?= base_url('dist/img/hr_mail.png') ?>" alt="hr"></p>
-                <p><?= $content->name_user ?>, ¡Has Sido Vinculado para el Inicio de la Siguiente Actividad!</p>
+                <p><?= $content->name_user ?>, <?= $titulo?></p>
 
                 <ul>
                     <li>No.Orden: <?= $content->uniquecode ?></li>

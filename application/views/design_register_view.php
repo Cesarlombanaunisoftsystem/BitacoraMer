@@ -41,7 +41,7 @@
                         </div>
                         <input type="hidden" id="id" value=""/>
                         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
-                                           
+
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -59,7 +59,8 @@
                                 <tbody>
                                     <?php
                                     if (isset($orders) && $orders) {
-                                        foreach ($orders as $order) {?> 
+                                        foreach ($orders as $order) {
+                                            ?> 
                                             <tr>
                                                 <td class="details-control" id="<?php echo $order->id; ?>">
                                                     <i class="fa fa-plus-square-o"></i>
@@ -74,7 +75,8 @@
                                                 <td><?= $order->name_user ?></td>
                                             </tr> 
                                         <?php }
-                                    } ?> 
+                                    }
+                                    ?> 
                                 </tbody>
                             </table>
                         </div>
@@ -85,26 +87,26 @@
                 <div class="modal" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
-                        <div class="modal-body">
-                            <ul class="slides"></ul> 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
+                            <div class="modal-body">
+                                <ul class="slides"></ul> 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /.content-wrapper -->
-<?php $this->load->view('templates/footer.html') ?>
+        <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
-        <?php $this->load->view('templates/libs') ?>
+<?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                $(document).on("click", ".photos", function() {
-                    if(galery)
+                $(document).on("click", ".photos", function () {
+                    if (galery)
                         $('.modal').modal('show');
                 });
             });
@@ -112,16 +114,17 @@
                 var fn = $(elm).val();
                 $(".myfilename").html(fn);
             }
-            $('#data-table tbody').on('click', 'td.details-control', function(){
+            $('#data-table tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
-                var row = dt.row( tr );
+                var row = dt.row(tr);
                 order_id = $(this).attr("id");
-                if(row.child.isShown()){
+                if (row.child.isShown()) {
                     row.child.hide();
                     tr.removeClass('shown');
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
                 } else {
-                    getDocs(order_id);
+                    getDocs(order_id);  
+                    getRegPhoto(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
                     row.child(format(order_id)).show();
@@ -130,24 +133,24 @@
                 }
             });
             function format(d) {
-                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">'+
-                    '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">'+
-                    '<tr>'+
-                        '<td>FECHA DE REGISTRO: 2018-01-29</td>'+
-                        '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>'+
-                        '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>'+
-                        '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>'+
-                        '<td>OBSERVACIONES GENERALES</td>'+
-                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>'+
-                    '</tr>'+
-                    '<tr>'+
-                        '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>'+
-                        '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>'+
-                        '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>'+
-                        '<td><input type="hidden" value="' + d + '" name="idOrder"></input>'+
-                        '<button type="submit" class="blue bold">REGISTRAR DISEÑO</button></td>'+
-                    '</tr>'+
-                '</table></form>';
+                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">' +
+                        '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<td>FECHA DE REGISTRO: 2018-01-29</td>' +
+                        '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
+                        '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
+                        '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
+                        '<td>OBSERVACIONES GENERALES</td>' +
+                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>' +
+                        '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>' +
+                        '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>' +
+                        '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
+                        '<button type="submit" class="blue bold">REGISTRAR DISEÑO</button></td>' +
+                        '</tr>' +
+                        '</table></form>';
             }
             function assign(idOrder) {
                 var idTech = $("#idTech_" + idOrder).val();
@@ -190,35 +193,44 @@
                 });
             }
             function getDocs(idOrder) {
-                galery = false;
-                $(".slides").html("");
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        if(doc.idTypeDocument == "2"){
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file);
+                        if (doc.idTypeDocument == "2") {
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
-                        if(doc.idTypeDocument == "3"){
-                            $(".tss" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file);
+                        if (doc.idTypeDocument == "3") {
+                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }
-                        if(doc.idTypeDocument == "1"){
-                            var html = '<input type="radio" name="radio-btn" id="img-'+pos+'" '+(pos == 1 ? 'checked' : '')+' />';
-                            html += '<li class="slide-container"><div class="slide">';
-                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
-                            html += '<div class="nav"><label for="img-'+(pos == 1 ? 1 : pos - 1)+'" class="prev">&#x2039;</label>';
-                            html += '<label for="img-'+(pos + 1)+'" class="next">&#x203a;</label></div></li>';
-                            $(".slides").prepend(html);
+                        if (doc.idTypeDocument == "1") {
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
-                            galery = true;
-                            pos++;
                         }
                     });
+                });
+            }
+
+            function getRegPhoto(id) {
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
+                    }
                 });
             }
         </script>

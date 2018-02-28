@@ -117,6 +117,7 @@
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
                 } else {
                     getDocs(order_id);
+                    getRegPhoto(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
                     row.child(format(order_id)).show();
@@ -138,40 +139,49 @@
                 '</table></form>';
             }
             function getDocs(idOrder) {
-                galery = false;
-                $(".slides").html("");
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if(doc.idTypeDocument == "2"){
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
                         if(doc.idTypeDocument == "3"){
-                            $(".tss" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }
                         if(doc.idTypeDocument == "6"){
-                            $(".design" + idOrder).attr("href", get_base_url() + "/uploads/" + doc.file)
+                            $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".design" + idOrder).attr("target", "_blank");
                             $(".design" + idOrder).removeClass("disable");
                         }
                         if(doc.idTypeDocument == "1"){
-                            var html = '<input type="radio" name="radio-btn" id="img-'+pos+'" '+(pos == 1 ? 'checked' : '')+' />';
-                            html += '<li class="slide-container"><div class="slide">';
-                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
-                            html += '<div class="nav"><label for="img-'+(pos == 1 ? 1 : pos - 1)+'" class="prev">&#x2039;</label>';
-                            html += '<label for="img-'+(pos + 1)+'" class="next">&#x203a;</label></div></li>';
-                            $(".slides").prepend(html);
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
-                            galery = true;
-                            pos++;
                         }
                     });
+                });
+            }
+            
+            function getRegPhoto(id) {
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
+                    }
                 });
             }
         </script>

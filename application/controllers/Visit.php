@@ -14,7 +14,7 @@ class Visit extends CI_Controller {
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
         $this->load->model(array('Users_model', 'Visits_model', 'Orders_model',
-            'Activities_model', 'Utils', 'Projects_model'));
+            'Activities_model', 'Utils', 'Projects_model', 'Services_model'));
     }
 
     public function program() {
@@ -89,6 +89,36 @@ class Visit extends CI_Controller {
         }
     }
 
+    public function validation_register_visit_initial() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idArea' => $this->input->post('idArea'),
+            'idOrderState' => $this->input->post('idState'));
+        $res = $this->Visits_model->assign_order($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function return_register_visit_init() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idArea' => $this->input->post('idArea'),
+            'idOrderState' => $this->input->post('idState'),
+            'observations' => $this->input->post('obsv'));
+        $res = $this->Visits_model->assign_order($idOrder, $data);
+        if ($res === TRUE) {
+            $content = $this->Orders_model->get_order_by_id_email($idOrder);
+            $titulo = '¡Devolución auditoria validación visita!';
+            $this->Utils->sendMail($content->email, 'Registro de visita inicial', 'templates/email_tecnico.php', $content, $titulo);
+            echo 'ok';
+        } else {
+            echo $res;
+        }
+    }
+
     public function return_order_register() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
@@ -146,7 +176,7 @@ class Visit extends CI_Controller {
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $this->load->view('visit_init_register_data_view', $data);
     }
-    
+
     public function validation() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -156,11 +186,12 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Validación Registro de Visitas Inicial';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(6);
-        $data['tecs'] = $this->Users_model->get_tecs();
+        $data['orders'] = $this->Visits_model->get_orders_visit_validtion();
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_view', $data);
     }
-    
+
     public function validation_close() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -198,21 +229,28 @@ class Visit extends CI_Controller {
 
     public function register_docs() {
         $dir_subida = './uploads/';
-        $filefoto = $this->generateRandomString() . $_FILES['fileregfoto']['name'];
-        $filepsinm = $this->generateRandomString() . $_FILES['filepisnm']['name'];
-        $filetss = $this->generateRandomString() . $_FILES['filetss']['name'];
-        $fichero1 = $dir_subida . $filefoto;
-        $fichero2 = $dir_subida . $filepsinm;
-        $fichero3 = $dir_subida . $filetss;
-        move_uploaded_file($_FILES['fileregfoto']['tmp_name'], $fichero1);
-        move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
-        move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
+        $image = "";
+        $quantity = count($_FILES['fileregfoto']['name']);
+        for ($i = 0; $i < $quantity; $i++) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['fileregfoto']['tmp_name'][$i], "./uploads/" . $_FILES['fileregfoto']['name'][$i]);
+            //guardamos en la base de datos el nombre
+            $image .= $_FILES['fileregfoto']['name'][$i] . ",";
+        }
+        $imageconcat = trim($image, ",");
         $dataFoto = array(
-            'file' => $filefoto,
-            'observation' => $this->post('obsvRegPic'),
+            'file' => $imageconcat,
+            'observation' => $this->input->post('obsvRegPic'),
             'dateSave' => date('Y-m-d')
         );
         $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeRegFoto'), $dataFoto);
+        $filepsinm = $this->generateRandomString() . $_FILES['filepisnm']['name'];
+        $filetss = $this->generateRandomString() . $_FILES['filetss']['name'];
+        $fichero2 = $dir_subida . $filepsinm;
+        $fichero3 = $dir_subida . $filetss;
+        move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
+        move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
+
         $dataPsinm = array(
             'file' => $filepsinm,
             'observation' => $this->input->post('obsvPsinm'),

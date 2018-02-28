@@ -35,7 +35,7 @@ class Projects extends CI_Controller {
         }
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['projects'] = $this->Projects_model->get_daily_management(12);
+        $data['projects'] = $this->Projects_model->get_daily_management();
         $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('activitie_init_view', $data);
     }
@@ -196,7 +196,7 @@ class Projects extends CI_Controller {
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_managements();
-        $data['registers'] = $this->Projects_model->get_daily_management(22);
+        $data['registers'] = $this->Projects_model->get_daily_management_closing();
         $this->load->view('closing_visit_request_view', $data);
     }
 

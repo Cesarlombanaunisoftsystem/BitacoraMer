@@ -13,7 +13,7 @@ class Audit extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Audits_model', 'Visits_model', 'Activities_model', 'Orders_model', 'Services_model', 'Payments_model'));
+        $this->load->model(array('Users_model', 'Audits_model', 'Visits_model', 'Activities_model', 'Orders_model', 'Services_model', 'Payments_model', 'Utils'));
     }
 
     public function pl_1() {
@@ -124,9 +124,10 @@ class Audit extends CI_Controller {
             'dateAssign' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
+            $titulo = '¡Has Sido Vinculado para el Inicio de la Siguiente Actividad!';
             $technical = $this->Users_model->get_user_xid($idTech);
             $content = $this->Orders_model->get_order_by_id_email($idOrder);
-            $this->Utils->sendMail($technical->email, 'Inicio de Actividades - BITACORA', 'templates/email_activitie_init.php', $content);
+            $this->Utils->sendMail($technical->email, 'Inicio de Actividades - BITACORA', 'templates/email_activitie_init.php', $content, $titulo);
             echo 'ok';
         } else {
             echo $res;

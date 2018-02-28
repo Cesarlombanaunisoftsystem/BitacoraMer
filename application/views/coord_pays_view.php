@@ -40,7 +40,6 @@
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                         <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
                                     </div>
-                                    <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <form>
                                             <table  id="data-table" class="table table-striped">
@@ -76,7 +75,7 @@
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
                                                                 <td><?= $row->site ?></td>
-                                                                <td><?= $row->name_user ?></td>
+                                                                <td><input type="hidden" name="idTech" id="idTech_<?= $row->id ?>" value="<?= $row->idTech ?>"><?= $row->name_user ?></td>
                                                                 <td>PRESUPUESTO</td>
                                                                 <td><?= $row->observations ?></td>                                                
                                                                 <td><input type="hidden" id="costOrder" value="<?= $row->totalCost ?>"><?= $row->totalCost ?></td>
@@ -135,7 +134,7 @@
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
                                                                 <td><?= $row->site ?></td>
-                                                                <td><input type="hidden" name="idTech" id="idTech<?= $row->id ?>" value="<?= $row->idTechnicals ?>"><?= $row->name_user ?></td>
+                                                                <td><input type="hidden" name="idTech" id="idTech_<?= $row->id ?>" value="<?= $row->idTech ?>"><?= $row->name_user ?></td>
                                                                 <td>PRESUPUESTO</td>
                                                                 <td><?= $row->observations ?></td>                                                
                                                                 <td><input type="hidden" id="costOrder" value="<?= $row->totalCost ?>"><?= $row->totalCost ?></td>
@@ -388,33 +387,28 @@
                     var pay = $("#pay_" + idOrder).val();
                     var dif = max - pay;
                     var percent = $("#percent_" + idOrder).val();
-                    var idTech = $("#idTech" + idOrder).val();
+                    var idTech = $("#idTech_" + idOrder).val();
                     if (percent > dif) {
                         alertify.error('No puedes superar el porcentaje maximo a pagar.');
                         return 0;
                     }
                     var cost = $("#costOrder").val();
                     var value = cost / percent;
-                    alertify.confirm('En realidad desea pasar la ordén a pagaduria con este porcentaje?', function () {
-                        alertify.success('Aceptado');
-                        url = get_base_url() + "Audit/assign_percent";
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
-                            success: function (resp) {
-                                if (resp === "error") {
-                                    alertify.error('Error en BBDD');
-                                }
-                                if (resp === "ok") {
-                                    alertify.success('Porcentaje asignado, ordén pasada a pagaduria.');
-                                    location.reload();
-                                }
+                    url = get_base_url() + "Audit/assign_percent";
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
+                        success: function (resp) {
+                            if (resp === "error") {
+                                alertify.error('Error en BBDD');
                             }
-                        });
-                    }, function () {
-                        alertify.error('Acción cancelada');
-                    }).set({labels: {ok: 'Aceptar', cancel: 'Cancelar'}, padding: false});
+                            if (resp === "ok") {
+                                alertify.success('Porcentaje asignado, ordén pasada a pagaduria.');
+                                location.reload();
+                            }
+                        }
+                    });
                 }
 
                 function historyPays(idOrder) {

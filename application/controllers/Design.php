@@ -25,7 +25,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(7);
+        $data['orders'] = $this->Orders_model->get_orders_design(2,7);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_register_view', $data);
     }
@@ -39,7 +39,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(12);
+        $data['orders'] = $this->Orders_model->get_orders_design(3,9);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_list_view', $data);
     }
@@ -53,7 +53,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Auditoria de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(12);
+        $data['orders'] = $this->Orders_model->get_orders_design(2,8);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_audit_view', $data);
     }
@@ -78,19 +78,20 @@ class Design extends CI_Controller {
         if (move_uploaded_file($_FILES['file']['tmp_name'], $fichero_subido)) {
             $data = array(
                 'idTypeDocument' => '6',
-                'idOrder' => $_POST['idOrder'],
+                'idOrder' => $this->input->post('idOrder'),
                 'file' => $filename,
-                'observation'=> $_POST['observacion'],
+                'observation'=> $this->input->post('observacion'),
                 'idState' => 1,
                 'dateSave' => date('Y-m-d H:i:s')
             );
-            $res = $this->Orders_model->add_order_document($data);
-            $data = array(
-                'idOrderState' => '12'
+            $this->Orders_model->add_order_document($data);
+            $data1 = array(
+                'idArea' => '3',
+                'idOrderState' => '9'
             );
             $content = "";
             $this->Utils->sendMail('yflorezr@gmail.com', 'Auditoria de Diseño MER INFRAESTRUCTURA  - BITACORA', 'templates/review_design.php', $content);
-            $res = $this->Orders_model->update_order($_POST['idOrder'], $data);
+            $this->Orders_model->update_order($this->input->post('idOrder'), $data1);
             redirect(base_url() . 'Design/register');
         } else {
             redirect(base_url() . 'Design/register');
@@ -99,10 +100,11 @@ class Design extends CI_Controller {
     }
 
     function approved_order_design() {
-        $data = array(
-            'idOrderState' => '12'
+        $data = array( 
+            'idArea' => '3',
+            'idOrderState' => '9'
         );
-        $res = $this->Orders_model->update_order($_POST['idOrder'], $data);
+        $this->Orders_model->update_order($this->input->post('idOrder'), $data);
         redirect(base_url() . 'Design/audit?success');
     }
 

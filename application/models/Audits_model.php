@@ -17,7 +17,7 @@ class Audits_model extends CI_Model {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
-            serv.name_service, tecn.name_user
+            serv.name_service, tecn.id as idTech, tecn.name_user
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
    idServices, count, site, sum(total) totalOrder, sum(cost) totalCost

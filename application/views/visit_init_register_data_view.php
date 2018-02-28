@@ -182,7 +182,7 @@
                             '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>' +
-                            '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto" id="fileregfoto"></input></td>' +
+                            '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto[]" id="fileregfoto" multiple></input></td>' +
                             '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvRegPic"><td>' +
                             '</tr>' +
                             '<tr>' +
