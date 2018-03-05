@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 
 /**
  * Description of Visit
@@ -187,8 +188,8 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Validación Registro de Visitas Inicial';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Visits_model->get_orders_visit_init_process();
-        $data['process'] = $this->Visits_model->get_orders_visit_validation();
+        $data['orders'] = $this->Visits_model->get_orders_visit_validation();
+        $data['process'] = $this->Orders_model->get_orders_design(2,7);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_view', $data);
@@ -204,7 +205,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(7);
-        $data['visits'] = $this->Projects_model->get_daily_management(21);
+        $data['visits'] = $this->Projects_model->register_data_close_visit(21);
         $this->load->view('visit_close_register_data_view', $data);
     }
 
@@ -218,7 +219,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(7);
-        $data['visits'] = $this->Projects_model->get_daily_management(18);
+        $data['visits'] = $this->Projects_model->register_data_close_visit(19);
         $this->load->view('visit_close_process_view', $data);
     }
 
@@ -331,7 +332,7 @@ class Visit extends CI_Controller {
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         $dataDaily = array(
             'idOrder' => $this->input->post('idOrder'),
-            'id_type_management' => 3,
+            'id_type_management' => 2,
             'detail' => $this->input->post('obsvgen')
         );
         $this->Projects_model->register_daily_management_order($dataDaily);

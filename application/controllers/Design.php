@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 
 /**
  * Description of Visit
@@ -39,7 +40,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(3,9);
+        $data['orders'] = $this->Orders_model->get_orders_design(2,8);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_list_view', $data);
     }
@@ -72,13 +73,14 @@ class Design extends CI_Controller {
     }
 
     function register_order_design() {
+        $idOrder = $this->input->post('idOrder');
         $dir_subida = './uploads/';
         $filename = $this->generateRandomString() . $_FILES['file']['name'];
         $fichero_subido = $dir_subida . $filename;
         if (move_uploaded_file($_FILES['file']['tmp_name'], $fichero_subido)) {
             $data = array(
                 'idTypeDocument' => '6',
-                'idOrder' => $this->input->post('idOrder'),
+                'idOrder' => $idOrder,
                 'file' => $filename,
                 'observation'=> $this->input->post('observacion'),
                 'idState' => 1,
@@ -86,11 +88,12 @@ class Design extends CI_Controller {
             );
             $this->Orders_model->add_order_document($data);
             $data1 = array(
-                'idArea' => '3',
-                'idOrderState' => '9'
+                'idArea' => '2',
+                'idOrderState' => '8'
             );
-            $content = "";
-            $this->Utils->sendMail('yflorezr@gmail.com', 'Auditoria de Diseño MER INFRAESTRUCTURA  - BITACORA', 'templates/review_design.php', $content);
+            $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
+            $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
+            $this->Utils->sendMail($content->email, 'Auditoria de Diseño MER INFRAESTRUCTURA  - BITACORA', 'templates/review_design.php', $content, $titulo);
             $this->Orders_model->update_order($this->input->post('idOrder'), $data1);
             redirect(base_url() . 'Design/register');
         } else {

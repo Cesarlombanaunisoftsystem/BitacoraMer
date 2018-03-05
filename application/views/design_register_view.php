@@ -136,7 +136,7 @@
                 return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO: 2018-01-29</td>' +
+                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
                         '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
                         '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
@@ -152,29 +152,7 @@
                         '</tr>' +
                         '</table></form>';
             }
-            function assign(idOrder) {
-                var idTech = $("#idTech_" + idOrder).val();
-                var date = $("#date_" + idOrder).val();
-                if (date === "") {
-                    alertify.error('Debes indicar fecha de visita');
-                } else {
-                    url = get_base_url() + "Visit/assign";
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {idOrder: idOrder, idTech: idTech, date: date},
-                        success: function (resp) {
-                            if (resp === "error") {
-                                alertify.error('Erro en BBDD');
-                            }
-                            if (resp === "ok") {
-                                alertify.success('Visita asignada al técnico exitosamente, correo de aviso enviado.');
-                                location.reload();
-                            }
-                        }
-                    });
-                }
-            }
+            
             function return_order(idOrder) {
                 url = get_base_url() + "Design/return_order_design";
                 $.ajax({
@@ -196,6 +174,7 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
+                        $("#date"+idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument == "2") {
                             $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");

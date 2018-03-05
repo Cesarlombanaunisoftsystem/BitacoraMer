@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 
 /**
  * Description of Audit
@@ -90,7 +91,7 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        $data['pays'] = $this->Audits_model->get_pl(12);
+        $data['pays'] = $this->Payments_model->get_pays();
         $data['paysAdd'] = $this->Audits_model->get_pl(13);
         $data['paysProcess'] = $this->Audits_model->get_pl(14);
         $this->load->view('coord_pays_view', $data);

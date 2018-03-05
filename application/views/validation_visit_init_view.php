@@ -288,7 +288,7 @@
             function format(d) {
                 return '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO: 2018-01-29</td>' +
+                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
                         '<td><a class="disable photos photo' + d + '"><u>REGISTRO FOTOGRAFICO</u></a></td>' +
                         '<td><a class="disable pisnm' + d + '"><u>FORMATO PISNM</u></a></td>' +
                         '<td><a class="disable tss' + d + '"><u>FORMATO TSS</u></a></td>' +
@@ -362,6 +362,7 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
+                        $("#date"+idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument == "2") {
                             $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".pisnm" + idOrder).attr("target", "_blank");

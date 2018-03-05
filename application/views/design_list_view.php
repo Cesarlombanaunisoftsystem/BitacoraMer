@@ -28,8 +28,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation"><a href="<?= base_url('Design/register') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                    <li role="presentation" class="active"><a href="<?= base_url('Design/proccess') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Design/register') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Design/proccess') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -58,7 +58,8 @@
                                 <tbody>
                                     <?php
                                     if (isset($orders) && $orders) {
-                                        foreach ($orders as $order) {?> 
+                                        foreach ($orders as $order) {
+                                            ?> 
                                             <tr>
                                                 <td class="details-control" id="<?php echo $order->id; ?>">
                                                     <i class="fa fa-plus-square-o"></i>
@@ -73,7 +74,8 @@
                                                 <td><?= $order->name_user ?></td>
                                             </tr> 
                                         <?php }
-                                    } ?> 
+                                    }
+                                    ?> 
                                 </tbody>
                             </table>
                         </div>
@@ -84,34 +86,34 @@
                 <div class="modal" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
-                        <div class="modal-body">
-                            <ul class="slides"></ul> 
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
+                            <div class="modal-body">
+                                <ul class="slides"></ul> 
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /.content-wrapper -->
-<?php $this->load->view('templates/footer.html') ?>
+        <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
-        <?php $this->load->view('templates/libs') ?>
+<?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                $(document).on("click", ".photos", function() {
-                    if(galery)
+                $(document).on("click", ".photos", function () {
+                    if (galery)
                         $('.modal').modal('show');
                 });
             });
-            $('#data-table tbody').on('click', 'td.details-control', function(){
+            $('#data-table tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
-                var row = dt.row( tr );
+                var row = dt.row(tr);
                 order_id = $(this).attr("id");
-                if(row.child.isShown()){
+                if (row.child.isShown()) {
                     row.child.hide();
                     tr.removeClass('shown');
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
@@ -126,45 +128,46 @@
                 }
             });
             function format(d) {
-                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">'+
-                    '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">'+
-                    '<tr>'+
-                        '<td>FECHA DE REGISTRO: 2018-01-29</td>'+
-                        '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>'+
-                        '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>'+
-                        '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>'+
-                        '<td><a class="disable design' + d + '">DISEÑO</a></td>'+
-                        '<td>OBSERVACIONES GENERALES</td>'+
-                    '</tr>'+
-                '</table></form>';
+                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">' +
+                        '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
+                        '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
+                        '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
+                        '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
+                        '<td><a class="disable design' + d + '">DISEÑO</a></td>' +
+                        '<td>OBSERVACIONES GENERALES</td>' +
+                        '</tr>' +
+                        '</table></form>';
             }
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        if(doc.idTypeDocument == "2"){
+                        $("#date" + idOrder).html(doc.dateSave);
+                        if (doc.idTypeDocument == "2") {
                             $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
-                        if(doc.idTypeDocument == "3"){
+                        if (doc.idTypeDocument == "3") {
                             $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }
-                        if(doc.idTypeDocument == "6"){
+                        if (doc.idTypeDocument == "6") {
                             $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
                             $(".design" + idOrder).attr("target", "_blank");
                             $(".design" + idOrder).removeClass("disable");
                         }
-                        if(doc.idTypeDocument == "1"){
+                        if (doc.idTypeDocument == "1") {
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
                         }
                     });
                 });
             }
-            
+
             function getRegPhoto(id) {
                 galery = false;
                 $(".slides").html("");

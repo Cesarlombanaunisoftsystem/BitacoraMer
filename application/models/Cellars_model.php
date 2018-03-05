@@ -23,7 +23,7 @@ class Cellars_model extends CI_Model {
         }
     }
 
-    public function get_materials_cellar($state) {
+    public function get_materials_cellar() {
         $sql = "SELECT tbl_orders.*,details.idActivities,details.count,
             details.site,details.statecellarmin,details.statecellarmax,
             act.name_activitie,tecn.name_user
@@ -42,7 +42,35 @@ class Cellars_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = '$state'";
+    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = 16 or tbl_orders.idOrderState = 23";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_materials_cellar_process() {
+        $sql = "SELECT tbl_orders.*,details.idActivities,details.count,
+            details.site,details.statecellarmin,details.statecellarmax,
+            act.name_activitie,tecn.name_user
+    FROM tbl_orders
+   LEFT JOIN (SELECT idOrder, min(idActivities) idActivities,
+   max(idServices) service, min(idStateCellar) statecellarmin,
+   max(idStateCellar) statecellarmax, site, count, idStateCellar
+   FROM tbl_orders_details
+    GROUP BY idOrder) details
+    ON tbl_orders.id = details.idOrder
+    LEFT JOIN (SELECT id, name_activitie
+   FROM tbl_activities
+    GROUP BY id) act
+    ON details.idActivities= act.id
+    LEFT JOIN (SELECT id, name_user
+   FROM tbl_users
+    GROUP BY id) tecn
+    ON tbl_orders.idTechnicals = tecn.id
+    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = 17 or tbl_orders.idOrderState = 24";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

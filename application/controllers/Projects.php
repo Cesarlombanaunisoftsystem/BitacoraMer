@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,7 +19,8 @@ class Projects extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model', 'Orders_model', 'Projects_model', 'Utils'));
+        $this->load->model(array('Users_model', 'Orders_model', 'Projects_model',
+            'Materials_model', 'Utils'));
     }
 
     public function activitie_init() {
@@ -28,16 +31,39 @@ class Projects extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Mis Proyectos';
         $id_user = $this->session->userdata('id_usuario');
-        if ($this->session->userdata('id_profile') !== '4') {
-            $data['type'] = 'INICIO DE ACTIVIDAD';
-        } else {
-            $data['type'] = 'AUDITORIA COORDINADOR';
-        }
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_management();
-        $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('activitie_init_view', $data);
+    }
+
+    public function register_activities() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Mis Proyectos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['types'] = $this->Projects_model->get_types_management();
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['registers'] = $this->Projects_model->get_daily_management_contract();
+        $this->load->view('activitie_register_view', $data);
+    }
+
+    public function materials_back($id) {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Mis Proyectos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['order'] = $this->Orders_model->get_order_by_id($id);
+        $data['types'] = $this->Projects_model->get_types_management();
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['materials'] = $this->Materials_model->get_materials_order($id);
+        $this->load->view('materials_back_view', $data);
     }
 
     public function register_activitie() {
@@ -46,6 +72,20 @@ class Projects extends CI_Controller {
             'idOrderState' => 18
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function register_back_materials() {
+        $id = $this->input->post('id');
+        $countback = $this->input->post('countBack');
+        $data = array(
+            'count_back' => $countback
+        );
+        $res = $this->Materials_model->assign_state($id, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -93,49 +133,130 @@ class Projects extends CI_Controller {
         if ($attendant === '1') {
             $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $uniquecode, 'templates/email_coordinator.php', $content);
         }
-        //obtenemos el archivo a subir
-        $file = $_FILES['userfile']['name'];
-        $quantity = count($file);
-        //comprobamos si existe un directorio para subir el archivo
-        //si no es así, lo creamos
-        if (!is_dir("./uploads/"))
-            mkdir("./uploads/", 0777);
-        for ($i = 0; $i < $quantity; $i++) {
-            //subimos el archivo ha subido
-            move_uploaded_file($_FILES['userfile']['tmp_name'][$i], "./uploads/" . $file[$i]);
-            //guardamos en la base de datos el nombre
-            $images .= $file[$i] . ",";
+        
+        if (isset($_FILES['userfile']['name'])) {
+            $file = $_FILES['userfile']['name'];
+            $quantity = count($file);
+            //comprobamos si existe un directorio para subir el archivo
+            //si no es así, lo creamos
+            if (!is_dir("./uploads/"))
+                mkdir("./uploads/", 0777);
+            for ($i = 0; $i < $quantity; $i++) {
+                //subimos el archivo ha subido
+                move_uploaded_file($_FILES['userfile']['tmp_name'][$i], "./uploads/" . $file[$i]);
+                //guardamos en la base de datos el nombre
+                $images .= $file[$i] . ",";
+            }
         }
         $image = trim($images, ',');
         // comprobamos si es una solicitud de visita de cierre o sino una gestion diaria
-        if ($this->input->post('typegest') === '2') {
-            $data = array(
-                'idOrder' => $this->input->post('idOrderDaily'),
-                'id_type_management' => $this->input->post('typegest'),
-                'detail' => $this->input->post('detailgest'),
-                'percent_execute' => $this->input->post('valpercentexe'),
-                'percent_materials' => $this->input->post('valpercentmat'),
-                'check_attention' => $this->input->post('attendant'),
-                'image' => $image
-            );
-            $data1 = array(
-                'observations' => $this->input->post('detailgest'),
-                'idOrderState' => 19
-            );
-            $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
-            echo $this->valida($res);
-        } else {
-            $data = array(
-                'idOrder' => $this->input->post('idOrderDaily'),
-                'id_type_management' => $this->input->post('typegest'),
-                'detail' => $this->input->post('detailgest'),
-                'percent_execute' => $this->input->post('valpercentexe'),
-                'percent_materials' => $this->input->post('valpercentmat'),
-                'check_attention' => $this->input->post('attendant'),
-                'image' => $image
-            );
-            $res = $this->Projects_model->register_daily_management_order($data);
-            echo $this->valida($res);
+        switch ($this->input->post('typegest')) {
+            case 1:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $res = $this->Projects_model->register_daily_management_order($data);
+                echo $this->valida($res);
+
+                break;
+            case 2:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $data1 = array(
+                    'observations' => $this->input->post('detailgest'),
+                    'idOrderState' => 19,
+                    'id_type_management' => 2
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+                break;
+            case 3:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $data1 = array(
+                    'observations' => $this->input->post('detailgest'),
+                    'idOrderState' => 23,
+                    'id_type_management' => 3
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+                break;
+            case 4:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $data1 = array(
+                    'observations' => $this->input->post('detailgest'),
+                    'idOrderState' => 22,
+                    'id_type_management' => 6
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+                break;
+            case 5:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $data1 = array(
+                    'observations' => $this->input->post('detailgest'),
+                    'idOrderState' => 18,
+                    'id_type_management' => 5
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+                break;
+            case 6:
+                $data = array(
+                    'idOrder' => $this->input->post('idOrderDaily'),
+                    'id_type_management' => $this->input->post('typegest'),
+                    'detail' => $this->input->post('detailgest'),
+                    'percent_execute' => $this->input->post('valpercentexe'),
+                    'percent_materials' => $this->input->post('valpercentmat'),
+                    'check_attention' => $this->input->post('attendant'),
+                    'image' => $image
+                );
+                $data1 = array(
+                    'observations' => $this->input->post('detailgest'),
+                    'idOrderState' => 23,
+                    'id_type_management' => 6
+                );
+                $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
+                echo $this->valida($res);
+                break;
+            default:
+                break;
         }
     }
 
@@ -166,7 +287,8 @@ class Projects extends CI_Controller {
             );
             $data1 = array(
                 'observations' => $this->input->post('detailgest'),
-                'idOrderState' => 22
+                'idOrderState' => 22,
+                'id_type_management' => 6
             );
             $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
             echo $this->valida($res);
@@ -196,7 +318,7 @@ class Projects extends CI_Controller {
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_managements();
-        $data['registers'] = $this->Projects_model->get_daily_management_closing();
+        $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('closing_visit_request_view', $data);
     }
 
@@ -212,7 +334,7 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function mark_closing_visit_audit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
@@ -239,7 +361,7 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function back_closing_visit_audit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(

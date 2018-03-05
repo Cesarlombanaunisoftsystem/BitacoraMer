@@ -28,9 +28,9 @@ class Orders_model extends CI_Model {
             return false;
         }
     }
-    
+
     public function get_order_by_id($idOrder) {
-        $sql = "SELECT tbl_orders.*,max(tbl_orders_details.idActivities),
+        $sql = "SELECT tbl_orders.*,min(tbl_orders_details.idActivities),
             tbl_orders_details.idServices,tbl_orders_details.site,
             tbl_orders_details.count,tbl_activities.name_activitie,
             tbl_services.name_service,tbl_users.name_user,tbl_users.email,
@@ -39,8 +39,7 @@ class Orders_model extends CI_Model {
             ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
             tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
             tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
-            tbl_orders.idTechnicals = tbl_users.id JOIN tbl_cellars
-            ON tbl_orders_details.idCellar = tbl_cellars.id WHERE tbl_orders.id='$idOrder'";
+            tbl_orders.idTechnicals = tbl_users.id WHERE tbl_orders.id='$idOrder'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -121,6 +120,25 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
+    public function get_order_by_email_coordext($idOrder) {
+        $sql = "SELECT tbl_orders.*,max(tbl_orders_details.idActivities),
+            tbl_orders_details.idServices,tbl_orders_details.site,
+            tbl_orders_details.count,tbl_activities.name_activitie,
+            tbl_services.name_service,tbl_users.name_user,tbl_users.email,
+            tbl_users.identify_number,tbl_users.contact,tbl_users.address,
+            tbl_users.phone FROM tbl_orders JOIN tbl_orders_details
+            ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
+            tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
+            tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
+            tbl_orders.idCoordinatorExt = tbl_users.id WHERE tbl_orders.id='$idOrder'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
     public function get_orders_tray() {
         $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
                 . 'tbl_orders_details.price,tbl_orders_details.count,tbl_orders_details.total AS totalDetail,tbl_activities.name_activitie,tbl_services.name_service');
@@ -140,7 +158,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_orders_design($area,$status) {
+    public function get_orders_design($area, $status) {
         $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
                 . 'tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders');
@@ -298,7 +316,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function upload_docs($data) {
         $this->db->insert('tbl_orders_documents', $data);
         if ($this->db->affected_rows() > 0) {
@@ -336,8 +354,8 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return $query->result();
         }
     }
-    
-    public function get_materials_by_cellar($idOrder,$idCellar) {
+
+    public function get_materials_by_cellar($idOrder, $idCellar) {
         $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
                 . 'tbl_services.name_service,tbl_services.unit_measurement');
         $this->db->from('tbl_orders_details');
@@ -372,7 +390,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return false;
         }
     }
-    
+
     public function assign_state($idOrder, $data) {
         $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data);
@@ -382,7 +400,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_reg_photos_xid($id) {
         $sql = "SELECT file FROM tbl_orders_documents WHERE idOrder='$id' AND"
                 . " idTypeDocument = 1";

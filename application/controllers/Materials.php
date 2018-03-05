@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
 
 /**
  * Description of Audit
@@ -49,8 +50,8 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['materials'] = $this->Cellars_model->get_materials_cellar(16);
-        $data['process'] = $this->Cellars_model->get_materials_cellar(17);
+        $data['materials'] = $this->Cellars_model->get_materials_cellar();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process();
         $this->load->view('cellars_view', $data);
     }
     

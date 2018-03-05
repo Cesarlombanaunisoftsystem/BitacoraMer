@@ -72,8 +72,10 @@
                                         <table class="table table-striped" style="font-size: 12px">
                                             <thead>
                                                 <tr>
-                                                    <td style="color: #00B0F0">Descripción</td>
+                                                    <td style="color: #00B0F0">Proceso</td>
+                                                    <td style="color: #00B0F0">| Descripción</td>
                                                     <td style="color: #00B0F0">| Cantidad</td>
+                                                    <td style="color: #00B0F0" class="cantDev" hidden="">| Cantidad Devolución</td>
                                                     <td style="color: #00B0F0">| Unidad de medida</td>
                                                     <td style="color: #00B0F0">| Observaciones</td>
                                                     <td style="color: #00B0F0">| Pendiente</td>
@@ -97,6 +99,7 @@
                                         <table  id="data-table" class="table table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th style="color: #00B0F0">Proceso</th>
                                                     <th style="color: #00B0F0">Fecha de Ordén</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
@@ -110,10 +113,16 @@
                                                 <?php
                                                 if (isset($materials) && $materials) {
                                                     foreach ($materials as $row) {
+                                                        if ($row->idOrderState === '16') {
+                                                            $process = 'ASIGNACIÓN';
+                                                        } else {
+                                                            $process = 'DEVOLUCIÓN';
+                                                        }
                                                         ?>                                            
                                                         <tr>
+                                                            <td><?= $process ?></td>
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrden(<?= $row->id ?>);">
+                                                            <td><a href="#" onclick="verOrden(<?= $row->id . ',' . $row->idOrderState ?>);">
                                                                     <u><?= $row->uniquecode ?></u><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
@@ -139,6 +148,7 @@
                                         <table id="table-regprocess" class="table table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th style="color: #00B0F0">Proceso</th>
                                                     <th style="color: #00B0F0">Fecha de Ordén</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
@@ -157,10 +167,16 @@
                                                         } else {
                                                             $color = "";
                                                         }
+                                                        if ($row->idOrderState === '17') {
+                                                            $proces = 'ASIGNACIÓN';
+                                                        } else {
+                                                            $proces = 'DEVOLUCIÓN';
+                                                        }
                                                         ?>
                                                         <tr style="color: <?= $color ?>">
+                                                            <td><?= $proces ?></td>
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->id ?>);">
+                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->id . ',' . $row->idOrderState ?>);">
                                                                     <u style="color: <?= $color ?>"><?= $row->uniquecode ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccostProcess_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activProcess_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
@@ -274,7 +290,7 @@
                 });
             });
 
-            function verOrden(idOrder) {
+            function verOrden(idOrder, process) {
                 $("#divOrder").show();
                 $("#table1").hide();
                 $('#bodyMaterials').empty();
@@ -291,13 +307,20 @@
                 url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
+                        if (process === '16') {
+                            var proc = 'ASIGNACIÓN';
+                            $(".cantDev").hide();
+                        } else {
+                            proc = 'DEVOLUCIÓN';
+                            $(".cantDev").show();
+                        }
                         if (materials.idStateCellar === '0') {
                             check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
                         } else {
                             check = '<input type="checkbox" onclick="unregister(' + materials.id + ')">';
                         }
-                        $('#bodyMaterials').append('<tr><td>' + materials.name_service +
-                                '</td><td>' + materials.count +
+                        $('#bodyMaterials').append('<tr><td>' + proc + '</td><td>' + materials.name_service +
+                                '</td><td>' + materials.count + '</td><td class="cantDev">' + materials.count_back +
                                 '</td><td>' + materials.unit_measurement + '</td><td>'
                                 + materials.observation + '</td>' +
                                 '<td>' + check + '</td></tr>');
@@ -333,7 +356,7 @@
                         $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +
                                 '<input type="hidden" value=' + materials.idOrder +
                                 ' name="idOrder" id="idOrder">' + materials.name_service +
-                                '</td><td>' + materials.count +
+                                '</td><td>' + materials.count + '</td><td>' + materials.count_back +
                                 '</td><td>' + materials.unit_measurement + '</td><td>'
                                 + materials.observation + '</td>' +
                                 '<td>' + check + '</td></tr>');

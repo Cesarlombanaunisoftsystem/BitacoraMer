@@ -121,6 +121,8 @@
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
                 } else {
                     getDocs(order_id);
+                    getRegPhoto(order_id);
+                    getObservations(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
                     row.child(format(order_id)).show();
@@ -149,43 +151,64 @@
             }
 
             function getDocs(idOrder) {
-                galery = false;
-                $(".slides").html("");
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
+                        $("#date" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument === "2") {
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                            $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
-                            $(".pisnm" + idOrder).addClass("pointer");
-                            $(".pisnm" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
-                            $("#obsvPsinm" + idOrder).val(doc.observation);
                         }
                         if (doc.idTypeDocument === "3") {
+                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                            $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
-                            $(".tss" + idOrder).addClass("pointer");
-                            $(".tss" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
-                            $("#obsvTss" + idOrder).val(doc.observation);
-                        }
-                        if (doc.idTypeDocument === "7") {
-                            $(".docs" + idOrder).removeClass("disable");
-                            $(".docs" + idOrder).addClass("pointer");
-                            $(".docs" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file);
                         }
                         if (doc.idTypeDocument === "1") {
-                            var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
-                            html += '<li class="slide-container"><div class="slide">';
-                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
-                            html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
-                            html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
-                            $("#obsvRegPic" + idOrder).val(doc.observation);
-                            $(".slides").prepend(html);
-                            galery = true;
-                            pos++;
+                        }
+                        if (doc.idTypeDocument === "7") {
+                            $(".docs" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                            $(".docs" + idOrder).attr("target", "_blank");
+                            $(".docs" + idOrder).removeClass("disable");
                         }
                     });
+                });
+            }
+
+            function getRegPhoto(id) {
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
+                $.getJSON(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
+                    }
+                });
+            }
+            function getObservations(idOrder) {
+                $("#obsv" + idOrder).val("");
+                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsv" + idOrder).val(res.observation.observations);
+                });
+            }
+            function getAdjuntos(idOrder) {
+                $("#obsv" + idOrder).val("");
+                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsv" + idOrder).val(res.observation.observations);
                 });
             }
             function generateid(idOrder) {
