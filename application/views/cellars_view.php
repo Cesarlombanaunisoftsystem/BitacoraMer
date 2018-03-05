@@ -78,7 +78,8 @@
                                                     <td style="color: #00B0F0" class="cantDev" hidden="">| Cantidad Devolución</td>
                                                     <td style="color: #00B0F0">| Unidad de medida</td>
                                                     <td style="color: #00B0F0">| Observaciones</td>
-                                                    <td style="color: #00B0F0">| Pendiente</td>
+                                                    <td style="color: #00B0F0" class="pend">| Pendiente</td>
+                                                    <td style="color: #00B0F0" class="cantDev" hidden="">| Recibir</td>
                                                 </tr>                                   
                                             </thead>
                                             <tbody id="bodyMaterials">
@@ -89,7 +90,8 @@
                                             <div class="col-sm-12">
                                                 <div class="col-sm-8"></div>
                                                 <div class="col-sm-4">
-                                                    <button type="button" class="form-control btn btn-default color-blue" onclick="register_x_order();"><b>ENTREGAR</b></button>
+                                                    <button id="btnIn" type="button" class="form-control btn btn-default color-blue" onclick="register_x_order();"><b>ENTREGAR</b></button>
+                                                    <button id="btnReg" type="button" class="form-control btn btn-success"><b>REGISTRAR</b></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -310,14 +312,19 @@
                         if (process === '16') {
                             var proc = 'ASIGNACIÓN';
                             $(".cantDev").hide();
+                            $("#btnReg").hide();
+                            if (materials.idStateCellar === '0') {
+                                check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
+                            } else {
+                                check = '<input type="checkbox" onclick="unregister(' + materials.id + ')">';
+                            }
                         } else {
                             proc = 'DEVOLUCIÓN';
                             $(".cantDev").show();
-                        }
-                        if (materials.idStateCellar === '0') {
-                            check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
-                        } else {
-                            check = '<input type="checkbox" onclick="unregister(' + materials.id + ')">';
+                            $("#btnReg").show();
+                            $(".pend").hide();
+                            $("#btnIn").hide();
+                            check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.id + ')">';
                         }
                         $('#bodyMaterials').append('<tr><td>' + proc + '</td><td>' + materials.name_service +
                                 '</td><td>' + materials.count + '</td><td class="cantDev">' + materials.count_back +
