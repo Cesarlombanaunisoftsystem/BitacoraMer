@@ -91,9 +91,9 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        $data['pays'] = $this->Payments_model->get_pays();
-        $data['paysAdd'] = $this->Audits_model->get_pl(13);
-        $data['paysProcess'] = $this->Audits_model->get_pl(14);
+        $data['pays'] = $this->Payments_model->get_pays_box();
+        $data['paysAdd'] = $this->Payments_model->get_pays(2);
+        $data['paysProcess'] = $this->Payments_model->get_pays(2);
         $this->load->view('coord_pays_view', $data);
     }
 
@@ -108,8 +108,8 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        $data['pays'] = $this->Audits_model->get_pl(13);
-        $data['pays_process'] = $this->Payments_model->get_pays_process();
+        $data['pays'] = $this->Payments_model->get_pays(1);
+        $data['pays_process'] = $this->Payments_model->get_pays(2);
         $this->load->view('financial_view', $data);
     }
 
@@ -146,8 +146,7 @@ class Audit extends CI_Controller {
             'percent' => $percent,
             'value' => $value);
         $data1 = array(
-            'idArea' => 3,
-            'idOrderState' => 13,
+            'statePays' => 1,
             'historyBackState' => 0);
         $res = $this->Payments_model->assign_pay($idOrder, $data, $data1);
         if ($res === TRUE) {

@@ -395,17 +395,28 @@
                     var cost = $("#costOrder").val();
                     var value = cost / percent;
                     url = get_base_url() + "Audit/assign_percent";
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
-                        success: function (resp) {
-                            if (resp === "error") {
-                                alertify.error('Error en BBDD');
-                            }
-                            if (resp === "ok") {
-                                alertify.success('Porcentaje asignado, ordén pasada a pagaduria.');
-                                location.reload();
+                    $.confirm({
+                        title: 'Confirma asignar este porcentaje?',
+                        content: 'Pasará a !',
+                        buttons: {
+                            confirmar: function () {
+                                $.ajax({
+                                    url: url,
+                                    type: 'POST',
+                                    data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
+                                    success: function (resp) {
+                                        if (resp === "error") {
+                                            alertify.error('Error en BBDD');
+                                        }
+                                        if (resp === "ok") {
+                                            alertify.success('Porcentaje asignado, ordén pasada a pagaduria.');
+                                            location.reload();
+                                        }
+                                    }
+                                });
+                            },
+                            cancelar: function () {
+                                $.alert('Cancelado!');
                             }
                         }
                     });

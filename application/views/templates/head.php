@@ -15,6 +15,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
   <!-- Datepicker -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- jquery confirm -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
   <!-- custom -->
   <link rel="stylesheet" href="<?= base_url('plugins/iCheck/all.css')?>">
   <link rel="stylesheet" href="<?= base_url('dist/css/AdminLTE.css')?>">

@@ -91,7 +91,7 @@
                                                 <div class="col-sm-8"></div>
                                                 <div class="col-sm-4">
                                                     <button id="btnIn" type="button" class="form-control btn btn-default color-blue" onclick="register_x_order();"><b>ENTREGAR</b></button>
-                                                    <button id="btnReg" type="button" class="form-control btn btn-success"><b>REGISTRAR</b></button>
+                                                    <button id="btnReg" type="button" class="form-control btn btn-success" onclick="register_materials_back();"><b>REGISTRAR</b></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -324,7 +324,11 @@
                             $("#btnReg").show();
                             $(".pend").hide();
                             $("#btnIn").hide();
-                            check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.id + ')">';
+                            if (materials.idStateCellar === '2') {
+                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idCellar + ',' + materials.id + ',' + materials.count_back + ')">';
+                            } else {
+                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.idCellar + ',' + materials.id + ',' + materials.count_back + ')">';
+                            }
                         }
                         $('#bodyMaterials').append('<tr><td>' + proc + '</td><td>' + materials.name_service +
                                 '</td><td>' + materials.count + '</td><td class="cantDev">' + materials.count_back +
@@ -371,19 +375,28 @@
                 });
             }
 
-            function register_x_product(id) {
-                if ($("#selcellar_" + id).prop('checked', false)) {
-                    $("#selcellar_" + id).prop('checked', true);
-                    url = get_base_url() + "Materials/assign_state";
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: {id: id, state: 0},
-                        success: function (resp) {
-                            console.log(resp);
-                        }
-                    });
-                }
+            function registerMaterialBack(idCellar, id, count_back) {
+                url = get_base_url() + "Materials/register_back";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {idCellar: idCellar, id: id, count_back: count_back},
+                    success: function (resp) {
+                        console.log(resp);
+                    }
+                });
+            }
+            
+            function unregisterMaterialBack(idCellar, id, count_back) {
+                url = get_base_url() + "Materials/unregister_back";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {idCellar: idCellar, id: id},
+                    success: function (resp) {
+                        console.log(resp);
+                    }
+                });
             }
 
             function register(id) {
@@ -425,6 +438,25 @@
                             alertify.success('Orden de entrega de materiales generada exitosamente');
                             location.reload();
                             generatePdf(idOrder);
+                        }
+                    }
+                });
+            }
+
+            function register_materials_back() {
+                url = get_base_url() + "Materials/register_materials_back";
+                var idOrder = $("#lblcCost").html();
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder: idOrder},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Devolución registrada exitosamente');
+                            location.reload();
                         }
                     }
                 });

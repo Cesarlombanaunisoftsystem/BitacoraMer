@@ -56,6 +56,7 @@
 
                 if ($('#idOrder').val() === "") {
                     $('#idOrder').removeAttr("readonly");
+                    $('#btnSubmit').prop('disabled',true);
                 }
                 var subtotal = $("#sumSubtotal").val();
                 $('#subtotal').val(subtotal);
@@ -78,7 +79,6 @@
 
                     var id = $('#id').val();
                     url = get_base_url() + "Orders/get_details?jsoncallback=?";
-                    $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     if ($("#userfile").val() === "") {
                         alertify.error('Debes adjuntar el documento de la ordén !');
                         return false;
@@ -148,6 +148,7 @@
                         }
                         if (resp === "ok") {
                             alertify.success('Cabecera generada exitosamente.');
+                            $("#btnSubmit").removeAttr('disabled');
                         }
                     }
                 });

@@ -69,8 +69,8 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['materials'] = $this->Cellars_model->get_materials_cellar(16);
-        $data['process'] = $this->Cellars_model->get_materials_cellar(17);
+        $data['materials'] = $this->Cellars_model->get_materials_cellar();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process();
         $this->load->view('cellars_view', $data);
     }
 
@@ -145,6 +145,56 @@ class Materials extends CI_Controller {
             'idOrderState' => 17
         );
         $res = $this->Materials_model->assign_materials_x_order($idOrder, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function register_back() {
+        $id = $this->input->post('id');
+        $data = array(
+            'idStateCellar' => 2
+        );
+        $data1 = array(
+            'idCellar' => $this->input->post('idCellar'),
+            'idDetail' => $id,
+            'count_back' => $this->input->post('count_back')
+        );
+        $res = $this->Materials_model->register_back($id,$data,$data1);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function unregister_back() {
+        $id = $this->input->post('id');
+        $idCellar = $this->input->post('idCellar');
+        $data = array(
+            'idStateCellar' => 1
+        );
+        $res = $this->Materials_model->unregister_back($id,$data,$idCellar);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function register_materials_back() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => 24
+        );
+        $data1 = array(
+            'idOrder' => $idOrder,
+            'id_type_management' => 6,
+            'detail' => 'Devolución recibida'
+        );
+        $res = $this->Materials_model->register_materials_back($idOrder, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';
         } else {

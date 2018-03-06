@@ -85,11 +85,11 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_order_materials_cellar() {
         $idOrder = $this->input->get('idOrder');
         $idCellar = $this->input->get('cellar');
-        $data['materials'] = $this->Orders_model->get_materials_by_cellar($idOrder,$idCellar);
+        $data['materials'] = $this->Orders_model->get_materials_by_cellar($idOrder, $idCellar);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -259,7 +259,7 @@ class Orders extends CI_Controller {
             return 'error';
         }
     }
-    
+
     public function get_reg_photos_xid() {
         $id = $this->input->get('id');
         $res = $this->Orders_model->get_reg_photos_xid($id);

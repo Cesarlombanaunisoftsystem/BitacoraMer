@@ -10,7 +10,7 @@ if (!defined('BASEPATH')) {
  * @author jj
  */
 class Materials_model extends CI_Model {
-    
+
     public function get_materials_order($idOrder) {
         $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
                 . 'tbl_services.name_service,tbl_services.unit_measurement,'
@@ -50,6 +50,41 @@ class Materials_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function register_materials_back($id, $data, $data1) {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_orders', $data);
+        $this->db->insert('tbl_daily_management',$data1);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function register_back($id, $data, $data1) {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_orders_details', $data);
+        $this->db->insert('tbl_materials_back', $data1);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function unregister_back($id, $data, $idCellar) {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_orders_details', $data);
+        $this->db->where('idCellar', $idCellar);
+        $this->db->where('idDetail', $id);
+        $this->db->delete('tbl_materials_back');
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
 
     public function assign_state($id, $data) {
         $this->db->where('id', $id);
@@ -61,7 +96,7 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function get_data_cellar_order($order,$cellar) {
+    public function get_data_cellar_order($order, $cellar) {
         $sql = "SELECT tbl_orders_details.*, serv.name_service, serv.unit_measurement,
             bod.name_cellar, bod.contact_cellar, bod.image
     FROM tbl_orders_details
@@ -83,7 +118,7 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function get_materials($idOrder,$cellar) {
+    public function get_materials($idOrder, $cellar) {
         $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
                 . 'tbl_services.name_service,tbl_services.unit_measurement,'
                 . 'tbl_cellars.name_cellar, tbl_cellars.contact_cellar');
@@ -101,7 +136,7 @@ class Materials_model extends CI_Model {
             return $query->result();
         }
     }
-    
+
     public function get_materials_cellar($idOrder) {
         $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
                 . 'tbl_services.name_service,tbl_services.unit_measurement,'

@@ -90,6 +90,6 @@
 </div>
 <div class="col-xs-12">
     <div class="center block text-center">
-        <button type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
+        <button id="btnSubmit" type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
     </div>
 </div>
