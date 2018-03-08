@@ -1,4 +1,4 @@
 function get_base_url(){
-    var base_url='http://localhost:8888/bitacora/';
+    var base_url='http://www.bitacoramer.unisoftsystem.com.co/';
     return base_url;
 }

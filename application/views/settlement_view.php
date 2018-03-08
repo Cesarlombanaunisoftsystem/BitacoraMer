@@ -105,9 +105,11 @@
                                             <tr style="background-color: #0174DF; font-size: 10pt; color: white" onclick="getDetailsSale()">
                                                 <th style="border-radius: 10px" id="divVrVenta">                                                    
                                                 </th>
-                                                <div hidden id="bruto"></div><div hidden id="discount">
+                                        <div hidden id="totalSale"></div>
+                                        <div hidden id="bruto"></div>
+                                        <div hidden id="discount"><div hidden id="pdf"></div>
                                             </tr>
-                                        </thead>
+                                            </thead>
                                     </table>
                                     <table class="table" id="tblVentaCliente" style="border-radius: 10px;" hidden>
                                         <thead>                                       
@@ -259,8 +261,8 @@
                 var vrVenta = 0;
                 var bruto = 0;
                 var desc = 0;
-                var url = "";
-                var url1,url2,url3,url4 = "";
+                var url, pdf = "";
+                var url1, url2, url3, url4 = "";
                 $("#tblVentaCliente").hide();
                 $("#tblPayContract").hide();
                 $("#idOrder").val(idOrder);
@@ -276,8 +278,13 @@
                 url = get_base_url() + "Settlement/getSaleHead?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
                     vrVenta = res.res.total;
+                    $("#totalSale").html(vrVenta);
                     bruto = res.res.subtotal;
+                    $("#bruto").html(bruto);
                     desc = res.res.discount;
+                    $("#discount").html(desc);
+                    pdf = res.res.picture;
+                    $("#pdf").html(pdf);
                 });
                 url1 = get_base_url() + "Settlement/getSettlement?jsoncallback=?";
                 $.getJSON(url1, {idOrder: idOrder}).done(function (res) {
@@ -368,10 +375,15 @@
 
             function getDetailsSale() {
                 $("#tblVentaCliente").empty();
+                var doc = $("#pdf").html();
                 var idOrder = $("#idOrder").val();
-                var vrVenta = $("#vrVenta").html();
-                var vrBruto = $("#bruto").val();
-                var desc = $("#discount").val();
+                var vrVenta = $("#totalSale").html();
+                var vrBruto = $("#bruto").html();
+                var vrVentaF = formatNumber(vrVenta);
+                var vrBrutoF = formatNumber(vrBruto);
+                var desc = $("#discount").html();
+                var iva = vrVenta - vrBruto;
+                var ivaF = formatNumber(iva);
                 url = get_base_url() + "Settlement/getDetailsSale?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["res"], function (i, res) {
@@ -382,11 +394,12 @@
                               <td>' + res.count + '</td><td>' + res.site + '</td><td>' +
                                 price + '</td><td>' + total + '</td></tr></tbody>');
                     });
-                    $("#foot").html('<table class="table"><tr><td style="color: #00B0F0; font-size: 8pt;">TOTAL BRUTO</td>' +
-                            '<td>' + vrBruto + '</td><td style="color: #00B0F0; font-size: 8pt;">DESCUENTO</td><td>' + desc + '</td>' +
-                            '<td style="color: #00B0F0; font-size: 8pt;">I.V.A</td><td></td>' +
-                            '<td style="color: #00B0F0; font-size: 8pt;">TOTAL</td><td>' +
-                            vrVenta + '</td><td>file</td>' +
+                    $("#foot").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL BRUTO</td>' +
+                            '<td>' + vrBrutoF + '</td><td style="color: #00B0F0;">DESCUENTO</td><td>' + desc + '</td>' +
+                            '<td style="color: #00B0F0;">I.V.A</td><td>' + ivaF + '</td>' +
+                            '<td style="color: #00B0F0;">TOTAL</td><td>' +
+                            vrVentaF + '</td><td>' + '<a href="' + get_base_url() + "uploads/" + doc + '" target="blank">' +
+                            '<img src="' + get_base_url() + 'dist/img/iconoclip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></a></td>' +
                             '</tr></table>');
 
                 });
@@ -421,7 +434,7 @@
                 $("#tblVentaCliente").hide();
                 $("#tblPayContract").hide();
                 $("#tblVrMaterials").hide();
-                $("#foot").hide();                
+                $("#foot").hide();
                 $("#tblVrAditionals").show();
             }
         </script>
