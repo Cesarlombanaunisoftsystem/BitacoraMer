@@ -30,10 +30,31 @@ class Settlement extends CI_Controller {
         $data['process'] = $this->Financial_model->get_settlement(26);
         $this->load->view('settlemant_view', $data);
     }
-    
+
     public function getSettlement() {
         $idOrder = $this->input->get('idOrder');
         $data['res'] = $this->Financial_model->getVrSettlement($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
+    public function getPayContract() {
+        $idOrder = $this->input->get('idOrder');
+        $data['res'] = $this->Financial_model->getPayContract($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function getPayMaterials() {
+        $idOrder = $this->input->get('idOrder');
+        $data['res'] = $this->Financial_model->getPayMaterials($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function getPayAditionals() {
+        $idOrder = $this->input->get('idOrder');
+        $data['res'] = $this->Financial_model->getPayAditionals($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }

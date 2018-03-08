@@ -6,6 +6,7 @@
  * @author JHON JAIRO VALDÉS ARISTIZABAL
  */
 class Financial_model extends CI_Model {
+
     public function get_settlement($state) {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
@@ -40,15 +41,49 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function getVrSettlement($idOrder) {
         $sql = "select sum(total) as vrVenta, sum(total_cost) as vrCostos from"
                 . " tbl_orders_details where idOrder = '$idOrder'";
         $query = $this->db->query($sql);
-        if($query->num_rows() > 0){
+        if ($query->num_rows() > 0) {
             return $query->row();
         } else {
             return FALSE;
         }
     }
+
+    public function getPayContract($idOrder) {
+        $sql = "select sum(value) as pagoContract from tbl_orders_pays"
+                . " where idOrder = '$idOrder' and state = 1";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function getPayMaterials($idOrder) {
+        $sql = "select sum(total_cost) as vrMaterials from tbl_orders_details"
+                . " where idOrder = '$idOrder' and idActivities = 5";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function getPayAditionals($idOrder) {
+        $sql = "select sum(total_cost) as vrAdds from tbl_orders_details"
+                . " where idOrder = '$idOrder' and idActivities = 7";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
 }

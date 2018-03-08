@@ -102,9 +102,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr style="background-color: #0174DF; font-size: 10pt; color: white">
-                                                <th style="border-radius: 10px">
-                                                    VALOR TOTAL VENTA PARA CLIENTE 
-                                                </th>
+                                                <th style="border-radius: 10px" id="divVrVenta"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -114,9 +112,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr style="background-color: #0174DF; font-size: 10pt; color: white">
-                                                <th style="border-radius: 10px">
-                                                    VALOR TOTAL PAGO A CONTRATISTA 
-                                                </th>
+                                                <th style="border-radius: 10px" id="divVrContract"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -126,9 +122,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr style="background-color: #0174DF; font-size: 10pt; color: white">
-                                                <th style="border-radius: 10px">
-                                                    VALOR TOTAL DE MATERIALES 
-                                                </th>
+                                                <th style="border-radius: 10px" id="divVrMaterials"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -138,9 +132,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr style="background-color: #0174DF; font-size: 10pt; color: white">
-                                                <th style="border-radius: 10px">
-                                                    VALOR TOTAL ADICIONALES 
-                                                </th>
+                                                <th style="border-radius: 10px" id="divVrAditionals"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -204,6 +196,14 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             function getSettlement(idOrder) {
+                $("#vrVenta").html("");
+                $("#tltCostos").html("");
+                $("#utilidad").html("");
+                $("#vrUtilidad").html("");
+                $("#divVrVenta").html("");
+                $("#divVrContract").html("");
+                $("#divVrMaterials").html("");
+                $("#divVrAditionals").html("");
                 $("#list").show();
                 url = get_base_url() + "Settlement/getSettlement?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
@@ -215,28 +215,82 @@
                     var vrVentaMil = formatNumber(vrVenta);
                     var vrCostosMil = formatNumber(vrCostos);
                     var restMil = formatNumber(rest);
+                    $("#divVrVenta").html("VALOR TOTAL VENTA PARA CLIENTE\n\
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ " + vrVentaMil);
                     $("#vrVenta").html(vrVentaMil);
                     $("#tltCostos").html(vrCostosMil);
                     $("#utilidad").html(percent2deci);
                     $("#vrUtilidad").html(restMil);
                 });
+                url2 = get_base_url() + "Settlement/getPayContract?jsoncallback=?";
+                $.getJSON(url2, {idOrder: idOrder}).done(function (res) {
+                    var vrPays = res.res.pagoContract;
+                    var vrPay = formatNumber(vrPays);
+                    $("#divVrContract").html("VALOR TOTAL PAGO A CONTRATISTA\n\
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ " + vrPay);
+                });
+                url3 = get_base_url() + "Settlement/getPayMaterials?jsoncallback=?";
+                $.getJSON(url3, {idOrder: idOrder}).done(function (res) {
+                    var vrMaterials = res.res.vrMaterials;
+                    var vrMaterial = formatNumber(vrMaterials);
+                    $("#divVrMaterials").html("VALOR TOTAL DE MATERIALES\n\
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;$ " + vrMaterial);
+                });
+                url4 = get_base_url() + "Settlement/getPayAditionals?jsoncallback=?";
+                $.getJSON(url4, {idOrder: idOrder}).done(function (res) {
+                    var vrAdds = res.res.vrAdds;
+                    var vrAdd = formatNumber(vrAdds);
+                    $("#divVrAditionals").html("VALOR TOTAL ADICIONALES\n\
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ " + vrAdd);
+                });
             }
 
             function formatNumber(num) {
-                if (!num || num == 'NaN')
+                if (!num || num === 'NaN')
                     return '-';
-                if (num == 'Infinity')
+                if (num === 'Infinity')
                     return '&#x221e;';
                 num = num.toString().replace(/\$|\,/g, '');
                 if (isNaN(num))
                     num = "0";
-                sign = (num == (num = Math.abs(num)));
+                sign = (num === (num = Math.abs(num)));
                 num = Math.floor(num * 100 + 0.50000000001);
                 num = Math.floor(num / 100).toString();
-                
+
                 for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
-                    num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
-                return (((sign) ? '' : '-') + num);
+                    num = num.substring(0, num.length - (4 * i + 3)) + '.' +
+                        num.substring(num.length - (4 * i + 3));
+                return (((sign) ? '' : '') + num);
             }
         </script>
     </body>
