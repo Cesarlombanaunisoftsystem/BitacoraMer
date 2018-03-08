@@ -40,4 +40,15 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function getVrSettlement($idOrder) {
+        $sql = "select sum(total) as vrVenta, sum(total_cost) as vrCostos from"
+                . " tbl_orders_details where idOrder = '$idOrder'";
+        $query = $this->db->query($sql);
+        if($query->num_rows() > 0){
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 }

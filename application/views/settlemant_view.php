@@ -86,13 +86,13 @@
                                             <tr style="font-size: 10pt">
                                                 <th style="color: orange">LIQUIDACIÓN</th>
                                                 <th style="color: #00B0F0">Valor Venta $</th>
-                                                <th>30.000.000</th>
+                                                <th id="vrVenta"></th>
                                                 <th style="color: #00B0F0">Total Costos $</th>
-                                                <th>30.000.000</th>
+                                                <th id="tltCostos"></th>
                                                 <th style="color: #00B0F0">% Utilidad</th>
-                                                <th>30</th>
+                                                <th id="utilidad"></th>
                                                 <th style="color: #00B0F0">Valor Utilidad $</th>
-                                                <th>10.000.000</th>
+                                                <th id="vrUtilidad"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -101,9 +101,9 @@
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <table class="table">
                                         <thead>
-                                            <tr style="background-color: #4D5F8F; color: white">
-                                                <th>
-                                                   VALOR TOTAL VENTA PARA CLIENTE 
+                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white">
+                                                <th style="border-radius: 10px">
+                                                    VALOR TOTAL VENTA PARA CLIENTE 
                                                 </th>
                                             </tr>
                                         </thead>
@@ -113,9 +113,9 @@
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <table class="table">
                                         <thead>
-                                            <tr style="background-color: #4D5F8F; color: white">
-                                                <th>
-                                                   VALOR TOTAL PAGO A CONTRATISTA 
+                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white">
+                                                <th style="border-radius: 10px">
+                                                    VALOR TOTAL PAGO A CONTRATISTA 
                                                 </th>
                                             </tr>
                                         </thead>
@@ -125,9 +125,9 @@
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <table class="table">
                                         <thead>
-                                            <tr style="background-color: #4D5F8F; color: white">
-                                                <th>
-                                                   VALOR TOTAL DE MATERIALES 
+                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white">
+                                                <th style="border-radius: 10px">
+                                                    VALOR TOTAL DE MATERIALES 
                                                 </th>
                                             </tr>
                                         </thead>
@@ -137,9 +137,9 @@
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                     <table class="table">
                                         <thead>
-                                            <tr style="background-color: #4D5F8F; color: white">
-                                                <th>
-                                                   VALOR TOTAL ADICIONALES 
+                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white">
+                                                <th style="border-radius: 10px">
+                                                    VALOR TOTAL ADICIONALES 
                                                 </th>
                                             </tr>
                                         </thead>
@@ -205,6 +205,38 @@
         <script type="text/javascript">
             function getSettlement(idOrder) {
                 $("#list").show();
+                url = get_base_url() + "Settlement/getSettlement?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    var vrVenta = res.res.vrVenta;
+                    var vrCostos = res.res.vrCostos;
+                    var rest = vrVenta - vrCostos;
+                    var percent = (rest * 100) / vrVenta;
+                    var percent2deci = percent.toFixed(2);
+                    var vrVentaMil = formatNumber(vrVenta);
+                    var vrCostosMil = formatNumber(vrCostos);
+                    var restMil = formatNumber(rest);
+                    $("#vrVenta").html(vrVentaMil);
+                    $("#tltCostos").html(vrCostosMil);
+                    $("#utilidad").html(percent2deci);
+                    $("#vrUtilidad").html(restMil);
+                });
+            }
+
+            function formatNumber(num) {
+                if (!num || num == 'NaN')
+                    return '-';
+                if (num == 'Infinity')
+                    return '&#x221e;';
+                num = num.toString().replace(/\$|\,/g, '');
+                if (isNaN(num))
+                    num = "0";
+                sign = (num == (num = Math.abs(num)));
+                num = Math.floor(num * 100 + 0.50000000001);
+                num = Math.floor(num / 100).toString();
+                
+                for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+                    num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
+                return (((sign) ? '' : '-') + num);
             }
         </script>
     </body>
