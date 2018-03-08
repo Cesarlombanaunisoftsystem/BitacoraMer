@@ -7,7 +7,7 @@ if (!defined('BASEPATH')) {
 /**
  * Description of Cellars_model
  *
- * @author jj
+ * @author JHON JAIRO VALDÉS ARISTIZABAL
  */
 class Cellars_model extends CI_Model {
 

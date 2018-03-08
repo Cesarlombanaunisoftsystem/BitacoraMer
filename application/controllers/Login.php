@@ -13,9 +13,9 @@ class Login extends CI_Controller {
     }
 
     function index() {
-        if($this->session->userdata('id_usuario')){
-            redirect(base_url('home'));
-        } 
+        if ($this->session->userdata('perfil') == TRUE) {
+            redirect(base_url() . 'home');
+        }
         else {
             $data['token'] = $this->token();
             $data['titulo'] = 'Login | bitacora';

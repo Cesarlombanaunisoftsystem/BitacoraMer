@@ -11,7 +11,7 @@ header('Access-Control-Allow-Origin: *');
 /**
  * Description of Projects
  *
- * @author jj
+ * @author JHON JAIRO VALDÉS ARISTIZABAL
  */
 class Projects extends CI_Controller {
 

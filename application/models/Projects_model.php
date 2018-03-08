@@ -9,7 +9,7 @@
 /**
  * Description of Projects_model
  *
- * @author jj
+ * @author JHON JAIRO VALDÉS ARISTIZABAL
  */
 class Projects_model extends CI_Model {
 

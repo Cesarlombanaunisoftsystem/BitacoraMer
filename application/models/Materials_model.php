@@ -7,7 +7,7 @@ if (!defined('BASEPATH')) {
 /**
  * Description of Materials_model
  *
- * @author jj
+ * @author JHON JAIRO VALDÉS ARISTIZABAL
  */
 class Materials_model extends CI_Model {
 
