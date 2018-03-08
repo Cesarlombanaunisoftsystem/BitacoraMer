@@ -42,6 +42,16 @@ class Financial_model extends CI_Model {
         }
     }
 
+    public function getSaleHead($idOrder) {
+        $sql = "select * from tbl_orders where id = '$idOrder'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
     public function getVrSettlement($idOrder) {
         $sql = "select sum(total) as vrVenta, sum(total_cost) as vrCostos from"
                 . " tbl_orders_details where idOrder = '$idOrder'";
@@ -63,7 +73,7 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function getPayMaterials($idOrder) {
         $sql = "select sum(total_cost) as vrMaterials from tbl_orders_details"
                 . " where idOrder = '$idOrder' and idActivities = 5";
@@ -74,7 +84,7 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function getPayAditionals($idOrder) {
         $sql = "select sum(total_cost) as vrAdds from tbl_orders_details"
                 . " where idOrder = '$idOrder' and idActivities = 7";
@@ -83,6 +93,21 @@ class Financial_model extends CI_Model {
             return $query->row();
         } else {
             return FALSE;
+        }
+    }
+
+    public function getDetailsSale($idOrder) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.idActivities', 1);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
         }
     }
 
