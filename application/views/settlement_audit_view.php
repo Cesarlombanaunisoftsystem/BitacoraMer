@@ -75,70 +75,73 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div><br><br>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="list" hidden>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                    <input type="hidden" id="idOrder">                                    
-                                    <table class="table">
-                                        <thead>                                       
-                                            <tr style="font-size: 10pt">
-                                                <th style="color: orange">LIQUIDACIÓN</th>
-                                                <th style="color: #00B0F0">Valor Proyecto $</th>
-                                                <th id="vrVenta"></th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="list" hidden>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <input type="hidden" id="idOrder">                                    
+                                        <table class="table">
+                                            <thead>                                       
+                                                <tr style="font-size: 10pt">
+                                                    <th style="color: orange">LIQUIDACIÓN</th>
+                                                    <th style="color: #00B0F0">Valor Proyecto $</th>
+                                                    <th id="vrVenta"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <table class="table">
+                                            <thead>
+                                                <tr style="background-color: #0174DF; font-size: 10pt; color: white" onclick="getDetailsSale()">
+                                                    <th style="border-radius: 10px" id="divVrVenta">                                                    
+                                                    </th>
+                                            <div hidden id="totalSale"></div>
+                                            <div hidden id="bruto"></div>
+                                            <div hidden id="discount">
+                                                </tr>
+                                                </thead>
+                                        </table>
+                                        <table class="table" id="tblVentaCliente" style="border-radius: 10px;" hidden>
+                                            <thead>                                       
+                                                <tr style="font-size: 10pt">
+                                                    <th style="color: #00B0F0">ACTIVIDAD</th>
+                                                    <th style="color: #00B0F0">SERVICIO</th>
+                                                    <th style="color: #00B0F0">CANTIDAD</th>
+                                                    <th style="color: #00B0F0">SITIO</th>
+                                                    <th style="color: #00B0F0">VR.UNITARIO</th>
+                                                    <th style="color: #00B0F0">VR.TOTAL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="bodytblcliente"></tbody>
+                                        </table>
+                                        <div id="foot"></div>
+                                    </div><br>
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <table class="table">
+                                            <thead>
+                                                <tr style="background-color: #0174DF; font-size: 10pt; color: white" onclick="getDetailsAditionals()">
+                                                    <th style="border-radius: 10px" id="divVrAditionals"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                        <table class="table" id="tblVrAditionals" style="border-radius: 10px;" hidden>
+                                            <thead>
+                                                <tr style="font-size: 10pt">
+                                                    <th style="color: #00B0F0">Categoria</th>
+                                                    <th style="color: #00B0F0">Producto/Servicio</th>
+                                                    <th style="color: #00B0F0">Cantidad</th>
+                                                    <th style="color: #00B0F0">Unidad de Medida</th>
+                                                    <th style="color: #00B0F0">Valor Unitario</th>
+                                                    <th style="color: #00B0F0">Valor Total</th>
+                                                    <th style="color: #00B0F0">Observaciones</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div><br>
                                 </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                    <table class="table">
-                                        <thead>
-                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white" onclick="getDetailsSale()">
-                                                <th style="border-radius: 10px" id="divVrVenta">
-                                                    <div hidden id="bruto"></div><div hidden id="discount"></div>                                                    
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <table class="table" id="tblVentaCliente" style="border-radius: 10px;" hidden>
-                                        <thead>                                       
-                                            <tr style="font-size: 10pt">
-                                                <th style="color: #00B0F0">ACTIVIDAD</th>
-                                                <th style="color: #00B0F0">SERVICIO</th>
-                                                <th style="color: #00B0F0">CANTIDAD</th>
-                                                <th style="color: #00B0F0">SITIO</th>
-                                                <th style="color: #00B0F0">VR.UNITARIO</th>
-                                                <th style="color: #00B0F0">VR.TOTAL</th>
-                                            </tr>
-                                        </thead>                                        
-                                    </table>
-                                    <div id="foot"></div>
-                                </div><br>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                    <table class="table">
-                                        <thead>
-                                            <tr style="background-color: #0174DF; font-size: 10pt; color: white" onclick="getDetailsAditionals()">
-                                                <th style="border-radius: 10px" id="divVrAditionals"></th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                    <table class="table" id="tblVrAditionals" style="border-radius: 10px;" hidden>
-                                        <thead>
-                                            <tr style="font-size: 10pt">
-                                                <th style="color: #00B0F0">Categoria</th>
-                                                <th style="color: #00B0F0">Producto/Servicio</th>
-                                                <th style="color: #00B0F0">Cantidad</th>
-                                                <th style="color: #00B0F0">Unidad de Medida</th>
-                                                <th style="color: #00B0F0">Valor Unitario</th>
-                                                <th style="color: #00B0F0">Valor Total</th>
-                                                <th style="color: #00B0F0">Observaciones</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div><br>
-                            </div>
+                            </div><br><br>
 
                             <div role="tabpanel" class="tab-pane" id="process">
                                 <div class="row">
@@ -199,9 +202,10 @@
         <script type="text/javascript">
             function getSettlement(idOrder) {
                 var vrVenta = 0;
-                var url = "";
-                var url1 = "";
-                var url4 = "";
+                var bruto = 0;
+                var desc = 0;
+                var url, pdf = "";
+                var url1, url2, url3, url4 = "";
                 $("#tblVentaCliente").hide();
                 $("#idOrder").val(idOrder);
                 $("#vrVenta").html("");
@@ -216,8 +220,11 @@
                 url = get_base_url() + "Settlement/getSaleHead?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
                     vrVenta = res.res.total;
+                    $("#totalSale").html(vrVenta);
                     bruto = res.res.subtotal;
+                    $("#bruto").html(bruto);
                     desc = res.res.discount;
+                    $("#discount").html(desc);
                 });
                 url1 = get_base_url() + "Settlement/getSettlement?jsoncallback=?";
                 $.getJSON(url1, {idOrder: idOrder}).done(function (res) {
@@ -269,32 +276,42 @@
             }
 
             function getDetailsSale() {
-                $("#tblVentaCliente").empty();
+                $("#bodytblcliente").empty();
+                $("#tblVrAditionals").hide();
+                $("#tblVentaCliente").show();
+                $("#foot").show();
                 var idOrder = $("#idOrder").val();
-                var vrVenta = $("#vrVenta").html();
-                var vrBruto = $("#bruto").val();
-                var desc = $("#discount").val();
-                url = get_base_url() + "Settlement/getDetailsSale?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                var vrVenta = $("#totalSale").html();
+                var vrBruto = $("#bruto").html();
+                var vrVentaF = formatNumber(vrVenta);
+                var vrBrutoF = formatNumber(vrBruto);
+                var desc = $("#discount").html();
+                var iva = vrVenta - vrBruto;
+                var ivaF = formatNumber(iva);
+                var url, url1, pdf = "";
+                url = get_base_url() + "Settlement/getSaleHead?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    pdf = res.res.picture;
+                });
+                url1 = get_base_url() + "Settlement/getDetailsSale?jsoncallback=?";
+                $.getJSON(url1, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["res"], function (i, res) {
                         var price = formatNumber(res.price);
                         var total = formatNumber(res.total);
-                        $("#tblVentaCliente").append('<tbody><tr style="font-size: 10pt;"><td>' + res.name_activitie +
+                        $("#bodytblcliente").append('<tr style="font-size: 10pt;"><td>' + res.name_activitie +
                                 '</td><td>' + res.name_service + '</td>\n\
                               <td>' + res.count + '</td><td>' + res.site + '</td><td>' +
-                                price + '</td><td>' + total + '</td></tr></tbody>');
+                                price + '</td><td>' + total + '</td></tr>');
                     });
-                    $("#foot").html('<table class="table"><tr><td style="color: #00B0F0; font-size: 8pt;">TOTAL BRUTO</td>' +
-                            '<td>' + vrBruto + '</td><td style="color: #00B0F0; font-size: 8pt;">DESCUENTO</td><td>' + desc + '</td>' +
-                            '<td style="color: #00B0F0; font-size: 8pt;">I.V.A</td><td></td>' +
-                            '<td style="color: #00B0F0; font-size: 8pt;">TOTAL</td><td>' +
-                            vrVenta + '</td><td>file</td>' +
+                    $("#foot").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL BRUTO</td>' +
+                            '<td>' + vrBrutoF + '</td><td style="color: #00B0F0;">DESCUENTO</td><td>' + desc + '</td>' +
+                            '<td style="color: #00B0F0;">I.V.A</td><td>' + ivaF + '</td>' +
+                            '<td style="color: #00B0F0;">TOTAL</td><td>' +
+                            vrVentaF + '</td><td>' + '<a href="' + get_base_url() + "uploads/" + pdf + '" target="blank">' +
+                            '<img src="' + get_base_url() + 'dist/img/iconoclip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></a></td>' +
                             '</tr></table>');
 
                 });
-                $("#tblVrAditionals").hide();
-                $("#tblVentaCliente").show();
-
             }
 
             function getDetailsAditionals() {

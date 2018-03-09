@@ -23,14 +23,19 @@ class Payments_model extends CI_Model {
     }
 
     public function get_pays_order($idOrder) {
-        $query = $this->db->get_where('tbl_orders_pays', array('idOrder' => $idOrder));
+        $this->db->select('*');
+        $this->db->from("tbl_orders_pays");        
+        $this->db->where("idOrder",$idOrder);
+        $this->db->order_by("id", "asc");
+        $query = $this->db->get();
+        //$query = $this->db->get_where('tbl_orders_pays', array('idOrder' => $idOrder));
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
             return false;
         }
     }
-    
+
     public function get_pays_box() {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
@@ -66,7 +71,7 @@ class Payments_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function get_pays($statePays) {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
@@ -294,10 +299,10 @@ class Payments_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function remove_pays_state($data) {
         $this->db->where('state', 2);
-        $this->db->update('tbl_orders_pays',$data);
+        $this->db->update('tbl_orders_pays', $data);
     }
 
 }

@@ -62,6 +62,17 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function getPays($idOrder) {
+        $sql = "select * from tbl_orders_pays"
+                . " where idOrder = '$idOrder' and state = 1";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
 
     public function getPayContract($idOrder) {
         $sql = "select sum(value) as pagoContract from tbl_orders_pays"
