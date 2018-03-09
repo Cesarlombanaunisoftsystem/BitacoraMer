@@ -51,6 +51,7 @@
                                                     <th style="color: #00B0F0">Servicio</th>
                                                     <th style="color: #00B0F0">Cantidad</th>
                                                     <th style="color: #00B0F0">Sitio</th>
+                                                    <th></th><th></th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
@@ -66,6 +67,8 @@
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>
+                                                            <td><a href="#"><i class="fa fa-check-square" style="color: green"></i></a></td>
+                                                            <td><a href="#"><i class="fa fa-undo" style="color: red"></i></a></td>
                                                         </tr>
                                                         <?php
                                                     }
