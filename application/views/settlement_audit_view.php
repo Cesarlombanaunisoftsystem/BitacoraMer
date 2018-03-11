@@ -141,7 +141,9 @@
                                                     <th style="color: #00B0F0">Observaciones</th>
                                                 </tr>
                                             </thead>
+                                            <tbody id="bodytbladds"></tbody>
                                         </table>
+                                        <div id="footadds"></div>
                                     </div><br>
                                 </div>
                             </div><br><br>
@@ -281,6 +283,7 @@
             function getDetailsSale() {
                 $("#bodytblcliente").empty();
                 $("#tblVrAditionals").hide();
+                $("#footadds").hide();
                 $("#tblVentaCliente").show();
                 $("#foot").show();
                 var idOrder = $("#idOrder").val();
@@ -318,9 +321,36 @@
             }
 
             function getDetailsAditionals() {
+                $("#bodytbladds").empty();
                 var idOrder = $("#idOrder").val();
                 $("#tblVentaCliente").hide();
+                $("#foot").hide();
                 $("#tblVrAditionals").show();
+                var vrAdds, vrAdd = 0;
+                url = get_base_url() + "Settlement/getPayAditionals?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    vrAdds = res.res.vrAdds;
+                    vrAdd = formatNumber(vrAdds);
+                });
+                url1 = get_base_url() + "Settlement/getDetailsAdd?jsoncallback=?";
+                $.getJSON(url1, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["res"], function (i, res) {
+                        $("#bodytbladds").append('<tr style="font-size: 10pt;"><td>' +
+                                res.name_activitie + '</td><td>' + res.name_service +
+                                '</td><td>' + '<input id="count_' + res.id + '" type="number" value="' +
+                                res.count + '" disabled>' + '</td><td>' +
+                                res.unit_measurement + '</td><td>' +
+                                '<input id="cost_' + res.id + '" type="number" value="' + res.cost + '" disabled>' +
+                                '</td><td>' +
+                                '<input id="total_' + res.id + '" type="number" value="' + res.total_cost + '" disabled>' + '</td><td>' +
+                                '<input id="obsv_' + res.id + '" type="text" value="' + res.observation +
+                                '" disabled>'
+                                + '</td></tr>');
+                    });
+                    $("#footadds").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL</td>' +
+                            '<td>' + vrAdd + '</td></tr></table>');
+
+                });
             }
         </script>
     </body>

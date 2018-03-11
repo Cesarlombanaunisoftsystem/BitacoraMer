@@ -188,8 +188,16 @@
                                         <table class="table" id="tblVrAditionals" style="border-radius: 10px;" hidden>
                                             <thead>
                                                 <tr>
-                                                    <th><input type="text"></th>
-                                                    <th><input type="text"></th>
+                                                    <th>
+                                                        <select id="idActivities">
+                                                            <option>Seleccionar:</option>
+                                                            <?php foreach ($categories as $row) { ?>
+                                                                <option value="<?= $row->id ?>"><?= $row->name_activitie ?></option>
+                                                            <?php } ?> 
+                                                        </select>
+                                                    </th>
+                                                    <th><select id="idServices"></select><div id="price" hidden=""></div></th>
+                                                    <th><a href="#" onclick="addAditionals();"><i class="fa fa-check-square" style="color: green"></i></a></th>
                                                 </tr>
                                                 <tr style="font-size: 10pt">
                                                     <th style="color: #00B0F0">Categoria</th>
@@ -201,7 +209,9 @@
                                                     <th style="color: #00B0F0">Observaciones</th>
                                                 </tr>
                                             </thead>
+                                            <tbody id="bodytbladds"></tbody>
                                         </table>
+                                        <div id="footadds"></div>
                                     </div><br>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"></div>
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -388,6 +398,7 @@
                 $("#tblVrMaterials").hide();
                 $("#footpays").hide();
                 $("#footmaterials").hide();
+                $("#footadds").hide();
                 $("#tblVentaCliente").show();
                 $("#foot").show();
                 var idOrder = $("#idOrder").val();
@@ -431,6 +442,7 @@
                 $("#tblVentaCliente").hide();
                 $("#foot").hide();
                 $("#footmaterials").hide();
+                $("#footadds").hide();
                 $("#tblVentaCliente").hide();
                 $("#tblVrMaterials").hide();
                 $("#tblVrAditionals").hide();
@@ -476,6 +488,7 @@
                 $("#tblVentaCliente").hide();
                 $("#foot").hide();
                 $("#footpays").hide();
+                $("#footadds").hide();
                 $("#tblPayContract").hide();
                 $("#tblVrAditionals").hide();
                 $("#tblVrMaterials").show();
@@ -507,6 +520,7 @@
             }
 
             function getDetailsAditionals() {
+                $("#bodytbladds").empty();
                 var idOrder = $("#idOrder").val();
                 $("#tblVentaCliente").hide();
                 $("#tblPayContract").hide();
@@ -515,18 +529,29 @@
                 $("#footpays").hide();
                 $("#footmaterials").hide();
                 $("#tblVrAditionals").show();
-                url = get_base_url() + "Settlement/getDetailsAdd?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                var vrAdds, vrAdd = 0;
+                url = get_base_url() + "Settlement/getPayAditionals?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    vrAdds = res.res.vrAdds;
+                    vrAdd = formatNumber(vrAdds);
+                });
+                url1 = get_base_url() + "Settlement/getDetailsAdd?jsoncallback=?";
+                $.getJSON(url1, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["res"], function (i, res) {
-                        var price = formatNumber(res.price);
-                        var total = formatNumber(res.total);
-                        $("#bodytbladd").append('<tr style="font-size: 10pt;"><td>' + res.name_activitie +
-                                '</td><td>' + res.name_service + '</td>\n\
-                              <td>' + res.count + '</td><td>' + res.site + '</td><td>' +
-                                price + '</td><td>' + total + '</td></tr>');
+                        $("#bodytbladds").append('<tr style="font-size: 10pt;"><td>' +
+                                res.name_activitie + '</td><td>' + res.name_service +
+                                '</td><td>' + '<input id="count_' + res.id + '" type="number" value="' +
+                                res.count + '" onkeyup="updateCount(' + res.id + ')">' + '</td><td>' +
+                                res.unit_measurement + '</td><td>' +
+                                '<input id="cost_' + res.id + '" type="number" value="' + res.cost + '" disabled>' +
+                                '</td><td>' +
+                                '<input id="total_' + res.id + '" type="number" value="' + res.total_cost + '" disabled>' + '</td><td>' +
+                                '<input id="obsv_' + res.id + '" type="text" value="' + res.observation +
+                                '" onkeyup="updateObsv(' + res.id + ')">'
+                                + '</td></tr>');
                     });
-                    $("#footadd").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL</td>' +
-                            '<td>' + totalF + '</td></tr></table>');
+                    $("#footadds").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL</td>' +
+                            '<td>' + vrAdd + '</td></tr></table>');
 
                 });
             }
@@ -546,6 +571,54 @@
                             alertify.success('Liquidación registrada exitosamente.');
                             location.reload();
                         }
+                    }
+                });
+            }
+
+            function addAditionals() {
+                var idOrder = $("#idOrder").val();
+                var idActivities = $("#idActivities").val();
+                var idServices = $("#idServices").val();
+                var cost = $("#cost").val();
+                var url = "";
+                url = get_base_url() + "Settlement/addAditionals";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder: idOrder, idActivities: idActivities, idServices:
+                                idServices, cost: cost},
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            }
+
+            function updateCount(id) {
+                var count = $("#count_" + id).val();
+                var cost = $("#cost_" + id).val();
+                var total_cost = count * cost;
+                var url = "";
+                url = get_base_url() + "Settlement/updateCount";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {id: id, count: count, total_cost: total_cost},
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            }
+
+            function updateObsv(id) {
+                var obsv = $("#obsv_" + id).val();
+                var url = "";
+                url = get_base_url() + "Settlement/updateObsv";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {id: id, obsv: obsv},
+                    success: function () {
+                        location.reload();
                     }
                 });
             }

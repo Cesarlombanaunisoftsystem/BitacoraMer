@@ -62,7 +62,7 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function getPays($idOrder) {
         $sql = "select * from tbl_orders_pays"
                 . " where idOrder = '$idOrder' and state = 1";
@@ -97,8 +97,9 @@ class Financial_model extends CI_Model {
     }
 
     public function getPayAditionals($idOrder) {
-        $sql = "select sum(total_cost) as vrAdds from tbl_orders_details"
-                . " where idOrder = '$idOrder' and idActivities = 7";
+        $sql = "select t1.*, sum(t1.total_cost) as vrAdds, t2.idOrderCategory from
+tbl_orders_details t1 join tbl_activities t2 on t1.idActivities = t2.id
+where t2.idOrderCategory = 8 and t1.idOrder = '$idOrder'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -108,12 +109,29 @@ class Financial_model extends CI_Model {
     }
 
     public function getDetailsSale($idOrder) {
-        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->select('tbl_orders_details.*,tbl_activities.idOrderCategory,tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders_details');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 1);
+        $this->db->where('tbl_activities.idOrderCategory <', 7);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getDetailsAdd($idOrder) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.idOrderCategory,'
+                . 'tbl_activities.name_activitie,tbl_services.name_service,'
+                . 'tbl_services.unit_measurement');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_activities.idOrderCategory', 8);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

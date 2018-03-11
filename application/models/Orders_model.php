@@ -252,6 +252,16 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return false;
         }
     }
+    
+    public function update_order_detail($id,$data) {
+        $this->db->where('id', $id);
+        $this->db->update('tbl_orders_details', $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function add_order_document($data) {
         $this->db->insert('tbl_orders_documents', $data);
