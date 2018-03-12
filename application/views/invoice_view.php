@@ -37,7 +37,7 @@
                             <div role="tabpanel" class="tab-pane active" id="bandeja">
                                 <div class="row">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/auditsetlement.png') ?>" style="width: 120px;">
+                                        <img src="<?= base_url('dist/img/invoice.png') ?>" style="width: 120px;">
                                     </div>
                                     <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -47,11 +47,12 @@
                                                     <th style="color: #00B0F0">Fecha de ordén</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
-                                                    <th style="color: #00B0F0">Actividad</th>                                                    
-                                                    <th style="color: #00B0F0">Servicio</th>
+                                                    <th style="color: #00B0F0">Actividad</th>
                                                     <th style="color: #00B0F0">Cantidad</th>
                                                     <th style="color: #00B0F0">Sitio</th>
-                                                    <th></th><th></th>
+                                                    <th style="color: #00B0F0">Valor de Ordén</th>
+                                                    <th style="color: #00B0F0">FDC</th>
+                                                    <th style="color: #00B0F0">Fecha FDC</th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
@@ -59,16 +60,16 @@
                                                 if (isset($data) && $data) {
                                                     foreach ($data as $row) {
                                                         ?>                                            
-                                                        <tr style="font-size: 10pt" onclick="getSettlement(<?= $row->id ?>)">
+                                                        <tr style="font-size: 10pt">
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><?= $row->uniquecode ?></td>
+                                                            <td><a href="#" onclick="register(<?= $row->id ?>)"><u><?= $row->uniquecode ?></u></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
-                                                            <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>
-                                                            <td><a href="#" onclick="registerAudit(<?= $row->id ?>)"><i class="fa fa-check-square" style="color: green"></i></a></td>
-                                                            <td><a href="#" onclick="unregisterAudit(<?= $row->id ?>)"><i class="fa fa-undo" style="color: red"></i></a></td>
+                                                            <td><?= $row->total ?></td>
+                                                            <td><?= $row->fdc ?></td>
+                                                            <td><?= $row->dateFdc ?></td>
                                                         </tr>
                                                         <?php
                                                     }
@@ -151,9 +152,8 @@
                             <div role="tabpanel" class="tab-pane" id="process">
                                 <div class="row">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/auditsetlement.png') ?>" style="width: 120px;">
+                                        <img src="<?= base_url('dist/img/invoice.png') ?>" style="width: 120px;">
                                     </div>
-                                    <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <table  id="data-table" class="table table-striped">
                                             <thead>
@@ -162,21 +162,28 @@
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>                                                    
-                                                    <th style="color: #00B0F0">Servicio</th>
                                                     <th style="color: #00B0F0">Cantidad</th>
                                                     <th style="color: #00B0F0">Sitio</th>
-                                                    <th style="color: #00B0F0">FECHA LIQ</th>                                                    
-                                                    <th style="color: #00B0F0">ACCIÓN</th>
+                                                    <th style="color: #00B0F0">Valor de Ordén</th>
+                                                    <th style="color: #00B0F0">FDC</th>                                                    
+                                                    <th style="color: #00B0F0">Fecha FDC</th>
+                                                    <th style="color: #00B0F0">No.Factura</th>
+                                                    <th style="color: #00B0F0">Fecha Factura</th>
+                                                    <th style="color: #00B0F0">Estado Pago</th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 if (isset($process) && $process) {
                                                     foreach ($process as $row) {
-                                                        if ($row->historybackState === '1') {
-                                                            $acc = 'RECHAZADA';
+                                                        if ($row->stateInvoice === '1') {
+                                                            $tdstate = 'CANCELADA';
                                                         } else {
-                                                            $acc = 'ACEPTADA';
+                                                            $tdstate = '<select onchange="cancel(' . $row->id . ')">'
+                                                                    . '<option selected>PENDIENTE</option>'
+                                                                    . '<option>CANCELADA'
+                                                                    . '</option>'
+                                                                    . '</select>';
                                                         }
                                                         ?>                                            
                                                         <tr  style="font-size: 10pt">
@@ -184,11 +191,14 @@
                                                             <td><?= $row->uniquecode ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
-                                                            <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>
-                                                            <td><?= $row->dateSettlement ?></td>
-                                                            <td><?= $acc ?></td>                                                           
+                                                            <td><?= $row->total ?></td>
+                                                            <td><?= $row->fdc ?></td>
+                                                            <td><?= $row->dateFdc ?></td>
+                                                            <td><?= $row->invoice ?></td>
+                                                            <td><?= $row->dateInvoice ?></td>
+                                                            <td><?= $tdstate ?></td>
                                                         </tr>
                                                         <?php
                                                     }
@@ -198,12 +208,6 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="divmsj" hidden>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <img src="<?= base_url('dist/img/auditsetlement.png') ?>" style="width: 120px;">
-                                </div>
-                                <div id="msj" class="col-xs-10 col-sm-10 col-md-10 col-lg-10"></div>
                             </div>
                         </div>
                     </div>
@@ -217,162 +221,15 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            function getSettlement(idOrder) {
-                var vrVenta = 0;
-                var bruto = 0;
-                var desc = 0;
-                var url, pdf = "";
-                var url1, url2, url3, url4 = "";
-                $("#tblVentaCliente").hide();
-                $("#idOrder").val(idOrder);
-                $("#vrVenta").html("");
-                $("#tltCostos").html("");
-                $("#utilidad").html("");
-                $("#vrUtilidad").html("");
-                $("#divVrVenta").html("");
-                $("#divVrContract").html("");
-                $("#divVrMaterials").html("");
-                $("#divVrAditionals").html("");
-                $("#list").show();
-                url = get_base_url() + "Settlement/getSaleHead?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    vrVenta = res.res.total;
-                    $("#totalSale").html(vrVenta);
-                    bruto = res.res.subtotal;
-                    $("#bruto").html(bruto);
-                    desc = res.res.discount;
-                    $("#discount").html(desc);
-                });
-                url1 = get_base_url() + "Settlement/getSettlement?jsoncallback=?";
-                $.getJSON(url1, {idOrder: idOrder}).done(function (res) {
-                    var vrVentaMil = formatNumber(vrVenta);
-                    $("#divVrVenta").html("VALOR TOTAL VENTA PARA CLIENTE\n\
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ " + vrVentaMil);
-                    $("#vrVenta").html(vrVentaMil);
-                });
-                url4 = get_base_url() + "Settlement/getPayAditionals?jsoncallback=?";
-                $.getJSON(url4, {idOrder: idOrder}).done(function (res) {
-                    var vrAdds = res.res.vrAdds;
-                    var vrAdd = formatNumber(vrAdds);
-                    $("#divVrAditionals").html("VALOR TOTAL ADICIONALES\n\
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ " + vrAdd);
-                });
-            }
 
-            function formatNumber(num) {
-                if (!num || num === 'NaN')
-                    return '-';
-                if (num === 'Infinity')
-                    return '&#x221e;';
-                num = num.toString().replace(/\$|\,/g, '');
-                if (isNaN(num))
-                    num = "0";
-                sign = (num === (num = Math.abs(num)));
-                num = Math.floor(num * 100 + 0.50000000001);
-                num = Math.floor(num / 100).toString();
-
-                for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
-                    num = num.substring(0, num.length - (4 * i + 3)) + '.' +
-                            num.substring(num.length - (4 * i + 3));
-                return (((sign) ? '' : '') + num);
-            }
-
-            function getDetailsSale() {
-                $("#bodytblcliente").empty();
-                $("#tblVrAditionals").hide();
-                $("#footadds").hide();
-                $("#tblVentaCliente").show();
-                $("#foot").show();
-                var idOrder = $("#idOrder").val();
-                var vrVenta = $("#totalSale").html();
-                var vrBruto = $("#bruto").html();
-                var vrVentaF = formatNumber(vrVenta);
-                var vrBrutoF = formatNumber(vrBruto);
-                var desc = $("#discount").html();
-                var iva = vrVenta - vrBruto;
-                var ivaF = formatNumber(iva);
-                var url, url1, pdf = "";
-                url = get_base_url() + "Settlement/getSaleHead?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    pdf = res.res.picture;
-                });
-                url1 = get_base_url() + "Settlement/getDetailsSale?jsoncallback=?";
-                $.getJSON(url1, {idOrder: idOrder}).done(function (respuestaServer) {
-                    $.each(respuestaServer["res"], function (i, res) {
-                        var price = formatNumber(res.price);
-                        var total = formatNumber(res.total);
-                        $("#bodytblcliente").append('<tr style="font-size: 10pt;"><td>' + res.name_activitie +
-                                '</td><td>' + res.name_service + '</td>\n\
-                              <td>' + res.count + '</td><td>' + res.site + '</td><td>' +
-                                price + '</td><td>' + total + '</td></tr>');
-                    });
-                    $("#foot").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL BRUTO</td>' +
-                            '<td>' + vrBrutoF + '</td><td style="color: #00B0F0;">DESCUENTO</td><td>' + desc + '</td>' +
-                            '<td style="color: #00B0F0;">I.V.A</td><td>' + ivaF + '</td>' +
-                            '<td style="color: #00B0F0;">TOTAL</td><td>' +
-                            vrVentaF + '</td><td>' + '<a href="' + get_base_url() + "uploads/" + pdf + '" target="blank">' +
-                            '<img src="' + get_base_url() + 'dist/img/iconoclip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></a></td>' +
-                            '</tr></table>');
-
-                });
-            }
-
-            function getDetailsAditionals() {
-                $("#bodytbladds").empty();
-                var idOrder = $("#idOrder").val();
-                $("#tblVentaCliente").hide();
-                $("#foot").hide();
-                $("#tblVrAditionals").show();
-                var vrAdds, vrAdd = 0;
-                url = get_base_url() + "Settlement/getPayAditionals?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    vrAdds = res.res.vrAdds;
-                    vrAdd = formatNumber(vrAdds);
-                });
-                url1 = get_base_url() + "Settlement/getDetailsAdd?jsoncallback=?";
-                $.getJSON(url1, {idOrder: idOrder}).done(function (respuestaServer) {
-                    $.each(respuestaServer["res"], function (i, res) {
-                        $("#bodytbladds").append('<tr style="font-size: 10pt;"><td>' +
-                                res.name_activitie + '</td><td>' + res.name_service +
-                                '</td><td>' + '<input id="count_' + res.id + '" type="number" value="' +
-                                res.count + '" disabled>' + '</td><td>' +
-                                res.unit_measurement + '</td><td>' +
-                                '<input id="cost_' + res.id + '" type="number" value="' + res.cost + '" disabled>' +
-                                '</td><td>' +
-                                '<input id="total_' + res.id + '" type="number" value="' + res.total_cost + '" disabled>' + '</td><td>' +
-                                '<input id="obsv_' + res.id + '" type="text" value="' + res.observation +
-                                '" disabled>'
-                                + '</td></tr>');
-                    });
-                    $("#footadds").html('<table class="table"><tr style="font-size: 8pt"><td style="color: #00B0F0;">TOTAL</td>' +
-                            '<td>' + vrAdd + '</td></tr></table>');
-
-                });
-            }
-
-            function registerAudit(id) {
+            function register(id) {
                 $.confirm({
-                    title: 'Confirmación aceptar liquidación!',
+                    title: 'Facturar!',
                     content: '' +
                             '<form action="" class="formName">' +
                             '<div class="form-group">' +
                             '<label>Número Factura</label>' +
-                            '<input type="text" placeholder="FDC" class="fdc form-control" required />' +
+                            '<input type="text" placeholder="No Factura" class="fdm form-control" required />' +
                             '</div>' +
                             '</form>',
                     buttons: {
@@ -380,33 +237,23 @@
                             text: 'Aceptar',
                             btnClass: 'btn-blue',
                             action: function () {
-                                var fdc = this.$content.find('.fdc').val();
-                                if (!fdc) {
+                                var fdm = this.$content.find('.fdm').val();
+                                if (!fdm) {
                                     $.alert('Debe ingresar número de factura');
                                     return false;
                                 }
-                                url = get_base_url() + "Settlement/registerAudit";
+                                url = get_base_url() + "Billing/register";
                                 $.ajax({
                                     url: url,
                                     type: 'POST',
-                                    data: {idOrder: id, state: 27, history: 0, fdc: fdc},
+                                    data: {idOrder: id, state: 28, fdm: fdm},
                                     success: function (resp) {
                                         if (resp === "error") {
                                             alertify.error('Error en BBDD');
                                         }
                                         if (resp === "ok") {
-                                            $("#bandeja").hide();
-                                            $('#divmsj').show();
-                                            $("#msj").html("<center><h1 style='color:blue'>¡Su información ha sido capturada<br>" +
-                                                    "satisfactoriamente¡<br><br><br><b>MER GROUP</b>, " +
-                                                    "Agradece su participación<br> como integrante" +
-                                                    "fundamental de nuestros<br> procesos</h1></center>");
-                                            setTimeout(function () {
-                                                $("#divmsj").fadeOut(1500);
-                                            }, 4000);
-                                            setTimeout(function () {
-                                                location.reload();
-                                            }, 4000);
+                                            alertify.success('Factura Procesada');
+                                            location.reload();
                                         }
                                     }
                                 });
@@ -419,44 +266,18 @@
                 });
             }
 
-            function unregisterAudit(id) {
-                $.confirm({
-                    title: 'Confirmación rechazar liquidación!',
-                    content: '' +
-                            '<form action="" class="formName">' +
-                            '<div class="form-group">' +
-                            '<label>Observaciones de rechazo</label>' +
-                            '<input type="text" placeholder="Observaciones" class="obsv form-control" required />' +
-                            '</div>' +
-                            '</form>',
-                    buttons: {
-                        formSubmit: {
-                            text: 'Rechazar',
-                            btnClass: 'btn-blue',
-                            action: function () {
-                                var obsv = this.$content.find('.obsv').val();
-                                if (!obsv) {
-                                    $.alert('Debe ingresar observaciones');
-                                    return false;
-                                }
-                                url = get_base_url() + "Settlement/unregisterAudit";
-                                $.ajax({
-                                    url: url,
-                                    type: 'POST',
-                                    data: {idOrder: id, state: 25, history: 1, obsv: obsv},
-                                    success: function (resp) {
-                                        if (resp === "error") {
-                                            alertify.error('Error en BBDD');
-                                        }
-                                        if (resp === "ok") {
-                                            alertify.success('Liquidación rechazada satisfactoriamente');
-                                            location.reload();
-                                        }
-                                    }
-                                });
-                            }
-                        },
-                        cancelar: function () {
+            function cancel(id) {
+                url = get_base_url() + "Billing/cancel";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {idOrder: id},
+                    success: function (resp) {
+                        if (resp === "error") {
+                            alertify.error('Error en BBDD');
+                        }
+                        if (resp === "ok") {
+                            alertify.success('Factura Cancelada');
                             location.reload();
                         }
                     }

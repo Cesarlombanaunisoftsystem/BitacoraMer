@@ -562,7 +562,7 @@
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder},
+                    data: {idOrder: idOrder, history: 0},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');

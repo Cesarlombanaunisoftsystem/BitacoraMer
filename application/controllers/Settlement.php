@@ -119,14 +119,48 @@ class Settlement extends CI_Controller {
 
     public function register() {
         $idOrder = $this->input->post('idOrder');
+        $history = $this->input->post('history');
         $data = array(
-            'idOrderState' => 26
+            'idOrderState' => 26,
+            'historybackState' => $history,
+            'dateSettlement' => date('Y-m-d H:m:i')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {
             $titulo = 'MER GROUP, Agradece su participación como integrante fundamental de nuestros procesos, de esta manera queremos  compartir con usted la siguiente  información para el trámite de auditoria de liquidación';
             $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
             $this->Utils->sendMail($content->email, 'Auditoria de Liquidación - MER', 'templates/email_audit_settlement.php', $content, $titulo);
+            echo "ok";
+        } else {
+            echo "error";
+        }
+    }
+
+    public function registerAudit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => $this->input->post('state'),
+            'historybackState' => $this->input->post('history'),
+            'fdc' => $this->input->post('fdc'),
+            'dateFdc' => date('Y-m-d H:m:i')
+        );
+        $res = $this->Orders_model->update_order($idOrder, $data);
+        if ($res === TRUE) {
+            echo "ok";
+        } else {
+            echo "error";
+        }
+    }
+    
+    public function unregisterAudit() {
+        $idOrder = $this->input->post('idOrder');
+        $data = array(
+            'idOrderState' => $this->input->post('state'),
+            'historybackState' => $this->input->post('history'),
+            'obsvSettlement' => $this->input->post('obsv')
+        );
+        $res = $this->Orders_model->update_order($idOrder, $data);
+        if ($res === TRUE) {
             echo "ok";
         } else {
             echo "error";
