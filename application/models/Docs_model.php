@@ -77,7 +77,7 @@ class Docs_model extends CI_Model{
         $sql = 'select idOrder from tbl_orders_documents where idState=1';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
-            return $query->result();
+            return $query->result_array();
         } else {
             return false;
         }

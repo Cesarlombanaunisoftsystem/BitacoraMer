@@ -1,4 +1,3 @@
-<?php var_dump($docsup) ?>
 <html>
     <head>
         <?php $this->load->view('templates/head') ?>
@@ -28,7 +27,7 @@
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation"><a href="<?= base_url('Documents') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -58,7 +57,8 @@
                                                 <?php
                                                 if (isset($orders) && $orders) {
                                                     foreach ($orders as $row) {
-                                                        $totaldocs = $row->gestiondoc;                                                        
+                                                        $total = 6;
+                                                        $totalgest = ($row->gestiondoc * 100) / 6;
                                                         ?>                                            
                                                         <tr><td><?= $row->dateAssign ?></td>
                                                             <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
@@ -68,8 +68,8 @@
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>                                                
                                                             <td><div class="progress">
-                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= 100 ?>%">
-                                                                        <?= 100 ?>%
+                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= round($totalgest, 2) . '%'; ?>">
+                                                                        <?= round($totalgest, 2) . '%'; ?>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -101,6 +101,10 @@
                                             <tbody id="bodyPanelDoc">  
                                             </tbody>
                                         </table>
+                                        <div class="col-sm-9"></div>
+                                        <div class="col-sm-3" id="btnRegister">
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>                          
@@ -119,6 +123,28 @@
 
             function verPanelInferior(idOrder) {
                 $("#panelinferior").show();
+                var state = "";
+                $("#panelinferior").show();
+                url = get_base_url() + "Documents/get_documents_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (response) {
+                    $.each(response["res"], function (i, res) {
+                        if (res.file === "") {
+                            state = 'SIN DOCUMENTO';
+                        } else {
+                            state = 'CARGADO';
+                        }
+                        $('#bodyPanelDoc').append('<tr><td>' + res.dateSave +
+                                '</td><td>' + res.name_type +
+                                '</td><td>' + state + '</td><td>' +
+                                '<a href="#"><img src="' + get_base_url() + 'dist/img/upfile.png"></a>' +
+                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/editfile.png"></a>' +
+                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/deletefile.png"></a>' +
+                                '</td></tr>'
+                                );
+                        $("#btnRegister").html('<button type="submit" class="form-control btn btn-success" onclick="register(' + idOrder + ')">REGISTRAR</button>');
+                    });
+                }
+                );
             }
         </script>
     </body>

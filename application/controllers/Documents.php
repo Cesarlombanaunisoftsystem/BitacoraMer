@@ -36,13 +36,13 @@ class Documents extends CI_Controller {
         $this->load->view('documents_view', $data);
     }
 
-    public function audit() {
+    public function process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
         }
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
-        $data['titulo'] = 'Auditoria de Documentación';
+        $data['titulo'] = 'Centro de Documentación';
         $id_user = $this->session->userdata('id_usuario');
         $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
