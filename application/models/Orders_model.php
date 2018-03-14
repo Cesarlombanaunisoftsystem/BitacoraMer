@@ -421,5 +421,35 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
+    
+    public function get_total_orders() {
+        $sql = "SELECT count(id) as total FROM tbl_orders";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_total_sale() {
+        $sql = "SELECT sum(total) as total FROM tbl_orders";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_total_cost() {
+        $sql = "SELECT sum(total_cost) as total FROM tbl_orders_details";
+        $query = $this->db->query($sql);
+        if($query->num_rows()>0){
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 
 }

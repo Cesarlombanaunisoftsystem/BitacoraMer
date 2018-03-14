@@ -21,6 +21,19 @@ class Docs_model extends CI_Model{
             return false;
         }
     }
+    
+    public function get_documents_order($idOrder) {
+        $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type');
+        $this->db->from('tbl_orders_documents');
+        $this->db->join('tbl_type_documents','tbl_orders_documents.idTypeDocument=tbl_type_documents.id');
+        $this->db->where('tbl_orders_documents.idOrder',$idOrder);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
 
     public function get_doc($id) {
         $query = $this->db->get_where('tbl_type_documents', array('id' => $id));
@@ -57,6 +70,16 @@ class Docs_model extends CI_Model{
             return TRUE;
         } else {
             return FALSE;
+        }
+    }
+    
+    public function docs_register() {
+        $sql = 'select idOrder from tbl_orders_documents where idState=1';
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
         }
     }
 }

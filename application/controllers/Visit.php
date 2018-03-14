@@ -24,7 +24,7 @@ class Visit extends CI_Controller {
         }
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
-        $data['titulo'] = 'Programación de visita a sitio';
+        $data['titulo'] = 'Programación de visitas a sitio';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['visits'] = $this->Visits_model->get_orders_state2();
