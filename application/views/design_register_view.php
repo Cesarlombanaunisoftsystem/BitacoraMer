@@ -40,8 +40,8 @@
                             <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
                         </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
-
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"> 
+                            <div id="spinner"></div>
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -74,11 +74,12 @@
                                                 <td><?= $order->site ?></td>
                                                 <td><?= $order->name_user ?></td>
                                             </tr> 
-                                        <?php }
+                                            <?php
+                                        }
                                     }
                                     ?> 
                                 </tbody>
-                            </table>
+                            </table>                            
                         </div>
                     </div>
                 </section>
@@ -98,17 +99,18 @@
                 </div>
             </div>
             <!-- /.content-wrapper -->
-        <?php $this->load->view('templates/footer.html') ?>
+            <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
-<?php $this->load->view('templates/libs') ?>
-<?php $this->load->view('templates/js') ?>
+        <?php $this->load->view('templates/libs') ?>
+        <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
                 $(document).on("click", ".photos", function () {
                     if (galery)
                         $('.modal').modal('show');
                 });
+
             });
             function getFileName(elm) {
                 var fn = $(elm).val();
@@ -123,7 +125,7 @@
                     tr.removeClass('shown');
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
                 } else {
-                    getDocs(order_id);  
+                    getDocs(order_id);
                     getRegPhoto(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
@@ -133,7 +135,7 @@
                 }
             });
             function format(d) {
-                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">' +
+                return '<form id="form-design" method="POST" action="javascript:registerOrder()" enctype="multipart/form-data">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
                         '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
@@ -148,11 +150,39 @@
                         '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>' +
                         '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>' +
                         '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
-                        '<button type="submit" class="blue bold">REGISTRAR DISEÑO</button></td>' +
+                        '<input type="submit" class="blue bold" value="REGISTRAR DISEÑO"></td>' +
                         '</tr>' +
                         '</table></form>';
             }
-            
+
+            function registerOrder() {
+                var url = "";
+                var formData = new FormData(document.getElementById("form-design"));
+                url = get_base_url() + "Design/register_order_design";
+                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    dataType: "html",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                }).done(function (res) {
+                    $('#spinner').html("");
+                    if (res === "ko") {
+                        alertify.error('Debes adjuntar documento de diseño!');
+                    }
+                    if (res === "error") {
+                        alertify.error('Error en base de datos!');
+                    }
+                    if (res === "ok") {
+                        alertify.success('Diseño registrado exitosamente');
+                        location.reload();
+                    }
+                });
+            }
+
             function return_order(idOrder) {
                 url = get_base_url() + "Design/return_order_design";
                 $.ajax({
@@ -174,7 +204,7 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        $("#date"+idOrder).html(doc.dateSave);
+                        $("#date" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument == "2") {
                             $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");

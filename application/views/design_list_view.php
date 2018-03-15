@@ -40,7 +40,8 @@
                             <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
                         </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">  
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                            <div id="spinner"></div>
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -73,7 +74,8 @@
                                                 <td><?= $order->site ?></td>
                                                 <td><?= $order->name_user ?></td>
                                             </tr> 
-                                        <?php }
+                                        <?php
+                                        }
                                     }
                                     ?> 
                                 </tbody>
@@ -97,10 +99,10 @@
                 </div>
             </div>
             <!-- /.content-wrapper -->
-        <?php $this->load->view('templates/footer.html') ?>
+<?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
-<?php $this->load->view('templates/libs') ?>
+        <?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
@@ -128,7 +130,7 @@
                 }
             });
             function format(d) {
-                return '<form enctype="multipart/form-data" method="post" name="form-design" id="form-design" action="register_order_design">' +
+                return '<form enctype="multipart/form-data" id="form-design">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
                         '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
@@ -140,6 +142,34 @@
                         '</tr>' +
                         '</table></form>';
             }
+            $("#form-design").on("submit", function (e) {
+                var url = "";
+                e.preventDefault();
+                var formData = new FormData(document.getElementById("form-design"));
+                url = get_base_url() + "Design/register_order_design";
+                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    dataType: "html",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                })
+                        .done(function (res) {
+                            $('#spinner').html("");
+                            if (res === "ko") {
+                                alertify.error('Debes adjuntar documento de diseño!');
+                            }
+                            if (res === "error") {
+                                alertify.error('Error en base de datos!');
+                            }
+                            if (res === "ok") {
+                                alertify.success('Diseño registrado exitosamente');
+                            }
+                        });
+            });
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
