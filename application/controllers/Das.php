@@ -34,7 +34,7 @@ class Das extends CI_Controller{
         $result = $this->db->get('tbl_orders')->row_array();
         $idOrder = $result['id'];
         $data['order'] = $this->Orders_model->get_order_bitacora($idOrder,2);
-        $data['ordersTray'] = $this->Orders_model->get_orders_tray();
+        $data['ordersTray'] = $this->Orders_model->get_orders_tray($id_user);
         $data['details'] = $this->Orders_model->get_order_details($idOrder,2);
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $this->load->view('admin/das', $data);

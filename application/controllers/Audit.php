@@ -34,7 +34,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '10';
         $data['pl'] = $this->Audits_model->get_pl(9);
-        $data['plprocess'] = $this->Audits_model->get_pl(10);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(10,$id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -55,7 +55,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '11';
         $data['pl'] = $this->Audits_model->get_pl(10);
-        $data['plprocess'] = $this->Audits_model->get_pl(11);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(11,$id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -76,7 +76,7 @@ class Audit extends CI_Controller {
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '12';
         $data['pl'] = $this->Audits_model->get_pl(11);
-        $data['plprocess'] = $this->Audits_model->get_pl(12);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(12,$id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -93,7 +93,7 @@ class Audit extends CI_Controller {
         $data['services'] = $this->Services_model->get_all_services();
         $data['pays'] = $this->Payments_model->get_pays_box();
         $data['paysAdd'] = $this->Payments_model->get_pays(2);
-        $data['paysProcess'] = $this->Payments_model->get_pays(2);
+        $data['paysProcess'] = $this->Payments_model->get_pays_process(2,$id_user);
         $this->load->view('coord_pays_view', $data);
     }
 
@@ -109,7 +109,7 @@ class Audit extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['pays'] = $this->Payments_model->get_pays(1);
-        $data['pays_process'] = $this->Payments_model->get_pays(2);
+        $data['pays_process'] = $this->Payments_model->get_pays_process(2,$id_user);
         $this->load->view('financial_view', $data);
     }
 
@@ -122,6 +122,7 @@ class Audit extends CI_Controller {
             'idArea' => $idArea,
             'idOrderState' => $idState,
             'historyBackState' => 0,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateAssign' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
@@ -165,7 +166,8 @@ class Audit extends CI_Controller {
         $data1 = array(
             'idArea' => 3,
             'idOrderState' => 12,
-            'historyBackState' => 0);
+            'historyBackState' => 0,
+            'idUserProcess' => $this->session->userdata('id_usuario'));
         $res = $this->Payments_model->process_pays($id, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';

@@ -15,7 +15,7 @@
                         <?= $titulo ?>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?= base_url('Documents') ?>"><i class="fa fa-refresh"></i></a></li>
+                        <li><a href="<?= base_url('Documents/audit') ?>"><i class="fa fa-refresh"></i></a></li>
                     </ol>
                 </section>
 
@@ -26,8 +26,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Documents') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Documents/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/audit_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -40,7 +40,7 @@
                                         <img src="<?= base_url('dist/img/docs.png') ?>" style="width: 120px;">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table id="data-table" class="table table-striped" style="font-size: 12px">
+                                        <table class="table table-striped" style="font-size: 12px">
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de Asignación</th>
@@ -50,29 +50,28 @@
                                                     <th style="color: #00B0F0">Servicio</th>
                                                     <th style="color: #00B0F0">Cantidad</th>
                                                     <th style="color: #00B0F0">Sitio</th>
-                                                    <th style="color: #00B0F0">Gestión Documental</th>
+                                                    <th style="color: #00B0F0">Observaciones</th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 if (isset($orders) && $orders) {
                                                     foreach ($orders as $row) {
-                                                        $total = 6;
-                                                        $totalgest = ($row->gestiondoc * 100) / 6;
+                                                        if ($row->historybackState === '1') {
+                                                            $trcolor = '#FCF8E5';
+                                                        } else {
+                                                            $trcolor = '';
+                                                        }
                                                         ?>                                            
-                                                        <tr><td><?= $row->dateAssign ?></td>
+                                                        <tr style="background-color:<?= $trcolor ?>">
+                                                            <td><?= $row->dateAssign ?></td>
                                                             <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>                                                
-                                                            <td><div class="progress">
-                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= round($totalgest, 2) . '%'; ?>">
-                                                                        <?= round($totalgest, 2) . '%'; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
+                                                            <td><?= $row->observations ?></td>
                                                         </tr>
                                                         <?php
                                                     }
@@ -87,24 +86,21 @@
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <ul class="nav nav-tabs">
-                                            <li class="active"><a href="#" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
+                                            <li class="active"><a href="#" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>                                          
                                         </ul>
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>
                                                     <td style="color: #00B0F0">Fecha de cargue</td>
                                                     <td style="color: #00B0F0">Tipo de documento</td>
-                                                    <td style="color: #00B0F0">Estado</td>
+                                                    <td style="color: #00B0F0"></td>
+                                                    <td style="color: #00B0F0">Observaciones</td>
                                                     <td style="color: #00B0F0">Acción</td>
                                                 </tr>                                   
                                             </thead>
                                             <tbody id="bodyPanelDoc">  
                                             </tbody>
                                         </table>
-                                        <div class="col-sm-9"></div>
-                                        <div class="col-sm-3" id="btnRegister">
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>                          
@@ -122,7 +118,7 @@
         <script type="text/javascript">
 
             function verPanelInferior(idOrder) {
-                $("#panelinferior").show();
+                $('#bodyPanelDoc').empty();
                 var state = "";
                 $("#panelinferior").show();
                 url = get_base_url() + "Documents/get_documents_order?jsoncallback=?";
@@ -135,34 +131,19 @@
                         }
                         $('#bodyPanelDoc').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.name_type +
-                                '</td><td>' + state + '</td><td>' +
+                                '</td><td>' +
+                                '<a href="' + get_base_url() + "uploads/" +
+                                res.file + '" target="blank" style="color:#00B0F0">Descargar</a>' +
+                                '</td><td>' + res.observation + '</td><td>' +
                                 '<a href="#"><img src="' + get_base_url() + 'dist/img/upfile.png"></a>' +
                                 ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/editfile.png"></a>' +
                                 ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/deletefile.png"></a>' +
                                 '</td></tr>'
                                 );
-                        $("#btnRegister").html('<button type="submit" class="form-control btn btn-success" onclick="assign(' + idOrder + ')">REGISTRAR</button>');
+                        
                     });
                 }
                 );
-            }
-            
-            function assign(idOrder) {
-                url = get_base_url() + "Documents/assign";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder: idOrder},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Registro exitoso, pasa a auditoria.');
-                            location.reload();
-                        }
-                    }
-                });
             }
         </script>
     </body>

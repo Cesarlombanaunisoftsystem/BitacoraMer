@@ -41,7 +41,7 @@ class Orders extends CI_Controller {
         $result = $this->db->get('tbl_orders')->row_array();
         $idOrder = $result['id'];
         $data['order'] = $this->Orders_model->get_order_bitacora($idOrder, 1);
-        $data['ordersTray'] = $this->Orders_model->get_orders_tray();
+        $data['ordersTray'] = $this->Orders_model->get_orders_tray($id_user);
         $data['details'] = $this->Orders_model->get_order_details($idOrder, 1);
         $data['taxes'] = $this->Taxes_model->get_taxes();
         $data['tecs'] = $this->Users_model->get_tecs();
@@ -115,6 +115,7 @@ class Orders extends CI_Controller {
             'idUser' => $this->session->userdata('id_usuario'),
             'idOrderType' => $type,
             'idOrderState' => 1,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order($data);

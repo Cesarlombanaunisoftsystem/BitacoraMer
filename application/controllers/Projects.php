@@ -69,7 +69,8 @@ class Projects extends CI_Controller {
     public function register_activitie() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idOrderState' => 18
+            'idOrderState' => 18,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
         if ($res === TRUE) {
@@ -178,7 +179,8 @@ class Projects extends CI_Controller {
                 $data1 = array(
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 19,
-                    'id_type_management' => 2
+                    'id_type_management' => 2,
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
                 echo $this->valida($res);
@@ -196,7 +198,8 @@ class Projects extends CI_Controller {
                 $data1 = array(
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 23,
-                    'id_type_management' => 3
+                    'id_type_management' => 3,
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
                 echo $this->valida($res);
@@ -214,7 +217,8 @@ class Projects extends CI_Controller {
                 $data1 = array(
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 22,
-                    'id_type_management' => 6
+                    'id_type_management' => 6,
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
                 echo $this->valida($res);
@@ -232,7 +236,8 @@ class Projects extends CI_Controller {
                 $data1 = array(
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 18,
-                    'id_type_management' => 5
+                    'id_type_management' => 5,
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
                 echo $this->valida($res);
@@ -250,7 +255,8 @@ class Projects extends CI_Controller {
                 $data1 = array(
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 23,
-                    'id_type_management' => 6
+                    'id_type_management' => 6,
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
                 echo $this->valida($res);
@@ -288,7 +294,8 @@ class Projects extends CI_Controller {
             $data1 = array(
                 'observations' => $this->input->post('detailgest'),
                 'idOrderState' => 22,
-                'id_type_management' => 6
+                'id_type_management' => 6,
+                'idUserProcess' => $this->session->userdata('id_usuario')
             );
             $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
             echo $this->valida($res);
@@ -300,7 +307,8 @@ class Projects extends CI_Controller {
                 'image' => $image
             );
             $data1 = array(
-                'idOrderState' => 21
+                'idOrderState' => 21,
+                'idUserProcess' => $this->session->userdata('id_usuario')
             );
             $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
             echo $this->valida($res);
@@ -325,7 +333,8 @@ class Projects extends CI_Controller {
     public function mark_closing_visit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idOrderState' => 20
+            'idOrderState' => 20,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
         if ($res === TRUE) {
@@ -338,7 +347,8 @@ class Projects extends CI_Controller {
     public function mark_closing_visit_audit() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idOrderState' => 22
+            'idOrderState' => 22,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
         if ($res === TRUE) {

@@ -29,7 +29,7 @@ class Settlement extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['data'] = $this->Financial_model->get_settlement(25);
         $data['categories'] = $this->Activities_model->get_activities_xtype(8);
-        $data['process'] = $this->Financial_model->get_settlement(26);
+        $data['process'] = $this->Financial_model->get_settlement_process(26,$id_user);
         $this->load->view('settlement_view', $data);
     }
 
@@ -43,7 +43,7 @@ class Settlement extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['data'] = $this->Financial_model->get_settlement(26);
-        $data['process'] = $this->Financial_model->get_settlement(27);
+        $data['process'] = $this->Financial_model->get_settlement_process(27,$id_user);
         $this->load->view('settlement_audit_view', $data);
     }
 
@@ -123,6 +123,7 @@ class Settlement extends CI_Controller {
         $data = array(
             'idOrderState' => 26,
             'historybackState' => $history,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateSettlement' => date('Y-m-d H:m:i')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
@@ -141,6 +142,7 @@ class Settlement extends CI_Controller {
         $data = array(
             'idOrderState' => $this->input->post('state'),
             'historybackState' => $this->input->post('history'),
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'fdc' => $this->input->post('fdc'),
             'dateFdc' => date('Y-m-d H:m:i')
         );

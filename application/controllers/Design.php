@@ -40,7 +40,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design(2, 8);
+        $data['orders'] = $this->Orders_model->get_orders_design_process(2, 8,$id_user);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_list_view', $data);
     }
@@ -98,7 +98,8 @@ class Design extends CI_Controller {
                 $this->Orders_model->add_order_document($data);
                 $data1 = array(
                     'idArea' => '2',
-                    'idOrderState' => '8'
+                    'idOrderState' => '8',
+                    'idUserProcess' => $this->session->userdata('id_usuario')
                 );
                 $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
                 $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
@@ -122,7 +123,8 @@ class Design extends CI_Controller {
     function approved_order_design() {
         $data = array(
             'idArea' => '3',
-            'idOrderState' => '9'
+            'idOrderState' => '9',
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $data);
         redirect(base_url() . 'Design/audit?success');

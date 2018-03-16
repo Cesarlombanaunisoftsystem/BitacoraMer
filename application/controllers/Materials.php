@@ -32,7 +32,7 @@ class Materials extends CI_Controller {
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
         $data['materials'] = $this->Audits_model->get_pl(12);
-        $data['process'] = $this->Audits_model->get_pl(16);
+        $data['process'] = $this->Audits_model->get_pl_process(16,$id_user);
         $this->load->view('materials_view', $data);
     }
 
@@ -51,7 +51,7 @@ class Materials extends CI_Controller {
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
         $data['materials'] = $this->Cellars_model->get_materials_cellar();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user);
         $this->load->view('cellars_view', $data);
     }
     
@@ -70,7 +70,7 @@ class Materials extends CI_Controller {
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
         $data['materials'] = $this->Cellars_model->get_materials_cellar();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user);
         $this->load->view('cellars_view', $data);
     }
 
@@ -99,7 +99,8 @@ class Materials extends CI_Controller {
             'idCellar' => $idCellar
         );
         $data1 = array(
-            'idOrderState' => 16
+            'idOrderState' => 16,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
         if ($res === TRUE) {
@@ -129,7 +130,8 @@ class Materials extends CI_Controller {
         $idCellar = $this->input->post('selcellar');
         $data = array('idCellar' => $idCellar);
         $data1 = array(
-            'idOrderState' => 16
+            'idOrderState' => 16,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         foreach ($id as $key => $value) {
             if ($key !== 'selcellar') {
@@ -142,7 +144,8 @@ class Materials extends CI_Controller {
     public function assign_materials_x_order() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idOrderState' => 17
+            'idOrderState' => 17,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $res = $this->Materials_model->assign_materials_x_order($idOrder, $data);
         if ($res === TRUE) {
@@ -187,7 +190,8 @@ class Materials extends CI_Controller {
     public function register_materials_back() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
-            'idOrderState' => 24
+            'idOrderState' => 24,
+            'idUserProcess' => $this->session->userdata('id_usuario')
         );
         $data1 = array(
             'idOrder' => $idOrder,

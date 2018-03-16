@@ -41,7 +41,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Programación de visita a sitio';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['visits'] = $this->Visits_model->get_orders_assign_technics();
+        $data['visits'] = $this->Visits_model->get_orders_assign_technics($id_user);
         $this->load->view('visit_assign_view', $data);
     }
 
@@ -57,7 +57,8 @@ class Visit extends CI_Controller {
                 'idArea' => 1,
                 'idOrderState' => 3,
                 'observations' => $this->input->post('obsv'),
-                'historybackState' => 0);
+                'historybackState' => 0,
+                'idUserProcess' => $this->session->userdata('id_usuario'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -76,7 +77,8 @@ class Visit extends CI_Controller {
                 'idArea' => 3,
                 'idOrderState' => 21,
                 'observations' => $this->input->post('obsv'),
-                'historybackState' => 0);
+                'historybackState' => 0,
+                'idUserProcess' => $this->session->userdata('id_usuario'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -94,7 +96,8 @@ class Visit extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idArea' => $this->input->post('idArea'),
-            'idOrderState' => $this->input->post('idState'));
+            'idOrderState' => $this->input->post('idState'),
+            'idUserProcess' => $this->session->userdata('id_usuario'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -155,7 +158,8 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => 1,
             'idOrderState' => 4,
-            'observations' => $obsv);
+            'observations' => $obsv,
+            'idUserProcess' => $this->session->userdata('id_usuario'));
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -174,7 +178,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(7);
-        $data['visits'] = $this->Visits_model->get_orders_assign_technics();
+        $data['visits'] = $this->Visits_model->get_orders_assign_technics($id_user);
         $data['process'] = $this->Visits_model->get_orders_visit_validation();
         $this->load->view('visit_init_register_data_view', $data);
     }
@@ -269,6 +273,7 @@ class Visit extends CI_Controller {
         $dataGen = array(
             'idArea' => 1,
             'idOrderState' => 6,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'observations' => $this->input->post('obsvgen')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
@@ -327,6 +332,7 @@ class Visit extends CI_Controller {
         $dataGen = array(
             'idArea' => 3,
             'idOrderState' => 19,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'observations' => $this->input->post('obsvgen')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
