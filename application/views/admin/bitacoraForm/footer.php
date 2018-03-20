@@ -3,7 +3,8 @@
     </div>
     <div class="col-sm-2">
         <label class="color-blue">TOTAL BRUTO</label>
-        <input type="text" class="form-control bg-white" name="subtotal" id="subtotal" readonly/>  
+        <input type="hidden" name="subtotal" id="subtotal"/>
+        <input type="text" class="form-control bg-white" id="subtotalshow" readonly/>  
     </div>
     <div class="col-sm-2">
         <label class="color-blue">DESCUENTO</label>
@@ -19,7 +20,9 @@
     </div>
     <div class="col-sm-2">
         <label class="color-blue">TOTAL</label>
-        <input type="text" class="form-control bg-white" name="total" id="total" readonly/>
+        
+        <input type="hidden" name="total" id="total"/>
+        <input type="text" class="form-control bg-white" id="totalshow" readonly/>
     </div>
     <div class="col-sm-1">
         <div class="form-group">  

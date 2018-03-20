@@ -82,7 +82,7 @@
                                                         </a><?php } ?>
                                                 </td>
                                                 <td><?= $visit->dateSave ?></td>
-                                                <td><?= $visit->uniquecode ?></td>
+                                                <td><?= $visit->uniquecode."-".$visit->coi ?></td>
                                                 <td><?= $visit->name_activitie ?></td>
                                                 <td><?= $visit->name_service ?></td>
                                                 <td><select class="form-control" id="idTech_<?= $visit->id ?>">

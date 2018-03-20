@@ -68,7 +68,7 @@
                                                             <i class="fa fa-plus-square-o"></i>
                                                         </td>
                                                         <td><?= $visit->dateSave ?></td>
-                                                        <td><?= $visit->uniquecode ?></td>
+                                                        <td><?= $visit->uniquecode."-".$visit->coi ?></td>
                                                         <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                         <td><?= $visit->name_activitie ?></td>
                                                         <td><?= $visit->name_service ?></td>
@@ -209,6 +209,10 @@
                     var fn = $(elm).val();
                     $("#p_3").html(fn);
                 }
+                function getFileNameDas(elm) {
+                    var fn = $(elm).val();
+                    $("#p_4").html(fn);
+                }
                 $('#data-table tbody').on('click', 'td.details-control', function () {
                     var tr = $(this).closest('tr');
                     var row = dt.row(tr);
@@ -232,21 +236,26 @@
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>' +
                             '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto[]" id="fileregfoto" multiple></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvRegPic"><td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable photos photo' + d + ' form-control" name="obsvRegPic"><td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="filepisnm"><a class="disable pisnm' + d + '">ADJUNTAR FORMATO PISNM</a></label>' +
                             '<p id="p_2"></p><input type="hidden" value="2" name="idTypePsinm"><input style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filepisnm" id="filepisnm"></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvPsinm"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable pisnm' + d + ' form-control" name="obsvPsinm"></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="filetss"><a class="disable tss' + d + '">ADJUNTAR FORMATO TSS</a></label>' +
                             '<p id="p_3"></p><input type="hidden" value="3" name="idTypeTss"><input style="display: none;" onchange="getFileNameTss(this)" type="file" name="filetss" id="filetss"></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvTss"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable tss' + d + ' form-control" name="obsvTss"></td>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<td><label class="blue bold upload_design" for="filedas"><a class="disable das' + d + '">ADJUNTAR FORMATO DAS</a></label>' +
+                            '<p id="p_4"></p><input type="hidden" value="4" name="idTypeDas"><input style="display: none;" onchange="getFileNameDas(this)" type="file" name="filedas" id="filedas"></input></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable das' + d + ' form-control" name="obsvDas"></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design"><a href="#" data-toggle="modal" data-target="#modalMaterials" onclick="addIdOrder(' + d + ')">ADJUNTAR SOLICITUD DE MATERIALES</a></label></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvTss"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvMat"></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td>OBSERVACIONES GENERALES</td>' +
@@ -290,6 +299,10 @@
                             if (doc.idTypeDocument === "3") {
                                 $(".tss" + idOrder).removeClass("disable");
                                 $(".tss" + idOrder).addClass("pointer");
+                            }
+                            if (doc.idTypeDocument === "4") {
+                                $(".das" + idOrder).removeClass("disable");
+                                $(".das" + idOrder).addClass("pointer");
                             }
                             if (doc.idTypeDocument === "1") {
                                 $(".photo" + idOrder).removeClass("disable");

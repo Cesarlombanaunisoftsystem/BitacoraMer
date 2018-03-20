@@ -7,10 +7,17 @@
         echo $order->id;
     }
     ?>"/>
-    <div class="col-sm-2">Número de Orden</div>
+    <div class="col-sm-2">Número de Orden:</div>
     <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="text" class="form-control sinborde" name="uniquecode" id="idOrder" value="<?php
         if ($order) {
             echo $order->uniquecode;
+        }
+        ?>" required/>
+    </div>
+    <div class="col-sm-1">COI:</div>
+    <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="text" class="form-control sinborde" name="coi" id="coi" value="<?php
+        if ($order) {
+            echo $order->coi;
         }
         ?>" onfocusout="addIdOrder();" required/>
     </div>
@@ -21,13 +28,13 @@
         }
         ?>" required/>
     </div>
-    <div class="col-sm-2">Fecha de Creación</div>
+    <div class="col-sm-2">Fecha de Creación:</div>
     <div class="col-sm-2" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="text" class="form-control sinborde" name="date" id="dateSave" value="<?php
         if ($order) {
             echo $order->dateSave;
         }
         ?>" readonly required/></div><br><br>
-    <div class="col-sm-2">Coordinador Externo</div>
+    <div class="col-sm-2">Coordinador Externo:</div>
     <div class="col-sm-2" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idCoordinatorExt" id="idCoordExt" required>
             <option></option>
@@ -46,7 +53,7 @@
             ?>
 
         </select></div>
-    <div class="col-sm-2">Coordinador Interno</div>
+    <div class="col-sm-2">Coordinador Interno:</div>
     <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idCoordinatorInt" id="idCoordInt" required>
             <option></option>
@@ -64,7 +71,7 @@
             }
             ?>
         </select></div>
-    <div class="col-sm-2">Forma de Pago</div>
+    <div class="col-sm-2">Forma de Pago:</div>
     <div class="col-sm-1" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idFormPay" id="idFormPay" required>
             <option></option>

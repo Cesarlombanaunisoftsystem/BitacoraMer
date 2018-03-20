@@ -4,7 +4,7 @@ class Orders_model extends CI_Model {
 
     public function get_order_bitacora($id, $type) {
         $this->db->where('id', $id);
-        $this->db->where('idArea', null);
+        $this->db->where('idArea', 1);
         $this->db->where('idOrderState', 1);
         $this->db->where('idOrderType', $type);
         $this->db->where('idUser', $this->session->userdata('id_usuario'));
@@ -17,10 +17,11 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_order($order) {
-        $this->db->select('uniquecode');
+    public function get_order($order,$coi) {
+        $this->db->select('uniquecode,coi');
         $this->db->from('tbl_orders');
         $this->db->where('uniquecode', $order);
+        $this->db->where('coi', $coi);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return true;
@@ -205,7 +206,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $id);
-        $this->db->where('tbl_orders.idArea', null);
+        $this->db->where('tbl_orders.idArea', 1);
         $this->db->where('tbl_orders.idOrderState', 1);
         $this->db->where('tbl_orders.idOrderType', $type);
         $query = $this->db->get();

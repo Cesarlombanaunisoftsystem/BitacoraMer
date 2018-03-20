@@ -62,9 +62,10 @@ class Visit extends CI_Controller {
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
-                $content = $this->Orders_model->get_order_by_id_email($idOrder);
+                $content = $this->Orders_model->details_orders_tray($idOrder);
+                $order = $this->Orders_model->get_order_by_id($idOrder);
                 $titulo = '¡Has Sido Asignado para Realizar Visita En Sitio!';
-                $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $content, $titulo);
+                $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $technical, $content, $order, $titulo);
                 echo 'ok';
             } else {
                 echo $res;
@@ -193,7 +194,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['orders'] = $this->Visits_model->get_orders_visit_validation();
-        $data['process'] = $this->Orders_model->get_orders_design(2,7);
+        $data['process'] = $this->Orders_model->get_orders_design(2, 7);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_view', $data);
@@ -253,10 +254,13 @@ class Visit extends CI_Controller {
         $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeRegFoto'), $dataFoto);
         $filepsinm = $this->generateRandomString() . $_FILES['filepisnm']['name'];
         $filetss = $this->generateRandomString() . $_FILES['filetss']['name'];
+        $filedas = $this->generateRandomString() . $_FILES['filedas']['name'];
         $fichero2 = $dir_subida . $filepsinm;
         $fichero3 = $dir_subida . $filetss;
+        $fichero4 = $dir_subida . $filedas;
         move_uploaded_file($_FILES['filepisnm']['tmp_name'], $fichero2);
         move_uploaded_file($_FILES['filetss']['tmp_name'], $fichero3);
+        move_uploaded_file($_FILES['filedas']['tmp_name'], $fichero4);
 
         $dataPsinm = array(
             'file' => $filepsinm,
@@ -270,6 +274,12 @@ class Visit extends CI_Controller {
             'dateSave' => date('Y-m-d')
         );
         $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeTss'), $dataTss);
+        $dataDas = array(
+            'file' => $filedas,
+            'observation' => $this->input->post('obsvDas'),
+            'dateSave' => date('Y-m-d')
+        );
+        $this->Orders_model->upload_doc($this->input->post('idOrder'), $this->input->post('idTypeDas'), $dataDas);
         $dataGen = array(
             'idArea' => 1,
             'idOrderState' => 6,

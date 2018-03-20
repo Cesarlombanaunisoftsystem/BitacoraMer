@@ -24,14 +24,17 @@
                             <td class="details-control" id="<?php echo $orderTray->id; ?>">
                                 <i class="fa fa-plus-square-o"></i>
                             </td>
-                            <td><?= $orderTray->uniquecode ?></td>
+                            <td><?= $orderTray->uniquecode."-".$orderTray->coi ?></td>
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
                             <td><?= $orderTray->dateSave ?></td>
-                            <td><?= $orderTray->total ?></td>
+                            <td><?php
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $orderTray->total);
+                                ?></td>
                         </tr>
                     <?php } ?>                        
-                <?php } ?>
+<?php } ?>
             </tbody>
         </table>        
     </div>

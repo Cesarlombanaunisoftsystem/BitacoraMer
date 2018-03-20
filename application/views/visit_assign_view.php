@@ -61,7 +61,7 @@
                                             ?>                                            
                                             <tr>
                                                 <td><?= $visit->dateSave ?></td>
-                                                <td><?= $visit->uniquecode ?></td>
+                                                <td><?= $visit->uniquecode."-".$visit->coi ?></td>
                                                 <td><?= $visit->name_activitie . " " . $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>

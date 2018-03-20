@@ -33,18 +33,18 @@
         <td width="10">
             <input type="number" class="form-control" name="count" id="count"  min="1" />        
         </td>
-        <td width="100">
+        <td width="50">
             <input type="text" class="form-control" name="site" id="site" autocomplete="off" />
         </td>
-        <td width="10">
+        <td width="120">
             <div id="price"></div>      
         </td>
-        <td width="115">
+        <td width="120">
             <input type="number" class="form-control" name="total" id="vrTotal" readonly />
             <input type="hidden" id="vrTotalCost"/>
         </td>
         <td>
-            <button type="submit" class="btn-transparent" onclick="addDetail();"><i class="fa fa-check" aria-hidden="true"></i></button>        
+            <button type="submit" id="btnDetail" class="btn-transparent" onclick="addDetail();"><i class="fa fa-check" aria-hidden="true"></i></button>        
         </td>
     </tr>
 
@@ -61,14 +61,18 @@
                 ?>
                 <tr><td><?= $detail->name_activitie ?></td>
                     <td><?= $detail->name_service ?></td>
-                    <td><?= $detail->count ?></td><td><?= $detail->site ?></td>
-                    <td><?= $detail->price ?></td><td><?= $detail->total ?></td>
+                    <td><?= $detail->count ?></td>
+                    <td><?= $detail->site ?></td>
+                    <td><?php setlocale(LC_MONETARY, 'es_CO');
+        echo money_format('%.2n', $detail->price); ?></td>
+                    <td><?php setlocale(LC_MONETARY, 'es_CO');
+        echo money_format('%.2n', $detail->total); ?></td>
                     <td><button type="button" class="btn-transparent" onclick="removeDetailOrder(<?= $detail->id ?>);"><i class="fa fa-minus" aria-hidden="true" style="color:red"></i></button></td>
                 </tr>
-            <?php } ?>
+        <?php } ?>
         <input type="hidden" name="sumSubtotal" id="sumSubtotal" value="<?= $subtotal ?>"/>
         <input type="hidden" name="sumTotalCost" id="sumTotalCost" value="<?= $totalCost ?>"/>
-    <?php } ?>
+<?php } ?>
 </tbody>      
 </table>
 <div id="spinner"></div>

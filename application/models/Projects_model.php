@@ -191,7 +191,7 @@ class Projects_model extends CI_Model {
     GROUP BY idOrder) docs
     ON tbl_orders.id = docs.idOrder
     where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = '$state' AND"
-                . "tbl_orders.idUserProcess='$id'";
+                . " tbl_orders.idUserProcess='$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

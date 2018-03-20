@@ -135,9 +135,15 @@
                         $('#bodyPanelDoc').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.name_type +
                                 '</td><td>' + state + '</td><td>' +
-                                '<a href="#"><img src="' + get_base_url() + 'dist/img/upfile.png"></a>' +
-                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/editfile.png"></a>' +
-                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/deletefile.png"></a>' +
+                                '<label for="userfile">' +
+                                '<img src="' + get_base_url() + 'dist/img/upfile.png">' +
+                                '</label><p id="datofile"></p>' +
+                                '<input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept="*" size="2048">' +
+                                '</td><td><label for="userfile">' +
+                                '<img src="' + get_base_url() + 'dist/img/editfile.png">' +
+                                '</label><p id="datofile"></p>' +
+                                '<input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept="*" size="2048">' +                                
+                                '</td><td><a href="#">' + '<img src="' + get_base_url() + 'dist/img/deletefile.png"></a>' +
                                 '</td></tr>'
                                 );
                         $("#btnRegister").html('<button type="submit" class="form-control btn btn-success" onclick="register(' + idOrder + ')">REGISTRAR</button>');

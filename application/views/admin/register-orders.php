@@ -56,9 +56,11 @@
 
                 if ($('#idOrder').val() === "") {
                     $('#idOrder').removeAttr("readonly");
-                    $('#btnSubmit').prop('disabled',true);
+                    $('#btnSubmit').prop('disabled', true);
                 }
                 var subtotal = $("#sumSubtotal").val();
+                var subtotalf = formatNumber(subtotal);
+                $('#subtotalshow').val(subtotalf);
                 $('#subtotal').val(subtotal);
                 var tax = $('#tax').val();
                 var discount = $('#discount').val();
@@ -66,10 +68,13 @@
                 var subTotalDiscount = subtotal - calcDiscount;
                 var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
                 var total = subTotalDiscount + taxSubtotalDiscount;
+                var totalf = formatNumber(total);
                 if (!total) {
                     $('#total').val();
+                    $('#totalshow').val();
                 } else {
                     $('#total').val(total);
+                    $('#totalshow').val(totalf);
                 }
 
                 $("#frmRegisterOrder").on("submit", function (e) {
@@ -79,15 +84,15 @@
 
                     var id = $('#id').val();
                     url = get_base_url() + "Orders/get_details?jsoncallback=?";
-                    if ($("#userfile").val() === "") {
-                        alertify.error('Debes adjuntar el documento de la ordén !');
-                        return false;
-                    }
                     $.getJSON(url, {id: id, type: '1'}).done(function (res) {
                         $('#spinner').html("");
                         if (res.res === false) {
                             alertify.error('Debes incluir al menos una actividad!');
                         } else {
+                            if ($("#userfile").val() === "") {
+                                alertify.error('Debes adjuntar el documento de la ordén !');
+                                return false;
+                            }
                             url = get_base_url() + "Orders/register_order";
                             $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                             $.ajax({
@@ -162,12 +167,14 @@
                 var subTotalDiscount = subtotal - calcDiscount;
                 var taxSubtotalDiscount = (subTotalDiscount * tax) / 100;
                 var total = subTotalDiscount + taxSubtotalDiscount;
+                var totalf = formatNumber(total);
                 $('#total').val(total);
+                $('#totalshow').val(totalf);                
             }
 
             function addIdOrder() {
-                if ($('#idOrder').val() === "") {
-                    alertify.error('Debes asignar un número de ordén para continuar!');
+                if ($('#idOrder').val() === "" && $('#coi').val() === "") {
+                    alertify.error('Debes asignar un número de ordén y coi para continuar!');
                 } else {
                     generateOrder();
                 }
@@ -175,9 +182,10 @@
 
             function generateOrder() {
                 var order = $('#idOrder').val();
+                var coi = $('#coi').val();
                 url = get_base_url() + "Orders/get_order?jsoncallback=?";
                 $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                $.getJSON(url, {order: order}).done(function (res) {
+                $.getJSON(url, {order: order, coi: coi}).done(function (res) {
                     $('#spinner').html("");
                     if (res.res === true) {
                         alertify.error('El número de ordén digitado ya existe.');
@@ -188,7 +196,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order, type: '1'},
+                            data: {order: order, coi: coi, type: '1'},
                             success: function (resp) {
                                 $('#spinner').html("");
                                 if (resp === "error") {
@@ -205,6 +213,7 @@
             }
 
             function addDetail() {
+                $("#btnDetail").prop("disabled", true);
                 var id = $('#id').val();
                 var idOrder = $("#id").val();
                 var idActivities = $("#idActivities").val();
@@ -217,6 +226,7 @@
                 var totalCost = $("#vrTotalCost").val();
                 if (cant === "" || site === "") {
                     alertify.error('Debes asignar una cantidad númerica correcta y un sitio!');
+                    location.reload();
                 } else {
                     url = get_base_url() + "Orders/get_details_service?jsoncallback=?";
                     $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
@@ -224,6 +234,7 @@
                         $('#spinner').html("");
                         if (res.res === true) {
                             alertify.error('Esta actividad ya se encuentra registrada!');
+                            location.reload();
                         } else {
                             url = get_base_url() + "Orders/add_order_detail";
                             $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
@@ -238,6 +249,7 @@
                                     }
                                     if (resp === "ok") {
                                         alertify.success('Detalle agregado exitosamente');
+                                        $("#btnDetail").prop("disabled", false);
                                         location.reload();
                                     }
                                 }
@@ -313,6 +325,24 @@
                         }
                     });
                 });
+            }
+            
+            function formatNumber(num) {
+                if (!num || num === 'NaN')
+                    return '-';
+                if (num === 'Infinity')
+                    return '&#x221e;';
+                num = num.toString().replace(/\$|\,/g, '');
+                if (isNaN(num))
+                    num = "0";
+                sign = (num === (num = Math.abs(num)));
+                num = Math.floor(num * 100 + 0.50000000001);
+                num = Math.floor(num / 100).toString();
+
+                for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+                    num = num.substring(0, num.length - (4 * i + 3)) + '.' +
+                            num.substring(num.length - (4 * i + 3));
+                return (((sign) ? '' : '') + num);
             }
         </script>
     </body>
