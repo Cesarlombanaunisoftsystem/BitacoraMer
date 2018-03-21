@@ -234,6 +234,13 @@ class Visit extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
+    
+    public function get_activities_x_order() {
+        $idOrder = $this->input->get('idOrder');
+        $data['act'] = $this->Orders_model->details_orders_tray($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function register_docs() {
         $dir_subida = './uploads/';

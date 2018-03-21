@@ -166,7 +166,7 @@ class Orders extends CI_Controller {
     public function remove_order_detail() {
         $id = $this->input->post('id');
         $res = $this->Orders_model->remove_order_detail($id);
-        if ($res == true) {
+        if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';

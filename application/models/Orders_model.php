@@ -17,7 +17,7 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_order($order,$coi) {
+    public function get_order($order, $coi) {
         $this->db->select('uniquecode,coi');
         $this->db->from('tbl_orders');
         $this->db->where('uniquecode', $order);
@@ -178,7 +178,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return false;
         }
     }
-    
+
     public function get_orders_design_process($area, $status, $id) {
         $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
                 . 'tbl_activities.name_activitie,tbl_services.name_service');
@@ -245,7 +245,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     }
 
     public function details_orders_tray($id) {
-        $this->db->select('tbl_orders_details.*,tbl_orders.idArea,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->select('tbl_orders_details.*,tbl_orders.idArea,tbl_activities.name_activitie,tbl_services.name_service,tbl_services.unit_measurement');
         $this->db->from('tbl_orders_details');
         $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
@@ -274,8 +274,8 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return false;
         }
     }
-    
-    public function update_order_detail($id,$data) {
+
+    public function update_order_detail($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('tbl_orders_details', $data);
         if ($this->db->affected_rows() > 0) {
@@ -383,7 +383,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
-            return $query->result();
+            return FALSE;
         }
     }
 
@@ -443,31 +443,31 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_total_orders() {
         $sql = "SELECT count(id) as total FROM tbl_orders";
         $query = $this->db->query($sql);
-        if($query->num_rows()>0){
+        if ($query->num_rows() > 0) {
             return $query->row();
         } else {
             return FALSE;
         }
     }
-    
+
     public function get_total_sale() {
         $sql = "SELECT sum(total) as total FROM tbl_orders";
         $query = $this->db->query($sql);
-        if($query->num_rows()>0){
+        if ($query->num_rows() > 0) {
             return $query->row();
         } else {
             return FALSE;
         }
     }
-    
+
     public function get_total_cost() {
         $sql = "SELECT sum(total_cost) as total FROM tbl_orders_details";
         $query = $this->db->query($sql);
-        if($query->num_rows()>0){
+        if ($query->num_rows() > 0) {
             return $query->row();
         } else {
             return FALSE;

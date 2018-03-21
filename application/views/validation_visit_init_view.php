@@ -154,17 +154,20 @@
             <div class="modal-dialog" style="width: 80%;">
                 <!-- Modal content-->
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>MATERIALES</b></h3>                                
+                    </div>
                     <div class="modal-body">
                         <div class="row">
-                            <form action="javascript:addDetail()" class="form-horizontal" id="frmAddDetail" method="post">
+                            <form class="form-horizontal" id="frmMaterials" method="post">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th style="background-color: #00B1EB; color: white">Categoria</th>
-                                            <th style="background-color: #00B1EB; color: white">Producto</th>
-                                            <th style="background-color: #00B1EB; color: white">Cantidad</th>
-                                            <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
-                                            <th style="background-color: #00B1EB; color: white">Editar</th>
+                                            <th style="background-color: #00B1EB; color: white">CATEGORIA</th>
+                                            <th style="background-color: #00B1EB; color: white">PRODUCTO</th>
+                                            <th style="background-color: #00B1EB; color: white">CANTIDAD</th>
+                                            <th style="background-color: #00B1EB; color: white">Unidad de Medida</th>
+                                            <th style="background-color: #00B1EB; color: white">OPCION</th>
                                         </tr>
                                         <tr>
                                             <td>
@@ -190,18 +193,21 @@
                                                 <input type="hidden" name="total" id="vrTotal"/>
                                                 <input type="hidden" name="totalCost" id="vrTotalCost"/>
                                             </td>
+                                            <td><a href="javascript:addMaterials()"><i class="fa fa-plus-circle fa-2x" style="color: blue"></i></a>
+                                            </td>
                                         </tr>
                                     </thead>
-                                    <tbody  id="bodyMaterials">
-
+                                    <tbody id="materials">
                                     </tbody>
-                                </table>                                  
+                                </table> 
                                 <div class="col-xs-12">
                                     <div class="center block text-center">
-                                        <button type="submit" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;">Registrar</button>
+                                        <button type="button" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;" onclick="register()">Registrar</button>
                                     </div>
                                 </div>
-                            </form>
+                                <hr style="border-color: #00B1EB">
+                                <p>Bitácora</p>
+                            </form>                                                                 
                         </div>                   
                     </div>
                 </div>
@@ -210,45 +216,59 @@
 
         <!-- Modal Observaciones-->
         <div id="modalObservations" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-dialog" style="width: 50%;">
                 <!-- Modal content-->
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                    </div>
                     <div class="modal-body">
                         <div class="row">
-                            <textarea class="form form-control" id="obsv"></textarea>
+                            <div id="obsv"></div>
                         </div>                   
                     </div>
+                    <hr style="border-color: #00B1EB">
+                    <p>Bitácora</p>
                 </div>
             </div>
         </div>
 
         <!-- Modal edición productos-->
         <div id="modalEditProducts" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 80%;">
+            <div class="modal-dialog" style="width: 50%;">
                 <!-- Modal content-->
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>MODIFICACIÓN MATERIALES</b></h3>                                
+                    </div>
                     <div class="modal-body">
                         <div class="row">
-                            <form id="frmEditDetail" action="javascript:editDetail()" method="post">                                                                                
+                            <form class="form-horizontal" id="frmEditDetail" action="javascript:editDetail()" method="post">
                                 <div class="form-group">
                                     <input type="hidden" name="idDetail" id="idDetail">
-                                    <label for="idServices">Producto</label>
-                                    <select name="idServices" id="idServices" class="form form-control">
-                                        <option id="product"></option>
-                                        <?php foreach ($services as $service) { ?>
-                                            <option value="<?= $service->id ?>"><?= $service->name_service ?>
-                                            </option>
-                                        <?php } ?>
-                                    </select>                              
+                                    <label class="control-label col-sm-2" for="idServices">Producto:</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="idServices" id="idServices">
+                                            <option id="product"></option>
+                                            <?php foreach ($services as $service) { ?>
+                                                <option value="<?= $service->id ?>"><?= $service->name_service ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select> 
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="idServices">Cantidad</label>
-                                    <input type="number" name="quantity" id="quantity" class="form form-control">                             
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>                       
+                                    <label class="control-label col-sm-2" for="quantity">Cantidad:</label>
+                                    <div class="col-sm-10">          
+                                        <input type="number" class="form-control" name="quantity" id="quantity">
+                                    </div>
                                 </div>                                
-                            </form>  
+                                <div class="form-group">        
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="submit" class="btn btn-primary">REGISTRAR</button>
+                                    </div>
+                                </div>
+                            </form>                             
                         </div>                   
                     </div>
                 </div>
@@ -288,16 +308,17 @@
             function format(d) {
                 return '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
-                        '<td><a class="disable photos photo' + d + '"><u>REGISTRO FOTOGRAFICO</u></a></td>' +
-                        '<td><a class="disable pisnm' + d + '"><u>FORMATO PISNM</u></a></td>' +
-                        '<td><a class="disable tss' + d + '"><u>FORMATO TSS</u></a></td>' +
-                        '<td><a href="#" data-toggle="modal" data-target="#modalMaterials"><u>SOLICITUD DE MATERIALES</u></a></td>' +
-                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations"><u>OBSERVACIONES GENERALES</u></a></td>' +
+                        '<td>FECHA DE REGISTRO: <p id="date' + d + '"></p></td>' +
+                        '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
+                        '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
+                        '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
+                        '<td><a class="disable das' + d + '">FORMATO DAS</a></td>' +
+                        '<td><a href="#" data-toggle="modal" data-target="#modalMaterials" onclick="addIdOrder(' + d + ')">SOLICITUD DE MATERIALES</a></td>' +
+                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td colspan="3"></td>' +
-                        '<td><u style="color:#00B0F0">ACEPTA VISITA Y ENVIA A:</u></td>' +
+                        '<td><u style="color:#00B0F0">ACEPTA VISITA Y ENVIA A:</td>' +
                         '<td><select name="state" id="state_' + d + '" onchange="assign(' + d + ')">' +
                         '<option></option>' +
                         '<option value="7">CENTRO DE DISEÑO</option>' +
@@ -305,7 +326,7 @@
                         '<option value="16">GESTIÓN MATERIAL</option>' +
                         '<option value="23">FACTURACIÓN</option>' +
                         '</select></td>' +
-                        '<td><a href="javascript:return_order(' + d + ')"><u style="color:#00B0F0">RECHAZAR VISITA</u></a></td>' +
+                        '<td><a href="javascript:return_order(' + d + ')"><u style="color:#00B0F0">RECHAZAR VISITA</a></td>' +
                         '</tr>' +
                         '</table>';
             }
@@ -362,18 +383,23 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        $("#date"+idOrder).html(doc.dateSave);
-                        if (doc.idTypeDocument == "2") {
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
+                        $("#date" + idOrder).html(doc.dateSave);
+                        if (doc.idTypeDocument === "2") {
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
-                        if (doc.idTypeDocument == "3") {
-                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
+                        if (doc.idTypeDocument === "3") {
+                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }
-                        if (doc.idTypeDocument == "1") {
+                        if (doc.idTypeDocument === "4") {
+                            $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                            $(".das" + idOrder).attr("target", "_blank");
+                            $(".das" + idOrder).removeClass("disable");
+                        }
+                        if (doc.idTypeDocument === "1") {
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
                         }
@@ -401,6 +427,11 @@
                 });
             }
 
+            function addIdOrder(d) {
+                $("#idOrder").val(d);
+                getMaterials(d);
+            }
+
             $("#count").change(function () {
                 var price = $("#vrTotal").val();
                 var cost = $("#cost").val();
@@ -412,27 +443,26 @@
             });
 
             function getMaterials(idOrder) {
-                $("#idOrder").val(idOrder);
-                $('#bodyMaterials').empty();
+                $('#materials').empty();
                 url = get_base_url() + "Orders/get_order_materials?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
-                        $('#bodyMaterials').append('<tr><td>' + materials.name_activitie +
+                        $('#materials').append('<tr><td>' + materials.name_activitie +
                                 '</td><td>' + materials.name_service +
                                 '</td><td>' + materials.count + '</td><td>'
                                 + materials.unit_measurement + '</td>' +
                                 '<td><a onclick="viewService(' + materials.id + ')" data-toggle="modal" data-target="#modalEditProducts">' +
-                                '<i class="fa fa-edit" aria-hidden="true" style="color: blue">' +
-                                '</i></a></td></tr>');
+                                '<i class="fa fa-edit fa-2x" aria-hidden="true" style="color: blue">' +
+                                '</i></a><a href="#"><i class="fa fa-minus-circle fa-2x" style="color: red" onclick="removeMaterial(' + materials.id + ')"></i></a></td></tr>');
                     });
                 });
             }
 
             function getObservations(idOrder) {
-                $("#obsv").val("");
+                $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv").val(res.observation.observations);
+                    $("#obsv").html(res.observation.observations);
                 });
             }
 
@@ -446,32 +476,28 @@
                     $("#quantity").val(res.res.count);
                 });
             }
-            function addDetail() {
-                var categoria = $("#idActivities option:selected").text();
-                var producto = $("#idServices option:selected").text();
-                var cantidad = $("#count").val();
-                var unidadm = $("#unidadm").val();
+            function addMaterials() {
+                var idOrder = $("#idOrder").val();
                 url = get_base_url() + "Orders/add_order_detail";
                 $.ajax({
                     url: url,
-                    type: $("#frmAddDetail").attr("method"),
-                    data: $("#frmAddDetail").serialize(),
+                    type: $("#frmMaterials").attr("method"),
+                    data: $("#frmMaterials").serialize(),
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
                         }
                         if (resp === "ok") {
-                            alertify.success('Producto agregado exitosamente');
-                            $("#bodyMaterials").append('<tr><td>' + categoria +
-                                    '</td><td>' + producto +
-                                    '</td><td>' + cantidad + '</td><td>'
-                                    + unidadm + '</td>' +
-                                    '<td></td></tr>');
+                            getMaterials(idOrder);
+                            $("#idActivities").val('');
+                            $("#idServices").val('');
+                            $("#count").val('');
                         }
                     }
                 });
             }
             function editDetail() {
+                var idOrder = $("#idOrder").val();
                 url = get_base_url() + "Audit/edit_detail";
                 $.ajax({
                     url: url,
@@ -483,10 +509,43 @@
                         }
                         if (resp === "ok") {
                             alertify.success('Producto actualizado exitosamente');
-                            location.reload();
+                            getMaterials(idOrder);
                         }
                     }
                 });
+            }
+            function removeMaterial(id) {
+                var idOrder = $("#idOrder").val();
+                $.confirm({
+                    title: 'Confirma eliminar este item?',
+                    content: '',
+                    buttons: {
+                        confirmar: function () {
+                            url = get_base_url() + "Orders/remove_order_detail";
+                            $.ajax({
+                                url: url,
+                                type: 'POST',
+                                data: {id: id},
+                                success: function (resp) {
+                                    if (resp === "error") {
+                                        alertify.error('Error en BBDD');
+                                    }
+                                    if (resp === "ok") {
+                                        getMaterials(idOrder);
+                                    }
+                                }
+                            });
+                        },
+                        cancelar: function () {
+                            $.alert('Canceledo!');
+                        }
+                    }
+                });
+            }
+
+            function register() {
+                alertify.success('Material registrado exitosamente');
+                location.reload();
             }
         </script>
     </body>
