@@ -194,10 +194,24 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['orders'] = $this->Visits_model->get_orders_visit_validation();
-        $data['process'] = $this->Orders_model->get_orders_design(2, 7);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_view', $data);
+    }
+    
+    public function validation_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Validación Registro de Visitas Inicial';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['process'] = $this->Orders_model->get_orders_design(2, 7);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $this->load->view('validation_visit_init_process_view', $data);
     }
 
     public function validation_close() {

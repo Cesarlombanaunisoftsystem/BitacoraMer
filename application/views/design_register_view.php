@@ -66,7 +66,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
-                                                <td><?= $order->uniquecode ?></td>
+                                                <td><?= $order->uniquecode . '-' . $order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
                                                 <td><?= $order->name_service ?></td>
@@ -85,7 +85,7 @@
                 </section>
                 <!-- /.content -->
                 <!-- Modal Galery -->
-                <div class="modal" tabindex="-1" role="dialog">
+                <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
@@ -97,6 +97,26 @@
                         </div>
                     </div>
                 </div>
+                <!-- Modal Galery-->
+                <!-- Modal Observaciones-->
+                <div id="modalObservations" class="modal fade" role="dialog">
+                    <div class="modal-dialog" style="width: 50%;">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div id="obsv"></div>
+                                </div>                   
+                            </div>
+                            <hr style="border-color: #00B1EB">
+                            <p>Bitácora</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Observaciones-->
             </div>
             <!-- /.content-wrapper -->
             <?php $this->load->view('templates/footer.html') ?>
@@ -108,7 +128,7 @@
             $(function () {
                 $(document).on("click", ".photos", function () {
                     if (galery)
-                        $('.modal').modal('show');
+                        $('#modalGalery').modal('show');
                 });
 
             });
@@ -127,6 +147,7 @@
                 } else {
                     getDocs(order_id);
                     getRegPhoto(order_id);
+                    getObservations(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
                     row.child(format(order_id)).show();
@@ -138,21 +159,30 @@
                 return '<form id="form-design" method="POST" action="javascript:registerOrder()" enctype="multipart/form-data">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
+                        '<td>FECHA DE REGISTRO: <p id="date' + d + '"></td>' +
                         '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
                         '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
-                        '<td>OBSERVACIONES GENERALES</td>' +
+                        '<td><a class="disable das' + d + '">FORMATO DAS</a></td>' +
+                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
                         '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>' +
                         '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>' +
-                        '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>' +
+                        '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="Observaciones Generales"></td>' +
                         '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
                         '<input type="submit" class="blue bold" value="REGISTRAR DISEÑO"></td>' +
                         '</tr>' +
                         '</table></form>';
+            }
+            
+            function getObservations(idOrder) {
+                $("#obsv").html("");
+                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsv").html(res.observation.observations);
+                });
             }
 
             function registerOrder() {
@@ -205,17 +235,22 @@
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
                         $("#date" + idOrder).html(doc.dateSave);
-                        if (doc.idTypeDocument == "2") {
+                        if (doc.idTypeDocument === "2") {
                             $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".pisnm" + idOrder).attr("target", "_blank");
                             $(".pisnm" + idOrder).removeClass("disable");
                         }
-                        if (doc.idTypeDocument == "3") {
+                        if (doc.idTypeDocument === "3") {
                             $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                             $(".tss" + idOrder).attr("target", "_blank");
                             $(".tss" + idOrder).removeClass("disable");
                         }
-                        if (doc.idTypeDocument == "1") {
+                        if (doc.idTypeDocument === "4") {
+                            $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                            $(".das" + idOrder).attr("target", "_blank");
+                            $(".das" + idOrder).removeClass("disable");
+                        }
+                        if (doc.idTypeDocument === "1") {
                             $(".photo" + idOrder).removeClass("disable");
                             $(".photo" + idOrder).addClass("pointer");
                         }

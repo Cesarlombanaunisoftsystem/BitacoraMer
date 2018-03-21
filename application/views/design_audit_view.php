@@ -65,7 +65,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
-                                                <td><?= $order->uniquecode ?></td>
+                                                <td><?= $order->uniquecode.'-'.$order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
                                                 <td><?= $order->name_service ?></td>

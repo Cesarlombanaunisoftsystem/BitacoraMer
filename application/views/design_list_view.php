@@ -66,7 +66,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
-                                                <td><?= $order->uniquecode ?></td>
+                                                <td><?= $order->uniquecode.'-'.$order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
                                                 <td><?= $order->name_service ?></td>
@@ -85,7 +85,7 @@
                 </section>
                 <!-- /.content -->
                 <!-- Modal Galery -->
-                <div class="modal" tabindex="-1" role="dialog">
+                <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
@@ -97,6 +97,26 @@
                         </div>
                     </div>
                 </div>
+                <!-- Modal Galery -->
+                <!-- Modal Observaciones-->
+                <div id="modalObservations" class="modal fade" role="dialog">
+                    <div class="modal-dialog" style="width: 50%;">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div id="obsv"></div>
+                                </div>                   
+                            </div>
+                            <hr style="border-color: #00B1EB">
+                            <p>Bitácora</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Observaciones-->
             </div>
             <!-- /.content-wrapper -->
 <?php $this->load->view('templates/footer.html') ?>
@@ -108,7 +128,7 @@
             $(function () {
                 $(document).on("click", ".photos", function () {
                     if (galery)
-                        $('.modal').modal('show');
+                        $('#modalGalery').modal('show');
                 });
             });
             $('#data-table tbody').on('click', 'td.details-control', function () {
@@ -122,6 +142,7 @@
                 } else {
                     getDocs(order_id);
                     getRegPhoto(order_id);
+                    getObservations(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
                     row.child(format(order_id)).show();
@@ -133,43 +154,24 @@
                 return '<form enctype="multipart/form-data" id="form-design">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO: <u id="date' + d + '"></u></td>' +
+                        '<td>FECHA DE REGISTRO: <p id="date' + d + '"></td>' +
                         '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
                         '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
                         '<td><a class="disable design' + d + '">DISEÑO</a></td>' +
-                        '<td>OBSERVACIONES GENERALES</td>' +
+                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
                         '</tr>' +
                         '</table></form>';
             }
-            $("#form-design").on("submit", function (e) {
-                var url = "";
-                e.preventDefault();
-                var formData = new FormData(document.getElementById("form-design"));
-                url = get_base_url() + "Design/register_order_design";
-                $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                $.ajax({
-                    url: url,
-                    type: "post",
-                    dataType: "html",
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                })
-                        .done(function (res) {
-                            $('#spinner').html("");
-                            if (res === "ko") {
-                                alertify.error('Debes adjuntar documento de diseño!');
-                            }
-                            if (res === "error") {
-                                alertify.error('Error en base de datos!');
-                            }
-                            if (res === "ok") {
-                                alertify.success('Diseño registrado exitosamente');
-                            }
-                        });
-            });
+            
+            function getObservations(idOrder) {
+                $("#obsv").html("");
+                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsv").html(res.observation.observations);
+                });
+            }
+            
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
