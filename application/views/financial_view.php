@@ -42,7 +42,7 @@
                                     <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <form>
-                                            <table  id="data-table" class="table table-striped">
+                                            <table  id="data-table" class="table table-striped" style="font-size:12px">
                                                 <thead>
                                                     <tr>
                                                         <th style="color: #00B0F0">No. Ordén</th>
@@ -63,16 +63,18 @@
                                                         foreach ($pays as $row) {
                                                             ?>                                            
                                                             <tr>
-                                                                <td><input type="hidden" value="<?= $row->idTechnicals ?>" name="idpay<?= $row->id ?>"><?= $row->uniquecode ?></td>
+                                                                <td><input type="hidden" value="<?= $row->idTechnicals ?>" name="idpay<?= $row->id ?>"><?= $row->uniquecode.'-'.$row->coi ?></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
                                                                 <td><?= $row->site ?></td>
                                                                 <td><?= $row->name_user ?></td>
-                                                                <td><?= $row->totalCost ?></td>
-                                                                <td><?= $row->percent_pay ?>%</td>
-                                                                <td><?= $row->sumValue ?></td>
-                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->sumValue ?>" onclick="sumar(this.value,<?= $row->id ?>);"></td>
+                                                                <td><?php setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $row->totalCost) ?></td>
+                                                                <td><?= $row->percent ?>%</td>
+                                                                <td><?php setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $row->value) ?></td>
+                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->value ?>" onclick="sumar(this.value,<?= $row->id ?>);"></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -111,7 +113,7 @@
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <form>
-                                            <table id="table-paysges" class="table table-striped">
+                                            <table id="table-paysges" class="table table-striped" style="font-size:12px">
                                                 <thead>
                                                     <tr>
                                                         <th style="color: #00B0F0">Fecha de Pago</th>
@@ -131,7 +133,7 @@
                                                       ?>
                                                       <tr>
                                                       <td><?= $row->dateSave ?></td>
-                                                      <td><?= $row->uniquecode ?></td>
+                                                      <td><?= $row->uniquecode.'-'.$row->coi ?></td>
                                                       <td><?= $row->uniqueCodeCentralCost ?></td>
                                                       <td><?= $row->name_user ?></td>
                                                       <td><?php $iva = $row->sumValue * 0.19; echo $iva; ?></td>

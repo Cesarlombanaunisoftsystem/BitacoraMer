@@ -24,8 +24,8 @@ class Payments_model extends CI_Model {
 
     public function get_pays_order($idOrder) {
         $this->db->select('*');
-        $this->db->from("tbl_orders_pays");        
-        $this->db->where("idOrder",$idOrder);
+        $this->db->from("tbl_orders_pays");
+        $this->db->where("idOrder", $idOrder);
         $this->db->order_by("id", "asc");
         $query = $this->db->get();
         //$query = $this->db->get_where('tbl_orders_pays', array('idOrder' => $idOrder));
@@ -38,7 +38,7 @@ class Payments_model extends CI_Model {
 
     public function get_pays_box() {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
-            details.idActivities, details.count, details.site,
+            pagos.state,details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user
     FROM tbl_orders
@@ -59,11 +59,11 @@ class Payments_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    LEFT JOIN (SELECT idOrder, SUM(percent) percent_pay, sum(value) sumValue
+    LEFT JOIN (SELECT idOrder, state, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
     ON tbl_orders.id = pagos.idOrder WHERE tbl_orders.idOrderState > 11 AND
-    tbl_orders.statePays = 0 || tbl_orders.statePays = 1";
+    tbl_orders.statePays = 0 AND (pagos.state = 0 || pagos.state is null)";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -73,8 +73,8 @@ class Payments_model extends CI_Model {
     }
 
     public function get_pays($statePays) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
-            details.idActivities, details.count, details.site,
+        $sql = "SELECT tbl_orders.*, pagos.percent, pagos.value,
+            pagos.state,details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user
     FROM tbl_orders
@@ -95,10 +95,10 @@ class Payments_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    LEFT JOIN (SELECT idOrder, SUM(percent) percent_pay, sum(value) sumValue
+    LEFT JOIN (SELECT idOrder,state,percent,value
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder WHERE tbl_orders.idOrderState > 11 AND tbl_orders.statePays = '$statePays'";
+    ON tbl_orders.id = pagos.idOrder WHERE tbl_orders.idOrderState > 11 AND pagos.state = '$statePays'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -106,10 +106,10 @@ class Payments_model extends CI_Model {
             return FALSE;
         }
     }
-    
-    public function get_pays_process($statePays,$id) {
+
+    public function get_pays_process($state,$id) {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
-            details.idActivities, details.count, details.site,
+            pagos.state, details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user
     FROM tbl_orders
@@ -130,11 +130,11 @@ class Payments_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    LEFT JOIN (SELECT idOrder, SUM(percent) percent_pay, sum(value) sumValue
+    LEFT JOIN (SELECT idOrder, state, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder WHERE tbl_orders.idOrderState > 11 AND
-    tbl_orders.statePays = '$statePays' and tbl_orders.idUserProcess = '$id'";
+    ON tbl_orders.id = pagos.idOrder WHERE 
+    pagos.state > $state and tbl_orders.idUserProcess = '$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

@@ -190,7 +190,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- Modal Observaciones -->
         <!-- Modal edición productos-->
         <div id="modalEditProducts" class="modal fade" role="dialog">
             <div class="modal-dialog" style="width: 50%;">

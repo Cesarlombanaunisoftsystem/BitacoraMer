@@ -103,7 +103,9 @@ class Design extends CI_Controller {
                 );
                 $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
                 $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
-                $this->Utils->sendMail($content->email, 'Auditoria de Diseño MER INFRAESTRUCTURA  - BITACORA', 'templates/review_design.php', $content, $titulo);
+                $technical = "";
+                $order = "";
+                $this->Utils->sendMail($content->email, 'Auditoria de Diseño MER INFRAESTRUCTURA  - BITACORA', 'templates/review_design.php', $technical, $content, $order, $titulo);
                 $res = $this->Orders_model->update_order($idOrder, $data1);
                 echo $this->valida($res);
             }
@@ -124,10 +126,15 @@ class Design extends CI_Controller {
         $data = array(
             'idArea' => '3',
             'idOrderState' => '9',
+            'observations' => $this->input->post('obsv'),
             'idUserProcess' => $this->session->userdata('id_usuario')
         );
-        $this->Orders_model->update_order($this->input->post('idOrder'), $data);
-        redirect(base_url() . 'Design/audit?success');
+        $res = $this->Orders_model->update_order($this->input->post('idOrder'), $data);
+        if($res === TRUE){
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
     }
 
     function generateRandomString($length = 10) {
