@@ -178,7 +178,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Registro de datos visitas inicial al sitio';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
         $data['visits'] = $this->Visits_model->get_orders_assign_technics($id_user);
         $data['process'] = $this->Visits_model->get_orders_visit_validation();
         $this->load->view('visit_init_register_data_view', $data);
@@ -223,7 +223,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Registro de datos visita de cierre';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
         $data['visits'] = $this->Projects_model->register_data_close_visit(21);
         $this->load->view('visit_close_register_data_view', $data);
     }
@@ -237,7 +237,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Registro de datos visita de cierre';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['activities'] = $this->Activities_model->get_activities_xtype(7);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
         $data['visits'] = $this->Projects_model->register_data_close_visit(19);
         $this->load->view('visit_close_process_view', $data);
     }

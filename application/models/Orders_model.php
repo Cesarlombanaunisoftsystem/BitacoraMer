@@ -148,8 +148,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders.idArea', 1);
-        $this->db->where('tbl_orders.idOrderState', 2);
+        $this->db->where('tbl_orders.idOrderState >', 1);
         $this->db->where('tbl_orders.idUserProcess', $id);
         $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();
@@ -187,8 +186,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders.idArea', $area);
-        $this->db->where('tbl_orders.idOrderState', $status);
+        $this->db->where('tbl_orders.idOrderState >', $status);
         $this->db->where('tbl_orders.idUserprocess', $id);
         $this->db->group_by('tbl_orders.id');
         $query = $this->db->get();
@@ -378,7 +376,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idActivities', 22);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -394,7 +392,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idActivities', 22);
         $this->db->where('tbl_orders_details.idCellar', $idCellar);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {

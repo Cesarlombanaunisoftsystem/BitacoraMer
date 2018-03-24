@@ -68,8 +68,8 @@ class Financial_model extends CI_Model {
     LEFT JOIN (SELECT idOrder, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder where tbl_orders.idArea = 3 AND
-    tbl_orders.idOrderState = '$state' and tbl_orders.idUserProcess = '$id'";
+    ON tbl_orders.id = pagos.idOrder where tbl_orders.idOrderState >= '$state'"
+                . " and tbl_orders.idUserProcess = '$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

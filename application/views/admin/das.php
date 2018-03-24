@@ -67,7 +67,7 @@
             $(function () {
 
                 if ($('#idOrder').val() === "") {
-                    $('#idOrder').removeAttr("readonly");
+                    $('#btnSubmit').prop('disabled', true);
                 }
                 var subtotal = $("#sumSubtotal").val();
                 $('#subtotal').val(subtotal);
@@ -168,8 +168,8 @@
             }
 
             function addIdOrder() {
-                if ($('#idOrder').val() === "") {
-                    alertify.error('Debes asignar un número de ordén para continuar!');
+                if ($('#idOrder').val() === "" && $('#coi').val() === "") {
+                    alertify.error('Debes asignar un número de ordén y coi para continuar!');
                 } else {
                     generateOrder();
                 }
@@ -177,9 +177,10 @@
 
             function generateOrder() {
                 var order = $('#idOrder').val();
+                var coi = $('#coi').val();
                 url = get_base_url() + "Orders/get_order?jsoncallback=?";
                 $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                $.getJSON(url, {order: order}).done(function (res) {
+                $.getJSON(url, {order: order, coi: coi}).done(function (res) {
                     $('#spinner').html("");
                     if (res.res === true) {
                         alertify.error('El número de ordén digitado ya existe.');
@@ -190,7 +191,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order, type: '2'},
+                            data: {order: order, coi: coi, type: '2'},
                             success: function (resp) {
                                 $('#spinner').html("");
                                 if (resp === "error") {

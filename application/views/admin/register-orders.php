@@ -55,7 +55,6 @@
             $(function () {
 
                 if ($('#idOrder').val() === "") {
-                    $('#idOrder').removeAttr("readonly");
                     $('#btnSubmit').prop('disabled', true);
                 }
                 var subtotal = $("#sumSubtotal").val();

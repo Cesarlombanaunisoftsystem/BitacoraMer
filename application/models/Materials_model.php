@@ -20,7 +20,7 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idActivities', 22);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -108,7 +108,7 @@ class Materials_model extends CI_Model {
    FROM tbl_cellars
     GROUP BY id) bod
     ON tbl_orders_details.idCellar= bod.id
-    WHERE tbl_orders_details.idOrder = '$order' AND tbl_orders_details.idActivities = 5
+    WHERE tbl_orders_details.idOrder = '$order' AND tbl_orders_details.idActivities = 22
     AND tbl_orders_details.idCellar = '$cellar'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
@@ -127,7 +127,7 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idActivities', 22);
         $this->db->where('tbl_orders_details.idCellar', $cellar);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -146,7 +146,7 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 5);
+        $this->db->where('tbl_orders_details.idActivities', 22);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
