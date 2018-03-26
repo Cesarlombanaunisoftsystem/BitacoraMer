@@ -154,7 +154,8 @@ class Audit extends CI_Controller {
             'historyBackState' => 0,
             'statePays' => 0,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'dateAssign' => date('Y-m-d H:i:s'));
+            'dateAssign' => date('Y-m-d H:i:s'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             $titulo = '¡Has Sido Vinculado para el Inicio de la Siguiente Actividad!';
@@ -205,7 +206,8 @@ class Audit extends CI_Controller {
             'idArea' => 3,
             'idOrderState' => 12,
             'historyBackState' => 0,
-            'idUserProcess' => $this->session->userdata('id_usuario'));
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Payments_model->process_pays($id, $idTech, $percent, $value, $data, $data1, $data2);
         if ($res === TRUE) {
             echo 'ok';
@@ -243,7 +245,8 @@ class Audit extends CI_Controller {
         $data = array(
             'idArea' => $idArea,
             'idOrderState' => $idState,
-            'historyBackState' => 1
+            'historyBackState' => 1,
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {

@@ -63,7 +63,8 @@ class Design extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idArea' => 2,
-            'idOrderState' => $this->input->post('state'));
+            'idOrderState' => $this->input->post('state'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -100,7 +101,8 @@ class Design extends CI_Controller {
                     'idArea' => '2',
                     'idOrderState' => '8',
                     'observations' => $this->input->post('observacion'),
-                    'idUserProcess' => $this->session->userdata('id_usuario')
+                    'idUserProcess' => $this->session->userdata('id_usuario'),
+                    'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
                 $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
@@ -128,7 +130,8 @@ class Design extends CI_Controller {
             'idArea' => '3',
             'idOrderState' => '9',
             'observations' => $this->input->post('obsv'),
-            'idUserProcess' => $this->session->userdata('id_usuario')
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->update_order($this->input->post('idOrder'), $data);
         if($res === TRUE){

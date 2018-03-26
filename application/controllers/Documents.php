@@ -88,7 +88,8 @@ class Documents extends CI_Controller {
     public function register_order() {
         $id = $this->input->post('idOrder');
         $data = array(
-            'stateDoc' => 1);
+            'stateDoc' => 1,
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Orders_model->update_order($id, $data);
         if ($res == true) {
             echo 'ok';
@@ -103,7 +104,8 @@ class Documents extends CI_Controller {
             'idArea' => 3,
             'idOrderState' => 24,
             'historybackState' => 0,
-            'idUserProcess' => $this->session->userdata('id_usuario'));
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Orders_model->update_order($id, $data);
         if ($res === TRUE) {
             $titulo = 'MER GROUP, Agradece su participación como integrante fundamental de nuestros procesos, de esta manera queremos  compartir con usted la siguiente información para el trámite de auditoria de documentación';

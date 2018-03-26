@@ -287,10 +287,10 @@
                                     <div class="row blockq">
                                         <div class="bg-item">
                                             <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
+                                                <a href="#"><?= $regouttime->cont ?></a>
                                             </div>
                                             <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
+                                                <a href="#"><?= $reg->cont ?></a>
                                             </div>
                                         </div>
                                     </div>
@@ -301,10 +301,10 @@
                                     <div class="row blockq">
                                         <div class="bg-item">
                                             <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
+                                                <a href="#"><?= $progvisitouttime->cont ?></a>
                                             </div>
                                             <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
+                                                <a href="#"><?= $progvisit->cont ?></a>
                                             </div>
                                         </div>
                                     </div>
@@ -315,10 +315,10 @@
                                     <div class="row blockq">
                                         <div class="bg-item">
                                             <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
+                                                <a href="#"><?= $regvisitiniouttime->cont ?></a>
                                             </div>
                                             <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
+                                                <a href="#"><?= $regvisitini->cont ?></a>
                                             </div>
                                         </div>
                                     </div>

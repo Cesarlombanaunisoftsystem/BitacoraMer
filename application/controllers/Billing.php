@@ -38,7 +38,8 @@ class Billing extends CI_Controller {
             'idOrderState' => $this->input->post('state'),
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'invoice' => $this->input->post('fdm'),
-            'dateInvoice' => date('Y-m-d H:m:i')
+            'dateInvoice' => date('Y-m-d H:m:i'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {

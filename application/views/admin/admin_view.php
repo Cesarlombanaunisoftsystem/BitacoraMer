@@ -91,13 +91,24 @@
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="#" style="color:#032365;">
+                            <a href="#" style="color: graytext;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-archive"></i></h3>
                                         <p>Bodegas</p>
                                     </div>
                                     <a href="<?= base_url('Parametrization/cellar')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="#" style="color: greenyellow;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-clock-o"></i></h3>
+                                        <p>Tiempos</p>
+                                    </div>
+                                    <a href="<?= base_url('Parametrization/times')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

@@ -100,7 +100,8 @@ class Materials extends CI_Controller {
         );
         $data1 = array(
             'idOrderState' => 16,
-            'idUserProcess' => $this->session->userdata('id_usuario')
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
         if ($res === TRUE) {
@@ -131,7 +132,8 @@ class Materials extends CI_Controller {
         $data = array('idCellar' => $idCellar);
         $data1 = array(
             'idOrderState' => 16,
-            'idUserProcess' => $this->session->userdata('id_usuario')
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         foreach ($id as $key => $value) {
             if ($key !== 'selcellar') {
@@ -145,7 +147,8 @@ class Materials extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 17,
-            'idUserProcess' => $this->session->userdata('id_usuario')
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Materials_model->assign_materials_x_order($idOrder, $data);
         if ($res === TRUE) {
@@ -191,7 +194,8 @@ class Materials extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 24,
-            'idUserProcess' => $this->session->userdata('id_usuario')
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $data1 = array(
             'idOrder' => $idOrder,

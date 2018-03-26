@@ -58,7 +58,8 @@ class Visit extends CI_Controller {
                 'idOrderState' => 3,
                 'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
-                'idUserProcess' => $this->session->userdata('id_usuario'));
+                'idUserProcess' => $this->session->userdata('id_usuario'),
+                'dateUpdate' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -79,7 +80,8 @@ class Visit extends CI_Controller {
                 'idOrderState' => 21,
                 'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
-                'idUserProcess' => $this->session->userdata('id_usuario'));
+                'idUserProcess' => $this->session->userdata('id_usuario'),
+                'dateUpdate' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -98,7 +100,8 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
-            'idUserProcess' => $this->session->userdata('id_usuario'));
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -112,7 +115,8 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
-            'observations' => $this->input->post('obsv'));
+            'observations' => $this->input->post('obsv'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             $content = $this->Orders_model->get_order_by_id_email($idOrder);
@@ -128,7 +132,8 @@ class Visit extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idArea' => 1,
-            'idOrderState' => 1);
+            'idOrderState' => 1,
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -144,7 +149,8 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 2,
             'observations' => $obsv,
-            'historybackState' => 1);
+            'historybackState' => 1,
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -160,7 +166,8 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 4,
             'observations' => $obsv,
-            'idUserProcess' => $this->session->userdata('id_usuario'));
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -305,7 +312,8 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 6,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'observations' => $this->input->post('obsvgen')
+            'observations' => $this->input->post('obsvgen'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         redirect(base_url() . 'Visit/site_init');
@@ -364,7 +372,8 @@ class Visit extends CI_Controller {
             'idArea' => 3,
             'idOrderState' => 19,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'observations' => $this->input->post('obsvgen')
+            'observations' => $this->input->post('obsvgen'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         $dataDaily = array(

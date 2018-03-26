@@ -124,7 +124,8 @@ class Settlement extends CI_Controller {
             'idOrderState' => 26,
             'historybackState' => $history,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'dateSettlement' => date('Y-m-d H:m:i')
+            'dateSettlement' => date('Y-m-d H:m:i'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {
@@ -144,7 +145,8 @@ class Settlement extends CI_Controller {
             'historybackState' => $this->input->post('history'),
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'fdc' => $this->input->post('fdc'),
-            'dateFdc' => date('Y-m-d H:m:i')
+            'dateFdc' => date('Y-m-d H:m:i'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {
@@ -159,7 +161,8 @@ class Settlement extends CI_Controller {
         $data = array(
             'idOrderState' => $this->input->post('state'),
             'historybackState' => $this->input->post('history'),
-            'obsvSettlement' => $this->input->post('obsv')
+            'obsvSettlement' => $this->input->post('obsv'),
+            'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {

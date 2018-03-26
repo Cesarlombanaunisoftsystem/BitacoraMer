@@ -16,7 +16,7 @@ class Parametrization extends CI_Controller {
         $this->load->helper(array('url'));
         $this->load->model(array('Users_model', 'Categories_model',
             'Areas_model', 'Docs_model', 'Activities_model', 'Payments_model',
-            'States_model', 'Services_model', 'Taxes_model', 'Cellars_model'));
+            'States_model', 'Services_model', 'Taxes_model', 'Cellars_model','Times_model'));
     }
 
     public function index() {
@@ -573,6 +573,71 @@ class Parametrization extends CI_Controller {
     public function delete_cellar() {
         $id = $this->input->post('id');
         $res = $this->Cellars_model->delete_cellar($id);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function times() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Tiempos procesos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['times'] = $this->Times_model->get_process();
+        $this->load->view('admin/times_view', $data);
+    }
+
+    public function get_time($id) {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Estados';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['time'] = $this->Times_model->get_process_xid($id);
+        $this->load->view('admin/edit_states_view', $data);
+    }
+
+    public function add_state() {
+        $data = array(
+            'name_order_state' => $this->input->post('name'),
+            'descripcion' => $this->input->post('desc'),
+            'days' => $this->input->post('days')
+        );
+        $res = $this->Times_model->add_state($data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function edit_state() {
+        $id_state = $this->input->post('id');
+        $data = array(
+            'name_order_state' => $this->input->post('name'),
+            'descripcion' => $this->input->post('desc'),
+            'days' => $this->input->post('days'),
+        );
+        $res = $this->Times_model->edit_state($id_state, $data);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+
+    public function delete_state() {
+        $id = $this->input->post('id');
+        $res = $this->Times_model->delete_state($id);
         if ($res === TRUE) {
             echo 'ok';
         } else {

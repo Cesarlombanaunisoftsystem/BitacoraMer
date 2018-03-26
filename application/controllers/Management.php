@@ -28,6 +28,12 @@ class Management extends CI_Controller{
         $data['totalorders'] = $this->Orders_model->get_total_orders();
         $data['totalsale'] = $this->Orders_model->get_total_sale();
         $data['totalcost'] = $this->Orders_model->get_total_cost();
+        $data['reg'] = $this->Orders_model->get_orders_time_reg();
+        $data['regouttime'] = $this->Orders_model->get_orders_outtime_regouttime();
+        $data['progvisit'] = $this->Orders_model->get_orders_time_progvisit();
+        $data['progvisitouttime'] = $this->Orders_model->get_orders_outtime_progvisit();
+        $data['regvisitini'] = $this->Orders_model->get_orders_time_regvisitini();
+        $data['regvisitiniouttime'] = $this->Orders_model->get_orders_outtime_regvisitini();
         $this->load->view('admin/management_view', $data);
     }
 }
