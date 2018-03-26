@@ -63,18 +63,22 @@
                                                         foreach ($pays as $row) {
                                                             ?>                                            
                                                             <tr>
-                                                                <td><input type="hidden" value="<?= $row->idTechnicals ?>" name="idpay<?= $row->id ?>"><?= $row->uniquecode.'-'.$row->coi ?></td>
+                                                                <td><input type="hidden" value="<?= $row->idTechnicals ?>" name="idpay<?= $row->id ?>"><?= $row->uniquecode . '-' . $row->coi ?></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>
                                                                 <td><?= $row->site ?></td>
                                                                 <td><?= $row->name_user ?></td>
-                                                                <td><?php setlocale(LC_MONETARY, 'es_CO');
-                                                                    echo money_format('%.2n', $row->totalCost) ?></td>
+                                                                <td><?php
+                                                                    setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $row->totalCost)
+                                                                    ?></td>
                                                                 <td><?= $row->percent ?>%</td>
-                                                                <td><?php setlocale(LC_MONETARY, 'es_CO');
-                                                                    echo money_format('%.2n', $row->value) ?></td>
-                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->value ?>" onclick="sumar(this.value,<?= $row->id ?>);"></td>
+                                                                <td><?php
+                                                                    setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $row->value)
+                                                                    ?></td>
+                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->value ?>" onclick="sumar(this.value,<?= $row->percent ?>,<?= $row->id ?>,<?= $row->idTechnicals ?>);"></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -127,23 +131,30 @@
                                                     </tr>                                   
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                      if (isset($pays_process) && $pays_process) {
-                                                      foreach ($pays_process as $row) {
-                                                      ?>
-                                                      <tr>
-                                                      <td><?= $row->dateSave ?></td>
-                                                      <td><?= $row->uniquecode.'-'.$row->coi ?></td>
-                                                      <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                      <td><?= $row->name_user ?></td>
-                                                      <td><?php $iva = $row->sumValue * 0.19; echo $iva; ?></td>
-                                                      <td></td>
-                                                      <td></td>
-                                                      <td><?= $row->sumValue ?></td>
-                                                      </tr>
-                                                      <?php
-                                                      }
-                                                      }
+                                                    <?php
+                                                    if (isset($pays_process) && $pays_process) {
+                                                        foreach ($pays_process as $row) {
+                                                            ?>
+                                                            <tr>
+                                                                <td><?= $row->dateSave ?></td>
+                                                                <td><?= $row->uniquecode . '-' . $row->coi ?></td>
+                                                                <td><?= $row->uniqueCodeCentralCost ?></td>
+                                                                <td><?= $row->name_user ?></td>
+                                                                <td><?php
+                                                                    $iva = $row->sumValue * 0.19;
+                                                                    setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $iva);
+                                                                    ?></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td><?php
+                                                                    setlocale(LC_MONETARY, 'es_CO');
+                                                                    echo money_format('%.2n', $row->sumValue);
+                                                                    ?></td>
+                                                            </tr>
+                                                            <?php
+                                                        }
+                                                    }
                                                     ?>
                                                 </tbody>
                                             </table>
@@ -157,12 +168,12 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <?php $this->load->view('templates/footer.html') ?>
+<?php $this->load->view('templates/footer.html') ?>
         </div>
 
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
-        <?php $this->load->view('templates/js') ?>
+<?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#table-paysges').DataTable({
@@ -193,9 +204,9 @@
                 });
             });
 
-            function sumar(valor, id) {
+            function sumar(valor, percent, id, idTech) {
                 if ($("#chk" + id).prop("checked") === true) {
-                    $("#btnAplicar").prop("disabled",false);
+                    $("#btnAplicar").prop("disabled", false);
                     var total = 0;
                     valor = parseInt(valor); // Convertir el valor a un entero (número).
 
@@ -213,7 +224,7 @@
                     $.ajax({
                         url: url,
                         type: "post",
-                        data: {id: id},
+                        data: {id: id, idTech: idTech, valor: valor, percent: percent},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
@@ -242,7 +253,7 @@
                     $.ajax({
                         url: url,
                         type: "post",
-                        data: {id: id},
+                        data: {id: id, valor: valor, percent: percent},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
@@ -262,7 +273,7 @@
                 a.target = '_blank';
                 document.body.appendChild(a);
                 a.click();
-                document.body.removeChild(a);                
+                document.body.removeChild(a);
                 alertify.success('Pagos realizados exitosamente.');
                 alertify.success('PDF generado exitosamente');
                 location.reload();

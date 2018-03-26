@@ -107,11 +107,12 @@ class Payments_model extends CI_Model {
         }
     }
 
-    public function get_pays_process($state,$id) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
-            pagos.state, details.idActivities, details.count, details.site,
+    public function get_pays_process($state, $id) {
+        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue, pagos.state,
+            details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
-            serv.name_service, tecn.id as idTech, tecn.name_user
+            serv.name_service, tecn.id as idTech, tecn.name_user,
+            paysdo.percentdo, paysdo.sumdo
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
    idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
@@ -130,11 +131,14 @@ class Payments_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    LEFT JOIN (SELECT idOrder, state, SUM(percent) percent_pay, sum(value) sumValue
+    LEFT JOIN (SELECT idOrder,state, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder WHERE 
-    pagos.state > $state and tbl_orders.idUserProcess = '$id'";
+    ON tbl_orders.id = pagos.idOrder
+    LEFT JOIN (SELECT idOrder, SUM(percent) percentdo, sum(value) sumdo
+    FROM tbl_orders_pays_pay
+    GROUP BY idOrder) paysdo
+    ON tbl_orders.id = paysdo.idOrder WHERE pagos.state>'$state' AND tbl_orders.idUserProcess = '$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -180,9 +184,9 @@ class Payments_model extends CI_Model {
     FROM tbl_banks) bank
     ON bank.id = account.idBank
     LEFT JOIN (SELECT idOrder,idTechnical, sum(value) sumValue, state
-    FROM tbl_orders_pays
+    FROM tbl_orders_pays_pay
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder where pagos.state=2';
+    ON tbl_orders.id = pagos.idOrder';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -289,12 +293,16 @@ class Payments_model extends CI_Model {
         }
     }
 
-    public function process_pays($idOrder, $data, $data1) {
+    public function process_pays($idOrder, $idTech, $percent, $value, $data, $data1, $data2) {
         $this->db->trans_start();
-        $this->db->where('idOrder', $idOrder);
-        $this->db->update('tbl_orders_pays', $data);
+        $this->db->insert('tbl_orders_pays_pay', $data);
         $this->db->where('id', $idOrder);
-        $this->db->update('tbl_orders', $data1);
+        $this->db->where('idTechnical', $idTech);
+        $this->db->where('percent', $percent);
+        $this->db->where('value', $value);
+        $this->db->update('tbl_orders_pays', $data1);
+        $this->db->where('id', $idOrder);
+        $this->db->update('tbl_orders', $data2);
         $this->db->trans_complete();
         if ($this->db->trans_status() === TRUE) {
             return TRUE;
@@ -303,12 +311,14 @@ class Payments_model extends CI_Model {
         }
     }
 
-    public function remove_process_pays($idOrder, $data, $data1) {
+    public function remove_process_pays($idOrder, $percent, $valor, $data) {
         $this->db->trans_start();
         $this->db->where('idOrder', $idOrder);
-        $this->db->update('tbl_orders_pays', $data);
+        $this->db->where('percent', $percent);
+        $this->db->where('value', $valor);
+        $this->db->delete('tbl_orders_pays');
         $this->db->where('id', $idOrder);
-        $this->db->update('tbl_orders', $data1);
+        $this->db->update('tbl_orders', $data);
         $this->db->trans_complete();
         if ($this->db->trans_status() === TRUE) {
             return TRUE;

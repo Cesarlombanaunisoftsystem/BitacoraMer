@@ -40,7 +40,7 @@
                                         <img src="<?= base_url('dist/img/projects.png') ?>" style="width: 120px;">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped" style="font-size: 12px">
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de Asignación</th>
@@ -60,11 +60,11 @@
                                                         ?>                                            
                                                         <tr>
                                                             <?php if ($row->type > '5') { ?>
-                                                                <td><a href="<?= base_url('Projects/materials_back/').$row->id?>"><?= $row->dateAssign ?></a></td>
+                                                                <td><a href="<?= base_url('Projects/materials_back/') . $row->id ?>"><?= $row->dateAssign ?></a></td>
                                                             <?php } else { ?>
                                                                 <td><a href="#" data-toggle="modal" data-target="#modal" onclick="generateid(<?= $row->id ?>)"><?= $row->dateAssign ?></a></td>
                                                             <?php } ?>
-                                                            <td><?= $row->uniquecode ?></td>
+                                                            <td><?= $row->uniquecode . '-' . $row->coi ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->name_service ?></td>

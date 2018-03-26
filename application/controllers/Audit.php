@@ -94,7 +94,7 @@ class Audit extends CI_Controller {
         $data['pays'] = $this->Payments_model->get_pays_box();
         $this->load->view('coord_pays_view', $data);
     }
-    
+
     public function pays_add() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -111,7 +111,7 @@ class Audit extends CI_Controller {
         //$data['paysProcess'] = $this->Payments_model->get_pays_process(2, $id_user);
         $this->load->view('coord_pays_add_view', $data);
     }
-    
+
     public function pays_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -123,9 +123,7 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        //$data['pays'] = $this->Payments_model->get_pays_box();
-        //$data['paysAdd'] = $this->Payments_model->get_pays(1);
-        $data['paysProcess'] = $this->Payments_model->get_pays_process(0,$id_user);
+        $data['paysProcess'] = $this->Payments_model->get_pays_process(0, $id_user);
         $this->load->view('coord_pays_process_view', $data);
     }
 
@@ -141,7 +139,7 @@ class Audit extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['pays'] = $this->Payments_model->get_pays(1);
-        $data['pays_process'] = $this->Payments_model->get_pays_process(1,$id_user);
+        $data['pays_process'] = $this->Payments_model->get_pays_process(1, $id_user);
         $this->load->view('financial_view', $data);
     }
 
@@ -193,16 +191,22 @@ class Audit extends CI_Controller {
 
     public function process_pays() {
         $id = $this->input->post('id');
+        $idTech = $this->input->post('idTech');
+        $percent = $this->input->post('percent');
+        $value = $this->input->post('valor');
         $data = array(
             'idOrder' => $id,
-            'state' => 2,
-            'dateUpdate' => date('Y-m-d H:i:s'));
+            'idTechnical' => $this->input->post('idTech'),
+            'percent' => $this->input->post('percent'),
+            'value' => $this->input->post('valor'));
         $data1 = array(
+            'state' => 2);
+        $data2 = array(
             'idArea' => 3,
             'idOrderState' => 12,
             'historyBackState' => 0,
             'idUserProcess' => $this->session->userdata('id_usuario'));
-        $res = $this->Payments_model->process_pays($id, $data, $data1);
+        $res = $this->Payments_model->process_pays($id, $idTech, $percent, $value, $data, $data1, $data2);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -212,13 +216,12 @@ class Audit extends CI_Controller {
 
     public function remove_process_pays() {
         $id = $this->input->post('id');
+        $percent = $this->input->post('percent');
+        $val = $this->input->post('valor');
         $data = array(
-            'idOrder' => $id,
-            'state' => 0);
-        $data1 = array(
             'idArea' => 3,
             'idOrderState' => 13);
-        $res = $this->Payments_model->remove_process_pays($id, $data, $data1);
+        $res = $this->Payments_model->remove_process_pays($id, $percent, $val, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {

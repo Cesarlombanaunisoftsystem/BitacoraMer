@@ -170,17 +170,18 @@
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>' +
                         '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>' +
-                        '<td colspan="4"><input name="observacion" style="width:100%" type="text" placeholder="Observaciones Generales"></td>' +
+                        '<td colspan="4"><input name="observacion" id="obsvgen" style="width:100%" type="text"></td>' +
                         '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
                         '<input type="submit" class="blue bold" value="REGISTRAR DISEÑO"></td>' +
                         '</tr>' +
                         '</table></form>';
             }
-            
+
             function getObservations(idOrder) {
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsvgen").val(res.observation.observations);
                     $("#obsv").html(res.observation.observations);
                 });
             }

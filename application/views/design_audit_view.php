@@ -172,7 +172,7 @@
                         '<td><a class="disable design' + d + '">DISEÑO</a></td>' +
                         '</tr>' +
                         '<tr>' +
-                        '<td colspan="4"><input name="obsv" style="width:100%" type="text" placeholder="OBSERVACIONES GENERALES"></td>' +
+                        '<td colspan="4"><input name="obsv" id="obsvgen" style="width:100%" type="text"></td>' +
                         '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
                         '<button type="submit" class="blue bold">APROBAR DISEÑO</button></td>' +
                         '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR DISEÑO</a></td>' +
@@ -184,6 +184,7 @@
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsvgen").val(res.observation.observations);
                     $("#obsv").html(res.observation.observations);
                 });
             }

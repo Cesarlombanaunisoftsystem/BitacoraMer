@@ -39,7 +39,7 @@ foreach ($pays as $pay) {
                     <tr><td><h3>| Proveedor |</h3></td></tr> 
                 </table>
                 <table>
-                    <tr style="color: blue">
+                    <tr style="color: #00b0f0">
                         <td></td><td></td><td></td>
                         <td>| Razón social</td>
                         <td>| Nit</td>
@@ -68,7 +68,7 @@ foreach ($pays as $pay) {
                 </table>
                 <table>
                     <thead>
-                        <tr style="color: blue">
+                        <tr style="color: #00b0f0">
                             <td></td><td></td><td></td>
                             <td>| Tipo de Pago
                             </td>
@@ -88,7 +88,10 @@ foreach ($pays as $pay) {
                             </td>
                             <td><?= $pay->name_bank ?>
                             </td>
-                            <td><?= $pay->sumValue ?></td>
+                            <td><?php
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $pay->sumValue);
+                                ?></td>
                         </tr> 
                     </tbody>            
                 </table>
@@ -98,7 +101,7 @@ foreach ($pays as $pay) {
                 </table>
                 <table>
                     <thead>
-                        <tr style="color: blue">
+                        <tr style="color: #00b0f0">
                             <td></td><td></td><td></td>
                             <td>| NO DE ORDEN</td>
                             <td>| CENTRO DE COSTOS</td>
@@ -116,7 +119,10 @@ foreach ($pays as $pay) {
                             <td><?= $pay->name_activitie ?></td>
                             <td><?= $pay->count ?></td>
                             <td><?= $pay->site ?></td>
-                            <td><?= $pay->sumValue ?></td>
+                            <td><?php
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $pay->sumValue);
+                                ?></td>
                         </tr>
                     </tbody>            
                 </table><br><br><br><br><br><br><br><br>
@@ -126,7 +132,7 @@ foreach ($pays as $pay) {
                 </table>
                 <table>
                     <thead>
-                        <tr style="color: blue">
+                        <tr style="color: #00b0f0">
                             <td></td><td></td><td></td>
                             <td>| Subtotal</td>
                             <td>| IVA</td>
@@ -139,12 +145,26 @@ foreach ($pays as $pay) {
                     <tbody>
                         <tr>
                             <td></td><td></td><td></td>
-                            <td><?= $pay->sumValue ?></td>
-                            <td><?php $iva = $pay->sumValue * 0.19; echo $iva; ?></td>
-                            <td><?php $vr = $pay->sumValue - $iva;  echo $vr; ?></td>
+                            <td><?php
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $pay->sumValue);
+                                ?></td>
+                            <td><?php
+                                $iva = $pay->sumValue * 0.19;
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $iva);
+                                ?></td>
+                            <td><?php
+                                $vr = $pay->sumValue - $iva;
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $vr);
+                                ?></td>
                             <td></td>
                             <td></td>
-                            <td><?= $vr; ?></td>
+                            <td><?php
+                                setlocale(LC_MONETARY, 'es_CO');
+                                echo money_format('%.2n', $vr);
+                                ?></td>
                         </tr>
                     </tbody>            
                 </table>

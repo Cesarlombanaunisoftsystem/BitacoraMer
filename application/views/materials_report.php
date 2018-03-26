@@ -30,12 +30,12 @@ and open the template in the editor.
             <table>
                 <thead>
                     <tr><td><h3>| Proveedor |</h3></td>
-                        <td style="color: blue">| Razón social</td>
-                        <td style="color: blue">| Nit</td>
-                        <td style="color: blue">| Dirección</td>
-                        <td style="color: blue">| Teléfono</td>
-                        <td style="color: blue">| email</td>
-                        <td style="color: blue">| Contacto</td>
+                        <td style="color: #00b0f0">| Razón social</td>
+                        <td style="color: #00b0f0">| Nit</td>
+                        <td style="color: #00b0f0">| Dirección</td>
+                        <td style="color: #00b0f0">| Teléfono</td>
+                        <td style="color: #00b0f0">| email</td>
+                        <td style="color: #00b0f0">| Contacto</td>
                     </tr> 
                 </thead>
                 <tbody>
@@ -56,8 +56,8 @@ and open the template in the editor.
             <table>
                 <thead>
                     <tr><td><h3>| Actividad |</h3></td>
-                        <td style="color: blue">| Centro de Costos</td>
-                        <td style="color: blue">| Actividad</td>
+                        <td style="color: #00b0f0">| Centro de Costos</td>
+                        <td style="color: #00b0f0">| Actividad</td>
                     </tr> 
                 </thead>
                 <tbody>
@@ -72,8 +72,8 @@ and open the template in the editor.
                 <thead>
                     <tr>
                         <td><h3>| Bodega |</h3></td>
-                        <td style="color: blue">| Nombre de Bodega</td>
-                        <td style="color: blue">| Contacto</td>
+                        <td style="color: #00b0f0">| Nombre de Bodega</td>
+                        <td style="color: #00b0f0">| Contacto</td>
                     </tr> 
                 </thead>
                 <tbody>
@@ -94,7 +94,7 @@ and open the template in the editor.
             </table>
             <table>
                 <thead>
-                    <tr style="color: blue">
+                    <tr style="color: #00b0f0">
                         <td>Descripción</td>
                         <td>| Cantidad</td>
                         <td>| Unidad de Medida </td>
@@ -115,7 +115,7 @@ and open the template in the editor.
             </table><br><br><br><br><br><br><br><br>
             <hr>
             <table>
-                <tr style="color: blue">
+                <tr style="color: #00b0f0">
                     <td><h3>| Firmas de Recibido |</h3></td>
                     <td>________________&nbsp;</td>
                     <td>________________&nbsp;</td>

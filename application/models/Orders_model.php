@@ -178,7 +178,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_orders_design_process($area, $status, $id) {
+    public function get_orders_design_process($status, $id) {
         $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
                 . 'tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_orders');

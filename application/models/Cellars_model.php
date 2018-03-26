@@ -50,7 +50,7 @@ class Cellars_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function get_materials_cellar_process($id) {
         $sql = "SELECT tbl_orders.*,details.idActivities,details.count,
             details.site,details.statecellarmin,details.statecellarmax,
@@ -70,8 +70,7 @@ class Cellars_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    where tbl_orders.idArea = 3 AND
-    tbl_orders.idOrderState = 17 or tbl_orders.idOrderState = 24 AND 
+    where tbl_orders.idOrderState > 16 AND 
     tbl_orders.idUserProcess='$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {

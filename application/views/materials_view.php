@@ -71,7 +71,7 @@
                                         </div>
                                         <br><br><br>
                                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                            <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1">
+                                            <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1" checked>
                                                 Asignación de Bodega por producto
                                             </label>
                                         </div>
@@ -264,6 +264,8 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
+                $("#selectasign").hide();
+                $(".bodega").hide();
                 $("#divOrder").hide();
                 $("#divOrderProcess").hide();
                 if ($("#chk1").prop("checked") === false && $("#chk2").prop("checked") === false) {

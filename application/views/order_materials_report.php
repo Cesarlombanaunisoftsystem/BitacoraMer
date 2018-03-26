@@ -14,14 +14,14 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <style>
             @page { margin: 100px 25px; }
-            header { position: fixed; top: -130px; left: 0px; right: 0px; height: 10px; }
+            header { position: fixed; top: -100px; left: 0px; right: 0px; height: 10px; }
             footer { position: fixed; bottom: -50px; left: 0px; right: 0px; height: 10px; }
         </style>
     </head>
     <body>
         <header>
-            <center><img src="<?= base_url('uploads/') . $image ?>" alt=""/></center>
             <img id="logo" src="<?= base_url('dist/img/cabecera.png') ?>" width="700px" alt=""/>
+            <!--<img id="logo" src="<?= base_url('uploads/') . $image ?>" width="700px" alt=""/>-->
         </header>
         <main>
             <table>
@@ -36,12 +36,12 @@ and open the template in the editor.
     <table>
         <thead>
             <tr><td><h3>| Proveedor |</h3></td>
-                <td style="color: blue">| Razón social</td>
-                <td style="color: blue">| Nit</td>
-                <td style="color: blue">| Dirección</td>
-                <td style="color: blue">| Teléfono</td>
-                <td style="color: blue">| email</td>
-                <td style="color: blue">| Contacto</td>
+                <td style="color: #00b0f0">| Razón social</td>
+                <td style="color: #00b0f0">| Nit</td>
+                <td style="color: #00b0f0">| Dirección</td>
+                <td style="color: #00b0f0">| Teléfono</td>
+                <td style="color: #00b0f0">| email</td>
+                <td style="color: #00b0f0">| Contacto</td>
             </tr> 
         </thead>
         <tbody>
@@ -62,8 +62,8 @@ and open the template in the editor.
     <table>
         <thead>
             <tr><td><h3>| Actividad |</h3></td>
-                <td style="color: blue">| Centro de Costos</td>
-                <td style="color: blue">| Actividad</td>
+                <td style="color: #00b0f0">| Centro de Costos</td>
+                <td style="color: #00b0f0">| Actividad</td>
             </tr> 
         </thead>
         <tbody>
@@ -80,7 +80,7 @@ and open the template in the editor.
     </table>
     <table>
         <thead>
-            <tr style="color: blue">
+            <tr style="color: #00b0f0">
                 <td>Descripción</td>
                 <td>| Cantidad</td>
                 <td>| Unidad de Medida </td>
@@ -113,13 +113,13 @@ and open the template in the editor.
     <table>
         <tr>
             <td><h3>| Firmas de Recibido |</h3></td>
-            <td style="color: blue">________________&nbsp;</td>
-            <td style="color: blue">________________&nbsp;</td>
-            <td style="color: blue">________________&nbsp;</td>
-            <td style="color: blue">________________&nbsp;</td>
+            <td style="color: #00b0f0">________________&nbsp;</td>
+            <td style="color: #00b0f0">________________&nbsp;</td>
+            <td style="color: #00b0f0">________________&nbsp;</td>
+            <td style="color: #00b0f0">________________&nbsp;</td>
         </tr>
         <tbody>
-            <tr style="color: blue">
+            <tr style="color: #00b0f0">
                 <td></td>
                 <td>Nombre</td>
                 <td>| No.Identificación</td>

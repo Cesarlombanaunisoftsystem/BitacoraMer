@@ -111,7 +111,7 @@
                                                     ?> 
                                                     <tr>
                                                         <td><?= $order->dateSave ?></td>
-                                                        <td><?= $order->uniquecode ?></td>
+                                                        <td><?= $order->uniquecode . "-" . $order->coi ?></td>
                                                         <td><?= $order->uniqueCodeCentralCost ?></td>
                                                         <td><?= $order->name_activitie ?></td>
                                                         <td><?= $order->name_service ?></td>
@@ -259,6 +259,7 @@
                         $(this).html('<i class="fa fa-plus-square-o"></i>');
                     } else {
                         getDocs(order_id);
+                        getObsvGen(order_id);
                         closeOpenedRows(dt, tr);
                         $(this).html('<i class="fa fa-minus-square-o"></i>');
                         row.child(format(order_id)).show();
@@ -351,6 +352,13 @@
                                 pos++;
                             }
                         });
+                    });
+                }
+
+                function getObsvGen(idOrder) {
+                    var url = get_base_url() + "Orders/get_order_xid?jsoncallback=?";
+                    $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                        $("#obsvgen").val(res.res.observations);
                     });
                 }
 

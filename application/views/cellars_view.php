@@ -124,7 +124,7 @@
                                                         <tr>
                                                             <td><?= $process ?></td>
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrden(<?= $row->id . ',' . $row->idOrderState ?>);">
+                                                            <td><a href="#" onclick="verOrden(<?= $row->id ?>,<?= $row->idOrderState ?>);">
                                                                     <u><?= $row->uniquecode ?></u><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
@@ -169,7 +169,7 @@
                                                         } else {
                                                             $color = "";
                                                         }
-                                                        if ($row->idOrderState === '17') {
+                                                        if ($row->idOrderState > 16 && $row->idOrderState < 25) {
                                                             $proces = 'ASIGNACIÓN';
                                                         } else {
                                                             $proces = 'DEVOLUCIÓN';
@@ -178,7 +178,7 @@
                                                         <tr style="color: <?= $color ?>">
                                                             <td><?= $proces ?></td>
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->id . ',' . $row->idOrderState ?>);">
+                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->id ?>,<?= $row->idOrderState ?>);">
                                                                     <u style="color: <?= $color ?>"><?= $row->uniquecode ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccostProcess_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activProcess_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
@@ -240,7 +240,7 @@
                                             <div class="col-sm-12">
                                                 <div class="col-sm-8"></div>
                                                 <div class="col-sm-4">
-                                                    <button type="button" class="form-control btn btn-default color-blue" onclick="register_x_order_process();"><b>ENTREGAR</b></button>
+                                                    <button type="button" id="btnentregar" class="form-control btn btn-default color-blue" onclick="register_x_order_process();"><b>ENTREGAR</b></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,6 +261,8 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
+                $("#btnIn").hide();
+                $("#btnReg").hide();
                 $("#divOrder").hide();
                 $("#divOrderProcess").hide();
                 $("#btnAplicarProduct").hide();
@@ -305,41 +307,63 @@
                 $("#lblActiv").html(activ);
                 $("#lblcCost").html(ccost);
                 $("#lblTech").html(tech);
+                var stateCellar = "";
                 var cellar = $('#divCellar').html(); // Tipo de bodega
-                url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
-                    $.each(respuestaServer["materials"], function (i, materials) {
-                        if (process === '16') {
-                            var proc = 'ASIGNACIÓN';
-                            $(".cantDev").hide();
-                            $("#btnReg").hide();
-                            if (materials.idStateCellar === '0') {
+
+                if (process === 16) {
+                    process = 'ASIGNACIÓN';
+                    $(".pend").show();
+                    $("#btnIn").show();
+                    $(".cantDev").hide();
+                    $("#btnReg").hide();
+                    url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
+                    $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
+                        $.each(respuestaServer["materials"], function (i, materials) {
+                            stateCellar = materials.idStateCellar;
+
+                            if (stateCellar === '0') {
                                 check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
-                            } else {
+                            }
+                            if (stateCellar === '1') {
                                 check = '<input type="checkbox" onclick="unregister(' + materials.id + ')">';
                             }
-                        } else {
-                            proc = 'DEVOLUCIÓN';
-                            $(".cantDev").show();
-                            $("#btnReg").show();
-                            $(".pend").hide();
-                            $("#btnIn").hide();
-                            if (materials.idStateCellar === '2') {
-                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idCellar + ',' + materials.id + ',' + materials.count_back + ')">';
-                            } else {
-                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.idCellar + ',' + materials.id + ',' + materials.count_back + ')">';
-                            }
-                        }
-                        $('#bodyMaterials').append('<tr><td>' + proc + '</td><td>' + materials.name_service +
-                                '</td><td>' + materials.count + '</td><td class="cantDev">' + materials.count_back +
-                                '</td><td>' + materials.unit_measurement + '</td><td>'
-                                + materials.observation + '</td>' +
-                                '<td>' + check + '</td></tr>');
+
+                            $('#bodyMaterials').append('<tr><td>' + process + '</td><td>' + materials.name_service +
+                                    '</td><td>' + materials.count + '</td><td>' + materials.unit_measurement + '</td><td>'
+                                    + materials.observation + '</td>' +
+                                    '<td>' + check + '</td></tr>');
+                        });
                     });
-                });
+                } else {
+                    process = 'DEVOLUCIÓN';
+                    $(".cantDev").show();
+                    $("#btnReg").show();
+                    $(".pend").hide();
+                    $("#btnIn").hide();
+                    url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
+                    $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
+                        $.each(respuestaServer["materials"], function (i, materials) {
+                            stateCellar = materials.idStateCellar;
+                            if (stateCellar === '1') {
+                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.id + ')">';
+                            }
+
+                            if (stateCellar === '2') {
+                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idCellar + ',' + materials.id + ')">';
+                            }
+
+                            $('#bodyMaterials').append('<tr><td>' + process + '</td><td>' + materials.name_service +
+                                    '</td><td>' + materials.count + '</td><td class="cantDev">' + materials.count_back +
+                                    '</td><td>' + materials.unit_measurement + '</td><td>'
+                                    + materials.observation + '</td>' +
+                                    '<td>' + check + '</td></tr>');
+                        });
+                    });
+                }
+
             }
 
-            function verOrdenProcess(idOrder) {
+            function verOrdenProcess(idOrder, process) {
                 $("#divOrderProcess").show();
                 $("#tableProcess").hide();
                 $('#bodyMaterialsProcess').empty();
@@ -354,10 +378,12 @@
                 $("#lblActivProcess").html(activ);
                 $("#lblcCostProcess").html(ccost);
                 $("#lblTechProcess").html(tech);
+                var stateCellar = "";
                 url = get_base_url() + "Materials/get_materials?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                     $.each(respuestaServer["materials"], function (i, materials) {
-                        if (materials.idStateCellar === '1') {
+                        stateCellar = materials.idStateCellar;
+                        if (stateCellar === '1') {
                             check = '<input type="checkbox" checked onclick="unregister(' + materials.id + ')">';
                             color = '#555555';
                         } else {
@@ -367,8 +393,8 @@
                         $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +
                                 '<input type="hidden" value=' + materials.idOrder +
                                 ' name="idOrder" id="idOrder">' + materials.name_service +
-                                '</td><td>' + materials.count + '</td><td>' + materials.count_back +
-                                '</td><td>' + materials.unit_measurement + '</td><td>'
+                                '</td><td>' + materials.count + '</td><td>' +
+                                materials.unit_measurement + '</td><td>'
                                 + materials.observation + '</td>' +
                                 '<td>' + check + '</td></tr>');
                     });
@@ -386,8 +412,8 @@
                     }
                 });
             }
-            
-            function unregisterMaterialBack(idCellar, id, count_back) {
+
+            function unregisterMaterialBack(idCellar, id) {
                 url = get_base_url() + "Materials/unregister_back";
                 $.ajax({
                     url: url,

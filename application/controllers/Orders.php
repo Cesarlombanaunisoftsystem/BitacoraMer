@@ -55,6 +55,13 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
+    
+    public function get_order_xid() {
+        $id= $this->input->get('idOrder');
+        $data['res'] = $this->Orders_model->get_order_by_id($id);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function get_details() {
         $id = $this->input->get('id');
