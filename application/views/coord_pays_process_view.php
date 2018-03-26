@@ -65,8 +65,8 @@
                                                     <?php
                                                     if (isset($paysProcess) && $paysProcess) {
                                                         foreach ($paysProcess as $row) {
-                                                            if(isset($row->paysdo)){
-                                                                $pay = $row->paysdo;
+                                                            if(isset($row->percentdo)){
+                                                                $pay = $row->percentdo;
                                                             } else {
                                                                 $pay = 0;
                                                             }

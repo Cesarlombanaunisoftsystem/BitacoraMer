@@ -472,9 +472,9 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_orders_time_reg() {
+    public function get_orders_time_reg($state) {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
-            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=1 and
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$state' and
             DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
@@ -484,9 +484,9 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
     
-    public function get_orders_outtime_regouttime() {
+    public function get_orders_outtime_regouttime($state) {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
-            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=1 and
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$state' and
             DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {

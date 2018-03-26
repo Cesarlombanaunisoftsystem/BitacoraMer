@@ -282,447 +282,148 @@
                         </div>
                         <hr class="node">
                         <div class="row lines">
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-1" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#"><?= $regouttime->cont ?></a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#"><?= $reg->cont ?></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-2" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#"><?= $progvisitouttime->cont ?></a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#"><?= $progvisit->cont ?></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-3" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#"><?= $regvisitiniouttime->cont ?></a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#"><?= $regvisitini->cont ?></a>
+                            <?php for ($i = 1; $i <= 13; $i++) { ?>
+
+                                <div class="col-xs-1">
+                                    <div class="hvr-bounce-in nvl wow bounceInDown <?= 'nvl-' . $i ?>" data-wow-duration="2s" data-wow-delay="1s">
+                                        <div class="row blockq">
+                                            <div class="bg-item">
+                                                <div class="col-xs-6 bg-res">
+                                                    <a href="#"><?php
+                                                        $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$i' and
+            DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
+                                                        $query = $this->db->query($sql)->row();
+
+                                                        echo $query->cont;
+                                                        ?></a>
+                                                </div>
+                                                <div class="col-xs-6 bg-res2">
+                                                    <a href="#"><?php
+                                                        $sql1 = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$i' and
+            DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
+                                                        $query1 = $this->db->query($sql1)->row();
+                                                        echo $query1->cont;
+                                                        ?>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-4" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-5" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-6" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-7" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-8" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-9" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-10" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-11" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-12" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInDown nvl-13" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                         <hr class="bar-middle">
                         <div class="row block-text">
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Materials/get_materials_cellar_ext'); ?>">Facturacion</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Billing'); ?>">Facturacion</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Projects/activitie_init'); ?>">Auditoria liquidacion</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Settlemen/audit'); ?>">Auditoria liquidacion</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Projects/closing_visit_request'); ?>">Centro de liquidacion</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Settlemen'); ?>">Centro de liquidacion</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Visit/validation_close'); ?>">Area financiera</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Audit/financial'); ?>">Area financiera</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Documents'); ?>">Autorizacion de pagos</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Audit/auth_pay'); ?>">Autorizacion de pagos</a></p>
                             </div>
                             <div class="col-xs-1">
                                 <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Documents/audit'); ?>">Auditoria Documentación</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Settlement'); ?>">Centro de Documentación</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Documents'); ?>">Centro de Documentación</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Settlement/audit'); ?>">Devoluciones</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Materials'); ?>">Devoluciones</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Billing'); ?>">Registro visita</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Visit/site_init'); ?>">Registro visita</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Management'); ?>">Programacion visita</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Visit/program'); ?>">Programacion visita</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Management'); ?>">Actividad en proceso</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Projects/activitie_init'); ?>">Actividad en proceso</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Management'); ?>">Bodega Externa</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Materials/get_materials_cellar_ext'); ?>">Bodega Externa</a></p>
                             </div>
                             <div class="col-xs-1">
-                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Management'); ?>">Bodega interna</a></p>
+                                <p class="title-item hvr-bounce-in wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s"><a href="<?= base_url('Materials/get_materials_cellar_mer'); ?>">Bodega interna</a></p>
                             </div>
                             <!-- <div class="col-xs-1"><p class="title-item hvr-bounce-in wow bounceInDown" data-wow-duration="2s" data-wow-delay="1s">Gestion de materiales</p></div> -->
                         </div>
                         <hr class="node">
                         <div class="row lines">
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-13" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row">
+                            <?php
+                            $j = 13;
+                            for ($i = 14; $i <= 26; $i++) {
+                                ?>
+
+                                <div class="col-xs-1">
+                                    <div class="hvr-bounce-in nvl wow bounceInUp <?= 'nvl-' . $j-- ?>" data-wow-duration="2s" data-wow-delay="1s">
                                         <div class="row blockq">
                                             <div class="bg-item">
                                                 <div class="col-xs-6 bg-res">
-                                                    <a href="#">2</a>
+                                                    <a href="#"><?php
+                                                        $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$i' and
+            DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
+                                                        $query = $this->db->query($sql)->row();
+                                                        echo $query->cont;
+                                                        ?></a>
                                                 </div>
                                                 <div class="col-xs-6 bg-res2">
-                                                    <a href="#">5</a>
+                                                    <a href="#"><?php
+                                                        $sql1 = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$i' and
+            DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
+                                                        $query1 = $this->db->query($sql1)->row();
+                                                        echo $query1->cont;
+                                                        ?>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-12" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-11" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-10" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-9" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-8" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-7" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-6" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-5" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-4" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-3" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-2" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-1">
-                                <div class="hvr-bounce-in nvl wow bounceInUp nvl-1" data-wow-duration="2s" data-wow-delay="1s">
-                                    <div class="row blockq">
-                                        <div class="bg-item">
-                                            <div class="col-xs-6 bg-res">
-                                                <a href="#">2</a>
-                                            </div>
-                                            <div class="col-xs-6 bg-res2">
-                                                <a href="#">5</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
+                </section>
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-    <?php $this->load->view('templates/footer.html') ?>
-</div>
-<!-- ./wrapper -->
-<?php $this->load->view('templates/libs') ?>
+            <!-- /.content-wrapper -->
+<?php $this->load->view('templates/footer.html') ?>
+        </div>
+        <!-- ./wrapper -->
+        <?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
-<!-- wow  -->
-<script src="<?= base_url('plugins/hover/wow.min.js') ?>"></script>
-<script>
-    // metodos de mensajes
-    function showFade() {
-        $('#preloader').fadeIn('slow');
-        $('#status').fadeIn();
-    }
-    function hideFade() {
-        $('#preloader').fadeOut('slow');
-        $('#status').fadeOut();
-    }
-    window.onload = function () {
-        hideFade();
-        new WOW().init();
-    };
+        <!-- wow  -->
+        <script src="<?= base_url('plugins/hover/wow.min.js') ?>"></script>
+        <script>
+            // metodos de mensajes
+            function showFade() {
+                $('#preloader').fadeIn('slow');
+                $('#status').fadeIn();
+            }
+            function hideFade() {
+                $('#preloader').fadeOut('slow');
+                $('#status').fadeOut();
+            }
+            window.onload = function () {
+                hideFade();
+                new WOW().init();
+            };
 
-</script>
+        </script>
 
-</body>
+    </body>
 </html>
