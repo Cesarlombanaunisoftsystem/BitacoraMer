@@ -252,6 +252,8 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return FALSE;
         }
     }
 

@@ -168,7 +168,7 @@
                 var total = subTotalDiscount + taxSubtotalDiscount;
                 var totalf = formatNumber(total);
                 $('#total').val(total);
-                $('#totalshow').val(totalf);                
+                $('#totalshow').val(totalf);
             }
 
             function addIdOrder() {
@@ -287,6 +287,8 @@
                     tr.removeClass('shown');
                     $(this).html('<i class="fa fa-plus-square-o"></i>');
                 } else {
+                    getDetails(order_id);
+                    getFoot(order_id);
                     getDocs(order_id);
                     closeOpenedRows(dt, tr);
                     $(this).html('<i class="fa fa-minus-square-o"></i>');
@@ -296,36 +298,74 @@
                 }
             });
             function format(d) {
-                return  '<table cellpadding="6" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
-                        '<tr>' +
+                return  '<table class="table" style="font-size: 12px">' +
+                        '<thead><tr style="color: #00B0F0">' +
                         '<th>ACTIVIDAD</th><th>SERVICIO</th><th>CANTIDAD</th><th>SITIO</th>' +
                         '<th>VR.UNITARIO</th><th>VR.TOTAL</th>' +
-                        '</tr>' +
-                        '<tbody></tobody></table>';
+                        '</tr></thead>' +
+                        '<tbody id="bodydetails_' + d + '"></tobody></table>' +
+                        '<table class="table" style="font-size: 12px">' +
+                        '<thead><tr style="color: #00B0F0"><th>TOTAL BRUTO</th>' +
+                        '<th>DESCUENTO</th><th>I.V.A</th>' +
+                        '<th>TOTAL</th><th id="pdf_' + d + '"></th></tr><thead><tbody id="bodyfoot_' + d + '">' +
+                        '</tbody></table>' +
+                        '<table class="table" style="font-size: 12px">' +
+                        '<thead><tr><th style="color: #00B0F0">AREA DE SIGUIENTE PASO</th>' +
+                        '<th><input type="text" id="txtArea_' + d + '"></th>' +
+                        '</tr><tr><th style="color: #00B0F0">DOCUMENTOS RELACIONADOS</th>' +
+                        '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photos' + d + '"></th>' +
+                        '<th>PISINM <input type="checkbox" class="disable pisnm' + d + '"></th>' +
+                        '<th>TSS <input type="checkbox" class="disable tss' + d + '"></th>' +
+                        '<th>DOCUMENTO DAS <input type="checkbox" class="disable das' + d + '"></th></tr>' +
+                        '<tr><th style="color: #00B0F0">OBSERVACIONES DE REGISTRO</th>' +
+                        '<th><input type="text" id="txtObsv_' + d + '" disabled></th></tr></table>';
+            }
+            function getFoot(idOrder) {
+                var url = get_base_url() + "Orders/get_order_xid?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#bodyfoot_" + idOrder).html('<tr><td>' + formatNumber(res.res.subtotal) +
+                            '</td><td>' + res.res.discount +
+                            '</td><td>' + res.res.iva + '%</td><td>' + formatNumber(res.res.total) +
+                            '</td></tr>');
+                    $("#txtObsv_" + idOrder).val(res.res.observations);
+                    $("#pdf_" + idOrder).html('<a href=' + get_base_url() + 'uploads/' + res.res.picture + ' target="blank">' +
+                            '<div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;">' +
+                            '<img src="' + get_base_url() + 'dist/img/clip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;">' +
+                            '</div></a>');
+                });
+            }
+            function getDetails(idOrder) {
+                var url = get_base_url() + "Orders/details_orders_tray?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $.each(res["details"], function (i, details) {
+                        $("#bodydetails_" + idOrder).append('<tr><td>' + details.name_activitie +
+                                '</td><td>' + details.name_service +
+                                '</td><td>' + details.count + '</td><td>' + details.site + '</td>' +
+                                '<td>' + formatNumber(details.price) + '</td><td>' + formatNumber(details.total) + '</td></tr>');
+                    });
+                });
             }
 
-
             function getDocs(idOrder) {
-                url = get_base_url() + "Orders/get_details_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    var pos = 1;
-                    $.each(respuestaServer["docs"], function (i, doc) {
-                        $("#fecha_" + idOrder).html(doc.dateSave);
+                var url = get_base_url() + "Orders/get_details_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $.each(res["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
-                            $(".pisnm" + idOrder).removeClass("disable");
+                            $(".pisnm" + idOrder).prop('checked', true);
                         }
                         if (doc.idTypeDocument === "3") {
-                            $(".tss" + idOrder).removeClass("disable");
+                            $(".tss" + idOrder).prop('checked', true);
+                        }
+                        if (doc.idTypeDocument === "4") {
+                            $(".das" + idOrder).prop('checked', true);
                         }
                         if (doc.idTypeDocument === "1") {
-                            $(".photo" + idOrder).removeClass("disable");
-                            galery = true;
-                            pos++;
+                            $(".photo" + idOrder).prop('checked', true);
                         }
                     });
                 });
             }
-            
+
             function formatNumber(num) {
                 if (!num || num === 'NaN')
                     return '-';
@@ -341,7 +381,7 @@
                 for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
                     num = num.substring(0, num.length - (4 * i + 3)) + '.' +
                             num.substring(num.length - (4 * i + 3));
-                return (((sign) ? '' : '') + num);
+                return (((sign) ? '' : '') + '$ ' + num);
             }
         </script>
     </body>

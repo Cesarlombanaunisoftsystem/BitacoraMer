@@ -190,6 +190,20 @@ class Visit extends CI_Controller {
         $data['process'] = $this->Visits_model->get_orders_visit_process($id_user,4);
         $this->load->view('visit_init_register_data_view', $data);
     }
+    
+    public function site_init_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Registro de datos visitas inicial al sitio';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
+        $data['process'] = $this->Visits_model->get_orders_visit_process($id_user,4);
+        $this->load->view('visit_init_process_view', $data);
+    }
 
     public function validation() {
         if ($this->session->userdata('perfil') == FALSE) {

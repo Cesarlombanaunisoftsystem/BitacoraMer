@@ -181,9 +181,10 @@ class Orders extends CI_Controller {
     }
 
     public function details_orders_tray() {
-        $id = $this->input->post('idOrder');
-        $res = $this->Orders_model->details_orders_tray($id);
-        echo json_encode($res);
+        $id = $this->input->get('idOrder');
+        $data['details'] = $this->Orders_model->details_orders_tray($id);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
     public function register_order() {
