@@ -27,9 +27,9 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Audit/auth_pay')?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Audit/pays_add')?>" aria-controls="binnacle" role="tab" data-toggle="">Pagos Adicionales</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Audit/pays_process')?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Audit/auth_pay') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Audit/pays_add') ?>" aria-controls="binnacle" role="tab" data-toggle="">Pagos Adicionales</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Audit/pays_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -65,7 +65,7 @@
                                                     <?php
                                                     if (isset($paysProcess) && $paysProcess) {
                                                         foreach ($paysProcess as $row) {
-                                                            if(isset($row->percentdo)){
+                                                            if (isset($row->percentdo)) {
                                                                 $pay = $row->percentdo;
                                                             } else {
                                                                 $pay = 0;
@@ -76,7 +76,7 @@
                                                                     <i class="fa fa-plus-square-o"></i>
                                                                 </td>
                                                                 <td><?= $row->dateSave ?></td>
-                                                                <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode.'-'.$row->coi ?></a></td>
+                                                                <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_activitie ?></td>
                                                                 <td><?= $row->count ?></td>

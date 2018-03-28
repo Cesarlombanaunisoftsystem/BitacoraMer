@@ -472,6 +472,7 @@
                         if (resp === "ok") {
                             alertify.success('Producto actualizado exitosamente');
                             getMaterials(idOrder);
+                            $("#modalEditProducts").modal('hide');
                         }
                     }
                 });

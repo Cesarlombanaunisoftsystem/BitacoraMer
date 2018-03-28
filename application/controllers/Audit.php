@@ -106,9 +106,7 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        //$data['pays'] = $this->Payments_model->get_pays_box();
-        //$data['paysAdd'] = $this->Payments_model->get_pays(1);
-        //$data['paysProcess'] = $this->Payments_model->get_pays_process(2, $id_user);
+        $data['paysAdd'] = $this->Payments_model->get_pays_process(0, $id_user);
         $this->load->view('coord_pays_add_view', $data);
     }
 
@@ -192,6 +190,7 @@ class Audit extends CI_Controller {
 
     public function process_pays() {
         $id = $this->input->post('id');
+        $idpay = $this->input->post('idpay');
         $idTech = $this->input->post('idTech');
         $percent = $this->input->post('percent');
         $value = $this->input->post('valor');
@@ -208,7 +207,7 @@ class Audit extends CI_Controller {
             'historyBackState' => 0,
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s'));
-        $res = $this->Payments_model->process_pays($id, $idTech, $percent, $value, $data, $data1, $data2);
+        $res = $this->Payments_model->process_pays($id, $idTech, $percent, $value, $idpay, $data, $data1, $data2);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -217,13 +216,14 @@ class Audit extends CI_Controller {
     }
 
     public function remove_process_pays() {
+        $idpay = $this->input->post('idpay');
         $id = $this->input->post('id');
-        $percent = $this->input->post('percent');
-        $val = $this->input->post('valor');
         $data = array(
             'idArea' => 3,
             'idOrderState' => 13);
-        $res = $this->Payments_model->remove_process_pays($id, $percent, $val, $data);
+        $data1 = array(
+            'state' => 1);
+        $res = $this->Payments_model->remove_process_pays($id, $idpay, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -290,13 +290,14 @@ class Audit extends CI_Controller {
     }
 
     public function pdf_pays() {
-        $data['pays'] = $this->Payments_model->get_pays_xusers();
-        $arr = array('state' => 1);
-        $this->Payments_model->remove_pays_state($arr);
-        $this->load->library('pdfgenerator');
-        $html = $this->load->view('pays_report', $data, true);
-        $filename = 'report_' . time();
-        $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
+        $array = $this->Payments_model->get_pays_xusers();
+        foreach ($array as $value) {
+            $data['pay'] = $this->Payments_model->get_pays_xuser($value->idTechnical);
+            $this->load->library('pdfgenerator');
+            $html = $this->load->view('pays_report', $data, true);
+            $filename = 'report_' . time();
+            $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
+        }
     }
 
 }

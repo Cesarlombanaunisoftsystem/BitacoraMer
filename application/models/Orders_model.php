@@ -1,6 +1,6 @@
 <?php
 
-class Orders_model extends CI_Model {
+class Orders_model extends CI_Model {    
 
     public function get_order_bitacora($id, $type) {
         $this->db->where('id', $id);
@@ -485,7 +485,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_orders_outtime_regouttime($state) {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$state' and
@@ -497,7 +497,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_orders_time_progvisit() {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=2 and
@@ -509,7 +509,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_orders_outtime_progvisit() {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=2 and
@@ -521,7 +521,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_orders_time_regvisitini() {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=3 and
@@ -533,7 +533,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_orders_outtime_regvisitini() {
         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState=3 and

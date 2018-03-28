@@ -78,7 +78,7 @@
                                                                     setlocale(LC_MONETARY, 'es_CO');
                                                                     echo money_format('%.2n', $row->value)
                                                                     ?></td>
-                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->id ?>" value="<?= $row->value ?>" onclick="sumar(this.value,<?= $row->percent ?>,<?= $row->id ?>,<?= $row->idTechnicals ?>);"></td>
+                                                                <td><input type="checkbox" class="form-check-input" id="chk<?= $row->uniqueCodeCentralCost ?>" value="<?= $row->value ?>" onclick="sumar(this.value,<?= $row->percent ?>,<?= $row->uniqueCodeCentralCost ?>,<?= $row->idTechnicals ?>,<?= $row->id ?>);"></td>
                                                             </tr>
                                                             <?php
                                                         }
@@ -141,7 +141,7 @@
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_user ?></td>
                                                                 <td><?php
-                                                                    $iva = $row->sumValue * 0.19;
+                                                                    $iva = $row->sumdo * 0.19;
                                                                     setlocale(LC_MONETARY, 'es_CO');
                                                                     echo money_format('%.2n', $iva);
                                                                     ?></td>
@@ -149,7 +149,7 @@
                                                                 <td></td>
                                                                 <td><?php
                                                                     setlocale(LC_MONETARY, 'es_CO');
-                                                                    echo money_format('%.2n', $row->sumValue);
+                                                                    echo money_format('%.2n', $row->sumdo);
                                                                     ?></td>
                                                             </tr>
                                                             <?php
@@ -168,12 +168,12 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-<?php $this->load->view('templates/footer.html') ?>
+            <?php $this->load->view('templates/footer.html') ?>
         </div>
 
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
-<?php $this->load->view('templates/js') ?>
+        <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#table-paysges').DataTable({
@@ -204,7 +204,7 @@
                 });
             });
 
-            function sumar(valor, percent, id, idTech) {
+            function sumar(valor, percent, id, idTech, idpay) {
                 if ($("#chk" + id).prop("checked") === true) {
                     $("#btnAplicar").prop("disabled", false);
                     var total = 0;
@@ -224,7 +224,7 @@
                     $.ajax({
                         url: url,
                         type: "post",
-                        data: {id: id, idTech: idTech, valor: valor, percent: percent},
+                        data: {id: id, idTech: idTech, valor: valor, percent: percent, idpay: idpay},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
@@ -253,7 +253,7 @@
                     $.ajax({
                         url: url,
                         type: "post",
-                        data: {id: id, valor: valor, percent: percent},
+                        data: {idpay: idpay, id: id},
                         success: function (resp) {
                             if (resp === "error") {
                                 alertify.error('Error en BBDD');
