@@ -146,7 +146,7 @@
                                                             <td>ASIGNACION</td>
                                                             <td><?= $row->dateSave ?></td>
                                                             <td><a href="#" onclick="verOrden(<?= $row->id ?>);">
-                                                                    <u><?= $row->uniquecode ?></u><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
+                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->count ?></td>
@@ -190,7 +190,7 @@
                                                             <td>ASIGNACION</td>
                                                             <td><?= $row->dateSave ?></td>
                                                             <td><a href="#" onclick="verOrdenProcess(<?= $row->id ?>);">
-                                                                    <u><?= $row->uniquecode ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
+                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccostProcess_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activProcess_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->count ?></td>

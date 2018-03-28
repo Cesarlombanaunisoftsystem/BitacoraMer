@@ -292,12 +292,16 @@ class Audit extends CI_Controller {
     public function pdf_pays() {
         $array = $this->Payments_model->get_pays_xusers();
         foreach ($array as $value) {
-            $data['pay'] = $this->Payments_model->get_pays_xuser($value->idTechnical);
-            $this->load->library('pdfgenerator');
-            $html = $this->load->view('pays_report', $data, true);
-            $filename = 'report_' . time();
-            $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
+            $this->generate_pdf($value->idTechnical);
         }
+    }
+
+    public function generate_pdf($param) {
+        $data['pay'] = $this->Payments_model->get_pays_xuser($param);
+        $this->load->library('pdfgenerator');
+        $html = $this->load->view('pays_report', $data, true);
+        $filename = 'report_' . $param;
+        $this->pdfgenerator->generate($html, $filename, true, 'A4', 'portrait');
     }
 
 }

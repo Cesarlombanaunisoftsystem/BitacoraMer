@@ -59,14 +59,14 @@
                                                     foreach ($projects as $row) {
                                                         ?>                                            
                                                         <tr>
+                                                            <td><?= $row->dateAssign ?></td>
                                                             <?php if ($row->type > '5') { ?>
-                                                                <td><a href="<?= base_url('Projects/materials_back/') . $row->id ?>"><?= $row->dateAssign ?></a></td>
+                                                                <td><a href="<?= base_url('Projects/materials_back/') . $row->id ?>"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                             <?php } else { ?>
-                                                                <td><a href="#" data-toggle="modal" data-target="#modal" onclick="generateid(<?= $row->id ?>)"><?= $row->dateAssign ?></a></td>
+                                                                <td><a href="#" data-toggle="modal" data-target="#modal" onclick="generateid(<?= $row->id ?>)"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                             <?php } ?>
-                                                            <td><?= $row->uniquecode . '-' . $row->coi ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>                                                
@@ -139,61 +139,40 @@
                     </div>
                 </div>
             </div>
-            <?php $this->load->view('templates/footer.html') ?>
-        </div>    
-        <!-- ./wrapper -->
-        <!-- Modal-->
-        <div id="modal" class="modal fade" role="dialog">
-            <div class="modal-dialog" style="width: 32%;">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div style="clear: inherit;
-                                 height: 350px;
-                                 width: 510px;
-                                 margin-right: 0px;
-                                 padding: 0px;
-                                 border-width: 4px;
-                                 border-color: blue;
-                                 border-style: solid;
-                                 border-radius: 20px;">
-                                <div style="height: 300px;
-                                     width: 430px; margin-left: 30px;">
-                                    <p style="text-align:left;">
-                                        <img src="<?= base_url('dist/img/logo_mail.png') ?>"
-                                             alt="logo Mer">
-                                        <img src="<?= base_url('dist/img/titulo_mail.png') ?>"
-                                             height="90px" width="250px" alt="titulo"/></p>
-                                    <p>
-                                        <img src="<?= base_url('dist/img/hr_mail.png') ?>" alt="hr">
-                                    </p>
-                                    <p style="text-align:center; font-size: 16px">
-                                        <b>A partir de este momento se dará
-                                            inicio a este proyecto, el registro de
-                                            actividades podrá ser realizado a través
-                                            de la opción "Registro de Actividad"</b>
-                                    </p>
-                                    <br> 
-                                    <div class="col-xs-12">
-                                        <div class="col-xs-5">
-                                            <input type="hidden" id="idOrder">
-                                        </div>
-                                        <div class="col-xs-3">
-                                            <button type="button" class="btn btn-warning" data-dismiss="modal">CANCELAR</button>
-                                        </div>
-                                        <div class="col-xs-1"></div>
-                                        <div class="col-xs-3">
-                                            <button type="button" class="btn btn-primary" onclick="init();">ACEPTAR</button>
-                                        </div>                                                                                        
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>                                              
+            <!-- Modal -->
+            <!-- modal activities -->
+            <div id="modalActivities" class="modal fade" role="dialog">
+                <div class="modal-dialog" style="width: 60%;">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="text-align: center; color: #00B1EB"><b>ACTIVIDADES RELACIONADAS</b></h5>                                
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">                                    
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: #00B1EB; color: white">Categoria</th>
+                                            <th style="background-color: #00B1EB; color: white">Producto</th>
+                                            <th style="background-color: #00B1EB; color: white">Cantidad</th>
+                                            <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
+                                        </tr>                                            
+                                    </thead>
+                                    <tbody id="activities">
+                                    </tbody>
+                                </table> 
+                                <hr style="border-color: #00B1EB">
+                                <p>Bitácora</p>
+                            </div>                   
+                        </div>                            
                     </div>
                 </div>
             </div>
-        </div>
+            <!-- modal activities -->
+            <?php $this->load->view('templates/footer.html') ?>
+        </div>    
+        <!-- ./wrapper -->        
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
@@ -218,6 +197,18 @@
                             location.reload();
                         }
                     }
+                });
+            }
+
+            function getActivities(idOrder) {
+                $("#activities").empty();
+                url = get_base_url() + "Visit/get_activities_x_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["act"], function (i, act) {
+                        $("#activities").append("<tr><td>" + act.name_activitie +
+                                "</td><td>" + act.name_service + "</td><td>" +
+                                act.count + "</td><td>" + act.unit_measurement + "</td></tr>");
+                    });
                 });
             }
         </script>

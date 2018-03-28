@@ -62,10 +62,10 @@
                                                     foreach ($registers as $row) {
                                                         ?>                                            
                                                         <tr>
-                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->dateAssign ?></a></td>
-                                                            <td><?= $row->uniquecode ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></td>
+                                                            <td><?= $row->dateAssign ?></td>
+                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
-                                                            <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
+                                                            <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                
@@ -295,7 +295,38 @@
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>  
+        <!-- Modal Detalles-->
+        <!-- modal activities -->
+        <div id="modalActivities" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 60%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="text-align: center; color: #00B1EB"><b>ACTIVIDADES RELACIONADAS</b></h5>                                
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">                                    
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #00B1EB; color: white">Categoria</th>
+                                        <th style="background-color: #00B1EB; color: white">Producto</th>
+                                        <th style="background-color: #00B1EB; color: white">Cantidad</th>
+                                        <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
+                                    </tr>                                            
+                                </thead>
+                                <tbody id="activities">
+                                </tbody>
+                            </table> 
+                            <hr style="border-color: #00B1EB">
+                            <p>Bitácora</p>
+                        </div>                   
+                    </div>                            
+                </div>
+            </div>
+        </div>
+        <!-- modal activities -->
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
@@ -331,6 +362,18 @@
                     });
                 });
             });
+
+            function getActivities(idOrder) {
+                $("#activities").empty();
+                url = get_base_url() + "Visit/get_activities_x_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["act"], function (i, act) {
+                        $("#activities").append("<tr><td>" + act.name_activitie +
+                                "</td><td>" + act.name_service + "</td><td>" +
+                                act.count + "</td><td>" + act.unit_measurement + "</td></tr>");
+                    });
+                });
+            }
 
             $("#typegest").change(function () {
                 var gest = $("#typegest").val();
@@ -437,7 +480,7 @@
                     $("#valpercentmat").val(percentMaterials);
                 }
                 );
-            }            
+            }
 
             function verPanelInferior(idOrder) {
                 $("#panelinferior").show();
