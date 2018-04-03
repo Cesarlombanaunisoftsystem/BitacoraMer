@@ -1,6 +1,6 @@
 <?php
 
-class Orders_model extends CI_Model {    
+class Orders_model extends CI_Model {
 
     public function get_order_bitacora($id, $type) {
         $this->db->where('id', $id);
@@ -387,20 +387,38 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
+    /* public function get_materials_by_cellar($idOrder, $idCellar) {
+      $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
+      . 'tbl_services.name_service,tbl_services.unit_measurement');
+      $this->db->from('tbl_orders_details');
+      $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+      $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+      $this->db->where('tbl_orders_details.idOrder', $idOrder);
+      $this->db->where('tbl_orders_details.idActivities', 22);
+      $this->db->where('tbl_orders_details.idCellar', $idCellar);
+      $query = $this->db->get();
+      if ($query->num_rows() > 0) {
+      return $query->result();
+      } else {
+      return $query->result();
+      }
+      } */
+
     public function get_materials_by_cellar($idOrder, $idCellar) {
-        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
-                . 'tbl_services.name_service,tbl_services.unit_measurement');
-        $this->db->from('tbl_orders_details');
-        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
-        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders_details.idOrder', $idOrder);
-        $this->db->where('tbl_orders_details.idActivities', 22);
-        $this->db->where('tbl_orders_details.idCellar', $idCellar);
-        $query = $this->db->get();
+        $sql = "select tbl_orders_details.*,tbl_activities.name_activitie,"
+                . "tbl_services.name_service,tbl_services.unit_measurement"
+                . " from tbl_orders_details join tbl_activities on"
+                . " tbl_orders_details.idActivities=tbl_activities.id"
+                . " join tbl_services on"
+                . " tbl_orders_details.idServices=tbl_services.id where"
+                . " tbl_orders_details.idOrder = '$idOrder' and"
+                . " tbl_orders_details.idActivities = 22 and"
+                . " tbl_orders_details.idCellar = '$idCellar'";
+        $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
-            return $query->result();
+            return FALSE;
         }
     }
 

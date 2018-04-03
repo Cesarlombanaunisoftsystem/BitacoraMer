@@ -34,7 +34,7 @@ class Materials extends CI_Controller {
         $data['materials'] = $this->Audits_model->get_pl(12);
         $this->load->view('materials_view', $data);
     }
-    
+
     public function process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -47,7 +47,7 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Audits_model->get_pl_process(16,$id_user);
+        $data['process'] = $this->Audits_model->get_pl_process(16, $id_user);
         $this->load->view('materials_process_view', $data);
     }
 
@@ -59,17 +59,36 @@ class Materials extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Gestión de Materiales Bodega Principal';
         $data['link'] = 'get_materials_cellar_mer';
+        $data['link2'] = 'get_materials_cellar_mer_process';
         $data['cellar'] = '1';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['materials'] = $this->Cellars_model->get_materials_cellar();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user);
+        $data['materials'] = $this->Cellars_model->get_materials_cellar(1);
         $this->load->view('cellars_view', $data);
     }
     
+    public function get_materials_cellar_mer_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Gestión de Materiales Bodega Principal';
+        $data['link'] = 'get_materials_cellar_mer';
+        $data['link2'] = 'get_materials_cellar_mer_process';
+        $data['cellar'] = '1';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $data['cellars'] = $this->Cellars_model->get_cellars();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user,1);
+        $this->load->view('cellars_view_process', $data);
+    }
+
     public function get_materials_cellar_ext() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -78,26 +97,45 @@ class Materials extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Gestión de Materiales Bodega Externa';
         $data['link'] = 'get_materials_cellar_ext';
+        $data['link2'] = 'get_materials_cellar_ext_process';
         $data['cellar'] = '2';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['materials'] = $this->Cellars_model->get_materials_cellar();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user);
+        $data['materials'] = $this->Cellars_model->get_materials_cellar(2);
         $this->load->view('cellars_view', $data);
+    }
+    
+    public function get_materials_cellar_ext_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Gestión de Materiales Bodega Externa';
+        $data['link'] = 'get_materials_cellar_ext';
+        $data['link2'] = 'get_materials_cellar_ext_process';
+        $data['cellar'] = '2';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['activities'] = $this->Activities_model->get_activities();
+        $data['services'] = $this->Services_model->get_all_services();
+        $data['cellars'] = $this->Cellars_model->get_cellars();
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user,2);
+        $this->load->view('cellars_view_process', $data);
     }
 
     public function get_materials() {
         $idOrder = $this->input->get('idOrder');
         $cellar = $this->input->get('cellar');
-        $data['materials'] = $this->Materials_model->get_materials($idOrder,$cellar);
+        $data['materials'] = $this->Materials_model->get_materials($idOrder, $cellar);
         $data['cellars'] = $this->Cellars_model->get_cellars();
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_materials_cellar() {
         $idOrder = $this->input->get('idOrder');
         $data['materials'] = $this->Materials_model->get_materials_cellar($idOrder);
@@ -141,24 +179,25 @@ class Materials extends CI_Controller {
     }
 
     public function assign_x_order() {
-        $id = $this->input->post();
-        $idOrder = $this->input->post('idOrder');
-        $idCellar = $this->input->post('selcellar');
-        $data = array('idCellar' => $idCellar);
-        $data1 = array(
-            'idOrderState' => 16,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
-            'dateUpdate' => date('Y-m-d H:i:s')
-        );
-        foreach ($id as $key => $value) {
-            if ($key !== 'selcellar') {
-                $res = $this->Materials_model->assign($value, $idOrder, $data, $data1);
-            }
+        foreach (array_keys($_POST['id']) as $key) {
+            $id = $_POST['id'][$key];
+            $idOrder = $_POST['idOrder'][$key];
+            $idCellar = $_POST['selcellar'][$key];
+
+            $data = array('idCellar' => $idCellar);
+            $data1 = array(
+                'idOrderState' => 16,
+                'idUserProcess' => $this->session->userdata('id_usuario'),
+                'dateUpdate' => date('Y-m-d H:i:s')
+            );
+            $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
         }
         if ($res === TRUE) {
-            echo 'ok';
+            $this->session->set_flashdata('item', array('message' => 'Material asignado a bodega exitosamente', 'class' => 'success'));
+            redirect('Materials');
         } else {
-            echo 'error';
+            $this->session->set_flashdata('item', array('message' => 'Error en bbdd!', 'class' => 'error'));
+            redirect('Materials');
         }
     }
 
@@ -176,7 +215,7 @@ class Materials extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function register_back() {
         $id = $this->input->post('id');
         $data = array(
@@ -187,28 +226,28 @@ class Materials extends CI_Controller {
             'idDetail' => $id,
             'count_back' => $this->input->post('count_back')
         );
-        $res = $this->Materials_model->register_back($id,$data,$data1);
+        $res = $this->Materials_model->register_back($id, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';
         }
     }
-    
+
     public function unregister_back() {
         $id = $this->input->post('id');
         $idCellar = $this->input->post('idCellar');
         $data = array(
             'idStateCellar' => 1
         );
-        $res = $this->Materials_model->unregister_back($id,$data,$idCellar);
+        $res = $this->Materials_model->unregister_back($id, $data, $idCellar);
         if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';
         }
     }
-    
+
     public function register_materials_back() {
         $idOrder = $this->input->post('idOrder');
         $data = array(
@@ -228,10 +267,10 @@ class Materials extends CI_Controller {
             echo 'error';
         }
     }
-    
-    public function pdf_order_materials($idOrder,$cellar) {
+
+    public function pdf_order_materials($idOrder, $cellar) {
         $data['datos'] = $this->Orders_model->get_order_by_id($idOrder);
-        $data['materials'] = $this->Materials_model->get_data_cellar_order($idOrder,$cellar);
+        $data['materials'] = $this->Materials_model->get_data_cellar_order($idOrder, $cellar);
         $html = $this->load->view('order_materials_report', $data, true);
         $this->generate_pdf($html);
     }

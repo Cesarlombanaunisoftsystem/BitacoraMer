@@ -101,7 +101,7 @@
                                             </div>
                                         </div>
                                         <br><br>
-                                        <form id="miform" method="post" name="miform" action="process_pays">
+                                        <form id="miform" method="post" action="process_pays">
                                             <div class="col-sm-12">
                                                 <div class="col-sm-8"></div>
                                                 <div class="col-sm-4">
