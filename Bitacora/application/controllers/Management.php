@@ -1,0 +1,47 @@
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+header('Access-Control-Allow-Origin: *');
+
+/**
+ * Description of Management
+ *
+ * @author jj
+ */
+class Management extends CI_Controller{
+    public function __construct() {
+        parent::__construct();
+        $this->load->library(array('session'));
+        $this->load->helper(array('url'));
+        $this->load->model(array('Users_model','Orders_model'));
+    }
+
+    public function index() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Gestión';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['totalorders'] = $this->Orders_model->get_total_orders();
+        $data['totalsale'] = $this->Orders_model->get_total_sale();
+        $data['totalcost'] = $this->Orders_model->get_total_cost();
+        /*$data['reg'] = $this->Orders_model->get_orders_time_reg();
+        $data['regouttime'] = $this->Orders_model->get_orders_outtime_regouttime();
+        $data['progvisit'] = $this->Orders_model->get_orders_time_progvisit();
+        $data['progvisitouttime'] = $this->Orders_model->get_orders_outtime_progvisit();
+        $data['regvisitini'] = $this->Orders_model->get_orders_time_regvisitini();
+        $data['regvisitiniouttime'] = $this->Orders_model->get_orders_outtime_regvisitini();*/
+        $this->load->view('admin/management_view', $data);
+    }
+    
+    public function get_times() {
+        $state = $this->input->get('state');
+        $data['reg'] = $this->Orders_model->get_orders_time_reg($state);
+        $data['regouttime'] = $this->Orders_model->get_orders_outtime_regouttime($state);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+}
