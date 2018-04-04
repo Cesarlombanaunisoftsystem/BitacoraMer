@@ -327,12 +327,12 @@
                         '</tbody></table>' +
                         '<table class="table" style="font-size: 12px">' +
                         '<thead><tr><th style="color: #00B0F0">AREA DE SIGUIENTE PASO</th>' +
-                        '<th><input type="text" id="txtArea_' + d + '"></th>' +
+                        '<th><input type="text" id="txtArea_' + d + '" disabled></th>' +
                         '</tr><tr><th style="color: #00B0F0">DOCUMENTOS RELACIONADOS</th>' +
-                        '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photos' + d + '"></th>' +
-                        '<th>PISINM <input type="checkbox" class="disable pisnm' + d + '"></th>' +
-                        '<th>TSS <input type="checkbox" class="disable tss' + d + '"></th>' +
-                        '<th>DOCUMENTO DAS <input type="checkbox" class="disable das' + d + '"></th></tr>' +
+                        '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photos' + d + '" disabled></th>' +
+                        '<th>PISINM <input type="checkbox" class="disable pisnm' + d + '" disabled></th>' +
+                        '<th>TSS <input type="checkbox" class="disable tss' + d + '" disabled></th>' +
+                        '<th>DOCUMENTO DAS <input type="checkbox" class="disable das' + d + '" disabled></th></tr>' +
                         '<tr><th style="color: #00B0F0">OBSERVACIONES DE REGISTRO</th>' +
                         '<th><input type="text" id="txtObsv_' + d + '" disabled></th></tr></table>';
             }
@@ -343,6 +343,7 @@
                             '</td><td>' + res.res.discount +
                             '</td><td>' + res.res.iva + '%</td><td>' + formatNumber(res.res.total) +
                             '</td></tr>');
+                    $("#txtArea_" + idOrder).val(res.res.name_area);
                     $("#txtObsv_" + idOrder).val(res.res.observations);
                     $("#pdf_" + idOrder).html('<a href=' + get_base_url() + 'uploads/' + res.res.picture + ' target="blank">' +
                             '<div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;">' +

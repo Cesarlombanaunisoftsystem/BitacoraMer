@@ -26,5 +26,12 @@ class Activities extends CI_Controller {
             echo '<option>Seleccionar Servicio</option> ' . $options;
         }
     }
+    
+    public function get_activities_materials() {
+        $idOrder = $this->input->get('idOrder');
+        $data['activitie'] = $this->Activities_model->get_activities_materials_order($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
 }

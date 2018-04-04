@@ -202,6 +202,7 @@ class Orders extends CI_Controller {
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
+                    'idAreaSend' => $veryState['idArea'],
                     'idCoordinatorExt' => $this->input->post('idCoordinatorExt'),
                     'idCoordinatorInt' => $this->input->post('idCoordinatorInt'),
                     'idTechnicals' => $this->input->post('idTech'),

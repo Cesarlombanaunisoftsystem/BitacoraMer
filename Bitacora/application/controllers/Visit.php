@@ -185,7 +185,6 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Registro de datos visitas inicial al sitio';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['activities'] = $this->Activities_model->get_activities_xtype(1);
         $data['visits'] = $this->Visits_model->get_orders_assign_technics();
         $data['process'] = $this->Visits_model->get_orders_visit_process($id_user,4);
         $this->load->view('visit_init_register_data_view', $data);

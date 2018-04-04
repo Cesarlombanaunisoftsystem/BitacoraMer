@@ -20,6 +20,22 @@ class Activities_model extends CI_Model {
         }
     }
     
+    public function get_activities_materials_order($id) {
+        $this->db->select('tbl_orders.idOrderType,tbl_activities.*');            
+        $this->db->from('tbl_activities');
+        $this->db->join('tbl_orders', 'tbl_activities.idOrderCategory = tbl_orders.idOrderType');
+        $this->db->where('tbl_orders.id', $id);
+        $this->db->where('tbl_activities.id', 22);
+        $this->db->or_where('tbl_activities.id', 34);
+        $this->db->or_where('tbl_activities.id', 35);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
     public function get_activitie($id) {
         $query = $this->db->get_where('tbl_activities', array('id'=>$id));
         if ($query->num_rows() > 0) {

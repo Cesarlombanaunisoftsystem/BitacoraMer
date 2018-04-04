@@ -36,7 +36,8 @@ class Orders_model extends CI_Model {
             tbl_orders_details.count,tbl_activities.name_activitie,
             tbl_services.name_service,tbl_users.name_user,tbl_users.email,
             tbl_users.identify_number,tbl_users.contact,tbl_users.address,
-            tbl_users.phone FROM tbl_orders JOIN tbl_orders_details
+            tbl_users.phone,tbl_areas.name_area FROM tbl_orders JOIN tbl_areas ON
+            tbl_orders.idAreaSend=tbl_areas.id JOIN tbl_orders_details
             ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
             tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
             tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
@@ -248,6 +249,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('tbl_orders_details.idActivities !=', 22);
         $this->db->where('tbl_orders_details.idOrder', $id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
