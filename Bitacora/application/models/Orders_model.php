@@ -152,6 +152,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->where('tbl_orders.idOrderState >', 1);
         $this->db->where('tbl_orders.idUserProcess', $id);
         $this->db->group_by('tbl_orders.id');
+        $this->db->order_by('tbl_orders.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

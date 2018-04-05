@@ -124,7 +124,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                <select id="selectasign" name="selcellar[]" class="form-control" required="">
+                                                <select id="selectasign" name="selcellarorder" class="form-control" required="">
                                                     <option value="" selected="selected"></option>
                                                     <?php
                                                     if (isset($cellars) && $cellars) {
@@ -179,15 +179,10 @@
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
-                $("#selectasign").hide();                
-                $("#selectasign").attr('disabled',true);
+                $("#selectasign").hide();
+                $("#selectasign").attr('disabled', true);
                 $(".bodega").hide();
                 $("#divOrder").hide();
-                if ($("#chk1").prop("checked") === false && $("#chk2").prop("checked") === false) {
-                    $("#selectasign").hide();
-                    $("#selectasign").attr('disabled',true);
-                    $(".bodega").hide();
-                }
                 $("#btnAplicar").show();
                 $("#btnAplicarProduct").hide();
                 $('#table-regprocess').DataTable({
@@ -222,14 +217,21 @@
                 $("#chk2").prop("checked", false);
                 $("#selectasign").hide();
                 $("#selectasign").removeAttr("required");
-                $("#selectasign").attr('disabled',true);
+                $("#selectasign").attr('disabled', true);                
+                $(".selcellar").attr('disabled', false);                
+                $(".selcellar").attr("required", true);
+                $(".selcellar").show();
                 $(".bodega").show();
             });
 
             $("#chk2").click(function () {
                 $("#chk1").prop("checked", false);
+                $(".selcellar").hide();
+                $(".selcellar").removeAttr("required");
+                $(".selcellar").attr('disabled', true);
                 $("#selectasign").show();
-                $("#selectasign").attr('disabled',false);
+                $("#selectasign").attr('disabled', false);
+                $("#selectasign").attr('required', true);
                 $(".bodega").hide();
                 $(".bodega").removeAttr("required");
             });

@@ -69,7 +69,7 @@ class Materials extends CI_Controller {
         $data['materials'] = $this->Cellars_model->get_materials_cellar(1);
         $this->load->view('cellars_view', $data);
     }
-    
+
     public function get_materials_cellar_mer_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -85,7 +85,7 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user,1);
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 1);
         $this->load->view('cellars_view_process', $data);
     }
 
@@ -107,7 +107,7 @@ class Materials extends CI_Controller {
         $data['materials'] = $this->Cellars_model->get_materials_cellar(2);
         $this->load->view('cellars_view', $data);
     }
-    
+
     public function get_materials_cellar_ext_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -123,7 +123,7 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user,2);
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 2);
         $this->load->view('cellars_view_process', $data);
     }
 
@@ -179,18 +179,30 @@ class Materials extends CI_Controller {
     }
 
     public function assign_x_order() {
-        foreach (array_keys($_POST['id']) as $key) {
-            $id = $_POST['id'][$key];
-            $idOrder = $_POST['idOrder'][$key];
-            $idCellar = $_POST['selcellar'][$key];
-
-            $data = array('idCellar' => $idCellar);
+        if ($this->input->post('selcellarorder')) {
+            foreach (array_keys($_POST['id']) as $key) {
+                $idOrder = $_POST['idOrder'][$key];
+            }
+            $data = array('idCellar' => $this->input->post('selcellarorder'));
             $data1 = array(
                 'idOrderState' => 16,
                 'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateUpdate' => date('Y-m-d H:i:s')
             );
-            $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
+            $res = $this->Materials_model->assign_cellar_x_order($idOrder, $data, $data1);
+        } else {
+            foreach (array_keys($_POST['id']) as $key) {
+                $id = $_POST['id'][$key];
+                $idOrder = $_POST['idOrder'][$key];
+                $idCellar = $_POST['selcellar'][$key];
+                $data = array('idCellar' => $idCellar);
+                $data1 = array(
+                    'idOrderState' => 16,
+                    'idUserProcess' => $this->session->userdata('id_usuario'),
+                    'dateUpdate' => date('Y-m-d H:i:s')
+                );
+                $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
+            }
         }
         if ($res === TRUE) {
             $this->session->set_flashdata('item', array('message' => 'Material asignado a bodega exitosamente', 'class' => 'success'));

@@ -130,16 +130,7 @@
                                         <tr>
                                             <td>
                                                 <input type="hidden" name="idOrder" id="idOrder">
-                                                <select name="idActivities" id="idActivities" class="form form-control">
-                                                    <option></option>
-                                                    <?php if (isset($activities)) { ?>
-                                                        <?php foreach ($activities as $activitie) { ?>
-                                                            <option value="<?= $activitie->id ?>"><?= $activitie->name_activitie ?></option>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </select>
+                                                <div id="selactivities"></div>
                                             </td>
                                             <td>
                                                 <select name="idServices" id="idServices" class="form form-control">
@@ -388,6 +379,7 @@
             function addIdOrder(d) {
                 $("#idOrder").val(d);
                 getMaterials(d);
+                getServicesMaterials(d);
             }
 
             $("#count").change(function () {
@@ -399,6 +391,24 @@
                 $("#vrTotal").val(total);
                 $("#vrTotalCost").val(totalCost);
             });
+
+            function getServicesMaterials(idOrder) {
+                url = get_base_url() + "Activities/get_activities_materials?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#selactivities").html("<select name='idActivities' id='idActivities' class='form form-control' onchange='getServices(this.value)'>" +
+                            "<option>Seleccionar</option><option value='" + res.activitie.id + "'>" +
+                            res.activitie.name_activitie + "</option>" + "</select>");
+                });
+            }
+
+            function getServices(idActivitie) {
+                url = get_base_url() + "Activities/get_services";
+                $.post(url, {
+                    idActivities: idActivitie
+                }, function (data) {
+                    $("#idServices").html(data);
+                });
+            }
 
             function getMaterials(idOrder) {
                 $('#materials').empty();

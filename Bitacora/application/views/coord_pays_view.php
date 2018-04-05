@@ -83,14 +83,14 @@
                                                                 <td><input type="hidden" name="idTech" id="idTech_<?= $row->id ?>" value="<?= $row->idTech ?>"><?= $row->name_user ?></td>
                                                                 <td>PRESUPUESTO</td>
                                                                 <td><?= $row->observations ?></td>                                                
-                                                                <td><input type="hidden" id="costOrder" value="<?= $row->totalCost ?>"><?php
+                                                                <td><input type="hidden" id="costOrder_<?= $row->id ?>" value="<?= $row->totalCost ?>"><?php
                                                                     setlocale(LC_MONETARY, 'es_CO');
                                                                     echo money_format('%.2n', $row->totalCost)
                                                                     ?></td>
                                                                 <td onclick="historyPays(<?php echo $row->id; ?>)" data-toggle="modal" data-target="#modalHistoryPays">
                                                                     <input type="hidden" id="pay_<?= $row->id ?>" value="<?= $ppay ?>"><?= $ppay ?>%</td>
                                                                 <td>
-                                                                    <input type="number" name="percent" id="percent_<?= $row->id ?>" class="form form-control" min="0" max="100" onchange="assignPercent('<?= $row->id ?>')">                                                                    
+                                                                    <input type="number" name="percent" id="percent_<?= $row->id ?>" class="form form-control" min="1" max="100" onchange="assignPercent(this.value,<?= $row->id ?>)">                                                                    
                                                                 </td>
                                                             </tr>
                                                             <?php
@@ -341,18 +341,17 @@
                 });
             }
 
-            function assignPercent(idOrder) {
+            function assignPercent(percent, idOrder) {
                 var max = '100';
                 var pay = $("#pay_" + idOrder).val();
                 var dif = max - pay;
-                var percent = $("#percent_" + idOrder).val();
                 var idTech = $("#idTech_" + idOrder).val();
                 if (percent > dif) {
                     alertify.error('No puedes superar el porcentaje maximo a pagar.');
                     return 0;
                 }
-                var cost = $("#costOrder").val();
-                var value = (cost * percent) / 100;
+                var cost = $("#costOrder_" + idOrder).val();
+                var valor = (cost * percent) / 100;
                 url = get_base_url() + "Audit/assign_percent";
                 $.confirm({
                     title: 'Confirma asignar este porcentaje?',
@@ -362,7 +361,7 @@
                             $.ajax({
                                 url: url,
                                 type: 'POST',
-                                data: {idOrder: idOrder, idTech: idTech, percent: percent, value: value},
+                                data: {idOrder: idOrder, idTech: idTech, percent: percent, valor: valor},
                                 success: function (resp) {
                                     if (resp === "error") {
                                         alertify.error('Error en BBDD');

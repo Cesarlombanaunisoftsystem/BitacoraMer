@@ -160,6 +160,7 @@ class Orders extends CI_Controller {
             'cost' => $this->input->post('cost'),
             'count' => $this->input->post('count'),
             'total' => $this->input->post('total'),
+            'total_cost' => $this->input->post('totalCost'),
             'dateSave' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->add_order_detail($data);

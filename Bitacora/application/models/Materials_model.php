@@ -21,6 +21,8 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
         $this->db->where('tbl_orders_details.idActivities', 22);
+        $this->db->or_where('tbl_orders_details.idActivities', 34);
+        $this->db->or_where('tbl_orders_details.idActivities', 35);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -32,6 +34,23 @@ class Materials_model extends CI_Model {
     public function assign($id, $idOrder, $data, $data1) {
         $this->db->trans_start();
         $this->db->where('id', $id);
+        $this->db->update('tbl_orders_details', $data);
+        $this->db->where('id', $idOrder);
+        $this->db->update('tbl_orders', $data1);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function assign_cellar_x_order($idOrder, $data, $data1) {
+        $this->db->trans_start();
+        $this->db->where('idOrder', $idOrder);
+        $this->db->where('idActivities', 22);
+        $this->db->or_where('idActivities', 34);
+        $this->db->or_where('idActivities', 35);
         $this->db->update('tbl_orders_details', $data);
         $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data1);
@@ -110,7 +129,8 @@ class Materials_model extends CI_Model {
    FROM tbl_cellars
     GROUP BY id) bod
     ON tbl_orders_details.idCellar= bod.id
-    WHERE tbl_orders_details.idOrder = '$order' AND tbl_orders_details.idActivities = 22
+    WHERE tbl_orders_details.idOrder = '$order' AND
+        (tbl_orders_details.idActivities = 22 OR tbl_orders_details.idActivities = 34 OR tbl_orders_details.idActivities = 35)
     AND tbl_orders_details.idCellar = '$cellar'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
@@ -130,6 +150,8 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
         $this->db->where('tbl_orders_details.idActivities', 22);
+        $this->db->or_where('tbl_orders_details.idActivities', 34);
+        $this->db->or_where('tbl_orders_details.idActivities', 35);
         $this->db->where('tbl_orders_details.idCellar', $cellar);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -149,6 +171,8 @@ class Materials_model extends CI_Model {
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
         $this->db->where('tbl_orders_details.idActivities', 22);
+        $this->db->or_where('tbl_orders_details.idActivities', 34);
+        $this->db->or_where('tbl_orders_details.idActivities', 35);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
