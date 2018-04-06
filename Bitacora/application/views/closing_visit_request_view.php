@@ -199,8 +199,8 @@
                                                     foreach ($registers as $row) {
                                                         ?>                                            
                                                         <tr>
-                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->dateAssign ?></a></td>
-                                                            <td><?= $row->uniquecode ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></td>
+                                                            <td><?= $row->dateAssign ?></td>
+                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->name_service ?></td>

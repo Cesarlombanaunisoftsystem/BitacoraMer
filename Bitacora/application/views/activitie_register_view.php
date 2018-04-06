@@ -135,7 +135,8 @@
                                                         <td>&nbsp;
                                                             <label id="lblCost"></label>
                                                             <input type="hidden" name="idOrderDaily" id="lblcCost">
-                                                            <input type="hidden" name="uniquecode" id="uniquecode">                                                            
+                                                            <input type="hidden" name="uniquecode" id="uniquecode">
+                                                            <input type="hidden" name="attendant" id="attendant">                                                            
                                                         </td>
                                                     </tr>
                                                     <tr style="font-size: 12px;">
@@ -216,7 +217,7 @@
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="divAttendant">
                                                 <p style="color: #00B0F0">
                                                     REQUIERE ATENCIÓN INMEDIATA DE COORDINADOR
-                                                    <input type="checkbox" name="attendant" id="attendant">
+                                                    <input type="checkbox" name="chkattendant" id="chkattendant">
                                                 </p>                                                
                                             </div>                                            
                                             <div class="col-sm-7"></div>
@@ -378,10 +379,13 @@
             $("#typegest").change(function () {
                 var gest = $("#typegest").val();
                 if (gest === '2') {
-                    $("#attendant").prop("checked", true);
+                    $("#chkattendant").prop("checked", true);
+                    $("#chkattendant").prop("disabled", true);
+                    $("#chkattendant").val(1);
                     $("#attendant").val(1);
                 } else {
-                    $("#attendant").prop("checked", false);
+                    $("#chkattendant").prop("checked", false);
+                    $("#chkattendant").val(0);
                     $("#attendant").val(0);
                 }
                 if (gest === '4' || gest === '5') {
@@ -394,11 +398,13 @@
             }
             );
 
-            $("#attendant").change(function () {
-                var val = $("#attendant").prop("checked");
+            $("#chkattendant").change(function () {
+                var val = $("#chkattendant").prop("checked");
                 if (val === true) {
+                    $("#chkattendant").val(1);
                     $("#attendant").val(1);
                 } else {
+                    $("#chkattendant").val(0);
                     $("#attendant").val(0);
                 }
             }
