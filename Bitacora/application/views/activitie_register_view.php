@@ -563,18 +563,21 @@
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
                             $(".pisnm").removeClass("disable");
+                            $(".pisnm").removeAttr("disabled");
                             $(".pisnm").addClass("pointer");
                             $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file);
                             $("#obsvPsinm").val(doc.observation);
                         }
                         if (doc.idTypeDocument === "3") {
                             $(".tss").removeClass("disable");
+                            $(".tss").removeAttr("disabled");
                             $(".tss").addClass("pointer");
                             $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file);
                             $("#obsvTss").val(doc.observation);
                         }
                         if (doc.idTypeDocument === "7") {
                             $(".docs").removeClass("disable");
+                            $(".docs").removeAttr("disabled");
                             $(".docs").addClass("pointer");
                             $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file);
                         }
@@ -585,6 +588,7 @@
                             html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
                             html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
                             $(".photo").removeClass("disable");
+                            $(".photo").removeAttr("disabled");
                             $(".photo").addClass("pointer");
                             $("#obsvRegPic").val(doc.observation);
                             $(".slides").prepend(html);
@@ -595,17 +599,17 @@
                 });
                 $("#bodyRegisters").html('<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr><td><label class="blue bold upload_design">' +
-                        '<a class="disable photos photo">VER REGISTRO FOTOGRAFICO</a></label>' +
+                        '<a class="disable photos photo" disabled>VER REGISTRO FOTOGRAFICO</a></label>' +
                         '<td>OBSERVACIONES</td>'
                         + '<td><input type="text" class="form-control" size=40 id="obsvRegPic" readonly><td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm">' +
+                        '</tr><tr><td><label class="blue bold upload_design" disabled><a target="_blank" class="disable pisnm">' +
                         'VER FORMATO 1</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss">VER FORMATO 2</a></label>' +
+                        '</tr><tr><td><label class="blue bold upload_design" disabled><a target="_blank" class="disable tss">VER FORMATO 2</a></label>' +
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss" readonly></td>' +
                         '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
                         '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
-                        '<tr><td></td><td><a href="#" target="_blank" class="disable docs">' +
-                        '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
+                        '<tr><td></td><td><a target="_blank" class="disable docs">' +
+                        '<button type="button" class="btn btn-default" disabled>Ver Adjuntos</button></a></td></tr>' +
                         '</table>');
             }
         </script>

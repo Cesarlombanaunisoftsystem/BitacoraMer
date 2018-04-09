@@ -59,7 +59,7 @@ class Visit extends CI_Controller {
                 'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
                 'idUserProcess' => $this->session->userdata('id_usuario'),
-                'dateUpdate' => date('Y-m-d H:i:s'));
+                'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -81,7 +81,7 @@ class Visit extends CI_Controller {
                 'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
                 'idUserProcess' => $this->session->userdata('id_usuario'),
-                'dateUpdate' => date('Y-m-d H:i:s'));
+                'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
@@ -101,7 +101,7 @@ class Visit extends CI_Controller {
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'dateUpdate' => date('Y-m-d H:i:s'));
+            'dateAssign' => date('Y-m-d H:i:s'));
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';

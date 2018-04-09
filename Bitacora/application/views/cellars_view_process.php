@@ -129,14 +129,14 @@
                                             </tbody>
                                         </table>
                                         <br><br>
-                                        <div class="row">                                                
+                                        <!--<div class="row">                                                
                                             <div class="col-sm-12">
                                                 <div class="col-sm-8"></div>
                                                 <div class="col-sm-4">
                                                     <button type="button" id="btnentregar" class="form-control btn btn-default color-blue" onclick="register_x_order_process();"><b>ENTREGAR</b></button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -182,10 +182,10 @@
                     $.each(respuestaServer["materials"], function (i, materials) {
                         stateCellar = materials.idStateCellar;
                         if (stateCellar === '1') {
-                            check = '<input type="checkbox" checked onclick="unregister(' + materials.id + ')">';
+                            check = '<input type="checkbox" checked disabled>';
                             color = '#555555';
                         } else {
-                            check = '<input type="checkbox" onclick="register(' + materials.id + ')">';
+                            check = '<input type="checkbox" disabled>';
                             color = '#FEAE4E';
                         }
                         $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +

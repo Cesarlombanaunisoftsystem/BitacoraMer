@@ -214,14 +214,15 @@
                                     <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes fuera de tiempo: <strong><?php $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
                                                         $q = $this->db->query($sql)->row();
-                                                        
-                                                        echo $q->cont;?></strong></p>
+                                                        $conint = $q->cont;
+                                                        echo $conint;?></strong></p>
                                     <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes dentro de tiempo: <strong><?php $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
                                                         $query = $this->db->query($sql)->row();
-                                                        
-                                                        echo $query->cont;?></strong></p>
-                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% de ordenes fuera de tiempo: <strong></strong></p>
+                                                        $contout = $query->cont;
+                                                        echo $contout;?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% de ordenes fuera de tiempo: <strong>
+                                        <?php $percentOut = ($contout*100)/$totalorders->total; echo round($percentOut, 2) . '%';?></strong></p>
                                 </div>
                                 <div class="col-xs-6">
                                     <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor total venta: <strong><?php
@@ -301,8 +302,7 @@
                                                         $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
             ON tbl_orders.idOrderState = tbl_orders_state.id WHERE tbl_orders.idOrderState='$i' and
             DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
-                                                        $query = $this->db->query($sql)->row();
-                                                        
+                                                        $query = $this->db->query($sql)->row();                                                        
                                                         echo $query->cont;
                                                         ?></a>
                                                 </div>

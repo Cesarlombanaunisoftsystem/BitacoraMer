@@ -26,85 +26,70 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Projects/closing_visit_request')?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Projects/closing_visit_request_process')?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Projects/closing_visit_request')?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Projects/closing_visit_request_process')?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
                                     </ul>
                                 </div>
                             </div>                            
                         </div>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="bandeja">
-                                <div class="row">
+                            <div role="tabpanel" class="tab-pane active" id="process">
+                                <div class="row" id="panelsup">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/projects.png') ?>" style="width: 120px;">
+                                        <img src="<?= base_url('dist/img/gestion.png') ?>" style="width: 120px;">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table class="table table-striped">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active"><a href="#" style="color: #00B0F0"><b>PROYECTOS</b></a></li>                                            
+                                        </ul>
+                                        <table id="data-table" class="table table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th style="color: #00B0F0">Fecha de Asignación</th>
-                                                    <th style="color: #00B0F0">No. Ordén</th>
-                                                    <th style="color: #00B0F0">Centro de Costos</th>
-                                                    <th style="color: #00B0F0">Actividad</th>
-                                                    <th style="color: #00B0F0">Servicio</th>
-                                                    <th style="color: #00B0F0">Para Gestionar</th>
-                                                    <th style="color: #00B0F0">Acción</th>
+                                                    <td style="color: #00B0F0">Fecha de asignación</td>
+                                                    <td style="color: #00B0F0">No. Ordén</td>
+                                                    <td style="color: #00B0F0">Centro de Costos</td>
+                                                    <td style="color: #00B0F0">Actividad</td>
+                                                    <td style="color: #00B0F0">Servicio</td>
+                                                    <td style="color: #00B0F0">Cantidad</td>
+                                                    <td style="color: #00B0F0">Sitio</td>
+                                                    <td style="color: #00B0F0">Gestión</td>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
                                                 <?php
-                                                if (isset($projects) && $projects) {
-                                                    foreach ($projects as $row) {
+                                                if (isset($registers) && $registers) {
+                                                    foreach ($registers as $row) {
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
-                                                            <td><a href="#" onclick="verDetalleReg(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
-                                                            <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
+                                                            <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->name_service ?></td>
-                                                            <td><?= $row->type ?></td>
-                                                            <?php if ($row->id_type_management === '2') { ?>                                                  
-                                                                <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="register(<?= $row->id ?>)">
-                                                                        <option></option>
-                                                                        <option value="0">
-                                                                            Asignar Visita de Cierre
-                                                                        </option>
-                                                                        <option value="1">
-                                                                            Devolución Visita de Cierre
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                            <?php } if ($row->type === '3') { ?>                                                            
-                                                                <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="registerAudit(<?= $row->id ?>)">
-                                                                        <option></option>
-                                                                        <option value="4">
-                                                                            ACEPTACIÓN AUD. VISITA DE CIERRE
-                                                                        </option>
-                                                                        <option value="5">
-                                                                            RECHAZO AUD. VISITA DE CIERRE
-                                                                        </option>
-                                                                    </select>
-                                                                </td>
-                                                            <?php } if ($row->type === '6') { ?>                                                            
-                                                                <td>
-                                                                </td>
-                                                            <?php } ?>
+                                                            <td><?= $row->count ?></td>
+                                                            <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                
+                                                            <td><div class="progress">
+                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= $row->gestion ?>%">
+                                                                        <?= $row->gestion ?>%
+                                                                    </div>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                         <?php
                                                     }
                                                 }
-                                                ?>
+                                                ?>  
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row" id="detallereg" hidden="">
+                                <div class="row" id="panelinferior" hidden="">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
-                                            &nbsp;&nbsp;<a href="#" onclick="gestionReg();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
+                                            &nbsp;&nbsp;<a href="#" onclick="gestion();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
                                         </ul>
                                         <table  id="" class="table table-striped">
                                             <thead>
@@ -116,13 +101,14 @@
                                                     <td style="color: #00B0F0">Gestión</td>
                                                 </tr>                                   
                                             </thead>
-                                            <tbody id="bodyDetalleReg">  
+                                            <tbody id="bodyPanelGestion">  
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="row" id="gestionreg" hidden="">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                       
+                                <div class="row" id="gestiondeavance" hidden="">
+                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                        <img src="<?= base_url('dist/img/gestion.png') ?>" style="width: 120px;">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <ul class="nav nav-tabs nav-justified">
@@ -132,21 +118,48 @@
                                                     <b>GESTIÓN DE AVANCE</b></a></li>
                                             <li><a href="#" style="color: white">.</a></li>
                                         </ul>
-                                        <br><br>                                                                              
-                                        <form id="frmRegisterDaily" enctype="multipart/form-data"> 
-                                            <input type="hidden" name="idOrderDaily" id="idOrderReg">
+                                        <br><br>
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <table>
+                                                <tr>
+                                                    <td>No. ORDEN: <label id="lblOrder"></label></td>
+                                                </tr>
+                                            </table>
+                                        </div>                                        
+                                        <form id="frmRegisterDaily" enctype="multipart/form-data">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <table>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Centro de Costos |</td>
+                                                        <td>&nbsp;
+                                                            <label id="lblCost"></label>
+                                                            <input type="hidden" name="idOrderDaily" id="lblcCost">                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Actividad &nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;|</td>
+                                                        <td>&nbsp;<label id="lblActiv"></label></td>
+                                                    </tr>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Sitio &nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;|</td>
+                                                        <td>&nbsp;<label id="lblSite"></label></td>
+                                                    </tr>
+                                                </table>                                            
+                                            </div><br><br><br><br>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                 <p style="color: #00B0F0">TIPO DE GESTIÓN</p>
                                             </div>
                                             <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <select class="form form-control" name="typegest" id="typegest">
                                                     <?php foreach ($types as $value) { ?>
-                                                        <?php if ($value->id > 3) { ?>
-                                                            <option value="<?= $value->id ?>"><?= $value->type ?></option>
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
+                                                        <option value="<?= $value->id ?>"><?= $value->type ?></option>
+                                                    <?PHP } ?>
                                                 </select>
                                             </div><br><br>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
@@ -154,15 +167,47 @@
                                             </div>
                                             <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <textarea class="form form-control" name="detailgest" id="detailgest" required=""></textarea>
-                                            </div><br><br><br><br>  
-                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">                                                
-                                            </div> 
+                                            </div><br><br><br>
                                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <p style="color: #00B0F0">% AVANCE EJECUCIÓN</p>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="progress">
+                                                    <div id="percentexe" class="progress-bar progress-bar-warning" style="width: 0%">
+                                                        0%
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="valpercentexe" id="valpercentexe">
+                                            </div>
+                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
+                                                <i class="fa fa-sort-up" onclick="upexe();"></i><i class="fa fa-sort-down" onclick="downexe();"></i>
+                                            </div><br><br>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <p style="color: #00B0F0">% CONSUMO DE MATERIALES</p>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="progress">
+                                                    <div id="percentmat" class="progress-bar progress-bar-warning" style="width: 0%"> 
+                                                        0%
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="valpercentmat" id="valpercentmat">
+                                            </div>
+                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
+                                                <i class="fa fa-sort-up" onclick="upmat();"></i><i class="fa fa-sort-down" onclick="downmat();"></i>
+                                            </div>
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                 <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
                                                     ADJUNTAR IMAGEN</label>   
                                                 <p id="datofile"></p>
-                                                <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048" multiple>
-                                            </div><br><br><br><br>                                            
+                                                <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048">
+                                            </div><br><br><br>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <p style="color: #00B0F0">
+                                                    REQUIERE ATENCIÓN INMEDIATA DE COORDINADOR
+                                                    <input type="checkbox" name="attendant" id="attendant">
+                                                </p>                                                
+                                            </div>                                            
                                             <div class="col-sm-7"></div>
                                             <div class="col-sm-3">
                                                 <button type="submit" class="form-control btn btn-success"><b>REGISTRAR AVANCE</b></button>
@@ -170,7 +215,7 @@
                                         </form>                                        
                                     </div>                                    
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -60,7 +60,7 @@
                                     if ($visits) {
                                         foreach ($visits as $visit) {
                                             if ($visit->date != NULL) {
-                                                $date = '<input type="date" class="form form-control" id="date_' . $visit->id . '"  min="' . date("Y-m-d") . '" value="' . $visit->date . '" required>';
+                                                $date = '<input type="date" class="form form-control" id="date_' . $visit->id . '"  min="' . date("Y-m-d") . '" value="' . $visit->dateAssign . '" required>';
                                             } else {
                                                 $date = '<input type="date" class="form form-control" id="date_' . $visit->id . '"  min="' . date("Y-m-d") . '" required>';
                                             }

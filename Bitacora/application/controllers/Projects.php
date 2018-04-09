@@ -31,7 +31,6 @@ class Projects extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Mis Proyectos';
         $id_user = $this->session->userdata('id_usuario');
-        $data['types'] = $this->Projects_model->get_types_management();
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_management();
         $this->load->view('activitie_init_view', $data);
@@ -45,7 +44,7 @@ class Projects extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Mis Proyectos';
         $id_user = $this->session->userdata('id_usuario');
-        $data['types'] = $this->Projects_model->get_types_management();
+        $data['types'] = $this->Projects_model->get_types_management(1);
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('activitie_register_view', $data);
@@ -330,11 +329,26 @@ class Projects extends CI_Controller {
         $data['profile'] = $this->session->userdata('perfil');
         $data['titulo'] = 'Mis Proyectos';
         $id_user = $this->session->userdata('id_usuario');
-        $data['types'] = $this->Projects_model->get_types_management();
+        $data['types'] = $this->Projects_model->get_types_management(0);
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['projects'] = $this->Projects_model->get_daily_managements();
+        $data['projects'] = $this->Projects_model->get_daily_managements($id_user);
         $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('closing_visit_request_view', $data);
+    }
+    
+    public function closing_visit_request_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Mis Proyectos';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['types'] = $this->Projects_model->get_types_management(0);
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['projects'] = $this->Projects_model->get_daily_managements($id_user);
+        $data['registers'] = $this->Projects_model->get_daily_management_contract();
+        $this->load->view('closing_visit_request_process_view', $data);
     }
 
     public function mark_closing_visit() {

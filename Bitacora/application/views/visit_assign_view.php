@@ -68,7 +68,7 @@
                                                 <td><?= $visit->site ?></td>
                                                 <td><?= $visit->observations ?></td>
                                                 <td><?= $visit->name_user ?></td>
-                                                <td><?= $visit->date ?></td>
+                                                <td><?= $visit->dateAssign ?></td>
                                             </tr>                                                                                    
                                         <?php }
                                     } ?>                                                                         

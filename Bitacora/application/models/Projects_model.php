@@ -149,8 +149,8 @@ class Projects_model extends CI_Model {
             return FALSE;
         }
     }
-    
-    public function register_data_close_visit_process($state,$id) {
+
+    public function register_data_close_visit_process($state, $id) {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
@@ -200,7 +200,7 @@ class Projects_model extends CI_Model {
         }
     }
 
-    public function get_daily_managements() {
+    public function get_daily_managements($idCoordInt) {
         $sql = "SELECT tbl_orders.*, details.idActivities, act.name_activitie,
             serv.name_service, typeGest.type
     FROM tbl_orders
@@ -222,7 +222,7 @@ class Projects_model extends CI_Model {
     GROUP BY id) typeGest
     ON tbl_orders.id_type_management = typeGest.id
     where tbl_orders.idArea = 3 AND
-    (tbl_orders.idOrderState = 18) ";
+    (tbl_orders.idOrderState = 19) AND tbl_orders.idCoordinatorInt=$idCoordInt";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -340,8 +340,9 @@ class Projects_model extends CI_Model {
         }
     }
 
-    public function get_types_management() {
-        $query = $this->db->get('tbl_type_management');
+    public function get_types_management($param) {
+        $sql = "SELECT * FROM tbl_type_management WHERE typeUser != $param";
+        $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
         } else {
