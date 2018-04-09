@@ -489,6 +489,7 @@
             }
 
             function verPanelInferior(idOrder) {
+                $("#bodyPanelGestion").empty();
                 $("#panelinferior").show();
                 var order = $("#norder_" + idOrder).val();
                 var ccost = $("#ccost_" + idOrder).val();
