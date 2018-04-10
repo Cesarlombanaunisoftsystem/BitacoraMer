@@ -79,7 +79,7 @@ class Projects extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function register_back_materials() {
         $id = $this->input->post('id');
         $countback = $this->input->post('countBack');
@@ -131,10 +131,12 @@ class Projects extends CI_Controller {
         $order = $this->Orders_model->get_order_by_id($idOrder);
         $idcoordinator = $order->idCoordinatorInt;
         $coordinator = $this->Users_model->get_user_xid($idcoordinator);
+        $titulo = "";
+        $user = "";
         if ($attendant === '1') {
-            $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $uniquecode, 'templates/email_coordinator.php', $content);
+            $this->Utils->sendMail($coordinator->email, 'Atención a Gestión Contratista, Orden No:' . $uniquecode, 'templates/email_coordinator.php', $user, $content, $order, $titulo);
         }
-        
+
         if (isset($_FILES['userfile']['name'])) {
             $file = $_FILES['userfile']['name'];
             $quantity = count($file);
@@ -335,7 +337,7 @@ class Projects extends CI_Controller {
         $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('closing_visit_request_view', $data);
     }
-    
+
     public function closing_visit_request_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');

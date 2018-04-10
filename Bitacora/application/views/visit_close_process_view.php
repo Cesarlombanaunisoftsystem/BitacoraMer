@@ -156,23 +156,39 @@
                     $.each(respuestaServer["docs"], function (i, doc) {
                         $("#date" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument === "2") {
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".pisnm" + idOrder).attr("target", "_blank");
-                            $(".pisnm" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".pisnm" + idOrder).attr("target", "_blank");
+                                $(".pisnm" + idOrder).removeClass("disable");
+                            } else {
+                                $(".pisnm" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "3") {
-                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".tss" + idOrder).attr("target", "_blank");
-                            $(".tss" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".tss" + idOrder).attr("target", "_blank");
+                                $(".tss" + idOrder).removeClass("disable");
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "1") {
-                            $(".photo" + idOrder).removeClass("disable");
-                            $(".photo" + idOrder).addClass("pointer");
+                            if (doc.idState !== '0') {
+                                $(".photo" + idOrder).removeClass("disable");
+                                $(".photo" + idOrder).addClass("pointer");
+                            } else {
+                                $(".photo" + idOrder).css("color", "red");
+                            }
                         }
-                        if (doc.idTypeDocument === "7") {
-                            $(".docs" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".docs" + idOrder).attr("target", "_blank");
-                            $(".docs" + idOrder).removeClass("disable");
+                        if (doc.idTypeDocument === "7" && doc.file !== "") {
+                            if (doc.idState !== '0') {
+                                $(".docs" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".docs" + idOrder).attr("target", "_blank");
+                                $(".docs" + idOrder).removeClass("disable");
+                            } else {
+                                $(".docs" + idOrder).css("color", "red");
+                            }
                         }
                     });
                 });

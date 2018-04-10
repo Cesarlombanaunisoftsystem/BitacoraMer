@@ -385,6 +385,7 @@
                     $("#attendant").val(1);
                 } else {
                     $("#chkattendant").prop("checked", false);
+                    $("#chkattendant").prop("disabled", false);
                     $("#chkattendant").val(0);
                     $("#attendant").val(0);
                 }
@@ -563,38 +564,54 @@
                     var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
-                            $(".pisnm").removeClass("disable");
-                            $(".pisnm").removeAttr("disabled");
-                            $(".pisnm").addClass("pointer");
-                            $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file);
-                            $("#obsvPsinm").val(doc.observation);
+                            if (doc.idState !== '0') {
+                                $(".pisnm").removeClass("disable");
+                                $(".pisnm").removeAttr("disabled");
+                                $(".pisnm").addClass("pointer");
+                                $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file);
+                                $("#obsvPsinm").val(doc.observation);
+                            } else {
+                                $(".pisnm" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "3") {
-                            $(".tss").removeClass("disable");
-                            $(".tss").removeAttr("disabled");
-                            $(".tss").addClass("pointer");
-                            $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file);
-                            $("#obsvTss").val(doc.observation);
+                            if (doc.idState !== '0') {
+                                $(".tss").removeClass("disable");
+                                $(".tss").removeAttr("disabled");
+                                $(".tss").addClass("pointer");
+                                $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file);
+                                $("#obsvTss").val(doc.observation);
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "7") {
-                            $(".docs").removeClass("disable");
-                            $(".docs").removeAttr("disabled");
-                            $(".docs").addClass("pointer");
-                            $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file);
+                            if (doc.idState !== '0') {
+                                $(".docs").removeClass("disable");
+                                $(".docs").removeAttr("disabled");
+                                $(".docs").addClass("pointer");
+                                $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file);
+                            } else {
+                                $(".docs" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "1") {
-                            var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
-                            html += '<li class="slide-container"><div class="slide">';
-                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
-                            html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
-                            html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
-                            $(".photo").removeClass("disable");
-                            $(".photo").removeAttr("disabled");
-                            $(".photo").addClass("pointer");
-                            $("#obsvRegPic").val(doc.observation);
-                            $(".slides").prepend(html);
-                            galery = true;
-                            pos++;
+                            if (doc.idState !== '0') {
+                                var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                                html += '<li class="slide-container"><div class="slide">';
+                                html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
+                                html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                                html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                                $(".photo").removeClass("disable");
+                                $(".photo").removeAttr("disabled");
+                                $(".photo").addClass("pointer");
+                                $("#obsvRegPic").val(doc.observation);
+                                $(".slides").prepend(html);
+                                galery = true;
+                                pos++;
+                            } else {
+                                $(".photo" + idOrder).css("color", "red");
+                            }
                         }
                     });
                 });

@@ -66,7 +66,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
-                                                <td><?= $order->uniquecode.'-'.$order->coi ?></td>
+                                                <td><?= $order->uniquecode . '-' . $order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
                                                 <td><?= $order->name_service ?></td>
@@ -74,7 +74,7 @@
                                                 <td><?= $order->site ?></td>
                                                 <td><?= $order->name_user ?></td>
                                             </tr> 
-                                        <?php
+                                            <?php
                                         }
                                     }
                                     ?> 
@@ -119,11 +119,11 @@
                 <!-- Modal Observaciones-->
             </div>
             <!-- /.content-wrapper -->
-<?php $this->load->view('templates/footer.html') ?>
+            <?php $this->load->view('templates/footer.html') ?>
         </div>
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
-<?php $this->load->view('templates/js') ?>
+        <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
             $(function () {
                 $(document).on("click", ".photos", function () {
@@ -163,7 +163,7 @@
                         '</tr>' +
                         '</table></form>';
             }
-            
+
             function getObservations(idOrder) {
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
@@ -171,30 +171,55 @@
                     $("#obsv").html(res.observation.observations);
                 });
             }
-            
+
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
                         $("#date" + idOrder).html(doc.dateSave);
-                        if (doc.idTypeDocument == "2") {
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
-                            $(".pisnm" + idOrder).attr("target", "_blank");
-                            $(".pisnm" + idOrder).removeClass("disable");
+                        if (doc.idTypeDocument === "2") {
+                            if (doc.idState !== '0') {
+                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".pisnm" + idOrder).attr("target", "_blank");
+                                $(".pisnm" + idOrder).removeClass("disable");
+                            } else {
+                                $(".pisnm" + idOrder).css("color", "red");
+                            }
                         }
-                        if (doc.idTypeDocument == "3") {
-                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
-                            $(".tss" + idOrder).attr("target", "_blank");
-                            $(".tss" + idOrder).removeClass("disable");
+                        if (doc.idTypeDocument === "3") {
+                            if (doc.idState !== '0') {
+                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".tss" + idOrder).attr("target", "_blank");
+                                $(".tss" + idOrder).removeClass("disable");
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
                         }
-                        if (doc.idTypeDocument == "6") {
-                            $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file)
-                            $(".design" + idOrder).attr("target", "_blank");
-                            $(".design" + idOrder).removeClass("disable");
+                        if (doc.idTypeDocument === "4") {
+                            if (doc.idState !== '0') {
+                                $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".das" + idOrder).attr("target", "_blank");
+                                $(".das" + idOrder).removeClass("disable");
+                            } else {
+                                $(".das" + idOrder).css("color", "red");
+                            }
                         }
-                        if (doc.idTypeDocument == "1") {
-                            $(".photo" + idOrder).removeClass("disable");
-                            $(".photo" + idOrder).addClass("pointer");
+                        if (doc.idTypeDocument === "6") {
+                            if (doc.idState !== '0') {
+                                $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".design" + idOrder).attr("target", "_blank");
+                                $(".design" + idOrder).removeClass("disable");
+                            } else {
+                                $(".design" + idOrder).css("color", "red");
+                            }
+                        }
+                        if (doc.idTypeDocument === "1") {
+                            if (doc.idState !== '0') {
+                                $(".photo" + idOrder).removeClass("disable");
+                                $(".photo" + idOrder).addClass("pointer");
+                            } else {
+                                $(".photo" + idOrder).css("color", "red");
+                            }
                         }
                     });
                 });

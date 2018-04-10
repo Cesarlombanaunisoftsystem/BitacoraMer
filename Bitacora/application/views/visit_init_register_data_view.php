@@ -39,7 +39,7 @@
                         <div role="tabpanel" class="tab-pane active" id="bandeja">
                             <div class="row">
                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <img src="<?= base_url('dist/img/visitini.png') ?>" style="width: 120px;">
+                                    <img src="<?= base_url('dist/img/visitini.png') ?>" style="width: 100%;">
                                 </div>
                                 <input type="hidden" id="id" value=""/>
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
@@ -72,7 +72,7 @@
                                                         <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                         <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $visit->id ?>)"><?= $visit->name_activitie ?></a></td>
                                                         <td><?= $visit->name_service ?></td>
-                                                        <td><?= $visit->count ?></td>
+                                                        <td class="text-center"><?= $visit->count ?></td>
                                                         <td><?= $visit->site ?></td>
                                                         <td><?= $visit->name_user ?></td>
                                                     </tr> 
@@ -90,55 +90,53 @@
                 <!-- /.content -->  
                 <!-- Modal Materiales-->
                 <div id="modalMaterials" class="modal fade" role="dialog">
-                    <div class="modal-dialog" style="width: 80%;">
+                    <div class="modal-dialog">
                         <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>MATERIALES</b></h3>                                
+                        <div class="modal-content modal-lg">
+                            <div class="modal-header">        
+                                <a class="pull-right" data-dismiss="modal" style="cursor: pointer;">
+                                    <i class="fa fa-close"></i>
+                                </a>
+
+                                <h3 class="modal-title title-modals-visit" ><b>MATERIALES</b></h3>                                
                             </div>
                             <div class="modal-body">
-                                <div class="row">
-                                    <form class="form-horizontal" id="frmMaterials" method="post">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th style="background-color: #00B1EB; color: white">CATEGORIA</th>
-                                                    <th style="background-color: #00B1EB; color: white">PRODUCTO</th>
-                                                    <th style="background-color: #00B1EB; color: white">CANTIDAD</th>
-                                                    <th style="background-color: #00B1EB; color: white">Unidad de Medida</th>
-                                                    <th style="background-color: #00B1EB; color: white">OPCION</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <input type="hidden" name="idOrder" id="idOrder">
-                                                        <div id="selactivities"></div>
-                                                    </td>
-                                                    <td>
-                                                        <select name="idServices" id="idServices" class="form form-control">
-                                                        </select>
-                                                    </td>
-                                                    <td><input type="number" name="count" id="count" class="form form-control"></td>
-                                                    <td><div id="unit_measurement"></div>
-                                                        <div id="price" style="display:none"></div>
-                                                        <input type="hidden" name="total" id="vrTotal"/>
-                                                        <input type="hidden" name="totalCost" id="vrTotalCost"/>
-                                                    </td>
-                                                    <td><a href="javascript:addMaterials()"><i class="fa fa-plus-circle fa-2x" style="color: blue"></i></a>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="materials">
-                                            </tbody>
-                                        </table> 
-                                        <div class="col-xs-12">
-                                            <div class="center block text-center">
-                                                <button type="button" class="btn btn-lg btn-default color-blue pull-right" style="margin-top: 30px;" onclick="register()">Registrar</button>
-                                            </div>
-                                        </div>
-                                    </form>                                     
-                                    <hr style="border-color: #00B1EB">
-                                    <p>Bitácora</p>
-                                </div>                   
+                                <form class="form-horizontal" id="frmMaterials" method="post">
+                                    <table class="table table-bordered text-center">
+                                        <thead>
+                                            <tr>
+                                                <th class="th-head-modals">CATEGORIA</th>
+                                                <th  class="th-head-modals">PRODUCTO</th>
+                                                <th  class="th-head-modals">CANTIDAD</th>
+                                                <th  class="th-head-modals">Unidad de Medida</th>
+                                                <th  class="th-head-modals">OPCION</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="idOrder" id="idOrder">
+                                                    <div id="selactivities"></div>
+                                                </td>
+                                                <td>
+                                                    <select name="idServices" id="idServices" class="form form-control">
+                                                    </select>
+                                                </td>
+                                                <td><input type="number" name="count" id="count" class="form form-control"></td>
+                                                <td><div id="unit_measurement"></div>
+                                                    <div id="price" style="display:none"></div>
+                                                    <input type="hidden" name="total" id="vrTotal"/>
+                                                    <input type="hidden" name="totalCost" id="vrTotalCost"/>
+                                                </td>
+                                                <td><a href="javascript:addMaterials()"><i class="fa fa-plus-circle fa-2x" style="color: #006e92"></i></a>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="materials">
+                                        </tbody>
+                                    </table> 
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-lg btn-default pull-right color-btn-modal"  onclick="register()">Registrar</button>      
                             </div>
                         </div>
                     </div>
@@ -220,26 +218,26 @@
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>' +
                             '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input class="photo' + d + '" style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto[]" id="fileregfoto" multiple disabled></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable photos photo' + d + ' form-control" name="obsvRegPic"><td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable photos photo' + d + ' form-control" name="obsvRegPic" disabled><td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="filepisnm"><a class="disable pisnm' + d + '">ADJUNTAR FORMATO PISNM</a></label>' +
                             '<p id="p_2"></p><input type="hidden" value="2" name="idTypePsinm"><input class="pisnm' + d + '" style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filepisnm" id="filepisnm" disabled></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable pisnm' + d + ' form-control" name="obsvPsinm"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable pisnm' + d + ' form-control" name="obsvPsinm" disabled></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="filetss"><a class="disable tss' + d + '">ADJUNTAR FORMATO TSS</a></label>' +
                             '<p id="p_3"></p><input type="hidden" value="3" name="idTypeTss"><input class="tss' + d + '" style="display: none;" onchange="getFileNameTss(this)" type="file" name="filetss" id="filetss" disabled></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable tss' + d + ' form-control" name="obsvTss"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable tss' + d + ' form-control" name="obsvTss" disabled></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design" for="filedas"><a class="disable das' + d + '">ADJUNTAR FORMATO DAS</a></label>' +
                             '<p id="p_4"></p><input type="hidden" value="4" name="idTypeDas"><input class="das' + d + '" style="display: none;" onchange="getFileNameDas(this)" type="file" name="filedas" id="filedas" disabled></input></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable das' + d + ' form-control" name="obsvDas"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable das' + d + ' form-control" name="obsvDas" disabled></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design"><a href="#" data-toggle="modal" data-target="#modalMaterials" onclick="addIdOrder(' + d + ')">ADJUNTAR SOLICITUD DE MATERIALES</a></label></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvMat"></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvMat" disabled></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td>OBSERVACIONES GENERALES</td>' +
@@ -277,26 +275,41 @@
                         var pos = 1;
                         $.each(respuestaServer["docs"], function (i, doc) {
                             if (doc.idTypeDocument === "2") {
-                                $(".pisnm" + idOrder).removeClass("disable");
-                                $(".pisnm" + idOrder).removeAttr('disabled');
-                                $(".pisnm" + idOrder).addClass("pointer");
+                                if (doc.idState !== '0') {
+                                    $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                    $(".pisnm" + idOrder).attr("target", "_blank");
+                                    $(".pisnm" + idOrder).removeClass("disable");
+                                } else {
+                                    $(".pisnm" + idOrder).css("color", "red");
+                                }
                             }
                             if (doc.idTypeDocument === "3") {
-                                $(".tss" + idOrder).removeClass("disable");
-                                $(".tss" + idOrder).removeAttr('disabled');
-                                $(".tss" + idOrder).addClass("pointer");
-                            }
-                            if (doc.idTypeDocument === "4") {
-                                $(".das" + idOrder).removeClass("disable");
-                                $(".das" + idOrder).removeAttr('disabled');
-                                $(".das" + idOrder).addClass("pointer");
+                                if (doc.idState !== '0') {
+                                    $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                    $(".tss" + idOrder).attr("target", "_blank");
+                                    $(".tss" + idOrder).removeClass("disable");
+                                } else {
+                                    $(".tss" + idOrder).css("color", "red");
+                                }
                             }
                             if (doc.idTypeDocument === "1") {
-                                $(".photo" + idOrder).removeClass("disable");
-                                $(".photo" + idOrder).removeAttr('disabled');
-                                $(".photo" + idOrder).addClass("pointer");
-                                galery = true;
-                                pos++;
+                                if (doc.idState !== '0') {
+                                    $(".photo" + idOrder).removeClass("disable");
+                                    $(".photo" + idOrder).addClass("pointer");
+                                    galery = true;
+                                    pos++;
+                                } else {
+                                    $(".photo" + idOrder).css("color", "red");
+                                }
+                            }
+                            if (doc.idTypeDocument === "4" && doc.file !== "") {
+                                if (doc.idState !== '0') {
+                                    $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                    $(".das" + idOrder).attr("target", "_blank");
+                                    $(".das" + idOrder).removeClass("disable");
+                                } else {
+                                    $(".das" + idOrder).css("color", "red");
+                                }
                             }
                         });
                     });
@@ -384,7 +397,7 @@
                                     materials.name_service + "</td>" +
                                     "<td>" + materials.count + "</td>" +
                                     "<td>" + materials.unit_measurement + "</td><td>" +
-                                    "<a href='#'><i class='fa fa-minus-circle fa-2x' style='color: red' onclick='removeMaterial(" + materials.id + ")'></i></a>" +
+                                    "<a href='#'><i class='fa fa-minus-circle fa-2x' style='color: #a70101' onclick='removeMaterial(" + materials.id + ")'></i></a>" +
                                     "</td></tr>");
                         });
                     });

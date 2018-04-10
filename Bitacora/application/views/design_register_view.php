@@ -104,15 +104,14 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                                <h3 class="modal-title" style="text-align: center; color: #006e92"><b>OBSERVACIONES GENERALES</b></h3>                                
                             </div>
                             <div class="modal-body">
-                                <div class="row">
-                                    <div id="obsv"></div>
-                                </div>                   
+                                <div id="obsv"></div>       
                             </div>
-                            <hr style="border-color: #00B1EB">
-                            <p>Bitácora</p>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-lg btn-default pull-right" style="color:#006e92" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,14 +164,13 @@
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
                         '<td><a class="disable das' + d + '">FORMATO DAS</a></td>' +
                         '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
-                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="file' + d + '">ADJUNTAR</label>' +
                         '<p class="myfilename"></p><input style="display: none;" onchange="getFileName(this)" type="file" name="file" id="file' + d + '"></input></td>' +
                         '<td colspan="4"><input name="observacion" id="obsvgen" style="width:100%" type="text"></td>' +
-                        '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
-                        '<input type="submit" class="blue bold" value="REGISTRAR DISEÑO"></td>' +
+                        '<td colspan="4"><input type="hidden" value="' + d + '" name="idOrder"></input>' +
+                        '<input type="submit" class="blue bold" value="REGISTRAR DISEÑO" style="margin-right:18px"> <a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR ORDEN</a></td>' +
                         '</tr>' +
                         '</table></form>';
             }
@@ -237,23 +235,48 @@
                     $.each(respuestaServer["docs"], function (i, doc) {
                         $("#date" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument === "2") {
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".pisnm" + idOrder).attr("target", "_blank");
-                            $(".pisnm" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".pisnm" + idOrder).attr("target", "_blank");
+                                $(".pisnm" + idOrder).removeClass("disable");
+                            } else {
+                                $(".pisnm" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "3") {
-                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".tss" + idOrder).attr("target", "_blank");
-                            $(".tss" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".tss" + idOrder).attr("target", "_blank");
+                                $(".tss" + idOrder).removeClass("disable");
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "4") {
-                            $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".das" + idOrder).attr("target", "_blank");
-                            $(".das" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".das" + idOrder).attr("target", "_blank");
+                                $(".das" + idOrder).removeClass("disable");
+                            } else {
+                                $(".das" + idOrder).css("color", "red");
+                            }
+                        }
+                        if (doc.idTypeDocument === "6") {
+                            if (doc.idState !== '0') {
+                                $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".design" + idOrder).attr("target", "_blank");
+                                $(".design" + idOrder).removeClass("disable");
+                            } else {
+                                $(".design" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "1") {
-                            $(".photo" + idOrder).removeClass("disable");
-                            $(".photo" + idOrder).addClass("pointer");
+                            if (doc.idState !== '0') {
+                                $(".photo" + idOrder).removeClass("disable");
+                                $(".photo" + idOrder).addClass("pointer");
+                            } else {
+                                $(".photo" + idOrder).css("color", "red");
+                            }
                         }
                     });
                 });

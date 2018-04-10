@@ -73,7 +73,7 @@
                                                             </td>
                                                             <td><?= $row->dateSave ?></td>
                                                             <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
-                                                            <td><?= $row->uniqueCodeCentralCost . '-' . $row->coi ?></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>
@@ -84,7 +84,7 @@
                                                                 ?></td>
                                                             <td><?php
                                                                 $dif = $row->totalOrder - $row->totalCost;
-                                                                $util = ($dif * 100) / $row->totalOrder;
+                                                                $util = ($dif * 100) / $row->totalCost;
                                                                 echo round($util, 2) . ' %';
                                                                 ?></td>
                                                             <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign . "," . $row->idTechnicals ?>)">
@@ -350,28 +350,48 @@
                     $.each(respuestaServer["docs"], function (i, doc) {
                         $("#fecha_" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument === "2") {
-                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".pisnm" + idOrder).attr("target", "_blank");
-                            $(".pisnm" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".pisnm" + idOrder).attr("target", "_blank");
+                                $(".pisnm" + idOrder).removeClass("disable");
+                            } else {
+                                $(".pisnm" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "3") {
-                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".tss" + idOrder).attr("target", "_blank");
-                            $(".tss" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".tss" + idOrder).attr("target", "_blank");
+                                $(".tss" + idOrder).removeClass("disable");
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "4") {
-                            $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".das" + idOrder).attr("target", "_blank");
-                            $(".das" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".das" + idOrder).attr("target", "_blank");
+                                $(".das" + idOrder).removeClass("disable");
+                            } else {
+                                $(".das" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "6") {
-                            $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                            $(".design" + idOrder).attr("target", "_blank");
-                            $(".design" + idOrder).removeClass("disable");
+                            if (doc.idState !== '0') {
+                                $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
+                                $(".design" + idOrder).attr("target", "_blank");
+                                $(".design" + idOrder).removeClass("disable");
+                            } else {
+                                $(".design" + idOrder).css("color", "red");
+                            }
                         }
                         if (doc.idTypeDocument === "1") {
-                            $(".photo" + idOrder).removeClass("disable");
-                            $(".photo" + idOrder).addClass("pointer");
+                            if (doc.idState !== '0') {
+                                $(".photo" + idOrder).removeClass("disable");
+                                $(".photo" + idOrder).addClass("pointer");
+                            } else {
+                                $(".photo" + idOrder).css("color", "red");
+                            }
                         }
                     });
                 });
@@ -433,7 +453,7 @@
                     }
                 });
             }
-            
+
             function getServicesMaterials(idOrder) {
                 url = get_base_url() + "Activities/get_activities_materials?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {

@@ -104,9 +104,10 @@ class Documents extends CI_Controller {
             'dateUpdate' => date('Y-m-d H:i:s'));
         $res = $this->Orders_model->update_order($id, $data);
         if ($res === TRUE) {
+            $param = "";
             $titulo = 'MER GROUP, Agradece su participación como integrante fundamental de nuestros procesos, de esta manera queremos  compartir con usted la siguiente información para el trámite de auditoria de documentación';
             $content = $this->Orders_model->get_order_by_email_coordext($id);
-            $this->Utils->sendMail($content->email, 'Auditoria de Documentación - MER', 'templates/email_audit_settlement.php', $content, $titulo);
+            $this->Utils->sendMail($content->email, 'Auditoria de Documentación - MER', 'templates/email_audit_settlement.php', $content, $titulo, $order="",$param);
             echo 'ok';
         } else {
             echo 'error';

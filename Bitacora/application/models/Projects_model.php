@@ -20,7 +20,7 @@ class Projects_model extends CI_Model {
             serv.name_service, tecn.name_user, daily.gestion, typeGest.type
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
-   idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
+   idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
    FROM tbl_orders_details
     GROUP BY idOrder) details
     ON tbl_orders.id = details.idOrder
@@ -65,7 +65,7 @@ class Projects_model extends CI_Model {
             daily.id_type_management, typeGest.type
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
-   idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
+   idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
    FROM tbl_orders_details
     GROUP BY idOrder) details
     ON tbl_orders.id = details.idOrder
@@ -109,7 +109,7 @@ class Projects_model extends CI_Model {
             daily.id_type_management, typeGest.type, docs.gestiondoc
     FROM tbl_orders
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
-   idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
+   idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
    FROM tbl_orders_details
     GROUP BY idOrder) details
     ON tbl_orders.id = details.idOrder
