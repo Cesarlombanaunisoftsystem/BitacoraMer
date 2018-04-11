@@ -282,11 +282,11 @@ class Visit extends CI_Controller {
         for ($i = 0; $i < $quantity; $i++) {
             //subimos el archivo ha subido
             move_uploaded_file($_FILES['fileregfoto']['tmp_name'][$i], "./uploads/" . $_FILES['fileregfoto']['name'][$i]);
-            //guardamos en la base de datos el nombre
+            //concatenamos para guardar nombres en la base de datos
             $image .= $_FILES['fileregfoto']['name'][$i] . ",";
         }
         $imageconcat = trim($image, ",");
-        if ($imageconcat && move_uploaded_file($_FILES['fileregfoto']['tmp_name'], "./uploads/" . $image)) {
+        if ($imageconcat) {
             $dataFoto = array(
                 'file' => $imageconcat,
                 'observation' => $this->input->post('obsvRegPic'),
@@ -337,17 +337,21 @@ class Visit extends CI_Controller {
     }
 
     public function register_docs_visit_close() {
-        $dir_subida = './uploads/';
+        $image = "";
         $quantity = count($_FILES['fileregfoto']['name']);
         for ($i = 0; $i < $quantity; $i++) {
-            //subimos el archivo ha subido
+            //subimos el archivo 
             move_uploaded_file($_FILES['fileregfoto']['tmp_name'][$i], "./uploads/" . $_FILES['fileregfoto']['name'][$i]);
-            //guardamos en la base de datos el nombre
-            $image = $_FILES['fileregfoto']['name'][$i];
+            //concatenamos para guardar nombres en la base de datos
+            $image .= $_FILES['fileregfoto']['name'][$i];
+        }
+        // separamos por comas los nombres de archivos
+        $imageconcat = trim($image, ",");
+        if ($imageconcat) {
             $dataFoto = array(
-                'idTypeDocument' => $this->input->post('idTypeRegFoto'),
+                'idTypeDocument' => 1,
                 'idOrder' => $this->input->post('idOrder'),
-                'file' => $image,
+                'file' => $imageconcat,
                 'idState' => 1,
                 'observation' => $this->input->post('obsvRegPic'),
                 'dateSave' => date('Y-m-d')
@@ -357,6 +361,8 @@ class Visit extends CI_Controller {
         $filepsinm = $_FILES['filepisnm']['name'];
         if ($filepsinm && move_uploaded_file($_FILES['filepisnm']['tmp_name'], "./uploads/" . $filepsinm)) {
             $dataPsinm = array(
+                'idTypeDocument' => 2,
+                'idOrder' => $this->input->post('idOrder'),
                 'file' => $filepsinm,
                 'observation' => $this->input->post('obsvPsinm'),
                 'idState' => 1,
@@ -367,6 +373,8 @@ class Visit extends CI_Controller {
         $filetss = $_FILES['filetss']['name'];
         if ($filetss && move_uploaded_file($_FILES['filetss']['tmp_name'], "./uploads/" . $filetss)) {
             $dataTss = array(
+                'idTypeDocument' => 3,
+                'idOrder' => $this->input->post('idOrder'),
                 'file' => $filetss,
                 'observation' => $this->input->post('obsvTss'),
                 'idState' => 1,

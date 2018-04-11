@@ -261,15 +261,6 @@
                                 $(".das" + idOrder).css("color", "red");
                             }
                         }
-                        if (doc.idTypeDocument === "6") {
-                            if (doc.idState !== '0') {
-                                $(".design" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".design" + idOrder).attr("target", "_blank");
-                                $(".design" + idOrder).removeClass("disable");
-                            } else {
-                                $(".design" + idOrder).css("color", "red");
-                            }
-                        }
                         if (doc.idTypeDocument === "1") {
                             if (doc.idState !== '0') {
                                 $(".photo" + idOrder).removeClass("disable");

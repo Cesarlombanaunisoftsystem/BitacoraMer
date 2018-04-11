@@ -251,23 +251,21 @@
                                     $(".tss" + idOrder).css("color", "red");
                                 }
                             }
-                            if (doc.idTypeDocument === "1") {
-                                if (doc.idState !== '0') {
-                                    $(".photo" + idOrder).removeClass("disable");
-                                    $(".photo" + idOrder).addClass("pointer");
-                                    galery = true;
-                                    pos++;
-                                } else {
-                                    $(".photo" + idOrder).css("color", "red");
-                                }
-                            }
-                            if (doc.idTypeDocument === "4" && doc.file !== "") {
+                            if (doc.idTypeDocument === "4") {
                                 if (doc.idState !== '0') {
                                     $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
                                     $(".das" + idOrder).attr("target", "_blank");
                                     $(".das" + idOrder).removeClass("disable");
                                 } else {
                                     $(".das" + idOrder).css("color", "red");
+                                }
+                            }
+                            if (doc.idTypeDocument === "1") {
+                                if (doc.idState !== '0') {
+                                    $(".photo" + idOrder).removeClass("disable");
+                                    $(".photo" + idOrder).addClass("pointer");
+                                } else {
+                                    $(".photo" + idOrder).css("color", "red");
                                 }
                             }
                         });
