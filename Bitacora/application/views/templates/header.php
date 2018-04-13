@@ -28,10 +28,10 @@
             </li>
             <li class="user-footer">
               <div class="pull-left">
-                <a href="<?= base_url('Users/profile')?>" class="btn btn-default btn-flat">Perfil</a>
+                <a href="<?= base_url('Users/profile')?>" class="btn btn-warning btn-flat"> <i class="fa fa-user"></i> Perfil</a>
               </div>
               <div class="pull-right">
-                <a href="<?= base_url('Login/logout_ci')?>" class="btn btn-default btn-flat">Salir</a>
+                  <a href="<?= base_url('Login/logout_ci')?>" class="btn btn-primary btn-flat"><i class="fa fa-sign-out"></i> Salir</a>
               </div>
             </li>
           </ul>

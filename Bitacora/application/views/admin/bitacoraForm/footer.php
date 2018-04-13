@@ -58,10 +58,10 @@
         </div>
     </div>
 </div>
-<div class="row col-sm-12">
-    <div class="form-group">
+<div class="row col-sm-12" style="margin-top: 10px;">
         <label class="col-sm-4 color-blue">DOCUMENTOS RELACIONADOS</label>
-        <div class="col-sm-3">
+    <div class="form-group col-md-8 footer1">
+        <div class="col-sm-5">
             <div class="checkbox-form">
                 <span>Registro fotográfico </span><input type="checkbox" class="sinborde" id="idTypeDocument1" name="idTypeDocument1" value="1">
             </div>
@@ -75,8 +75,6 @@
             <div class="checkbox-form">
                 <span>TSS </span><input type="checkbox" id="idTypeDocument3" name="idTypeDocument3" value="3">
             </div>
-        </div>
-        <div class="col-sm-4">
         </div>
         <div class="col-sm-3">
             <div class="checkbox-form">

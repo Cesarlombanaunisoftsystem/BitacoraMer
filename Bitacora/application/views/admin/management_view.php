@@ -46,15 +46,15 @@
             }
 
             .bg-res {
-                background: #F48024;
-                border-radius: 10px;
+                background: #337ab7;
+                color: #ccc;
+                
             }
 
             .bg-res2 {
                 background: transparent;
                 color: #ccc;
-                border-radius: 8px;
-                background: #337ab7;
+                background: #F48024;
             }
 
             .bg-res2 a {
@@ -200,8 +200,9 @@
             <?php $this->load->view('templates/menu-right') ?>
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
+                <h2><?= $titulo ?></h2>
                 <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#gestion" aria-controls="gestion" role="tab" data-toggle="tab">Gestión</a></li>
+                    <li role="presentation" class="active"><a href="#gestion" aria-controls="gestion" role="tab" data-toggle="tab">Modular</a></li>
                     <li role="presentation"><a href="#barras" aria-controls="barras" role="tab" data-toggle="tab" id="barsMenu">Barras</a></li>
                 </ul>
 
@@ -209,19 +210,20 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="gestion"> 
                         <section class="content">
-                            <div class="col-xs-12 nav-tabs-custom">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#" role="tab" data-toggle="tab"><h1><?= $titulo ?></h1></a></li>
-                                </ul>
-                            </div>
+                            
                             <div id="spinner"></div>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <div id="donutchart"></div>
+                                    <div class="col-md-4 text-center">
+                                        <h4>TOTAL ORDENES</h4><h2 class=""><strong><?= $totalorders->total ?></strong></h2>
+                                    </div>
+                                    <div class="col-md-8 center-block">
+                                        <div id="donutchart"></div>
+                                    </div> 
                                 </div>
                                 <div class="col-xs-6">
-                                    <div class="row">
-                                        <div class="col-xs-6">
+                                    <div class="row" style="margin:20px 0;">
+                                        <div class="col-xs-6" >
                                             <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Numero total de ordenes: <strong><?= $totalorders->total ?></strong></p>
                                             <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes fuera de tiempo: <strong><?php
                                                     $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
@@ -496,33 +498,30 @@
                                             $link = 'Visit/program';
                                         }
                                         if ($i == 22) {
-                                            $link = 'Design/register';
+                                            $link = 'Visit/validation_close';
                                         }
                                         if ($i == 21) {
                                             $link = 'Materials';
                                         }
                                         if ($i == 20) {
-                                            $link = 'Visit/site_init';
-                                        }
-                                        if ($i == 19) {
                                             $link = 'Documents';
                                         }
-                                        if ($i == 18) {
+                                        if ($i == 19) {
                                             $link = 'Documents/audit';
                                         }
-                                        if ($i == 17) {
+                                        if ($i == 18) {
                                             $link = 'Audit/auth_pay';
                                         }
-                                        if ($i == 16) {
+                                        if ($i == 17) {
                                             $link = 'Audit/financial';
                                         }
-                                        if ($i == 15) {
+                                        if ($i == 16) {
                                             $link = 'Settlement';
                                         }
-                                        if ($i == 14) {
+                                        if ($i == 15) {
                                             $link = 'Settlement/audit';
                                         }
-                                        if ($i == 13) {
+                                        if ($i == 14) {
                                             $link = 'Billing';
                                         }
                                         ?>
@@ -544,7 +543,7 @@
                                                             </div>
                                                         <?php } ?>
                                                         <div class="col-xs-12">
-                                                            <?php echo $total; ?>                                                   
+                                                            <?php echo $total; ?>                                                
                                                         </div>
                                                     </div>
                                                 </div>
@@ -592,7 +591,7 @@
             $("#barsMenu").click(function (e) {
                 google.charts.load('current', {'packages': ['bar']});
                 google.charts.setOnLoadCallback(drawStuff);
-                google.charts.setOnLoadCallback(drawStuffY);
+                google.charts.setOnLoadCallback(asd);
             });
 
             google.charts.load("current", {packages: ["corechart"]});
@@ -600,14 +599,16 @@
             function drawChart() {
                 var data = google.visualization.arrayToDataTable([
                     ['Task', 'Hours per Day'],
-                    ['Ordenes cumplidas', <?= $cumplidas ?>],
-                    ['Pendientes',<?= $pendientes ?>]
+                    ['Ordenes Dentro de Tiempo estimado', <?= $cumplidas ?>],
+                    ['Ordenes Fuera de Tiempo estimado',<?= $pendientes ?>]
                 ]);
 
                 var options = {
                     title: 'Ordenes totales  ' +<?= $totalorders->total ?>,
                     pieHole: 0.4,
-                    colors: ['#F48024', '#337ab7']
+                    width:400,
+                    legend:'bottom',
+                    colors: ['#337ab7','#F48024']
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('donutchart'));

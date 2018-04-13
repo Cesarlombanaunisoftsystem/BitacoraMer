@@ -8,40 +8,17 @@
             <?php $this->load->view('templates/header') ?>
             <?php $this->load->view('templates/menu-right') ?>
             <div class="content-wrapper">
-                <section class="content-header">
-                    <h1>Registro das</h1>        
-                </section>
+                <div id="load_menu"></div>
                 <section class="content">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Orders') ?>" aria-controls="binnacle" role="tab" data-toggle="">BTS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Das') ?>" aria-controls="binnacle" role="" data-toggle="">DAS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Maintenance') ?>" aria-controls="binnacle" role="" data-toggle="">Mantenimiento</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Sale') ?>" aria-controls="binnacle" role="tab" data-toggle="">Venta de producto</a></li>
-                                        <li role="presentation" class="active"><a href="#qmc" aria-controls="binnacle" role="tab" data-toggle="tab">QMC</a></li>
-                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">BANDEJA DE ENTRADA</a></li>
-                                    </ul>
-                                </div>
-                            </div>
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane" id="binnacle">
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="das">
-
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="man">
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="sale">
-
-                                </div>
                                 <div role="tabpanel" class="tab-pane active" id="qmc">
                                     <form id="frmQmc" method="POST" enctype="multipart/form-data">
                                         <div class="box box-primary">
                                             <div class="box-body">
-                                                <?php $this->load->view('admin/qmc/header'); ?>
+                                                <?php $this->load->view('admin/bitacoraForm/header'); ?>
+                                                <?php //$this->load->view('admin/qmc/header'); ?>
                                                 <div class="col-xs-12 col-md-11 col-md-offset-1">
                                                     <?php $this->load->view('admin/qmc/details'); ?>
                                                 </div>
@@ -269,6 +246,8 @@
                     }
                 });
             }
+        cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'qmc');
+
         </script>
     </body>
 </html>

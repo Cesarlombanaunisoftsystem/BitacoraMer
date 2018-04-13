@@ -8,12 +8,11 @@
             <?php $this->load->view('templates/header') ?>
             <?php $this->load->view('templates/menu-right') ?>
             <div class="content-wrapper">
-                <section class="content-header">
-                    <h1>Registro ordenes de servicio</h1>        
-                </section>
+                <div id="load_menu"></div>
+                <?php //$this->load->view('menu/menu') ?>
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs-12"><!--
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
@@ -25,18 +24,10 @@
                                         <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">REGISTROS PROCESADOS</a></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="binnacle">
                                     <form id="frmRegisterOrder" method="POST" enctype="multipart/form-data"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="das">
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="man">
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="sale">
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="qmc">
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="Bandeja">
                                     <?php $this->load->view('admin/order-registration-bandeja') ?>
@@ -51,6 +42,7 @@
         </div>
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
+         
         <script type="text/javascript">
             $(function () {
 
@@ -314,34 +306,34 @@
                 }
             });
             function format(d) {
-                return  '<table class="table" style="font-size: 12px">' +
-                        '<thead><tr style="color: #00B0F0">' +
+                return  '<table class="table" id="hide_table" style="font-size: 12px">' +
+                        '<thead><tr style="color: #c30000">' +
                         '<th>ACTIVIDAD</th><th>SERVICIO</th><th>CANTIDAD</th><th>SITIO</th>' +
                         '<th>VR.UNITARIO</th><th>VR.TOTAL</th>' +
                         '</tr></thead>' +
                         '<tbody id="bodydetails_' + d + '"></tobody></table>' +
                         '<table class="table" style="font-size: 12px">' +
-                        '<thead><tr style="color: #00B0F0"><th>TOTAL BRUTO</th>' +
-                        '<th>DESCUENTO</th><th>I.V.A</th>' +
-                        '<th>TOTAL</th><th id="pdf_' + d + '"></th></tr><thead><tbody id="bodyfoot_' + d + '">' +
+                        '<thead><tr style="color: #c30000"><th class="text-center">TOTAL BRUTO</th>' +
+                        '<th class="text-center">DESCUENTO</th><th class="text-center">I.V.A</th>' +
+                        '<th class="text-center">TOTAL</th><th id="pdf_' + d + '"></th></tr><thead><tbody id="bodyfoot_' + d + '">' +
                         '</tbody></table>' +
-                        '<table class="table" style="font-size: 12px">' +
-                        '<thead><tr><th style="color: #00B0F0">AREA DE SIGUIENTE PASO</th>' +
+                        '<table class="table text-center" style="font-size: 12px">' +
+                        '<thead><tr><th style="color: #c30000">AREA DE SIGUIENTE PASO</th>' +
                         '<th><input type="text" id="txtArea_' + d + '" disabled></th>' +
-                        '</tr><tr><th style="color: #00B0F0">DOCUMENTOS RELACIONADOS</th>' +
+                        '</tr><tr><th style="color: #c30000">DOCUMENTOS RELACIONADOS</th>' +
                         '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photos' + d + '" disabled></th>' +
                         '<th>PISINM <input type="checkbox" class="disable pisnm' + d + '" disabled></th>' +
                         '<th>TSS <input type="checkbox" class="disable tss' + d + '" disabled></th>' +
                         '<th>DOCUMENTO DAS <input type="checkbox" class="disable das' + d + '" disabled></th></tr>' +
-                        '<tr><th style="color: #00B0F0">OBSERVACIONES DE REGISTRO</th>' +
+                        '<tr><th style="color: #c30000">OBSERVACIONES DE REGISTRO</th>' +
                         '<th><input type="text" id="txtObsv_' + d + '" disabled></th></tr></table>';
             }
             function getFoot(idOrder) {
                 var url = get_base_url() + "Orders/get_order_xid?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#bodyfoot_" + idOrder).html('<tr><td>' + formatNumber(res.res.subtotal) +
-                            '</td><td>' + res.res.discount +
-                            '</td><td>' + res.res.iva + '%</td><td>' + formatNumber(res.res.total) +
+                    $("#bodyfoot_" + idOrder).html('<tr><td class="text-center">' + formatNumber(res.res.subtotal) +
+                            '</td><td class="text-center">' + res.res.discount +
+                            '</td><td class="text-center">' + res.res.iva + '%</td><td class="text-center">' + formatNumber(res.res.total) +
                             '</td></tr>');
                     $("#txtArea_" + idOrder).val(res.res.name_area);
                     $("#txtObsv_" + idOrder).val(res.res.observations);
@@ -357,7 +349,7 @@
                     $.each(res["details"], function (i, details) {
                         $("#bodydetails_" + idOrder).append('<tr><td>' + details.name_activitie +
                                 '</td><td>' + details.name_service +
-                                '</td><td>' + details.count + '</td><td>' + details.site + '</td>' +
+                                '</td><td class="text-center">' + details.count + '</td><td>' + details.site + '</td>' +
                                 '<td>' + formatNumber(details.price) + '</td><td>' + formatNumber(details.total) + '</td></tr>');
                     });
                 });
@@ -399,6 +391,8 @@
                             num.substring(num.length - (4 * i + 3));
                 return (((sign) ? '' : '') + '$ ' + num);
             }
+            cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'BTS');
         </script>
+       
     </body>
 </html>

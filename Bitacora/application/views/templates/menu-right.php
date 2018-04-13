@@ -1,11 +1,11 @@
 <aside class="main-sidebar">
     <section class="sidebar">
       <div class="user-panel">
-        <div class="pull-left image">
-            <img src="<?= base_url('dist/img/logo.png')?>" class="img-circle" style="width: 90px !important;height: 90px !important;max-width: 90px !important;max-height: 90px !important;">
-        </div>
+          <div class="col-sm-1 col-md-12">
+              <img src="<?= base_url('dist/img/logo.png')?>" class="img-circle img-responsive" style="background: #FFF;border:5px solid #000071;">
+              <p style="font-size: 1.7em;color: #FFF;margin-top: 5px;" class="text-center text-uppercase" >Bitácora</p>   
+          </div>
         <div class="pull-left info">
-          <p style="font-size: 1.7em;margin-top: 30px;margin-left: 50px;">Bitácora</p>
           <!-- <a href="#"><i class="fa fa-circle text-success"></i> En linea</a> -->
         </div>
       </div>

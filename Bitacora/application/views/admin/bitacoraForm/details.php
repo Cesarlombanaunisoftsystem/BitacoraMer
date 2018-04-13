@@ -1,18 +1,23 @@
-<table id="orders-items-table" class="table table-striped">
+<div style="height:<?php echo (count($details)>1? "245px":"auto");?>;
+   overflow:auto;
+    background:#fff;
+    border: 2px solid #07000071;
+    margin-bottom: 15px;">
+<table id="orders-items-table" class="table table-striped" style="border-top: 15px">
     <thead>
         <tr>
-            <th class="color-blue" width="50">ACTIVIDAD</th>
-            <th class="color-blue" width="50">SERVICIO</th>  
-            <th class="color-blue" width="10">CANTIDAD</th>
-            <th class="color-blue" width="30">SITIO</th>
-            <th class="color-blue" width="10">VR.UNITARIO</th>
-            <th class="color-blue" width="20">VR.TOTAL</th>
+            <th class="color-blue" >ACTIVIDAD</th>
+            <th class="color-blue" >SERVICIO</th>  
+            <th class="color-blue" >CANTIDAD</th>
+            <th class="color-blue" >SITIO</th>
+            <th class="color-blue" >VR.UNITARIO</th>
+            <th class="color-blue" >VR.TOTAL</th>
             <th class="color-blue"></th>
         </tr>
     </thead>
 
     <tr>
-        <td width="200">
+        <td >
             <div class="input-group">
                 <select class="form-control activities" name="idActivities" id="idActivities"> 
                     <option></option>          
@@ -26,20 +31,21 @@
                 </select>          
             </div>
         </td>
-        <td width="200">
+        <td >
             <select class="form-control" name="idServices" id="idServices">
             </select>        
         </td>
-        <td width="10">
+        <td >
             <input type="number" class="form-control" name="count" id="count"  min="1" />        
         </td>
-        <td width="50">
+        <td >
             <input type="text" class="form-control" name="site" id="site" autocomplete="off" />
+            <div id="suggesstion-box"></div>
         </td>
-        <td width="120">
+        <td >
             <div id="price"></div>      
         </td>
-        <td width="120">
+        <td >
             <input type="number" class="form-control" name="total" id="vrTotal" readonly />
             <input type="hidden" id="vrTotalCost"/>
         </td>
@@ -54,6 +60,7 @@
             $subtotal = 0;
             $totalCost = 0;
             foreach ($details as $detail) {
+                
                 ?>
                 <?php
                 $subtotal = $subtotal + $detail->total;
@@ -76,4 +83,5 @@
 <?php } ?>
 </tbody>      
 </table>
+    </div>
 <div id="spinner"></div>

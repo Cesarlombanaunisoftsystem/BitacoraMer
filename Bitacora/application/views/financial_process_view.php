@@ -12,35 +12,20 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
                         <li class = "active">Panel de control</li>
                     </ol>
                 </section>
+                <div id="load_menu"></div>
 
                 <!--Main content -->
                 <section class = "content">
                     <div class = "row">
-                        <div class = "col-xs-12">
-                            <div class = "row">
-                                <div class = "col-xs-12 nav-tabs-custom">
-                                    <ul class = "nav nav-tabs" role = "tablist">
-                                        <li role = "presentation"><a href = "<?= base_url('Audit/financial') ?>" aria-controls = "binnacle" role = "tab" data-toggle = "">Bandeja de entrada</a></li>
-                                        <li role = "presentation" class = "active"><a href = "<?= base_url('Audit/financial_process') ?>" aria-controls = "binnacle" role = "tab" data-toggle = "">Pagos Gestionados</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
                         <div class = "tab-content">                            
                             <div role="tabpanel" class="tab-pane active" id="pagosges">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/financial.png') ?>" style="width: 120px;">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-md-offset-1 col-lg-10">
                                         <form>
                                             <table id="data-table" class="table table-striped" style="font-size:12px">
                                                 <thead>
@@ -122,12 +107,12 @@
                 }
             });
             function format(d) {
-                return '<div style="height: 350px;width: 550px;overflow-y: auto;"><table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                return '<div style=""><table cellpadding="5" class="table table-hover tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<thead>' +
                         '<tr>' +
                         '<th>Fecha de pago</th>' +
                         '<th>Valor</th>' +
-                        '<th>Porcentaje</th></tr><thead>' +
+                        '<th>Porcentaje</th><th>PDF</th></tr><thead>' +
                         '<tbody id="tbody_' + d + '"></tbody>' +
                         '</table></div>';
             }
@@ -140,7 +125,9 @@
                         $("#tbody_" + idOrder).append('<tr>' +
                                 '<td>' + pay.dateSave + '</td>' +
                                 '<td>' + formatNumber(pay.value) + '</td>' +
-                                '<td>' + pay.percent + '%</td></tr>');
+                                '<td>' + pay.percent + '%</td>'+
+                                '<td><a href="<?= base_url('reportes/pdf/') ?>orden_'+pay.idPay+'.pdf" target="_blank"><i class="fa fa-2x fa-file-pdf-o" aria-hidden="true"></i><a></td></tr>'
+                                        );
                     });
                 });
             }
@@ -162,6 +149,25 @@
                             num.substring(num.length - (4 * i + 3));
                 return (((sign) ? '' : '') + '$ ' + num);
             }
+            
+            cargar_menu("<?php echo base_url('Home/menu'); ?>","Financiero",'Pagos Gestionados');
+            
+            function validar_existe(idPay){
+                $.ajax({
+                    url:'/reportes/pdf/orden_'+idPay+'.pdf',
+                    type:'HEAD',
+                    error: function()
+                    {
+                        return false
+                    },
+                    success: function()
+                    {
+                        return true;
+                    }
+                });
+                
+            }
+            
         </script>
     </body>
 </html>
