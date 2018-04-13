@@ -62,7 +62,7 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
-                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
+                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->name_service ?></td>
@@ -167,47 +167,13 @@
                                             </div>
                                             <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <textarea class="form form-control" name="detailgest" id="detailgest" required=""></textarea>
-                                            </div><br><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">% AVANCE EJECUCIÓN</p>
-                                            </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="progress">
-                                                    <div id="percentexe" class="progress-bar progress-bar-warning" style="width: 0%">
-                                                        0%
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="valpercentexe" id="valpercentexe">
-                                            </div>
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
-                                                <i class="fa fa-sort-up" onclick="upexe();"></i><i class="fa fa-sort-down" onclick="downexe();"></i>
                                             </div><br><br>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <p style="color: #00B0F0">% CONSUMO DE MATERIALES</p>
-                                            </div>
-                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="progress">
-                                                    <div id="percentmat" class="progress-bar progress-bar-warning" style="width: 0%"> 
-                                                        0%
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="valpercentmat" id="valpercentmat">
-                                            </div>
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
-                                                <i class="fa fa-sort-up" onclick="upmat();"></i><i class="fa fa-sort-down" onclick="downmat();"></i>
-                                            </div>
                                             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                 <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
                                                     ADJUNTAR IMAGEN</label>   
                                                 <p id="datofile"></p>
-                                                <input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048">
-                                            </div><br><br><br>
-                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                <p style="color: #00B0F0">
-                                                    REQUIERE ATENCIÓN INMEDIATA DE COORDINADOR
-                                                    <input type="checkbox" name="attendant" id="attendant">
-                                                </p>                                                
-                                            </div>                                            
+                                                <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048" multiple>
+                                            </div><br><br>                                            
                                             <div class="col-sm-7"></div>
                                             <div class="col-sm-3">
                                                 <button type="submit" class="form-control btn btn-success"><b>REGISTRAR AVANCE</b></button>
@@ -559,6 +525,7 @@
             }
 
             function verPanelInferior(idOrder) {
+                $("#bodyPanelGestion").empty();
                 $("#panelinferior").show();
                 var order = $("#norder_" + idOrder).val();
                 var ccost = $("#ccost_" + idOrder).val();
@@ -568,11 +535,12 @@
                 $("#lblActiv").html(activ);
                 $("#lblCost").html(ccost);
                 $("#lblcCost").val(ccost);
+                $("#uniquecode").val(order);
                 $("#lblSite").html(site);
                 url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                     $.each(response["res"], function (i, res) {
-                        if (res.id_type_management === '2' || res.id_type_management === '3') {
+                        if (res.id_type_management === '4') {
                             var percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
                             var percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
                             var detail = '<a data-toggle="modal" data-target="#modalRegisters" onclick="showRegisters(' + idOrder + ')">Detalle</a>';
@@ -602,6 +570,9 @@
                 url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                     $.each(response["res"], function (i, res) {
+                        if(res.id_type_management === '3'){
+                            $("#obsvgen").val(res.detail);
+                        }
                         $('#bodyDetalleReg').append('<tr><td>' + res.dateSave +
                                 '</td><td>' + res.type +
                                 '</td><td>' + '<div class="progress">' +
@@ -656,44 +627,55 @@
                     var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
-                            if (doc.idState !== '0') {
+                            if (doc.idState2 !== '0') {
                                 $(".pisnm").removeClass("disable");
                                 $(".pisnm").addClass("pointer");
-                                $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file);
-                                $("#obsvPsinm").val(doc.observation);
+                                $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $("#obsvPsinm").val(doc.observation2);
                             } else {
                                 $(".pisnm" + idOrder).css("color", "red");
                             }
                         }
                         if (doc.idTypeDocument === "3") {
-                            if (doc.idState !== '0') {
+                            if (doc.idState2 !== '0') {
                                 $(".tss").removeClass("disable");
                                 $(".tss").addClass("pointer");
-                                $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file);
-                                $("#obsvTss").val(doc.observation);
+                                $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $("#obsvTss").val(doc.observation2);
+                            } else {
+                                $(".tss" + idOrder).css("color", "red");
+                            }
+                        }
+                        if (doc.idTypeDocument === "4") {
+                            if (doc.idState2 !== '0') {
+                                $(".das").removeClass("disable");
+                                $(".das").addClass("pointer");
+                                $(".das").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $("#obsvDas").val(doc.observation2);
                             } else {
                                 $(".tss" + idOrder).css("color", "red");
                             }
                         }
                         if (doc.idTypeDocument === "7") {
-                            if (doc.idState !== '0') {
+                            if (doc.idState2 !== '0') {
                                 $(".docs").removeClass("disable");
                                 $(".docs").addClass("pointer");
-                                $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file);
+                                $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $(".docs").attr('disabled', false);
                             } else {
                                 $(".docs" + idOrder).css("color", "red");
                             }
                         }
-                        if (doc.idTypeDocument === "1" && doc.file !== "") {
-                            if (doc.idState !== '0') {
+                        if (doc.idTypeDocument === "1") {
+                            if (doc.idState2 !== '0') {
                                 var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
                                 html += '<li class="slide-container"><div class="slide">';
-                                html += '<img src="' + get_base_url() + "/uploads/" + doc.file + '" /></div> ';
+                                html += '<img src="' + get_base_url() + "/uploads/" + doc.file2 + '" /></div> ';
                                 html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
                                 html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
                                 $(".photo").removeClass("disable");
                                 $(".photo").addClass("pointer");
-                                $("#obsvRegPic").val(doc.observation);
+                                $("#obsvRegPic").val(doc.observation2);
                                 $(".slides").prepend(html);
                                 galery = true;
                                 pos++;
@@ -702,21 +684,32 @@
                             }
                         }
                     });
-                });
+                });               
+                getObservations(idOrder);
                 $("#bodyRegisters").html('<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr><td><label class="blue bold upload_design">' +
                         '<a class="disable photos photo">VER REGISTRO FOTOGRAFICO</a></label>' +
                         '<td>OBSERVACIONES</td>'
                         + '<td><input type="text" class="form-control" size=40 id="obsvRegPic" readonly><td>' +
                         '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm">' +
-                        'VER FORMATO 1</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss">VER FORMATO 2</a></label>' +
+                        'VER FORMATO PSINM</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss">VER FORMATO TSS</a></label>' +
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss" readonly></td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable das">VER FORMATO DAS</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvDas" readonly></td>' +
                         '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
                         '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
-                        '<tr><td></td><td><a href="#" target="_blank" class="disable docs">' +
+                        '<tr><td></td><td><a target="_blank" class="disable docs" disabeld>' +
                         '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
                         '</table>');
+            }
+            
+            function getObservations(idOrder) {
+                $("#obsvgen").val("");
+                url = get_base_url() + "Projects/get_observation_close?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $("#obsvgen").val(res.observation.detail);
+                });
             }
         </script>
     </body>

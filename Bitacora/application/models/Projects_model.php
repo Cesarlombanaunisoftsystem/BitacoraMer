@@ -287,10 +287,23 @@ class Projects_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_observation_close($id) {
+        $this->db->select('detail');
+        $this->db->from('tbl_daily_management');
+        $this->db->where('idOrder', $id);
+        $this->db->where('id_type_management', 3);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return false;
+        }
+    }
 
     public function get_accum_management($idOrder) {
         $sql = "SELECT id,percent_execute,percent_materials "
-                . "FROM tbl_daily_management WHERE idOrder = '$idOrder' ORDER BY id DESC LIMIT 1";
+                . "FROM tbl_daily_management WHERE idOrder = '$idOrder' AND id_type_management = 1 ORDER BY id DESC LIMIT 1";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();

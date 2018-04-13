@@ -272,33 +272,26 @@
                     $(".slides").html("");
                     url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                        var pos = 1;
                         $.each(respuestaServer["docs"], function (i, doc) {
                             if (doc.idTypeDocument === "2") {
                                     $(".pisnm" + idOrder).removeClass("disable");
                                     $(".pisnm" + idOrder).addClass("pointer");
                                     $(".pisnm" + idOrder).attr("disabled",false);
-                                    $("#pisnm" + idOrder).attr("disabled",false);
                             }
                             if (doc.idTypeDocument === "3") {
                                     $(".tss" + idOrder).removeClass("disable");
                                     $(".tss" + idOrder).addClass("pointer");
                                     $(".tss" + idOrder).attr("disabled",false);
-                                    $("#tss" + idOrder).attr("disabled",false);
                             }
                             if (doc.idTypeDocument === "1") {
                                     $(".photo" + idOrder).removeClass("disable");
                                     $(".photo" + idOrder).addClass("pointer");
-                                    $("#photo" + idOrder).attr("disabled",false);
                                     $(".photo" + idOrder).attr("disabled",false);
-                                    galery = true;
-                                    pos++;
                             }
                             if (doc.idTypeDocument === "4") {
                                     $(".das" + idOrder).removeClass("disable");
                                     $(".das" + idOrder).addClass("pointer");
                                     $(".das" + idOrder).attr("disabled",false);
-                                    $("#das" + idOrder).attr("disabled",false);
                             }
                         });
                     });

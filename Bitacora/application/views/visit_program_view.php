@@ -73,8 +73,10 @@
                                             <tr style="background-color:<?= $trcolor ?>">
                                                 <td><?php
                                                     if ($visit->idOrderState === '20') {
+                                                        $text = "SOLICITUD VISITA DE CIERRE: ";
                                                         echo "";
                                                     } else {
+                                                        $text = "";
                                                         ?>
                                                         <a href="javascript:return_order(<?= $visit->id ?>)">
                                                             <i class="fa fa-undo" aria-hidden="true" style="color: orange">                                                        
@@ -100,7 +102,7 @@
                                                         }
                                                         ?>
                                                     </select></td>
-                                                <td><textarea class="form form-control" id="obsv_<?= $visit->id ?>"><?= $visit->observations ?></textarea></td>
+                                                <td><textarea class="form form-control" id="obsv_<?= $visit->id ?>"><?= $text.$visit->observations ?></textarea></td>
                                                 <td><?= $date ?></td>
                                                 <td><a href="javascript:assign(<?= $visit->id . "," . $visit->idOrderState ?>)"><i class="fa fa-check" aria-hidden="true" style="color: green"></i></a></td>
                                             </tr> 

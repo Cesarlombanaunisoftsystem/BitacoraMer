@@ -66,7 +66,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $visit->dateSave ?></td>
-                                                <td><?= $visit->uniquecode ?></td>
+                                                <td><?= $visit->uniquecode . '-' . $visit->coi ?></td>
                                                 <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                 <td><?= $visit->name_activitie ?></td>
                                                 <td><?= $visit->name_service ?></td>
@@ -137,12 +137,15 @@
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvRegPic' + d + '" readonly><td>' +
                         '</tr>' +
                         '<tr>' +
-                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm' + d + '">VER FORMATO 1</a></label>' +
+                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm' + d + '">VER FORMATO PSINM</a></label>' +
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvPsinm' + d + '" readonly></td>' +
                         '</tr>' +
                         '<tr>' +
-                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss' + d + '">VER FORMATO 2</a></label>' +
+                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss' + d + '">VER FORMATO TSS</a></label>' +
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss' + d + '" readonly></td>' +
+                        '</tr>' +
+                        '<td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable das' + d + '">VER FORMATO DAS</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvDas' + d + '" readonly></td>' +
                         '</tr>' + '<tr>' + '<td>OBSERVACIONES GENERALES</td>' +
                         '<td colspan="3"><input type="hidden" value="' + d + '" name="idOrder"><input type="text" class="form-control" id="obsvgen' + d + '" readonly></td></tr>' +
                         '<tr><td></td><td><a href="#" target="_blank" class="disable docs' + d + '">' +
@@ -154,41 +157,34 @@
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        $("#date" + idOrder).html(doc.dateSave);
+                        $("#date" + idOrder).html(doc.dateSave2);
                         if (doc.idTypeDocument === "2") {
-                            if (doc.idState !== '0') {
-                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".pisnm" + idOrder).attr("target", "_blank");
-                                $(".pisnm" + idOrder).removeClass("disable");
-                            } else {
-                                $(".pisnm" + idOrder).css("color", "red");
-                            }
+                            $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file2);
+                            $(".pisnm" + idOrder).attr("target", "_blank");
+                            $(".pisnm" + idOrder).removeClass("disable");
+                            $("#obsvPsinm" + idOrder).val(doc.observation2);
                         }
                         if (doc.idTypeDocument === "3") {
-                            if (doc.idState !== '0') {
-                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".tss" + idOrder).attr("target", "_blank");
-                                $(".tss" + idOrder).removeClass("disable");
-                            } else {
-                                $(".tss" + idOrder).css("color", "red");
-                            }
+                            $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file2);
+                            $(".tss" + idOrder).attr("target", "_blank");
+                            $(".tss" + idOrder).removeClass("disable");
+                            $("#obsvTss" + idOrder).val(doc.observation2);
+                        }
+                        if (doc.idTypeDocument === "4") {
+                            $(".das" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file2);
+                            $(".das" + idOrder).attr("target", "_blank");
+                            $(".das" + idOrder).removeClass("disable");
+                            $("#obsvDas" + idOrder).val(doc.observation2);
                         }
                         if (doc.idTypeDocument === "1") {
-                            if (doc.idState !== '0') {
-                                $(".photo" + idOrder).removeClass("disable");
-                                $(".photo" + idOrder).addClass("pointer");
-                            } else {
-                                $(".photo" + idOrder).css("color", "red");
-                            }
+                            $(".photo" + idOrder).removeClass("disable");
+                            $(".photo" + idOrder).addClass("pointer");
+                            $("#obsvRegPic" + idOrder).val(doc.observation2);
                         }
-                        if (doc.idTypeDocument === "7" && doc.file !== "") {
-                            if (doc.idState !== '0') {
-                                $(".docs" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".docs" + idOrder).attr("target", "_blank");
-                                $(".docs" + idOrder).removeClass("disable");
-                            } else {
-                                $(".docs" + idOrder).css("color", "red");
-                            }
+                        if (doc.idTypeDocument === "7") {
+                            $(".docs" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file2);
+                            $(".docs" + idOrder).attr("target", "_blank");
+                            $(".docs" + idOrder).removeClass("disable");
                         }
                     });
                 });
@@ -197,7 +193,7 @@
             function getRegPhoto(id) {
                 galery = false;
                 $(".slides").html("");
-                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
+                url = get_base_url() + "Orders/get_reg_photos_xid_stage2?jsoncallback=?";
                 $.getJSON(url, {id: id}).done(function (res) {
                     var pos = 1;
                     var image = res.split(",");
@@ -214,17 +210,10 @@
                 });
             }
             function getObservations(idOrder) {
-                $("#obsv" + idOrder).val("");
+                $("#obsvgen" + idOrder).val("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv" + idOrder).val(res.observation.observations);
-                });
-            }
-            function getAdjuntos(idOrder) {
-                $("#obsv" + idOrder).val("");
-                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv" + idOrder).val(res.observation.observations);
+                    $("#obsvgen" + idOrder).val(res.observation.observations);
                 });
             }
             function generateid(idOrder) {

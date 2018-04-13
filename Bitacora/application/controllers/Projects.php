@@ -101,6 +101,13 @@ class Projects extends CI_Controller {
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
+    public function get_observation_close() {
+        $idOrder = $this->input->get('idOrder');
+        $data['observation'] = $this->Projects_model->get_observation_close($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
     public function get_accum_management() {
         $idOrder = $this->input->get('idOrder');
         $data['accums'] = $this->Projects_model->get_accum_management($idOrder);
@@ -334,7 +341,6 @@ class Projects extends CI_Controller {
         $data['types'] = $this->Projects_model->get_types_management(0);
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['projects'] = $this->Projects_model->get_daily_managements($id_user);
-        $data['registers'] = $this->Projects_model->get_daily_management_contract();
         $this->load->view('closing_visit_request_view', $data);
     }
 
@@ -372,10 +378,16 @@ class Projects extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 22,
+            'id_type_management' => 4,
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
+        $dataDaily = array(
+            'idOrder' => $idOrder,
+            'id_type_management' => 4
+        );
+        $this->Projects_model->register_daily_management_order($dataDaily);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -387,6 +399,7 @@ class Projects extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 18,
+            'id_type_management' => 4,
             'observations' => $this->input->post('obsv'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );

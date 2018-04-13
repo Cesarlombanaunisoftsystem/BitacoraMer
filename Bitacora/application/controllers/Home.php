@@ -19,7 +19,7 @@ class Home extends CI_Controller {
         parent::__construct();
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
-        $this->load->model(array('Users_model'));
+        $this->load->model(array('Users_model','Cities_model'));
     }
 
     public function index() {
@@ -32,6 +32,24 @@ class Home extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $this->load->view('admin/home_view', $data);
+    }
+    
+    public function menu(){
+         if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['dat'] = file_get_contents(base_url('dist/js/items_menu.json'));
+        $this->load->view('menu/menu',$data);
+    }
+    
+    public function autocomplete(){
+         if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $key = $_POST['keyword'];
+        $data['datos'] = $this->Cities_model->get_city($key);
+        header('Content-Type: application/json');
+        echo json_encode($data['datos']);
     }
 
 }

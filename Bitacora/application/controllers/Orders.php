@@ -215,7 +215,8 @@ class Orders extends CI_Controller {
                     'idArea' => $veryState['idArea'],
                     'idOrderState' => $veryState['idState'],
                     'observations' => $this->input->post('observations'),
-                    'idUser' => $this->session->userdata('id_usuario')
+                    'idUser' => $this->session->userdata('id_usuario'),
+                    'dateSave' => date('Y-m-d H:i:s')
                 );
                 $dataDoc1 = array(
                     'idTypeDocument' => $this->input->post('idTypeDocument1'),
@@ -237,7 +238,14 @@ class Orders extends CI_Controller {
                     'idOrder' => $this->input->post('id'),
                     'dateSave' => date('Y-m-d')
                 );
+                $data2 = array(
+                    'idOrder' => $this->input->post('id'),
+                    'idArea' => $veryState['idArea'],
+                    'idOrderState' => $veryState['idState'],
+                    'obsv' => $this->input->post('observations')                    
+                );
                 $this->Orders_model->upload_pdf($id, $file);
+                $this->Orders_model->register_log($data2);
                 $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
                 echo $this->valida($res);
             }
@@ -277,6 +285,13 @@ class Orders extends CI_Controller {
         $id = $this->input->get('id');
         $res = $this->Orders_model->get_reg_photos_xid($id);
         $resultadosJson = json_encode($res->file);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_reg_photos_xid_stage2() {
+        $id = $this->input->get('id');
+        $res = $this->Orders_model->get_reg_photos_xid_stage2($id);
+        $resultadosJson = json_encode($res->file2);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 

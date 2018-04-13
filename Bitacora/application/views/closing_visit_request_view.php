@@ -26,8 +26,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Projects/closing_visit_request')?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Projects/closing_visit_request_process')?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Projects/closing_visit_request') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Projects/closing_visit_request_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -58,7 +58,7 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
-                                                            <td><a href="#" onclick="verDetalleReg(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
+                                                            <td><a href="#" onclick="verDetalleReg(<?= $row->id ?>);"><u><?= $row->uniquecode . '-' . $row->coi ?></u></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
                                                             <td><?= $row->name_service ?></td>
@@ -74,7 +74,7 @@
                                                                         </option>
                                                                     </select>
                                                                 </td>
-                                                            <?php } if ($row->type === '3') { ?>                                                            
+                                                            <?php } if ($row->id_type_management === '3') { ?>                                                            
                                                                 <td><select class="form form-control" id="seltype_<?= $row->id ?>" required="" onchange="registerAudit(<?= $row->id ?>)">
                                                                         <option></option>
                                                                         <option value="4">

@@ -464,6 +464,17 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
+    
+    public function get_reg_photos_xid_stage2($id) {
+        $sql = "SELECT file2 FROM tbl_orders_documents WHERE idOrder='$id' AND"
+                . " idTypeDocument = 1";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
 
     public function get_total_orders() {
         $sql = "SELECT count(id) as total FROM tbl_orders";

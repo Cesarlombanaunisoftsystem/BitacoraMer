@@ -69,7 +69,7 @@ class Visit extends CI_Controller {
                 $this->Utils->sendMail($technical->email, 'Programación de visita a sitio', 'templates/email_tecnico.php', $technical, $content, $order, $titulo);
                 echo 'ok';
             } else {
-                echo $res;
+                echo 'error';
             }
         }
         if ($state === '20') {
@@ -86,8 +86,9 @@ class Visit extends CI_Controller {
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
                 $content = $this->Orders_model->get_order_by_id_email($idOrder);
+                $order = $this->Orders_model->get_order_by_id($idOrder);
                 $titulo = '¡Has Sido Asignado para Realizar Visita De Cierre!';
-                $this->Utils->sendMail($technical->email, 'Programación de visita de cierre', 'templates/email_tecnico.php', $content, $titulo);
+                $this->Utils->sendMail($technical->email, 'Programación de visita de cierre', 'templates/email_tecnico.php', $technical, $content, $order, $titulo);
                 echo 'ok';
             } else {
                 echo 'error';
@@ -340,73 +341,77 @@ class Visit extends CI_Controller {
         $image = "";
         $quantity = count($_FILES['fileregfoto']['name']);
         for ($i = 0; $i < $quantity; $i++) {
-            //subimos el archivo 
+            //subimos el archivo ha subido
             move_uploaded_file($_FILES['fileregfoto']['tmp_name'][$i], "./uploads/" . $_FILES['fileregfoto']['name'][$i]);
             //concatenamos para guardar nombres en la base de datos
-            $image .= $_FILES['fileregfoto']['name'][$i];
+            $image .= $_FILES['fileregfoto']['name'][$i] . ",";
         }
-        // separamos por comas los nombres de archivos
         $imageconcat = trim($image, ",");
         if ($imageconcat) {
             $dataFoto = array(
-                'idTypeDocument' => 1,
-                'idOrder' => $this->input->post('idOrder'),
-                'file' => $imageconcat,
-                'idState' => 1,
-                'observation' => $this->input->post('obsvRegPic'),
-                'dateSave' => date('Y-m-d')
+                'file2' => $imageconcat,
+                'observation2' => $this->input->post('obsvRegPic'),
+                'idState2' => 1,
+                'dateSave2' => date('Y-m-d')
             );
-            $this->Orders_model->upload_docs($dataFoto);
+            $this->Orders_model->upload_doc($this->input->post('idOrder'), 1, $dataFoto);
         }
         $filepsinm = $_FILES['filepisnm']['name'];
         if ($filepsinm && move_uploaded_file($_FILES['filepisnm']['tmp_name'], "./uploads/" . $filepsinm)) {
             $dataPsinm = array(
-                'idTypeDocument' => 2,
-                'idOrder' => $this->input->post('idOrder'),
-                'file' => $filepsinm,
-                'observation' => $this->input->post('obsvPsinm'),
-                'idState' => 1,
-                'dateSave' => date('Y-m-d')
+                'file2' => $filepsinm,
+                'observation2' => $this->input->post('obsvPsinm'),
+                'idState2' => 1,
+                'dateSave2' => date('Y-m-d')
             );
-            $this->Orders_model->upload_docs($dataPsinm);
+            $this->Orders_model->upload_doc($this->input->post('idOrder'), 2, $dataPsinm);
         }
         $filetss = $_FILES['filetss']['name'];
         if ($filetss && move_uploaded_file($_FILES['filetss']['tmp_name'], "./uploads/" . $filetss)) {
             $dataTss = array(
-                'idTypeDocument' => 3,
-                'idOrder' => $this->input->post('idOrder'),
-                'file' => $filetss,
-                'observation' => $this->input->post('obsvTss'),
-                'idState' => 1,
-                'dateSave' => date('Y-m-d')
+                'file2' => $filetss,
+                'observation2' => $this->input->post('obsvTss'),
+                'idState2' => 1,
+                'dateSave2' => date('Y-m-d')
             );
-            $this->Orders_model->upload_docs($dataTss);
+            $this->Orders_model->upload_doc($this->input->post('idOrder'), 3, $dataTss);
+        }
+        $filedas = $_FILES['filedas']['name'];
+        if ($filedas && move_uploaded_file($_FILES['filedas']['tmp_name'], "./uploads/" . $filedas)) {
+            $dataDas = array(
+                'file2' => $filedas,
+                'observation2' => $this->input->post('obsvDas'),
+                'idState2' => 1,
+                'dateSave2' => date('Y-m-d')
+            );
+            $this->Orders_model->upload_doc($this->input->post('idOrder'), 4, $dataDas);
         }
         $filedoc = $_FILES['userfile']['name'];
         if ($filedoc && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $filedoc)) {
-            $dataDoc = array(
-                'idTypeDocument' => $this->input->post('idTypeDoc'),
+            $dataDoc = array(                
+                'idTypeDocument' => 7,
                 'idOrder' => $this->input->post('idOrder'),
-                'file' => $filedoc,
-                'idState' => 1,
-                'dateSave' => date('Y-m-d')
+                'file2' => $filedoc,
+                'observation2' => $this->input->post('obsvDoc'),
+                'idState2' => 1,
+                'dateSave2' => date('Y-m-d')
             );
             $this->Orders_model->upload_docs($dataDoc);
         }
         $dataGen = array(
             'idArea' => 3,
             'idOrderState' => 19,
+            'id_type_management' => 3,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'observations' => $this->input->post('obsvgen'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         $dataDaily = array(
-            'idOrder' => $this->input->post('idOrder'),
-            'id_type_management' => 2,
-            'detail' => $this->input->post('obsvgen')
-        );
-        $this->Projects_model->register_daily_management_order($dataDaily);
+          'idOrder' => $this->input->post('idOrder'),
+          'id_type_management' => 3,
+          'detail' => $this->input->post('obsvgen')
+          );
+        $this->Projects_model->register_daily_management_order($dataDaily); 
         redirect(base_url() . 'Visit/validation_close');
     }
 

@@ -66,7 +66,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $visit->dateSave ?></td>
-                                                <td><?= $visit->uniquecode ?></td>
+                                                <td><?= $visit->uniquecode . '-' . $visit->coi ?></td>
                                                 <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                 <td><?= $visit->name_activitie ?></td>
                                                 <td><?= $visit->name_service ?></td>
@@ -130,25 +130,30 @@
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="fileregfoto"><a class="disable photos photo' + d + '">ADJUNTAR REGISTRO FOTOGRAFICO</a></label>' +
-                        '<p id="p_1"></p><input type="hidden" value="1" name="idTypeRegFoto"><input style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto[]" id="fileregfoto" multiple></input></td>' +
-                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvRegPic"><td>' +
+                        '<p id="p_1"></p><input class="photo' + d + '" style="display: none;" onchange="getFileNameRegFoto(this)" type="file" name="fileregfoto[]" id="fileregfoto" multiple disabled></input></td>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable photos photo' + d + ' form-control" name="obsvRegPic" disabled><td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="filepisnm"><a class="disable pisnm' + d + '">ADJUNTAR FORMATO PISNM</a></label>' +
-                        '<p id="p_2"></p><input type="hidden" value="2" name="idTypePsinm"><input style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filepisnm" id="filepisnm"></input></td>' +
-                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvPsinm"></td>' +
+                        '<p id="p_2"></p><input type="hidden" value="2" name="idTypePsinm"><input class="pisnm' + d + '" style="display: none;" onchange="getFileNamePsinm(this)" type="file" name="filepisnm" id="filepisnm" disabled></input></td>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable pisnm' + d + ' form-control" name="obsvPsinm" disabled></td>' +
                         '</tr>' +
                         '<tr>' +
                         '<td><label class="blue bold upload_design" for="filetss"><a class="disable tss' + d + '">ADJUNTAR FORMATO TSS</a></label>' +
-                        '<p id="p_3"></p><input type="hidden" value="3" name="idTypeTss"><input style="display: none;" onchange="getFileNameTss(this)" type="file" name="filetss" id="filetss"></input></td>' +
-                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 name="obsvTss"></td>' +
+                        '<p id="p_3"></p><input class="tss' + d + '" style="display: none;" onchange="getFileNameTss(this)" type="file" name="filetss" id="filetss" disabled></input></td>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable tss' + d + ' form-control" name="obsvTss" disabled></td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td><label class="blue bold upload_design" for="filedas"><a class="disable das' + d + '">ADJUNTAR FORMATO DAS</a></label>' +
+                        '<p id="p_3"></p><input class="das' + d + '" style="display: none;" onchange="getFileNameDas(this)" type="file" name="filedas" id="filedas" disabled></input></td>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="disable das' + d + ' form-control" name="obsvDas" disabled></td>' +
                         '</tr>' + '<tr>' + '<td>OBSERVACIONES GENERALES</td>' +
                         '<td colspan="3"><input type="hidden" value="' + d + '" name="idOrder"><input type="text" class="form-control" name="obsvgen" id="obsvgen"></td></tr>' +
                         '<tr><td></td><td colspan="2"><label class="col-xs-4 control-label" for="userfile">' +
                         '<div style="background-color: #777;border-radius: 50%;width: 30px;height: 30px;">' +
                         '<img src="' + get_base_url() + '/dist/img/clip.png" style="width: 15px;margin-top: 10px;margin-right: 1px;margin-left: 7px;">' +
                         '</div></label><label class="btn btn-default btn-sm">ADJUNTAR</label><p id="datofile"></p>' +
-                        '<p id="p_4"></p><input type="hidden" value="7" name="idTypeDoc"><input type="file"  name="userfile" id="userfile" style="display: none" onchange="getFileNameDoc(this)" accept=".pdf" size="2048">' +
+                        '<input type="file" name="userfile" id="userfile" style="display: none" onchange="getFileNameDoc(this)"><p id="p_4"></p>' +
                         '</td><td><a href="#" class="blue bold"><input type="submit" value="REGISTRAR" class="blue bold"></a></td></tr>' +
                         '</table></form>';
             }
@@ -156,33 +161,26 @@
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
-                            if (doc.idState !== '0') {
-                                $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".pisnm" + idOrder).attr("target", "_blank");
-                                $(".pisnm" + idOrder).removeClass("disable");
-                            } else {
-                                $(".pisnm" + idOrder).css("color", "red");
-                            }
+                            $(".pisnm" + idOrder).removeClass("disable");
+                            $(".pisnm" + idOrder).addClass("pointer");
+                            $(".pisnm" + idOrder).attr("disabled", false);
                         }
                         if (doc.idTypeDocument === "3") {
-                            if (doc.idState !== '0') {
-                                $(".tss" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
-                                $(".tss" + idOrder).attr("target", "_blank");
-                                $(".tss" + idOrder).removeClass("disable");
-                            } else {
-                                $(".tss" + idOrder).css("color", "red");
-                            }
+                            $(".tss" + idOrder).removeClass("disable");
+                            $(".tss" + idOrder).addClass("pointer");
+                            $(".tss" + idOrder).attr("disabled", false);
                         }
                         if (doc.idTypeDocument === "1") {
-                            if (doc.idState !== '0') {
-                                $(".photo" + idOrder).removeClass("disable");
-                                $(".photo" + idOrder).addClass("pointer");
-                            } else {
-                                $(".photo" + idOrder).css("color", "red");
-                            }
+                            $(".photo" + idOrder).removeClass("disable");
+                            $(".photo" + idOrder).addClass("pointer");
+                            $(".photo" + idOrder).attr("disabled", false);
+                        }
+                        if (doc.idTypeDocument === "4") {
+                            $(".das" + idOrder).removeClass("disable");
+                            $(".das" + idOrder).addClass("pointer");
+                            $(".das" + idOrder).attr("disabled", false);
                         }
                     });
                 });
