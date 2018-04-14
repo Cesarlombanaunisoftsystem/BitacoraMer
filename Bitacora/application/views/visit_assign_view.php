@@ -10,40 +10,18 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Panel de control</li>
-                    </ol>
-                </section>
+                <div id="load_menu"></div>
 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Visit/program') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Visit/assigns') ?>" aria-controls="binnacle" role="tab" data-toggle="">Visitas asignadas</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/dates.jpg') ?>" style="width: 120px;">
-                        </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th style="color: #00B0F0">Fecha de ordén</th>
+                                        <th style="color: #00B0F0">Fecha procesado</th>
                                         <th style="color: #00B0F0">No. Ordén</th>
                                         <th style="color: #00B0F0">Servicio</th>
                                         <th style="color: #00B0F0">Tecnología</th>
@@ -61,12 +39,13 @@
                                             ?>                                            
                                             <tr>
                                                 <td><?= $visit->dateSave ?></td>
+                                                <td><?= $visit->dateLog ?></td>
                                                 <td><?= $visit->uniquecode."-".$visit->coi ?></td>
                                                 <td><?= $visit->name_activitie . " " . $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>
                                                 <td><?= $visit->site ?></td>
-                                                <td><?= $visit->observations ?></td>
+                                                <td><?= $visit->obsvLog ?></td>
                                                 <td><?= $visit->name_user ?></td>
                                                 <td><?= $visit->date ?></td>
                                             </tr>                                                                                    
@@ -85,5 +64,9 @@
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
+        
+        <script>
+        cargar_menu("programacion_visitas",'Visitas asignadas');
+            </script>
     </body>
 </html>

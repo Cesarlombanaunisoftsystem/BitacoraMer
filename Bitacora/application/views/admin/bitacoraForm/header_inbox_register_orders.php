@@ -12,6 +12,7 @@
                     <th style="color: #00B0F0">Centro de Costos No.</th>
                     <th style="color: #00B0F0">Coordinador Externo</th>
                     <th style="color: #00B0F0">Fecha de creación</th>
+                    <th style="color: #00B0F0">Fecha procesado</th>
                     <th style="color: #00B0F0">VR. TOTAL</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
                             <td><?= $orderTray->dateSave ?></td>
+                            <td><?= $orderTray->dateLog ?></td>
                             <td><?php
                                 setlocale(LC_MONETARY, 'es_CO');
                                 echo money_format('%.2n', $orderTray->total);

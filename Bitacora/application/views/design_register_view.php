@@ -179,8 +179,8 @@
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsvgen").val(res.observation.observations);
-                    $("#obsv").html(res.observation.observations);
+                    $("#obsvgen").val(res.observation.obsvLog);
+                    $("#obsv").html(res.observation.obsvLog);
                 });
             }
 

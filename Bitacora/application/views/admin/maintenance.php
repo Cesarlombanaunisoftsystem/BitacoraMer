@@ -251,7 +251,7 @@
                     }
                 });
             }
-             cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'mantenimiento');
+             cargar_menu("registro_ordenes",'mantenimiento');
         </script>
     </body>
 </html>

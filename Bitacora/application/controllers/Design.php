@@ -104,6 +104,12 @@ class Design extends CI_Controller {
                     'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
+                $data2 = array(
+                    'idOrder' => $idOrder,
+                    'idProcessState' => 5,
+                    'obsvLog' => $this->input->post('observacion')                    
+                );
+                $this->Orders_model->register_log($data2);
                 $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
                 $content = $this->Orders_model->get_order_by_email_coordext($idOrder);
                 $technical = "";

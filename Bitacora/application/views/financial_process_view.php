@@ -150,7 +150,7 @@
                 return (((sign) ? '' : '') + '$ ' + num);
             }
             
-            cargar_menu("<?php echo base_url('Home/menu'); ?>","Financiero",'Pagos Gestionados');
+            cargar_menu("financiero",'Pagos Gestionados');
             
             function validar_existe(idPay){
                 $.ajax({

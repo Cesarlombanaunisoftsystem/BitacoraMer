@@ -199,8 +199,70 @@
             <!-- Left side column. contains the logo and sidebar -->
             <?php $this->load->view('templates/menu-right') ?>
             <!-- Content Wrapper. Contains page content -->
+            
+            
             <div class="content-wrapper">
                 <h2><?= $titulo ?></h2>
+                <div id="spinner"></div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="col-md-4 text-center" style="margin: 50px 0;">
+                                <h4>TOTAL ORDENES</h4><h2 class=""><strong><?= $totalorders->total ?></strong></h2>
+                            </div>
+                            <div class="col-md-8 center-block">
+                                <div id="donutchart"></div>
+                            </div> 
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="row" style="margin:20px 0;">
+                                <div class="col-xs-6" >
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Numero total de ordenes: <strong><?= $totalorders->total ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes fuera de tiempo: <strong><?php
+                                            $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+    ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
+                                            $q = $this->db->query($sql)->row();
+                                            $pendientes = $q->cont;
+
+                                            echo $q->cont;
+                                            ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes dentro de tiempo: <strong><?php
+                                            $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
+    ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
+                                            $query = $this->db->query($sql)->row();
+                                            $cumplidas = $query->cont;
+
+                                            echo $query->cont;
+                                            ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% de ordenes fuera de tiempo: <strong>
+                                            <?php
+                                            $percentOut = ($pendientes * 100) / $totalorders->total;
+                                            echo round($percentOut, 2) . '%';
+                                            ?></strong></p>
+                                    </strong></p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor total venta: <strong><?php
+                                            setlocale(LC_MONETARY, 'es_CO');
+                                            echo money_format('%.2n', $totalsale->total) . "\n";
+                                            ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor total costos: <strong><?php
+                                            setlocale(LC_MONETARY, 'es_CO');
+                                            echo money_format('%.2n', $totalcost->total) . "\n";
+                                            ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% Utilidad total: <strong><?php
+                                            $dif = $totalsale->total - $totalcost->total;
+                                            $utilpercent = ($dif * 100) / $totalsale->total;
+                                            echo round($utilpercent, 2) . '%';
+                                            ?></strong></p>
+                                    <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor utilidad total: <strong><?php
+                                            $util = $totalsale->total - $totalcost->total;
+                                            setlocale(LC_MONETARY, 'es_CO');
+                                            echo money_format('%.2n', $util) . "\n";
+                                            ?></strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#gestion" aria-controls="gestion" role="tab" data-toggle="tab">Modular</a></li>
                     <li role="presentation"><a href="#barras" aria-controls="barras" role="tab" data-toggle="tab" id="barsMenu">Barras</a></li>
@@ -211,66 +273,7 @@
                     <div role="tabpanel" class="tab-pane active" id="gestion"> 
                         <section class="content">
                             
-                            <div id="spinner"></div>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <div class="col-md-4 text-center">
-                                        <h4>TOTAL ORDENES</h4><h2 class=""><strong><?= $totalorders->total ?></strong></h2>
-                                    </div>
-                                    <div class="col-md-8 center-block">
-                                        <div id="donutchart"></div>
-                                    </div> 
-                                </div>
-                                <div class="col-xs-6">
-                                    <div class="row" style="margin:20px 0;">
-                                        <div class="col-xs-6" >
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Numero total de ordenes: <strong><?= $totalorders->total ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes fuera de tiempo: <strong><?php
-                                                    $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
-            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) <= tbl_orders_state.days";
-                                                    $q = $this->db->query($sql)->row();
-                                                    $pendientes = $q->cont;
-
-                                                    echo $q->cont;
-                                                    ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Ordenes dentro de tiempo: <strong><?php
-                                                    $sql = "SELECT count(tbl_orders.id) cont,tbl_orders.dateSave,tbl_orders_state.days FROM tbl_orders JOIN tbl_orders_state
-            ON tbl_orders.idOrderState = tbl_orders_state.id WHERE DATEDIFF(CURDATE(), tbl_orders.dateSave) > tbl_orders_state.days";
-                                                    $query = $this->db->query($sql)->row();
-                                                    $cumplidas = $query->cont;
-
-                                                    echo $query->cont;
-                                                    ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% de ordenes fuera de tiempo: <strong>
-                                                    <?php
-                                                    $percentOut = ($pendientes * 100) / $totalorders->total;
-                                                    echo round($percentOut, 2) . '%';
-                                                    ?></strong></p>
-                                            </strong></p>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor total venta: <strong><?php
-                                                    setlocale(LC_MONETARY, 'es_CO');
-                                                    echo money_format('%.2n', $totalsale->total) . "\n";
-                                                    ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor total costos: <strong><?php
-                                                    setlocale(LC_MONETARY, 'es_CO');
-                                                    echo money_format('%.2n', $totalcost->total) . "\n";
-                                                    ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">% Utilidad total: <strong><?php
-                                                    $dif = $totalsale->total - $totalcost->total;
-                                                    $utilpercent = ($dif * 100) / $totalsale->total;
-                                                    echo round($utilpercent, 2) . '%';
-                                                    ?></strong></p>
-                                            <p class="global-text wow bounceInUp" data-wow-duration="2s" data-wow-delay="1s">Valor utilidad total: <strong><?php
-                                                    $util = $totalsale->total - $totalcost->total;
-                                                    setlocale(LC_MONETARY, 'es_CO');
-                                                    echo money_format('%.2n', $util) . "\n";
-                                                    ?></strong></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="bg-dark">
                                 <div class="row block-text">
                                     <div class="col-xs-1">
@@ -590,8 +593,7 @@
 
             $("#barsMenu").click(function (e) {
                 google.charts.load('current', {'packages': ['bar']});
-                google.charts.setOnLoadCallback(drawStuff);
-                google.charts.setOnLoadCallback(asd);
+                google.charts.setOnLoadCallback(barStacked);
             });
 
             google.charts.load("current", {packages: ["corechart"]});

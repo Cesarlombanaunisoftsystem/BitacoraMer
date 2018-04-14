@@ -61,6 +61,12 @@ class Visit extends CI_Controller {
                 'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
+            $data2 = array(
+                'idOrder' => $idOrder,
+                'idProcessState' => 2,
+                'obsvLog' => $this->input->post('obsv')
+            );
+            $this->Orders_model->register_log($data2);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
                 $content = $this->Orders_model->details_orders_tray($idOrder);
@@ -83,6 +89,12 @@ class Visit extends CI_Controller {
                 'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
+            $data2 = array(
+                'idOrder' => $idOrder,
+                'idProcessState' => 2,
+                'obsvLog' => $this->input->post('obsv')
+            );
+            $this->Orders_model->register_log($data2);
             if ($res === TRUE) {
                 $technical = $this->Users_model->get_user_xid($idUser);
                 $content = $this->Orders_model->get_order_by_id_email($idOrder);
@@ -103,6 +115,11 @@ class Visit extends CI_Controller {
             'idOrderState' => $this->input->post('idState'),
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateAssign' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idProcessState' => 4
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -201,7 +218,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(1);
-        $data['process'] = $this->Visits_model->get_orders_visit_process($id_user, 4);
+        $data['process'] = $this->Visits_model->get_orders_visit_process($id_user, 3);
         $this->load->view('visit_init_process_view', $data);
     }
 
@@ -229,7 +246,7 @@ class Visit extends CI_Controller {
         $data['titulo'] = 'Validación Registro de Visitas Inicial';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['process'] = $this->Visits_model->get_orders_visit_process($id_user, 6);
+        $data['process'] = $this->Visits_model->get_orders_visit_process($id_user, 4);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('validation_visit_init_process_view', $data);
@@ -334,6 +351,12 @@ class Visit extends CI_Controller {
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
+        $data2 = array(
+            'idOrder' => $this->input->post('idOrder'),
+            'idProcessState' => 3,
+            'obsvLog' => $this->input->post('obsvgen')
+        );
+        $this->Orders_model->register_log($data2);
         redirect(base_url() . 'Visit/site_init');
     }
 
@@ -388,7 +411,7 @@ class Visit extends CI_Controller {
         }
         $filedoc = $_FILES['userfile']['name'];
         if ($filedoc && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $filedoc)) {
-            $dataDoc = array(                
+            $dataDoc = array(
                 'idTypeDocument' => 7,
                 'idOrder' => $this->input->post('idOrder'),
                 'file2' => $filedoc,
@@ -407,11 +430,11 @@ class Visit extends CI_Controller {
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         $dataDaily = array(
-          'idOrder' => $this->input->post('idOrder'),
-          'id_type_management' => 3,
-          'detail' => $this->input->post('obsvgen')
-          );
-        $this->Projects_model->register_daily_management_order($dataDaily); 
+            'idOrder' => $this->input->post('idOrder'),
+            'id_type_management' => 3,
+            'detail' => $this->input->post('obsvgen')
+        );
+        $this->Projects_model->register_daily_management_order($dataDaily);
         redirect(base_url() . 'Visit/validation_close');
     }
 

@@ -208,7 +208,7 @@
                             num.substring(num.length - (4 * i + 3));
                 return (((sign) ? '' : '') + '$ ' + num);
             }
-            cargar_menu("<?php echo base_url('Home/menu'); ?>","Financiero",'Bandeja de entrada');
+            cargar_menu("financiero",'Bandeja de entrada');
 
         </script>
     </body>

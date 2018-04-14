@@ -9,22 +9,9 @@
             <?php $this->load->view('templates/menu-right') ?>
             <div class="content-wrapper">
                 <div id="load_menu"></div>
-                <?php //$this->load->view('menu/menu') ?>
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12"><!--
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#binnacle" aria-controls="binnacle" role="tab" data-toggle="tab">BTS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Das') ?>" aria-controls="binnacle" role="tab" data-toggle="">DAS</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Maintenance') ?>" aria-controls="binnacle" role="tab" data-toggle="">Mantenimiento</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Sale') ?>" aria-controls="binnacle" role="tab" data-toggle="">Venta de producto</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Qmc') ?>" aria-controls="binnacle" role="tab" data-toggle="">QMC</a></li>
-                                        <li role="presentation"><a href="#Bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">REGISTROS PROCESADOS</a></li>
-                                    </ul>
-                                </div>
-                            </div>-->
+                        <div class="col-xs-12">
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="binnacle">
                                     <form id="frmRegisterOrder" method="POST" enctype="multipart/form-data"><?php $this->load->view('admin/order-registration-binnacle') ?></form>
@@ -321,7 +308,7 @@
                         '<thead><tr><th style="color: #c30000">AREA DE SIGUIENTE PASO</th>' +
                         '<th><input type="text" id="txtArea_' + d + '" disabled></th>' +
                         '</tr><tr><th style="color: #c30000">DOCUMENTOS RELACIONADOS</th>' +
-                        '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photos' + d + '" disabled></th>' +
+                        '<th>REGISTRO FOTOGRAFICO <input type="checkbox" class="disable photo' + d + '" disabled></th>' +
                         '<th>PISINM <input type="checkbox" class="disable pisnm' + d + '" disabled></th>' +
                         '<th>TSS <input type="checkbox" class="disable tss' + d + '" disabled></th>' +
                         '<th>DOCUMENTO DAS <input type="checkbox" class="disable das' + d + '" disabled></th></tr>' +
@@ -336,7 +323,7 @@
                             '</td><td class="text-center">' + res.res.iva + '%</td><td class="text-center">' + formatNumber(res.res.total) +
                             '</td></tr>');
                     $("#txtArea_" + idOrder).val(res.res.name_area);
-                    $("#txtObsv_" + idOrder).val(res.res.observations);
+                    $("#txtObsv_" + idOrder).val(res.res.obsvLog);
                     $("#pdf_" + idOrder).html('<a href=' + get_base_url() + 'uploads/' + res.res.picture + ' target="blank">' +
                             '<div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;">' +
                             '<img src="' + get_base_url() + 'dist/img/clip.png" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;">' +
@@ -391,7 +378,7 @@
                             num.substring(num.length - (4 * i + 3));
                 return (((sign) ? '' : '') + '$ ' + num);
             }
-            cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'BTS');
+            cargar_menu("registro_ordenes",'BTS');
         </script>
        
     </body>

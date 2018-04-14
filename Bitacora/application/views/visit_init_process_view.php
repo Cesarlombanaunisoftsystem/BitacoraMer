@@ -11,42 +11,19 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Panel de control</li>
-                    </ol>
-                </section>
+                <div id="load_menu" style="margin-top: 10px"></div>
 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Visit/site_init') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>                                        
-                                        <li role="presentation"  class="active"><a href="<?= base_url('Visit/site_init_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                    <div class="tab-content">                        
-                        <div role="tabpanel" class="tab-pane active" id="regprocess">
-                            <div class="row">
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    <img src="<?= base_url('dist/img/visitini.png') ?>" style="width: 120px;">
-                                </div>
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
-                                    <table id="data-table" class="table table-striped">
+                        <input type="hidden" id="id" value=""/>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
+                            <table id="data-table" class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th style="color: #00B0F0">Fecha de ordén</th>
+                                                <th style="color: #00B0F0">Fecha proceso</th>
                                                 <th style="color: #00B0F0">No. Ordén</th>
                                                 <th style="color: #00B0F0">Centro de Costos</th>
                                                 <th style="color: #00B0F0">Actividad</th>
@@ -66,6 +43,7 @@
                                                             <i class="fa fa-plus-square-o"></i>
                                                         </td>
                                                         <td><?= $order->dateSave ?></td>
+                                                        <td><?= $order->dateLog ?></td>
                                                         <td><?= $order->uniquecode . "-" . $order->coi ?></td>
                                                         <td><?= $order->uniqueCodeCentralCost ?></td>
                                                         <td><?= $order->name_activitie ?></td>
@@ -324,7 +302,7 @@
                     $("#obsv").html("");
                     url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                        $("#obsv").html(res.observation.observations);
+                        $("#obsv").html(res.observation.obsvLog);
                     });
                 }
 
@@ -338,6 +316,8 @@
                         $("#quantity").val(res.res.count);
                     });
                 }
+                cargar_menu("visita_inicial",'registros procesados');
+
             </script>
     </body>
 </html>

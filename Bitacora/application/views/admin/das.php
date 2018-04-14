@@ -258,7 +258,7 @@
                     }
                 });
             }
-            cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'DAS');
+            cargar_menu("registro_ordenes",'DAS');
         </script>
     </body>
 </html>

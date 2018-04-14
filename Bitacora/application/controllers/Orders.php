@@ -240,12 +240,11 @@ class Orders extends CI_Controller {
                 );
                 $data2 = array(
                     'idOrder' => $this->input->post('id'),
-                    'idArea' => $veryState['idArea'],
-                    'idOrderState' => $veryState['idState'],
-                    'obsv' => $this->input->post('observations')                    
+                    'idProcessState' => 1,
+                    'obsvLog' => $this->input->post('observations')                    
                 );
-                $this->Orders_model->upload_pdf($id, $file);
                 $this->Orders_model->register_log($data2);
+                $this->Orders_model->upload_pdf($id, $file);                
                 $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
                 echo $this->valida($res);
             }

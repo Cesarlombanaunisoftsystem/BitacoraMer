@@ -246,7 +246,7 @@
                     }
                 });
             }
-        cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'qmc');
+        cargar_menu("registro_ordenes",'qmc');
 
         </script>
     </body>

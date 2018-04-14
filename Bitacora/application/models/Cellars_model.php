@@ -58,7 +58,7 @@ class Cellars_model extends CI_Model {
             JOIN tbl_orders ON tbl_orders_details.idOrder = tbl_orders.id JOIN tbl_activities 
     ON tbl_orders_details.idActivities= tbl_activities.id JOIN tbl_users ON tbl_orders.idTechnicals = tbl_users.id
     where tbl_orders_details.idCellar='$idCellar' AND tbl_orders_details.idStateCellar = 1"
-                . " AND tbl_orders.idOrderState = 16 || tbl_orders.idOrderState = 22 group by tbl_orders_details.idOrder";
+                . " AND (tbl_orders.idOrderState = 16 || tbl_orders.idOrderState = 22) group by tbl_orders_details.idOrder";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

@@ -245,7 +245,7 @@
                     }
                 });
             }
-        cargar_menu("<?php echo base_url('Home/menu'); ?>","registro_ordenes",'venta de producto');
+        cargar_menu("registro_ordenes",'venta de producto');
 
         </script>
     </body>

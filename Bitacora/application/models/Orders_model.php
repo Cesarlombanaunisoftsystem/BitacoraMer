@@ -31,17 +31,7 @@ class Orders_model extends CI_Model {
     }
 
     public function get_order_by_id($idOrder) {
-        $sql = "SELECT tbl_orders.*,min(tbl_orders_details.idActivities),
-            tbl_orders_details.idServices,tbl_orders_details.site,
-            tbl_orders_details.count,tbl_activities.name_activitie,
-            tbl_services.name_service,tbl_users.name_user,tbl_users.email,
-            tbl_users.identify_number,tbl_users.contact,tbl_users.address,
-            tbl_users.phone,tbl_areas.name_area FROM tbl_orders JOIN tbl_areas ON
-            tbl_orders.idAreaSend=tbl_areas.id JOIN tbl_orders_details
-            ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON 
-            tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON 
-            tbl_orders_details.idServices = tbl_services.id JOIN tbl_users ON
-            tbl_orders.idTechnicals = tbl_users.id WHERE tbl_orders.id='$idOrder'";
+        $sql = "SELECT tbl_orders.*,tbl_logs.obsvLog,min(tbl_orders_details.idActivities),tbl_orders_details.idServices,tbl_orders_details.site,tbl_orders_details.count,tbl_activities.name_activitie,tbl_services.name_service,tbl_areas.name_area FROM tbl_orders JOIN tbl_logs ON tbl_orders.id=tbl_logs.idOrder JOIN tbl_areas ON tbl_orders.idAreaSend=tbl_areas.id JOIN tbl_orders_details ON tbl_orders.id = tbl_orders_details.idOrder JOIN tbl_activities ON tbl_orders_details.idActivities = tbl_activities.id JOIN tbl_services ON tbl_orders_details.idServices = tbl_services.id WHERE tbl_orders.id=$idOrder";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -92,10 +82,9 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     }
 
     public function get_observation_order($id) {
-        $this->db->select('observations');
-        $this->db->from('tbl_orders');
-        $this->db->where('id', $id);
-        $query = $this->db->get();
+        $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id"
+                . " and tbl_logs.idProcessState=3";
+        $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
@@ -141,18 +130,38 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
+    /* public function get_orders_tray($id) {
+      $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
+      . 'tbl_orders_details.price,tbl_orders_details.count,tbl_orders_details.total AS totalDetail,tbl_activities.name_activitie,tbl_services.name_service');
+      $this->db->from('tbl_orders');
+      $this->db->join('tbl_users', 'tbl_orders.idCoordinatorExt=tbl_users.id');
+      $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
+      $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+      $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+      $this->db->where('tbl_orders.idOrderState >', 1);
+      $this->db->where('tbl_orders.idUserProcess', $id);
+      $this->db->group_by('tbl_orders.id');
+      $this->db->order_by('tbl_orders.id', 'desc');
+      $query = $this->db->get();
+      if ($query->num_rows() > 0) {
+      return $query->result();
+      } else {
+      return false;
+      }
+      } */
+
     public function get_orders_tray($id) {
-        $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
+        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
                 . 'tbl_orders_details.price,tbl_orders_details.count,tbl_orders_details.total AS totalDetail,tbl_activities.name_activitie,tbl_services.name_service');
-        $this->db->from('tbl_orders');
+        $this->db->from('tbl_logs');
+        $this->db->join('tbl_orders', 'tbl_logs.idOrder=tbl_orders.id');
         $this->db->join('tbl_users', 'tbl_orders.idCoordinatorExt=tbl_users.id');
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders.idOrderState >', 1);
+        $this->db->where('tbl_logs.idProcessArea', 1);
         $this->db->where('tbl_orders.idUserProcess', $id);
-        $this->db->group_by('tbl_orders.id');
-        $this->db->order_by('tbl_orders.id', 'desc');
+        $this->db->order_by('tbl_logs.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -262,6 +271,15 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
 
     public function add_order($data) {
         $this->db->insert('tbl_orders', $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function register_log($data) {
+        $this->db->insert('tbl_logs', $data);
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {
@@ -464,7 +482,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
-    
+
     public function get_reg_photos_xid_stage2($id) {
         $sql = "SELECT file2 FROM tbl_orders_documents WHERE idOrder='$id' AND"
                 . " idTypeDocument = 1";
