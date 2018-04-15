@@ -51,13 +51,13 @@ class Orders extends CI_Controller {
     public function get_order() {
         $order = $this->input->get('order');
         $coi = $this->input->get('coi');
-        $data['res'] = $this->Orders_model->get_order($order,$coi);
+        $data['res'] = $this->Orders_model->get_order($order, $coi);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_order_xid() {
-        $id= $this->input->get('idOrder');
+        $id = $this->input->get('idOrder');
         $data['res'] = $this->Orders_model->get_order_by_id($id);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
@@ -104,7 +104,8 @@ class Orders extends CI_Controller {
 
     public function get_observation_order() {
         $idOrder = $this->input->get('idOrder');
-        $data['observation'] = $this->Orders_model->get_observation_order($idOrder);
+        $state = $this->input->get('state');
+        $data['observation'] = $this->Orders_model->get_observation_order($idOrder, $state);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -241,10 +242,10 @@ class Orders extends CI_Controller {
                 $data2 = array(
                     'idOrder' => $this->input->post('id'),
                     'idProcessState' => 1,
-                    'obsvLog' => $this->input->post('observations')                    
+                    'obsvLog' => $this->input->post('observations')
                 );
                 $this->Orders_model->register_log($data2);
-                $this->Orders_model->upload_pdf($id, $file);                
+                $this->Orders_model->upload_pdf($id, $file);
                 $res = $this->Orders_model->register_order($id, $data, $dataDoc1, $dataDoc2, $dataDoc3, $dataDoc4);
                 echo $this->valida($res);
             }
@@ -286,7 +287,7 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($res->file);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_reg_photos_xid_stage2() {
         $id = $this->input->get('id');
         $res = $this->Orders_model->get_reg_photos_xid_stage2($id);

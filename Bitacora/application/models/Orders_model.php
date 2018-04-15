@@ -81,9 +81,9 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_observation_order($id) {
+    public function get_observation_order($id, $state) {
         $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id"
-                . " and tbl_logs.idProcessState=3";
+                . " and tbl_logs.idProcessState=$state";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -190,16 +190,17 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     }
 
     public function get_orders_design_process($status, $id) {
-        $this->db->select('tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
+        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
                 . 'tbl_activities.name_activitie,tbl_services.name_service');
-        $this->db->from('tbl_orders');
+        $this->db->from('tbl_logs');
+        $this->db->join('tbl_orders', 'tbl_logs.idOrder=tbl_orders.id');
         $this->db->join('tbl_users', 'tbl_orders.idCoordinatorExt=tbl_users.id');
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_orders.idOrderState >', $status);
+        $this->db->where('tbl_logs.idProcessState', $status);
         $this->db->where('tbl_orders.idUserprocess', $id);
-        $this->db->group_by('tbl_orders.id');
+        $this->db->order_by('tbl_logs.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

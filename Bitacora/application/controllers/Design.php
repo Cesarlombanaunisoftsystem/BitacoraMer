@@ -40,7 +40,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design_process(7,$id_user);
+        $data['orders'] = $this->Orders_model->get_orders_design_process(5,$id_user);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_list_view', $data);
     }

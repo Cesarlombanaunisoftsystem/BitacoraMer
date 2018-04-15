@@ -47,6 +47,7 @@
                                     <tr>
                                         <th></th>
                                         <th style="color: #00B0F0">Fecha de ordén</th>
+                                        <th style="color: #00B0F0">Fecha proceso</th>
                                         <th style="color: #00B0F0">No. Ordén</th>
                                         <th style="color: #00B0F0">Centro de Costos</th>
                                         <th style="color: #00B0F0">Actividad</th>
@@ -66,6 +67,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
+                                                <td><?= $order->dateLog ?></td>
                                                 <td><?= $order->uniquecode . '-' . $order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
@@ -167,8 +169,8 @@
             function getObservations(idOrder) {
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv").html(res.observation.observations);
+                $.getJSON(url, {idOrder: idOrder, state: 5}).done(function (res) {
+                    $("#obsv").html(res.observation.obsvLog);
                 });
             }
 
