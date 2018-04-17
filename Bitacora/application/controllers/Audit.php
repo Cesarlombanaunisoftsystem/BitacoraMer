@@ -33,8 +33,9 @@ class Audit extends CI_Controller {
         $data['stateReturn'] = '4';
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '10';
+        $data['stateLog'] = '7';
         $data['pl'] = $this->Audits_model->get_pl(9);
-        $data['plprocess'] = $this->Audits_model->get_pl_process(10, $id_user);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(7, $id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -54,8 +55,9 @@ class Audit extends CI_Controller {
         $data['stateReturn'] = '9';
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '11';
+        $data['stateLog'] = '8';
         $data['pl'] = $this->Audits_model->get_pl(10);
-        $data['plprocess'] = $this->Audits_model->get_pl_process(11, $id_user);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(8, $id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -75,8 +77,9 @@ class Audit extends CI_Controller {
         $data['stateReturn'] = '9';
         $data['areaAssign'] = '3';
         $data['stateAssign'] = '12';
+        $data['stateLog'] = '9';
         $data['pl'] = $this->Audits_model->get_pl(11);
-        $data['plprocess'] = $this->Audits_model->get_pl_process(12, $id_user);
+        $data['plprocess'] = $this->Audits_model->get_pl_process(9, $id_user);
         $this->load->view('audit_pl_view', $data);
     }
 
@@ -139,7 +142,7 @@ class Audit extends CI_Controller {
         $data['pays'] = $this->Payments_model->get_pays(1);
         $this->load->view('financial_view', $data);
     }
-    
+
     public function financial_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -160,14 +163,21 @@ class Audit extends CI_Controller {
         $idArea = $this->input->post('idArea');
         $idState = $this->input->post('idState');
         $idTech = $this->input->post('idTech');
+        $stateLog = $this->input->post('stateLog');
         $data = array(
             'idArea' => $idArea,
             'idOrderState' => $idState,
             'historyBackState' => 0,
             'statePays' => 0,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateAssign' => date('Y-m-d H:i:s'),
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => $stateLog,
+            'obsvLog' => 'Auditoria Aceptada'
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             $titulo = '¡Has Sido Vinculado para el Inicio de la Siguiente Actividad!';
@@ -262,7 +272,7 @@ class Audit extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function history_assign_percent_aut() {
         $idOrder = $this->input->get('idOrder');
         $data['pays'] = $this->Payments_model->get_pays_order_aut($idOrder);
@@ -280,6 +290,13 @@ class Audit extends CI_Controller {
             'historyBackState' => 1,
             'dateUpdate' => date('Y-m-d H:i:s')
         );
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 7,
+            'obsvLog' => 'Orden devuelta'
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -320,7 +337,7 @@ class Audit extends CI_Controller {
             echo 'error';
         }
     }
-    
+
     public function generate_pdf($param) {
         $data['pay'] = $this->Payments_model->get_pays_xid($param);
         $this->load->library('pdfgenerator');
@@ -329,4 +346,5 @@ class Audit extends CI_Controller {
         $folder = './reportes/pagos/';
         $this->pdfgenerator->saveDisk($filename, $html, $folder);
     }
+
 }

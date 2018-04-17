@@ -28,7 +28,7 @@ class Billing extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['data'] = $this->Financial_model->get_settlement(27);
-        $data['process'] = $this->Financial_model->get_settlement_process(28,$id_user);
+        $data['process'] = $this->Financial_model->get_settlement_process($id_user, 21);
         $this->load->view('invoice_view', $data);
     }
 
@@ -36,11 +36,16 @@ class Billing extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => $this->input->post('state'),
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'invoice' => $this->input->post('fdm'),
             'dateInvoice' => date('Y-m-d H:m:i'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 21
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->update_order($idOrder, $data);
         if ($res === TRUE) {
             echo "ok";
@@ -48,7 +53,7 @@ class Billing extends CI_Controller {
             echo "error";
         }
     }
-    
+
     public function cancel() {
         $idOrder = $this->input->post('idOrder');
         $data = array(

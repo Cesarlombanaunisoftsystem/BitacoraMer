@@ -26,20 +26,65 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/').$link ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Materials/').$link2 ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/') . $link ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Materials/') . $link2 ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
                         </div>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="bandeja">
-                                <div class="row">
+                                <div class="row" id="table1">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                         <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
                                     </div>
-                                    <div id="divCellar" hidden=""><?= $cellar ?></div>
-                                    <div id="divOrder" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div id="divCellar" hidden=""><?= $cellar ?></div>                                    
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                        <table  id="data-table" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: #00B0F0">Proceso</th>
+                                                    <th style="color: #00B0F0">Fecha de Ordén</th>
+                                                    <th style="color: #00B0F0">No. Ordén</th>
+                                                    <th style="color: #00B0F0">Centro de Costos</th>
+                                                    <th style="color: #00B0F0">Actividad</th>
+                                                    <th style="color: #00B0F0">Cantidad</th>
+                                                    <th style="color: #00B0F0">Sitio</th>
+                                                    <th style="color: #00B0F0">Técnico</th>
+                                                </tr>                                   
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if (isset($materials) && $materials) {
+                                                    foreach ($materials as $row) {
+                                                        if ($row->stateMaterial === '1') {
+                                                            $process = 'ASIGNACIÓN';
+                                                        }
+                                                        if ($row->stateMaterial === '2') {
+                                                            $process = 'DEVOLUCIÓN';
+                                                        }
+                                                        ?>                                            
+                                                        <tr>
+                                                            <td><?= $process ?></td>
+                                                            <td><?= $row->dateSave ?></td>
+                                                            <td><a href="#" onclick="verOrden(<?= $row->idOrder ?>,<?= $row->stateMaterial ?>);">
+                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norder_<?= $row->idOrder ?>" value="<?= $row->uniquecode ?>"></a></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->idOrder ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
+                                                            <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->idOrder ?>" value="<?= $row->name_activitie ?>"></td>
+                                                            <td><?= $row->count ?></td>
+                                                            <td><?= $row->site ?></td>
+                                                            <td><?= $row->name_user ?><input type="hidden" id="tech_<?= $row->idOrder ?>" value="<?= $row->name_user ?>"></td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>                                                                         
+                                            </tbody>
+                                        </table>
+                                    </div>                                        
+                                </div>
+                                <div id="divOrder" class="row" style="display: none">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <table>
                                                 <tr>
@@ -96,49 +141,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div id="table1" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table  id="data-table" class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th style="color: #00B0F0">Proceso</th>
-                                                    <th style="color: #00B0F0">Fecha de Ordén</th>
-                                                    <th style="color: #00B0F0">No. Ordén</th>
-                                                    <th style="color: #00B0F0">Centro de Costos</th>
-                                                    <th style="color: #00B0F0">Actividad</th>
-                                                    <th style="color: #00B0F0">Cantidad</th>
-                                                    <th style="color: #00B0F0">Sitio</th>
-                                                    <th style="color: #00B0F0">Técnico</th>
-                                                </tr>                                   
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                if (isset($materials) && $materials) {
-                                                    foreach ($materials as $row) {
-                                                        if ($row->idOrderState === '16') {
-                                                            $process = 'ASIGNACIÓN';
-                                                        } else {
-                                                            $process = 'DEVOLUCIÓN';
-                                                        }
-                                                        ?>                                            
-                                                        <tr>
-                                                            <td><?= $process ?></td>
-                                                            <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrden(<?= $row->idOrder ?>,<?= $row->idOrderState ?>);">
-                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norder_<?= $row->idOrder ?>" value="<?= $row->uniquecode.'-'.$row->coi ?>"></a></td>
-                                                            <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->idOrder ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
-                                                            <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->idOrder ?>" value="<?= $row->name_activitie ?>"></td>
-                                                            <td><?= $row->count ?></td>
-                                                            <td><?= $row->site ?></td>
-                                                            <td><?= $row->name_user ?><input type="hidden" id="tech_<?= $row->idOrder ?>" value="<?= $row->name_user ?>"></td>
-                                                        </tr>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>                                                                         
-                                            </tbody>
-                                        </table>
-                                    </div>                                        
                                 </div>
                             </div>
                         </div>
@@ -154,40 +156,6 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $(function () {
-                $("#btnIn").hide();
-                $("#btnReg").hide();
-                $("#divOrder").hide();
-                $("#divOrderProcess").hide();
-                $("#btnAplicarProduct").hide();
-                $('#table-regprocess').DataTable({
-                    language: {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                });
-            });
-
             function verOrden(idOrder, process) {
                 $("#divOrder").show();
                 $("#table1").hide();
@@ -204,7 +172,7 @@
                 var stateCellar = "";
                 var cellar = $('#divCellar').html(); // Tipo de bodega
 
-                if (process === 16) {
+                if (process === 1) {
                     process = 'ASIGNACIÓN';
                     $(".pend").show();
                     $("#btnIn").show();
@@ -213,7 +181,7 @@
                     url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                         $.each(respuestaServer["materials"], function (i, materials) {
-                            stateCellar = materials.idStateCellar;
+                            stateCellar = materials.stateBack;
 
                             if (stateCellar === '0') {
                                 check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
@@ -228,7 +196,7 @@
                                     '<td>' + check + '</td></tr>');
                         });
                     });
-                } else {
+                } else if (process === 2) {
                     process = 'DEVOLUCIÓN';
                     $(".cantDev").show();
                     $("#btnReg").show();
@@ -237,13 +205,13 @@
                     url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                         $.each(respuestaServer["materials"], function (i, materials) {
-                            stateCellar = materials.idStateCellar;
-                            if (stateCellar === '1') {
-                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.id + ')">';
+                            stateCellar = materials.stateBack;
+                            if (stateCellar === '0') {
+                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.idBack + ')">';
                             }
 
-                            if (stateCellar === '2') {
-                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idCellar + ',' + materials.id + ')">';
+                            if (stateCellar === '1') {
+                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idBack + ')">';
                             }
 
                             $('#bodyMaterials').append('<tr><td>' + process + '</td><td>' + materials.name_service +
@@ -255,25 +223,25 @@
                     });
                 }
 
-            }            
-            function registerMaterialBack(idCellar, id, count_back) {
+            }
+            function registerMaterialBack(id) {
                 url = get_base_url() + "Materials/register_back";
                 $.ajax({
                     url: url,
                     type: "POST",
-                    data: {idCellar: idCellar, id: id, count_back: count_back},
+                    data: {id: id},
                     success: function (resp) {
                         console.log(resp);
                     }
                 });
             }
 
-            function unregisterMaterialBack(idCellar, id) {
+            function unregisterMaterialBack(id) {
                 url = get_base_url() + "Materials/unregister_back";
                 $.ajax({
                     url: url,
                     type: "POST",
-                    data: {idCellar: idCellar, id: id},
+                    data: {id: id},
                     success: function (resp) {
                         console.log(resp);
                     }
@@ -307,10 +275,11 @@
             function register_x_order() {
                 url = get_base_url() + "Materials/assign_materials_x_order";
                 var idOrder = $("#lblcCost").html();
+                var state = <?= $state ?>
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder},
+                    data: {idOrder: idOrder, state: state},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');
@@ -327,10 +296,11 @@
             function register_materials_back() {
                 url = get_base_url() + "Materials/register_materials_back";
                 var idOrder = $("#lblcCost").html();
+                var state = <?= $state ?>
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder},
+                    data: {idOrder: idOrder, state: state},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Error en BBDD');

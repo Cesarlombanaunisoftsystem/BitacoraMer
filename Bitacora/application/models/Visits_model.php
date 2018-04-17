@@ -64,7 +64,7 @@ class Visits_model extends CI_Model {
             on tbl_orders.id = tbl_orders_details.idOrder join tbl_activities on 
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on
             tbl_orders_details.idServices = tbl_services.id where
-            tbl_logs.idProcessState = ' . $state . ' and tbl_orders.idUserProcess = ' . $idUser . ''
+            tbl_logs.idProcessState = ' . $state . ' and tbl_logs.idUserProcess = ' . $idUser . ''
                 . ' group by tbl_logs.id';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {

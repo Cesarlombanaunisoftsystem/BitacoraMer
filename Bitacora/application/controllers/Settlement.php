@@ -29,7 +29,7 @@ class Settlement extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['data'] = $this->Financial_model->get_settlement(25);
         $data['categories'] = $this->Activities_model->get_activities_xtype(8);
-        $data['process'] = $this->Financial_model->get_settlement_process(26,$id_user);
+        $data['process'] = $this->Financial_model->get_settlement_process($id_user,19);
         $this->load->view('settlement_view', $data);
     }
 
@@ -43,7 +43,7 @@ class Settlement extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['data'] = $this->Financial_model->get_settlement(26);
-        $data['process'] = $this->Financial_model->get_settlement_process(27,$id_user);
+        $data['process'] = $this->Financial_model->get_settlement_process($id_user,20);
         $this->load->view('settlement_audit_view', $data);
     }
 

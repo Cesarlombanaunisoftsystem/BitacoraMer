@@ -28,25 +28,26 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Design/audit_process') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit_process') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
                         </div>
                     </div>
-                    <div class="row" id="bandeja">
+                    <div class="row">
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
                         </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
-
+                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                            <div id="spinner"></div>
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th style="color: #00B0F0">Fecha de ordén</th>
+                                        <th style="color: #00B0F0">Fecha proceso</th>
                                         <th style="color: #00B0F0">No. Ordén</th>
                                         <th style="color: #00B0F0">Centro de Costos</th>
                                         <th style="color: #00B0F0">Actividad</th>
@@ -66,6 +67,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $order->dateSave ?></td>
+                                                <td><?= $order->dateLog ?></td>
                                                 <td><?= $order->uniquecode . '-' . $order->coi ?></td>
                                                 <td><?= $order->uniqueCodeCentralCost ?></td>
                                                 <td><?= $order->name_activitie ?></td>
@@ -81,12 +83,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="row" id="divmsj" hidden>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/auditsetlement.png') ?>" style="width: 120px;">
-                        </div>
-                        <div id="msj" class="col-xs-10 col-sm-10 col-md-10 col-lg-10"></div>
                     </div>
                 </section>
                 <!-- /.content -->
@@ -110,14 +106,15 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #006e92"><b>OBSERVACIONES GENERALES</b></h3>                                
+                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
                             </div>
                             <div class="modal-body">
-                                <div id="obsv"></div>       
+                                <div class="row">
+                                    <div id="obsv"></div>
+                                </div>                   
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-lg btn-default pull-right" style="color:#006e92" data-dismiss="modal">Cerrar</button>
-                            </div>
+                            <hr style="border-color: #00B1EB">
+                            <p>Bitácora</p>
                         </div>
                     </div>
                 </div>
@@ -136,10 +133,6 @@
                         $('#modalGalery').modal('show');
                 });
             });
-            function getFileName(elm) {
-                var fn = $(elm).val();
-                $(".myfilename").html(fn);
-            }
             $('#data-table tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
                 var row = dt.row(tr);
@@ -160,22 +153,15 @@
                 }
             });
             function format(d) {
-                return '<form method="post" id="form-design" action="javascript:approved()">' +
+                return '<form enctype="multipart/form-data" id="form-design">' +
                         '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
-                        '<td>FECHA DE REGISTRO:</td>' + '<td><label id="fecha_' + d + '"></label></td>' +
+                        '<td>FECHA DE REGISTRO: <p id="date' + d + '"></td>' +
                         '<td><a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a></td>' +
                         '<td><a class="disable pisnm' + d + '">FORMATO PISNM</a></td>' +
                         '<td><a class="disable tss' + d + '">FORMATO TSS</a></td>' +
-                        '<td><a class="disable das' + d + '">FORMATO DAS</a></td>' +
-                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
                         '<td><a class="disable design' + d + '">DISEÑO</a></td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td colspan="4"><input name="obsv" id="obsvgen" style="width:100%" type="text"></td>' +
-                        '<td><input type="hidden" value="' + d + '" name="idOrder"></input>' +
-                        '<button type="submit" class="blue bold">APROBAR DISEÑO</button></td>' +
-                        '<td><a class="orange bold" href="javascript:return_order(' + d + ')">RECHAZAR DISEÑO</a></td>' +
+                        '<td><a href="#" data-toggle="modal" data-target="#modalObservations">OBSERVACIONES GENERALES</a></td>' +
                         '</tr>' +
                         '</table></form>';
             }
@@ -183,35 +169,16 @@
             function getObservations(idOrder) {
                 $("#obsv").html("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsvgen").val(res.observation.observations);
-                    $("#obsv").html(res.observation.observations);
+                $.getJSON(url, {idOrder: idOrder, state: 6}).done(function (res) {
+                    $("#obsv").html(res.observation.obsvLog);
                 });
             }
 
-
-            function return_order(idOrder) {
-                url = get_base_url() + "Design/return_order_design";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder: idOrder, state: 7},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Erro en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Orden devuelta a registro exitosamente');
-                            location.reload();
-                        }
-                    }
-                });
-            }
             function getDocs(idOrder) {
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["docs"], function (i, doc) {
-                        $("#fecha_" + idOrder).html(doc.dateSave);
+                        $("#date" + idOrder).html(doc.dateSave);
                         if (doc.idTypeDocument === "2") {
                             if (doc.idState !== '0') {
                                 $(".pisnm" + idOrder).attr("href", get_base_url() + "uploads/" + doc.file);
@@ -276,34 +243,6 @@
                         $(".slides").prepend(html);
                         galery = true;
                         pos++;
-                    }
-                });
-            }
-
-            function approved() {
-                url = get_base_url() + "Design/approved_order_design";
-                $.ajax({
-                    url: url,
-                    type: $("#form-design").attr("method"),
-                    data: $("#form-design").serialize(),
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
-                        }
-                        if (resp === "ok") {
-                            $("#bandeja").hide();
-                            $('#divmsj').show();
-                            $("#msj").html("<center><h1 style='color:blue'>¡Su información ha sido capturada<br>" +
-                                    "satisfactoriamente¡<br><br><br><b>MER GROUP</b>, " +
-                                    "Agradece su participación<br> como integrante" +
-                                    "fundamental de nuestros<br> procesos</h1></center>");
-                            setTimeout(function () {
-                                $("#divmsj").fadeOut(1500);
-                            }, 4000);
-                            setTimeout(function () {
-                                location.reload();
-                            }, 4000);
-                        }
                     }
                 });
             }

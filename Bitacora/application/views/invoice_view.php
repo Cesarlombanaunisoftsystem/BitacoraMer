@@ -159,6 +159,7 @@
                                             <thead>
                                                 <tr style="font-size: 10pt">
                                                     <th style="color: #00B0F0">Fecha de ordén</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>                                                    
@@ -188,6 +189,7 @@
                                                         ?>                                            
                                                         <tr  style="font-size: 10pt">
                                                             <td><?= $row->dateSave ?></td>
+                                                            <td><?= $row->dateLog ?></td>
                                                             <td><?= $row->uniquecode ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>

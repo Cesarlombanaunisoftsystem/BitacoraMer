@@ -81,6 +81,16 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
+    public function get_observations_order($id) {
+        $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
     public function get_observation_order($id, $state) {
         $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id"
                 . " and tbl_logs.idProcessState=$state";
@@ -159,8 +169,8 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-        $this->db->where('tbl_logs.idProcessArea', 1);
-        $this->db->where('tbl_orders.idUserProcess', $id);
+        $this->db->where('tbl_logs.idProcessState', 1);
+        $this->db->where('tbl_logs.idUserProcess', $id);
         $this->db->order_by('tbl_logs.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -199,7 +209,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_logs.idProcessState', $status);
-        $this->db->where('tbl_orders.idUserprocess', $id);
+        $this->db->where('tbl_logs.idUserprocess', $id);
         $this->db->order_by('tbl_logs.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -281,11 +291,6 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
 
     public function register_log($data) {
         $this->db->insert('tbl_logs', $data);
-        if ($this->db->affected_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function add_order_detail($data) {
@@ -409,32 +414,18 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    /* public function get_materials_by_cellar($idOrder, $idCellar) {
-      $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
-      . 'tbl_services.name_service,tbl_services.unit_measurement');
-      $this->db->from('tbl_orders_details');
-      $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
-      $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
-      $this->db->where('tbl_orders_details.idOrder', $idOrder);
-      $this->db->where('tbl_orders_details.idActivities', 22);
-      $this->db->where('tbl_orders_details.idCellar', $idCellar);
-      $query = $this->db->get();
-      if ($query->num_rows() > 0) {
-      return $query->result();
-      } else {
-      return $query->result();
-      }
-      } */
-
     public function get_materials_by_cellar($idOrder, $idCellar) {
-        $sql = "select tbl_orders_details.*,tbl_activities.name_activitie,"
+        $sql = "select tbl_orders_details.*,tbl_materials_back.id idBack,"
+                . "tbl_materials_back.state stateBack,tbl_materials_back.count_back,tbl_activities.name_activitie,"
                 . "tbl_services.name_service,tbl_services.unit_measurement"
-                . " from tbl_orders_details join tbl_activities on"
+                . " from tbl_orders_details join tbl_materials_back on"
+                . " tbl_orders_details.id=tbl_materials_back.idDetail join tbl_activities on"
                 . " tbl_orders_details.idActivities=tbl_activities.id"
                 . " join tbl_services on"
                 . " tbl_orders_details.idServices=tbl_services.id where"
                 . " tbl_orders_details.idOrder = '$idOrder' and"
-                . " tbl_orders_details.idActivities = 22 and"
+                . " (tbl_orders_details.idActivities = 22 ||"
+                . " tbl_orders_details.idActivities = 34 || tbl_orders_details.idActivities = 35) and"
                 . " tbl_orders_details.idCellar = '$idCellar'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {

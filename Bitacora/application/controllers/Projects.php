@@ -107,7 +107,7 @@ class Projects extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_accum_management() {
         $idOrder = $this->input->get('idOrder');
         $data['accums'] = $this->Projects_model->get_accum_management($idOrder);
@@ -431,6 +431,44 @@ class Projects extends CI_Controller {
             return 'ok';
         } else {
             return 'error';
+        }
+    }
+
+    public function return_materials() {
+        $idUser = $this->session->userdata('id_usuario');
+        $date = date('Y-m-d H:i:s');
+        foreach (array_keys($_POST['idDetail']) as $key) {
+            $idCellar = $_POST['idCellar'][$key];
+            $idDetail = $_POST['idDetail'][$key];
+            $idOrder = $_POST['idOrder'][$key];
+            $countback = $_POST['countback'][$key];
+            $data = array(
+                'idCellar' => $idCellar,
+                'idDetail' => $idDetail,
+                'count_back' => $countback,
+            );
+            $data1 = array(
+                'idOrder' => $idOrder,
+                'id_type_management' => 6
+            );
+            $data2 = array(
+                'stateMaterial' => 2,
+                'dateUpdate' => $date
+            );
+            $dataLog = array(
+                'idOrder' => $idOrder,
+                'idUserProcess' => $idUser,
+                'idProcessState' => 15
+            );
+            $this->Orders_model->register_log($dataLog);
+            $res = $this->Materials_model->return_materials($idOrder, $data, $data1, $data2);
+        }
+        if ($res === TRUE) {
+            $this->session->set_flashdata('item', array('message' => 'Material devuelto exitosamente', 'class' => 'success'));
+            redirect('Projects/register_activities');
+        } else {
+            $this->session->set_flashdata('item', array('message' => 'Error en bbdd!', 'class' => 'error'));
+            redirect('Projects/register_activities');
         }
     }
 

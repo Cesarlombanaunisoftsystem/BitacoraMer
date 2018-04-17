@@ -9,7 +9,8 @@ if (!defined('BASEPATH')) {
  *
  * @author jhon
  */
-class Docs_model extends CI_Model{
+class Docs_model extends CI_Model {
+
     public function register_docs($stateDoc) {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
@@ -59,14 +60,14 @@ class Docs_model extends CI_Model{
             return FALSE;
         }
     }
-    
-    public function register_docs_process($stateDoc,$id) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
+
+    public function register_docs_process($id) {
+        $sql = "SELECT tbl_logs.*,tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.name_user, daily.gestion,
             daily.id_type_management, typeGest.type, docs.gestiondoc
-    FROM tbl_orders
+    FROM tbl_logs JOIN tbl_orders ON tbl_logs.idOrder = tbl_orders.id
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
    idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
    FROM tbl_orders_details
@@ -100,8 +101,7 @@ class Docs_model extends CI_Model{
    FROM tbl_orders_documents
     GROUP BY idOrder) docs
     ON tbl_orders.id = docs.idOrder
-    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = 23
-    AND tbl_orders.stateDoc = '$stateDoc' AND tbl_orders.idUserProcess = '$id'";
+    where tbl_logs.idProcessState = 17 AND tbl_logs.idUserProcess = '$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -109,11 +109,11 @@ class Docs_model extends CI_Model{
             return FALSE;
         }
     }
-    
+
     public function get_docs() {
         $this->db->select('tbl_type_documents.*,tbl_state.name_state');
         $this->db->from('tbl_type_documents');
-        $this->db->join('tbl_state','tbl_type_documents.idState=tbl_state.id');
+        $this->db->join('tbl_state', 'tbl_type_documents.idState=tbl_state.id');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -121,12 +121,12 @@ class Docs_model extends CI_Model{
             return false;
         }
     }
-    
+
     public function get_documents_order($idOrder) {
         $this->db->select('tbl_orders_documents.*,tbl_type_documents.name_type');
         $this->db->from('tbl_orders_documents');
-        $this->db->join('tbl_type_documents','tbl_orders_documents.idTypeDocument=tbl_type_documents.id');
-        $this->db->where('tbl_orders_documents.idOrder',$idOrder);
+        $this->db->join('tbl_type_documents', 'tbl_orders_documents.idTypeDocument=tbl_type_documents.id');
+        $this->db->where('tbl_orders_documents.idOrder', $idOrder);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -172,7 +172,7 @@ class Docs_model extends CI_Model{
             return FALSE;
         }
     }
-    
+
     public function docs_register() {
         $sql = 'select idOrder from tbl_orders_documents where idState=1';
         $query = $this->db->query($sql);
@@ -182,4 +182,5 @@ class Docs_model extends CI_Model{
             return false;
         }
     }
+
 }

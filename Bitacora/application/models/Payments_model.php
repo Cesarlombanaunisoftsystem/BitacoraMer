@@ -150,7 +150,7 @@ class Payments_model extends CI_Model {
     LEFT JOIN (SELECT idOrder, SUM(percent) percentdo, sum(value) sumdo
     FROM tbl_orders_pays_pay
     GROUP BY idOrder) paysdo
-    ON tbl_orders.id = paysdo.idOrder WHERE pagos.state>'$state' AND tbl_orders.idUserProcess = '$id'";
+    ON tbl_orders.id = paysdo.idOrder WHERE pagos.state>'$state' AND tbl_orders.idUser = '$id'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -311,15 +311,6 @@ class Payments_model extends CI_Model {
         $this->db->update('tbl_orders', $data2);
         $this->db->trans_complete();
         if ($this->db->trans_status() === TRUE) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
-    public function process_pays_temp($data) {
-        $this->db->insert('tbl_orders_pays_temp', $data);
-        if ($this->db->affected_rows() > 0) {
             return TRUE;
         } else {
             return FALSE;

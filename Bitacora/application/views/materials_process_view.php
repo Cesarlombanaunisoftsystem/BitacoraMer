@@ -27,8 +27,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Materials')?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/process')?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Materials') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -45,6 +45,7 @@
                                                 <tr>
                                                     <th style="color: #00B0F0">Proceso</th>
                                                     <th style="color: #00B0F0">Fecha de Ordén</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>
@@ -61,8 +62,9 @@
                                                         <tr>
                                                             <td>ASIGNACION</td>
                                                             <td><?= $row->dateSave ?></td>
+                                                            <td><?= $row->dateLog ?></td>
                                                             <td><a href="#" onclick="verOrdenProcess(<?= $row->id ?>);">
-                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
+                                                                    <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norderProcess_<?= $row->id ?>" value="<?= $row->uniquecode ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccostProcess_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activProcess_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->count ?></td>

@@ -210,6 +210,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de ordén</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>                                                    
@@ -226,6 +227,7 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateSave ?></td>
+                                                            <td><?= $row->dateLog ?></td>
                                                             <td><?= $row->uniquecode ?></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
@@ -401,7 +403,6 @@
             }
 
             function getDetailsPayContract() {
-                var idOrder = $("#idOrder").val();
                 $("#tblVentaCliente").hide();
                 $("#tblVentaCliente").hide();
                 $("#tblVrAditionals").hide();
@@ -409,7 +410,6 @@
             }
 
             function getDetailsMaterials() {
-                var idOrder = $("#idOrder").val();
                 $("#tblVentaCliente").hide();
                 $("#tblPayContract").hide();
                 $("#tblVrAditionals").hide();
@@ -417,7 +417,6 @@
             }
 
             function getDetailsAditionals() {
-                var idOrder = $("#idOrder").val();
                 $("#tblVentaCliente").hide();
                 $("#tblPayContract").hide();
                 $("#tblVrMaterials").hide();

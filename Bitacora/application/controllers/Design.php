@@ -40,7 +40,7 @@ class Design extends CI_Controller {
         $data['titulo'] = 'Registro de Diseño';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Orders_model->get_orders_design_process(5,$id_user);
+        $data['orders'] = $this->Orders_model->get_orders_design_process(5, $id_user);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_list_view', $data);
     }
@@ -57,6 +57,20 @@ class Design extends CI_Controller {
         $data['orders'] = $this->Orders_model->get_orders_design(2, 8);
         $data['tecs'] = $this->Users_model->get_tecs();
         $this->load->view('design_audit_view', $data);
+    }
+
+    public function audit_process() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'Auditoria de Diseño';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['orders'] = $this->Orders_model->get_orders_design_process(6, $id_user);
+        $data['tecs'] = $this->Users_model->get_tecs();
+        $this->load->view('design_audit_process_view', $data);
     }
 
     public function return_order_design() {
@@ -79,7 +93,7 @@ class Design extends CI_Controller {
 
             //obtenemos el archivo a subir
             $file = $_FILES['file']['name'];
-            if(!$file){
+            if (!$file) {
                 echo "ko";
             }
             //comprobamos si existe un directorio para subir el archivo
@@ -107,7 +121,7 @@ class Design extends CI_Controller {
                 $data2 = array(
                     'idOrder' => $idOrder,
                     'idProcessState' => 5,
-                    'obsvLog' => $this->input->post('observacion')                    
+                    'obsvLog' => $this->input->post('observacion')
                 );
                 $this->Orders_model->register_log($data2);
                 $titulo = 'MER INFRAESTRUCTURA COLOMBIA';
@@ -135,12 +149,17 @@ class Design extends CI_Controller {
         $data = array(
             'idArea' => '3',
             'idOrderState' => '9',
-            'observations' => $this->input->post('obsv'),
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
+        $data2 = array(
+            'idOrder' => $this->input->post('idOrder'),
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 6,
+            'obsvLog' => $this->input->post('obsv')
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->update_order($this->input->post('idOrder'), $data);
-        if($res === TRUE){
+        if ($res === TRUE) {
             echo 'ok';
         } else {
             echo 'error';

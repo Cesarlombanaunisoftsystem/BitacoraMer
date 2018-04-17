@@ -44,6 +44,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de Asignación</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>
@@ -65,6 +66,7 @@
                                                         ?>                                            
                                                         <tr style="background-color:<?= $trcolor ?>">
                                                             <td><?= $row->dateAssign ?></td>
+                                                            <td><?= $row->dateLog ?></td>
                                                             <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>

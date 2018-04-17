@@ -44,7 +44,7 @@ class Materials_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function assign_cellar_x_order($idOrder, $data, $data1) {
         $this->db->trans_start();
         $this->db->where('idOrder', $idOrder);
@@ -71,11 +71,11 @@ class Materials_model extends CI_Model {
             return FALSE;
         }
     }
-    
+
     public function register_materials_back($id, $data, $data1) {
         $this->db->where('id', $id);
         $this->db->update('tbl_orders', $data);
-        $this->db->insert('tbl_daily_management',$data1);
+        $this->db->insert('tbl_daily_management', $data1);
         if ($this->db->affected_rows() > 0) {
             return TRUE;
         } else {
@@ -83,10 +83,9 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function register_back($id, $data, $data1) {
+    public function register_back($id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('tbl_orders_details', $data);
-        $this->db->insert('tbl_materials_back', $data1);
+        $this->db->update('tbl_materials_back', $data);
         if ($this->db->affected_rows() > 0) {
             return TRUE;
         } else {
@@ -94,12 +93,23 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function unregister_back($id, $data, $idCellar) {
+    public function return_materials($idOrder, $data, $data1, $data2) {
+        $this->db->trans_start();
+        $this->db->insert('tbl_materials_back', $data);
+        $this->db->insert('tbl_daily_management', $data1);
+        $this->db->where('id', $idOrder);
+        $this->db->update('tbl_orders', $data2);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function unregister_back($id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('tbl_orders_details', $data);
-        $this->db->where('idCellar', $idCellar);
-        $this->db->where('idDetail', $id);
-        $this->db->delete('tbl_materials_back');
+        $this->db->update('tbl_materials_back', $data);
         if ($this->db->affected_rows() > 0) {
             return TRUE;
         } else {

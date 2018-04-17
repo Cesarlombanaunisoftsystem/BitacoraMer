@@ -354,10 +354,12 @@
             }
 
             function getObservations(idOrder) {
-                $("#obsv").html("");
-                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $("#obsv").empty();
+                url = get_base_url() + "Orders/get_observations_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv").html(res.observation.observations);
+                    $.each(res["observations"], function (i, observations) {
+                        $("#obsv").append(observations.obsvLog + "<br>");
+                    });
                 });
             }
 

@@ -87,7 +87,7 @@
                                                                 $util = ($dif * 100) / $row->totalCost;
                                                                 echo round($util, 2) . ' %';
                                                                 ?></td>
-                                                            <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign . "," . $row->idTechnicals ?>)">
+                                                            <td><a href="#" onclick="assign(<?= $row->id . "," . $areaAssign . "," . $stateAssign . "," . $row->idTechnicals . "," . $stateLog ?>)">
                                                                     <i class="fa fa-check-square" style="color: green"></i>
                                                                 </a>
                                                                 <a href="#" onclick="return_order(<?= $row->id . "," . $areaReturn . "," . $stateReturn ?>)">
@@ -115,6 +115,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de ordén</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>
@@ -132,6 +133,7 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateSave ?></td>
+                                                            <td><?= $row->dateLog ?></td>
                                                             <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?></td>
                                                             <td><?= $row->name_activitie ?></td>
@@ -538,14 +540,16 @@
             }
 
             function getObservations(idOrder) {
-                $("#obsv").html("");
-                url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
+                $("#obsv").empty();
+                url = get_base_url() + "Orders/get_observations_order?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsv").html(res.observation.observations);
+                    $.each(res["observations"], function (i, observations) {
+                        $("#obsv").append(observations.obsvLog + "<br>");
+                    });
                 });
             }
 
-            function assign(idOrder, idArea, idState, idTech) {
+            function assign(idOrder, idArea, idState, idTech, stateLog) {
                 $.confirm({
                     title: 'En realidad desea aprobar la ordén?',
                     content: '',
@@ -555,7 +559,7 @@
                             $.ajax({
                                 url: url,
                                 type: 'POST',
-                                data: {idOrder: idOrder, idArea: idArea, idState: idState, idTech: idTech},
+                                data: {idOrder: idOrder, idArea: idArea, idState: idState, idTech: idTech, stateLog: stateLog},
                                 success: function (resp) {
                                     if (resp === "error") {
                                         alertify.error('Error en BBDD');

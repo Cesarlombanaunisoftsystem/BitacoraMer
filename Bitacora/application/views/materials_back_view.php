@@ -124,10 +124,8 @@
                                                                         </div>                          
                                                                         </div>
                                                                         </div>
-                                                                        </section>
-                                                                        <!-- /.content -->
+                                                                        </section> 
                                                                         </div>
-                                                                        <!-- /.content-wrapper -->                      
                                                                         <?php $this->load->view('templates/footer.html') ?>
                                                                         </div>    
                                                                         <!-- ./wrapper -->        

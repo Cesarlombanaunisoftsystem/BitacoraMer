@@ -41,13 +41,13 @@ class Financial_model extends CI_Model {
             return FALSE;
         }
     }
-    
-    public function get_settlement_process($state,$id) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
+
+    public function get_settlement_process($id,$state) {
+        $sql = "SELECT tbl_logs.*,tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user
-    FROM tbl_orders
+    FROM tbl_logs JOIN tbl_orders ON tbl_logs.idOrder = tbl_orders.id
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
    idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
    FROM tbl_orders_details
@@ -68,8 +68,8 @@ class Financial_model extends CI_Model {
     LEFT JOIN (SELECT idOrder, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
-    ON tbl_orders.id = pagos.idOrder where tbl_orders.idOrderState >= '$state'"
-                . " and tbl_orders.idUserProcess = '$id'";
+    ON tbl_orders.id = pagos.idOrder where tbl_logs.idUserProcess = $id AND"
+                . " tbl_logs.idProcessState=$state";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

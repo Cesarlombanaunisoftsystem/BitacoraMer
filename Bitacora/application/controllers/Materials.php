@@ -47,7 +47,7 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Audits_model->get_pl_process(16, $id_user);
+        $data['process'] = $this->Audits_model->get_pl_process(12, $id_user);
         $this->load->view('materials_process_view', $data);
     }
 
@@ -61,6 +61,7 @@ class Materials extends CI_Controller {
         $data['link'] = 'get_materials_cellar_mer';
         $data['link2'] = 'get_materials_cellar_mer_process';
         $data['cellar'] = '1';
+        $data['state'] = '13';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
@@ -85,7 +86,7 @@ class Materials extends CI_Controller {
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 1);
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 1, 13);
         $this->load->view('cellars_view_process', $data);
     }
 
@@ -99,6 +100,7 @@ class Materials extends CI_Controller {
         $data['link'] = 'get_materials_cellar_ext';
         $data['link2'] = 'get_materials_cellar_ext_process';
         $data['cellar'] = '2';
+        $data['state'] = '14';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
@@ -118,12 +120,13 @@ class Materials extends CI_Controller {
         $data['link'] = 'get_materials_cellar_ext';
         $data['link2'] = 'get_materials_cellar_ext_process';
         $data['cellar'] = '2';
+        $data['state'] = '14';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
         $data['cellars'] = $this->Cellars_model->get_cellars();
-        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 2);
+        $data['process'] = $this->Cellars_model->get_materials_cellar_process($id_user, 2, 14);
         $this->load->view('cellars_view_process', $data);
     }
 
@@ -186,9 +189,14 @@ class Materials extends CI_Controller {
             $data = array('idCellar' => $this->input->post('selcellarorder'));
             $data1 = array(
                 'idOrderState' => 16,
-                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateUpdate' => date('Y-m-d H:i:s')
             );
+            $data2 = array(
+                'idOrder' => $idOrder,
+                'idUserProcess' => $this->session->userdata('id_usuario'),
+                'idProcessState' => 12
+            );
+            $this->Orders_model->register_log($data2);
             $res = $this->Materials_model->assign_cellar_x_order($idOrder, $data, $data1);
         } else {
             foreach (array_keys($_POST['id']) as $key) {
@@ -203,6 +211,12 @@ class Materials extends CI_Controller {
                 );
                 $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);
             }
+            $data2 = array(
+                'idOrder' => $idOrder,
+                'idUserProcess' => $this->session->userdata('id_usuario'),
+                'idProcessState' => 12
+            );
+            $this->Orders_model->register_log($data2);
         }
         if ($res === TRUE) {
             $this->session->set_flashdata('item', array('message' => 'Material asignado a bodega exitosamente', 'class' => 'success'));
@@ -215,11 +229,18 @@ class Materials extends CI_Controller {
 
     public function assign_materials_x_order() {
         $idOrder = $this->input->post('idOrder');
+        $state = $this->input->post('state');
         $data = array(
             'idOrderState' => 17,
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => $state
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Materials_model->assign_materials_x_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -231,14 +252,9 @@ class Materials extends CI_Controller {
     public function register_back() {
         $id = $this->input->post('id');
         $data = array(
-            'idStateCellar' => 2
+            'state' => 1
         );
-        $data1 = array(
-            'idCellar' => $this->input->post('idCellar'),
-            'idDetail' => $id,
-            'count_back' => $this->input->post('count_back')
-        );
-        $res = $this->Materials_model->register_back($id, $data, $data1);
+        $res = $this->Materials_model->register_back($id, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -248,11 +264,10 @@ class Materials extends CI_Controller {
 
     public function unregister_back() {
         $id = $this->input->post('id');
-        $idCellar = $this->input->post('idCellar');
         $data = array(
-            'idStateCellar' => 1
+            'state' => 0
         );
-        $res = $this->Materials_model->unregister_back($id, $data, $idCellar);
+        $res = $this->Materials_model->unregister_back($id, $data);
         if ($res === TRUE) {
             echo 'ok';
         } else {
@@ -262,9 +277,10 @@ class Materials extends CI_Controller {
 
     public function register_materials_back() {
         $idOrder = $this->input->post('idOrder');
+        $state = $this->input->post('state');
         $data = array(
             'idOrderState' => 24,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'stateMaterial' => 3,
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $data1 = array(
@@ -272,6 +288,12 @@ class Materials extends CI_Controller {
             'id_type_management' => 6,
             'detail' => 'Devolución recibida'
         );
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => $state
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Materials_model->register_materials_back($idOrder, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';

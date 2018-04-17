@@ -26,8 +26,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Materials/').$link ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/').$link2 ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Materials/') . $link ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Materials/') . $link2 ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -45,6 +45,7 @@
                                                 <tr>
                                                     <th style="color: #00B0F0">Proceso</th>
                                                     <th style="color: #00B0F0">Fecha de Ordén</th>
+                                                    <th style="color: #00B0F0">Fecha proceso</th>
                                                     <th style="color: #00B0F0">No. Ordén</th>
                                                     <th style="color: #00B0F0">Centro de Costos</th>
                                                     <th style="color: #00B0F0">Actividad</th>
@@ -57,22 +58,21 @@
                                                 <?php
                                                 if (isset($process) && $process) {
                                                     foreach ($process as $row) {
-                                                        if ($row->idStateCellar === '0') {
+                                                        if ($row->stateMaterial === '1') {
                                                             $color = "#FEAE4E";
-                                                        } else {
-                                                            $color = "";
-                                                        }
-                                                        if ($row->idOrderState > 16 && $row->idOrderState < 25) {
                                                             $proces = 'ASIGNACIÓN';
-                                                        } else {
+                                                        }
+                                                        if ($row->stateMaterial === '3') {
+                                                            $color = "";
                                                             $proces = 'DEVOLUCIÓN';
                                                         }
                                                         ?>
                                                         <tr style="color: <?= $color ?>">
                                                             <td><?= $proces ?></td>
                                                             <td><?= $row->dateSave ?></td>
-                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->idOrder ?>,<?= $row->idOrderState ?>);">
-                                                                    <u style="color: <?= $color ?>"><?= $row->uniquecode.'-'.$row->coi ?></u><input type="hidden" id="norderProcess_<?= $row->idOrder ?>" value="<?= $row->uniquecode.'-'.$row->coi ?>"></a></td>
+                                                            <td><?= $row->dateLog ?></td>
+                                                            <td><a href="#" onclick="verOrdenProcess(<?= $row->idOrder ?>);">
+                                                                    <u style="color: <?= $color ?>"><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norderProcess_<?= $row->idOrder ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccostProcess_<?= $row->idOrder ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><?= $row->name_activitie ?><input type="hidden" id="activProcess_<?= $row->idOrder ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->count ?></td>
@@ -128,15 +128,6 @@
                                             <tbody id="bodyMaterialsProcess">                                                                      
                                             </tbody>
                                         </table>
-                                        <br><br>
-                                        <!--<div class="row">                                                
-                                            <div class="col-sm-12">
-                                                <div class="col-sm-8"></div>
-                                                <div class="col-sm-4">
-                                                    <button type="button" id="btnentregar" class="form-control btn btn-default color-blue" onclick="register_x_order_process();"><b>ENTREGAR</b></button>
-                                                </div>
-                                            </div>
-                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +152,7 @@
                 $("#btnAplicarProduct").hide();
             });
 
-            function verOrdenProcess(idOrder, process) {
+            function verOrdenProcess(idOrder) {
                 $("#divOrderProcess").show();
                 $("#tableProcess").hide();
                 $('#bodyMaterialsProcess').empty();
