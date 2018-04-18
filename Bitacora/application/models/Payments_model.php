@@ -34,7 +34,7 @@ class Payments_model extends CI_Model {
             return false;
         }
     }
-    
+
     public function get_pays_order_aut($idOrder) {
         $this->db->select('*');
         $this->db->from("tbl_orders_pays");
@@ -120,9 +120,9 @@ class Payments_model extends CI_Model {
     }
 
     public function get_pays_process($state, $id) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue, pagos.state,
-            details.idActivities, details.count, details.site,
-            details.totalOrder, details.totalCost, act.name_activitie,
+        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
+            pagos.state,pagos.dateProcess,details.idActivities, details.count,
+            details.site,details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user,
             paysdo.percentdo, paysdo.sumdo
     FROM tbl_orders
@@ -143,7 +143,7 @@ class Payments_model extends CI_Model {
    FROM tbl_users
     GROUP BY id) tecn
     ON tbl_orders.idTechnicals = tecn.id
-    LEFT JOIN (SELECT idOrder,state, SUM(percent) percent_pay, sum(value) sumValue
+    LEFT JOIN (SELECT idOrder,state,dateSave dateProcess, SUM(percent) percent_pay, sum(value) sumValue
     FROM tbl_orders_pays
     GROUP BY idOrder) pagos
     ON tbl_orders.id = pagos.idOrder

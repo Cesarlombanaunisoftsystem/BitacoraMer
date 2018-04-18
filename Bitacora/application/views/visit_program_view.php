@@ -110,10 +110,9 @@
                 if (date === "") {
                     alertify.error('Debes indicar fecha de visita');
                 } else {
-                    url = get_base_url() + "Visit/assign";
                     $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
                     $.ajax({
-                        url: url,
+                        url: "assign",
                         type: 'POST',
                         data: {idOrder: idOrder, state: state, idTech: idTech, obsv: obsv, date: date},
                         success: function (resp) {

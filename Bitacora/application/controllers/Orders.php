@@ -101,7 +101,7 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_observations_order() {
         $idOrder = $this->input->get('idOrder');
         $data['observations'] = $this->Orders_model->get_observations_order($idOrder);
@@ -208,6 +208,9 @@ class Orders extends CI_Controller {
                 mkdir("./uploads/", 0777);
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
+                mkdir("./documents/" . $this->input->post('id'), 0777);
+                mkdir("./documents/" . $this->input->post('id') . "/carpeta1", 0777);
+                mkdir("./documents/" . $this->input->post('id') . "/carpeta2", 0777);
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),

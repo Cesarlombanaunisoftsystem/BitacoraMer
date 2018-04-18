@@ -14,7 +14,7 @@ class Visits_model extends CI_Model {
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on
             tbl_orders_details.idServices = tbl_services.id
             where (tbl_orders.idArea=1 and tbl_orders.idOrderState=2 or
-            tbl_orders.idArea=3 and tbl_orders.idOrderState=20) group by tbl_orders.id';
+            tbl_orders.idArea=3 and tbl_orders.idOrderState=20) group by tbl_orders.id order by tbl_orders.id desc';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -65,7 +65,7 @@ class Visits_model extends CI_Model {
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on
             tbl_orders_details.idServices = tbl_services.id where
             tbl_logs.idProcessState = ' . $state . ' and tbl_logs.idUserProcess = ' . $idUser . ''
-                . ' group by tbl_logs.id';
+                . ' group by tbl_logs.id order by tbl_logs.id desc';
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

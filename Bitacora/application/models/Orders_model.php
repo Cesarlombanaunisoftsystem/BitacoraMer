@@ -161,16 +161,13 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
       } */
 
     public function get_orders_tray($id) {
-        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.site,'
-                . 'tbl_orders_details.price,tbl_orders_details.count,tbl_orders_details.total AS totalDetail,tbl_activities.name_activitie,tbl_services.name_service');
+        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user');
         $this->db->from('tbl_logs');
         $this->db->join('tbl_orders', 'tbl_logs.idOrder=tbl_orders.id');
         $this->db->join('tbl_users', 'tbl_orders.idCoordinatorExt=tbl_users.id');
-        $this->db->join('tbl_orders_details', 'tbl_orders.id=tbl_orders_details.idOrder');
-        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
-        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->where('tbl_logs.idProcessState', 1);
         $this->db->where('tbl_logs.idUserProcess', $id);
+        $this->db->group_by('tbl_logs.id');
         $this->db->order_by('tbl_logs.id', 'desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -583,6 +580,23 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function upload_docs_center($data) {
+        $this->db->insert('tbl_document_center', $data);
+    }
+    
+    public function getObsvDocCenter($idOrder) {
+        $this->db->select('tbl_document_center.*,tbl_users.name_user');
+        $this->db->from('tbl_document_center');
+        $this->db->join('tbl_users','tbl_document_center.idUser=tbl_users.id');
+        $this->db->where('tbl_document_center.idOrder',$idOrder);
+        $query = $this->db->get();
+        if($query->num_rows()>0){
+            return $query->result();
         } else {
             return FALSE;
         }

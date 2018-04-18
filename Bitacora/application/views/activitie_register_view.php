@@ -90,10 +90,10 @@
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                         <ul class="nav nav-tabs">
-                                            <li class="active" id="ligestion"><a href="#" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
-                                            <li id="lidoc"><a href="#" style="color: #00B0F0" onclick="documentacion();"><b>DOCUMENTACIÓN</b></a></li>
+                                            <li class="active" id="ligestion"><a href="#" onclick="verGestion();" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
+                                            <li id="lidoc"><a href="#" onclick="documentacion();" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
                                             &nbsp;&nbsp;<a href="#" onclick="gestion();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
-                                        </ul>
+                                        </ul><br>
                                         <table id="tblgestion" class="table table-striped">
                                             <thead>
                                                 <tr>
@@ -110,19 +110,53 @@
                                     </div>
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="jstree_demo_div" style="display:none">
-                                        <ul>
-                                            <li>Root node 1
-                                                <ul>
-                                                    <li id="child_node_1">Child node 1</li>
-                                                    <li>Child node 2</li>
-                                                </ul>
-                                            </li>
-                                            <li>Root node 2</li>
-                                        </ul>                                    
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="divdocuments" style="display:none">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-sm-4" id="tree" style="display: block;overflow:auto;width:255px;height: 300px;border: 2px;border-style: solid;border-color: gainsboro">
+                                                    <ul>
+                                                        <li id="liorder">
+
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div id="display" class="col-sm-7" style="display: block;overflow:auto;width:700PX;height: 250px;border: 2px;border-style: solid;border-color: gainsboro;background-color: #D0D0D0;"></div>
+                                                <div class="col-sm-1"></div>
+                                                <div class="col-sm-7" style="width:700PX;height: 50px;border: 1px;border-style: solid;border-color: gainsboro">
+                                                    <form action="register_docs" method="post" enctype="multipart/form-data">
+                                                        <div class="col-sm-5"><input type="text" id="obsvdocs" name="obsvdocs" class="form-control" placeholder="Observaciones" disabled></div>
+                                                        <div class="col-sm-1">
+                                                            <label class="control-label" for="files"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="<?= base_url('dist/img/clip.png') ?>" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></div></label>   
+                                                            <p id="datofile"></p>
+                                                            <input type="file"  name="files[]" id="files" style="display: none" onchange="getFileName(this)" accept="*" size="2048" multiple disabled>                                                            
+                                                            <input type="hidden" id="idOrderDoc" name="idOrder">
+                                                            <input type="hidden" id="idFileDoc" name="idFileDoc">
+                                                        </div>
+                                                        <div class="col-sm-1">
+                                                            <button type="submit" id="btnSubmitDocs" class="btn btn-default" disabled>SUBIR ARCHIVOS</button>
+                                                        </div>
+                                                    </form>                                                    
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <h3>VISUALIZADOR DE EVENTOS</h3>
+                                                    <table class="table table-bordered" style="display: block;height:200px;overflow:auto;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Detalles</th>
+                                                                <th>Usuario</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tblevents">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>                                   
                                     </div>
                                 </div>
-
                                 <div class="row" id="gestiondeavance" hidden="">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                         <img src="<?= base_url('dist/img/gestion.png') ?>" style="width: 120px;">
@@ -376,9 +410,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
         <script type="text/javascript">
                                                         $(function () {
-                                                            $('#jstree_demo_div').jstree();
-                                                        });
-                                                        $(function () {
                                                             $(document).on("click", ".photos", function () {
                                                                 if (galery)
                                                                     $('#modalshow').modal('show');
@@ -549,10 +580,10 @@
                                                         }
 
                                                         function gestion() {
+                                                            var idOrder = $("#lblcCost").val();
                                                             $("#gestiondeavance").show();
                                                             $("#panelinferior").hide();
                                                             $("#panelsup").hide();
-                                                            var idOrder = $("#lblcCost").val();
                                                             url = get_base_url() + "Projects/get_accum_management?jsoncallback=?";
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                                                                 var percentExecute = parseInt(response.accums.percent_execute);
@@ -568,13 +599,58 @@
                                                         }
 
                                                         function documentacion() {
+                                                            $("#liorder").html('');
+                                                            var idOrder = $("#lblcCost").val();
+                                                            $("#idOrderDoc").val(idOrder);
+                                                            $("#liorder").html('CC ' + idOrder + '<ul><li onclick="verContenido(' + idOrder + ')">Carpeta 1</li><li onclick="verContenido2(' + idOrder + ')">Carpeta 2</li></ul>');
+                                                            $('#tree').jstree();
                                                             $("#tblgestion").hide();
                                                             $("#panelinferior").show();
                                                             $("#panelsup").show();
-                                                            $("#jstree_demo_div").show();
+                                                            $("#divdocuments").show();
                                                             $("#lidoc").addClass("active");
                                                             $("#ligestion").removeClass("active");
-                                                            var idOrder = $("#lblcCost").val();
+                                                            getObsvDocCenter(idOrder);
+                                                        }
+
+                                                        function verContenido(idOrder) {
+                                                            $("#display").html('');
+                                                            $("#idFileDoc").val('1');
+                                                            $("#files").prop('disabled', false);
+                                                            $("#btnSubmitDocs").prop('disabled', false);
+                                                            $("#obsvdocs").prop('disabled', false);
+                                                            $.get("content", {idOrder: idOrder}).done(function (response) {
+                                                                $("#display").html(response);
+                                                            });
+                                                        }
+
+                                                        function verContenido2(idOrder) {
+                                                            $("#display").html('');
+                                                            $("#idFileDoc").val('2');
+                                                            $("#files").prop('disabled', false);
+                                                            $("#btnSubmitDocs").prop('disabled', false);
+                                                            $("#obsvdocs").prop('disabled', false);
+                                                            $.get("content2", {idOrder: idOrder}).done(function (response) {
+                                                                $("#display").html(response);
+                                                            });
+                                                        }
+
+                                                        function getObsvDocCenter(idOrder) {
+                                                            $("#tblevents").empty();
+                                                            $.getJSON("getObsvDocCenter?jsoncallback=?", {idOrder: idOrder}).done(function (res) {
+                                                                $.each(res["obsv"], function (i, obsv) {
+                                                                    $("#tblevents").append('<tr><td>' + obsv.dateSaveDoc + '</td><td>' + obsv.obsvDocs + '</td><td>' + obsv.name_user + '</td></tr>');
+                                                                });
+                                                            });
+                                                        }
+
+                                                        function verGestion() {
+                                                            $("#divdocuments").hide();
+                                                            $("#tblgestion").show();
+                                                            $("#panelinferior").show();
+                                                            $("#panelsup").show();
+                                                            $("#lidoc").removeClass("active");
+                                                            $("#ligestion").addClass("active");
                                                         }
 
                                                         function verPanelInferior(idOrder) {

@@ -472,4 +472,57 @@ class Projects extends CI_Controller {
         }
     }
 
+    public function content() {
+        $idOrder = $this->input->get('idOrder');
+        $directorio = opendir("./documents/" . $idOrder . "/carpeta1");
+        while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
+            $path = base_url() . "/documents/" . $idOrder . "/carpeta1/" . $archivo;
+            $info = new SplFileInfo($archivo);
+            if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
+                echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
+            } else {
+                echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
+            }
+        }
+    }
+
+    public function content2() {
+        $idOrder = $this->input->get('idOrder');
+        $directorio = opendir("./documents/" . $idOrder . "/carpeta2");
+        while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
+            $path = base_url() . "/documents/" . $idOrder . "/carpeta2/" . $archivo;
+            $info = new SplFileInfo($archivo);
+            if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
+                echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
+            } else {
+                echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
+            }
+        }
+    }
+
+    public function register_docs() {
+        $idOrder = $this->input->post('idOrder');
+        $obsv = $this->input->post('obsvdocs');
+        $idFile = $this->input->post('idFileDoc');
+        $quantity = count($_FILES['files']['name']);
+        for ($i = 0; $i < $quantity; $i++) {
+            //subimos el archivo ha subido
+            move_uploaded_file($_FILES['files']['tmp_name'][$i], "./documents/" . $idOrder . "/carpeta" . $idFile . "/" . $_FILES['files']['name'][$i]);
+        }
+        $data = array(
+            'idOrder' => $idOrder,
+            'obsvDocs' => $obsv,
+            'idUser' => $this->session->userdata('id_usuario')
+        );
+        $this->Orders_model->upload_docs_center($data);
+        redirect(base_url('Projects/register_activities'));
+    }
+
+    public function getObsvDocCenter() {
+        $idOrder = $this->input->get('idOrder');
+        $data['obsv'] = $this->Orders_model->getObsvDocCenter($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
 }

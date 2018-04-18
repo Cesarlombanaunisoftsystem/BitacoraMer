@@ -56,13 +56,12 @@ class Visit extends CI_Controller {
                 'date' => $this->input->post('date'),
                 'idArea' => 1,
                 'idOrderState' => 3,
-                'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
-                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             $data2 = array(
-                'idOrder' => $idOrder,
+                'idOrder' => $idOrder,                
+                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'idProcessState' => 2,
                 'obsvLog' => $this->input->post('obsv')
             );
@@ -84,13 +83,12 @@ class Visit extends CI_Controller {
                 'date' => $this->input->post('date'),
                 'idArea' => 3,
                 'idOrderState' => 21,
-                'observations' => $this->input->post('obsv'),
                 'historybackState' => 0,
-                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateAssign' => date('Y-m-d H:i:s'));
             $res = $this->Visits_model->assign_order($idOrder, $data);
             $data2 = array(
-                'idOrder' => $idOrder,
+                'idOrder' => $idOrder,                
+                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'idProcessState' => 2,
                 'obsvLog' => $this->input->post('obsv')
             );

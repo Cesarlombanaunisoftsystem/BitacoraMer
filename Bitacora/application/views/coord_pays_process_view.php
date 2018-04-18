@@ -48,6 +48,7 @@
                                                     <tr>
                                                         <th></th>
                                                         <th style="color: #00B0F0">Fecha de ordén</th>
+                                                        <th style="color: #00B0F0">Fecha proceso</th>
                                                         <th style="color: #00B0F0">No. Ordén</th>
                                                         <th style="color: #00B0F0">Centro de Costos</th>
                                                         <th style="color: #00B0F0">Actividad</th>
@@ -76,6 +77,7 @@
                                                                     <i class="fa fa-plus-square-o"></i>
                                                                 </td>
                                                                 <td><?= $row->dateSave ?></td>
+                                                                <td><?= $row->dateProcess ?></td>
                                                                 <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                                 <td><?= $row->uniqueCodeCentralCost ?></td>
                                                                 <td><?= $row->name_activitie ?></td>
