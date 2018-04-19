@@ -25,46 +25,46 @@
                 <section class="content">
                     <div class="row">
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="<?= base_url('Users')?>" style="color:#fff;">
+                            <a href="<?= base_url('Users') ?>" style="color:#fff;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="winery-count"><i class="fa fa-users"></i></h3>
                                         <p>Usuarios</p>
                                     </div>
-                                    <a href="<?= base_url('Users')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Users') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="<?= base_url('Parametrization/activities')?>" style="color:#FF7840;">
+                            <a href="<?= base_url('Parametrization/activities') ?>" style="color:#FF7840;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="product-count"><i class="fa fa-dollar"></i></h3>
                                         <p>Precio de Venta</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/prices')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/prices') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="<?= base_url('Parametrization/payment_methods')?>" style="color:#40BCFF;">
+                            <a href="<?= base_url('Parametrization/payment_methods') ?>" style="color:#40BCFF;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-credit-card"></i></h3>
                                         <p>Formas de Pago</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/payment_methods')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/payment_methods') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
                         <div class="col-lg-2 col-md-3 col-xs-4">
-                            <a href="<?= base_url('Parametrization/taxes')?>" style="color:#863AE8;">
+                            <a href="<?= base_url('Parametrization/taxes') ?>" style="color:#863AE8;">
                                 <div class="small-box color-default">
                                     <div class="inner" style="margin: 10px;">
                                         <h3 id="providers-count"><i class="fa fa-info"></i></h3>
                                         <p>Impuestos</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/taxes')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/taxes') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -75,7 +75,7 @@
                                         <h3 id="providers-count"><i class="fa fa-file-pdf"></i></h3>
                                         <p>Documentos</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/docs')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/docs') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -86,7 +86,7 @@
                                         <h3 id="providers-count"><i class="fa fa-caret-up"></i></h3>
                                         <p>Áreas</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/areas')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/areas') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -97,7 +97,7 @@
                                         <h3 id="providers-count"><i class="fa fa-archive"></i></h3>
                                         <p>Bodegas</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/cellar')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/cellar') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>
@@ -108,7 +108,18 @@
                                         <h3 id="providers-count"><i class="fa fa-clock-o"></i></h3>
                                         <p>Tiempos</p>
                                     </div>
-                                    <a href="<?= base_url('Parametrization/times')?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                    <a href="<?= base_url('Parametrization/times') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-xs-4">
+                            <a href="#" style="color: aquamarine;">
+                                <div class="small-box color-default">
+                                    <div class="inner" style="margin: 10px;">
+                                        <h3 id="providers-count"><i class="fa fa-tree"></i></h3>
+                                        <p>Arbol Documental</p>
+                                    </div>
+                                    <a href="<?= base_url('Parametrization/tree') ?>" class="small-box-footer">Administrar<i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </a>
                         </div>

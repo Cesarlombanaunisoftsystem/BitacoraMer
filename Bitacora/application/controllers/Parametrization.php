@@ -644,5 +644,17 @@ class Parametrization extends CI_Controller {
             echo 'error';
         }
     }
+    
+    public function tree() {
+        if ($this->session->userdata('perfil') == FALSE) {
+            redirect(base_url() . 'login');
+        }
+        $data['name'] = $this->session->userdata('username');
+        $data['profile'] = $this->session->userdata('perfil');
+        $data['titulo'] = 'configuración estructura documental';
+        $id_user = $this->session->userdata('id_usuario');
+        $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $this->load->view('admin/tree_view', $data);
+    }
 
 }
