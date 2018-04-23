@@ -131,7 +131,7 @@
                                                             <p id="datofile"></p>
                                                             <input type="file"  name="files[]" id="files" style="display: none" onchange="getFileName(this)" accept="*" size="2048" multiple disabled>                                                            
                                                             <input type="hidden" id="idOrderDoc" name="idOrder">
-                                                            <input type="hidden" id="idFileDoc" name="idFileDoc">
+                                                            <input type="hidden" id="filesel" name="filesel">
                                                         </div>
                                                         <div class="col-sm-1">
                                                             <button type="submit" id="btnSubmitDocs" class="btn btn-default" disabled>SUBIR ARCHIVOS</button>
@@ -596,7 +596,6 @@
 
                                                         function documentacion() {
                                                             $("#liorder").html('');
-                                                            //$("#tree").html('');
                                                             var idOrder = $("#lblcCost").val();
                                                             var order = $("#uniquecode").val();
                                                             $("#idOrderDoc").val(idOrder);
@@ -607,19 +606,13 @@
                                                                     $.getJSON(url, {idService: serv.idServices}).done(function (resp) {
                                                                         var list = '<ul><li>' + resp.serv.name_service + resp.serv.model_tree + '</li></ul>';
                                                                         $("#liorder").html(order + list);
-                                                                        //$('#tree').jstree();
                                                                         $('#tree').on('changed.jstree', function (e, data) {
-                                                                            var i, j, r = [];
-                                                                            for (i = 0, j = data.selected.length; i < j; i++) {
-                                                                                r.push(data.instance.get_node(data.selected[i]).text);
-                                                                            }
-                                                                            alert('Seleccionado: ' + r.join(', '));
+                                                                            var sel = data.instance.get_path(data.selected);
+                                                                            verContenido(sel);
                                                                         }).jstree();
-                                                                        //$("#liorder").append('<ul><li>' + resp.serv.name_service + resp.serv.model_tree + '</li></ul>');
                                                                     });
                                                                 });
                                                             });
-                                                            //$("#liorder").html('CC ' + idOrder + '<ul><li onclick="verContenido(' + idOrder + ')">Carpeta 1</li><li onclick="verContenido2(' + idOrder + ')">Carpeta 2</li></ul>');
 
                                                             $("#tblgestion").hide();
                                                             $("#panelinferior").show();
@@ -630,24 +623,13 @@
                                                             getObsvDocCenter(idOrder);
                                                         }
 
-                                                        function verContenido(idOrder) {
+                                                        function verContenido(filesel) {
                                                             $("#display").html('');
-                                                            $("#idFileDoc").val('1');
                                                             $("#files").prop('disabled', false);
                                                             $("#btnSubmitDocs").prop('disabled', false);
                                                             $("#obsvdocs").prop('disabled', false);
-                                                            $.get("content", {idOrder: idOrder}).done(function (response) {
-                                                                $("#display").html(response);
-                                                            });
-                                                        }
-
-                                                        function verContenido2(idOrder) {
-                                                            $("#display").html('');
-                                                            $("#idFileDoc").val('2');
-                                                            $("#files").prop('disabled', false);
-                                                            $("#btnSubmitDocs").prop('disabled', false);
-                                                            $("#obsvdocs").prop('disabled', false);
-                                                            $.get("content2", {idOrder: idOrder}).done(function (response) {
+                                                            $("#filesel").val(filesel);
+                                                            $.get("content", {filesel: filesel}).done(function (response) {
                                                                 $("#display").html(response);
                                                             });
                                                         }

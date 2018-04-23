@@ -472,42 +472,48 @@ class Projects extends CI_Controller {
         }
     }
 
-    public function content() {
-        $idOrder = $this->input->get('idOrder');
-        $directorio = opendir("./documents/" . $idOrder . "/carpeta1");
-        while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
-            $path = base_url() . "/documents/" . $idOrder . "/carpeta1/" . $archivo;
-            $info = new SplFileInfo($archivo);
-            if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
-                echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
-            } else {
-                echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
-            }
-        }
-    }
+    /* public function content() {
+      $idOrder = $this->input->get('idOrder');
+      $directorio = opendir("./documents/" . $idOrder . "/carpeta1");
+      while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
+      $path = base_url() . "/documents/" . $idOrder . "/carpeta1/" . $archivo;
+      $info = new SplFileInfo($archivo);
+      if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
+      echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
+      } else {
+      echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
+      }
+      }
+      } */
 
-    public function content2() {
-        $idOrder = $this->input->get('idOrder');
-        $directorio = opendir("./documents/" . $idOrder . "/carpeta2");
-        while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
-            $path = base_url() . "/documents/" . $idOrder . "/carpeta2/" . $archivo;
-            $info = new SplFileInfo($archivo);
+    public function content() {
+        $path = "";
+        $filesel = $this->input->get('filesel');
+        for ($i = 0; $i < count($filesel); $i++) {
+            $path .= $filesel[$i] . "/";
+        }
+        $directorio = opendir("./documents/" . $path);
+        while ($file = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
+            $dirfile = base_url() . "documents/" . $path . $file;
+            $info = new SplFileInfo($file);
             if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
-                echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
+                echo "<a href='" . $dirfile . "' target='blank'>" . $file . "</a>" . "<br />";
             } else {
-                echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
+                echo "<a href='" . $dirfile . "' target='blank'><img src='" . $dirfile . "' heigth='120px' width='120px'></a>" . "  ";
             }
         }
     }
 
     public function register_docs() {
         $idOrder = $this->input->post('idOrder');
+        $filesel = $this->input->post('filesel');
         $obsv = $this->input->post('obsvdocs');
-        $idFile = $this->input->post('idFileDoc');
+        // Produce: Hll Wrld f PHP
+        $path = str_replace(",", "/", $filesel);
         $quantity = count($_FILES['files']['name']);
         for ($i = 0; $i < $quantity; $i++) {
             //subimos el archivo ha subido
-            move_uploaded_file($_FILES['files']['tmp_name'][$i], "./documents/" . $idOrder . "/carpeta" . $idFile . "/" . $_FILES['files']['name'][$i]);
+            move_uploaded_file($_FILES['files']['tmp_name'][$i], "./documents/" . $path . "/" . $_FILES['files']['name'][$i]);
         }
         $data = array(
             'idOrder' => $idOrder,
