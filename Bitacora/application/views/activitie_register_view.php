@@ -113,12 +113,12 @@
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="divdocuments" style="display:none">
                                         <div class="container-fluid">
                                             <div class="row">
-                                                <div class="col-sm-4" id="tree" style="display: block;overflow:auto;width:255px;height: 300px;border: 2px;border-style: solid;border-color: gainsboro">
+                                                <div class="col-sm-4" id="tree" style="display: block;overflow:auto;width:255px;height: 300px;border: 2px;border-style: solid;border-color: gainsboro">                                                    
                                                     <ul>
                                                         <li id="liorder">
 
                                                         </li>
-                                                    </ul> 
+                                                    </ul>
                                                 </div>
                                                 <div class="col-sm-1"></div>
                                                 <div id="display" class="col-sm-7" style="display: block;overflow:auto;width:700PX;height: 250px;border: 2px;border-style: solid;border-color: gainsboro;background-color: #D0D0D0;"></div>
@@ -414,7 +414,6 @@
                                                                 if (galery)
                                                                     $('#modalshow').modal('show');
                                                             });
-
                                                             $("#frmRegisterDaily").on("submit", function (e) {
                                                                 e.preventDefault();
                                                                 var formData = new FormData(document.getElementById("frmRegisterDaily"));
@@ -440,7 +439,6 @@
                                                                 });
                                                             });
                                                         });
-
                                                         function getActivities(idOrder) {
                                                             $("#activities").empty();
                                                             url = get_base_url() + "Visit/get_activities_x_order?jsoncallback=?";
@@ -507,7 +505,6 @@
                                                             }
                                                         }
                                                         );
-
                                                         $("#chkattendant").change(function () {
                                                             var val = $("#chkattendant").prop("checked");
                                                             if (val === true) {
@@ -519,7 +516,6 @@
                                                             }
                                                         }
                                                         );
-
                                                         function upexe()
                                                         {
                                                             var valor = parseInt($("#percentexe").html());
@@ -600,10 +596,31 @@
 
                                                         function documentacion() {
                                                             $("#liorder").html('');
+                                                            //$("#tree").html('');
                                                             var idOrder = $("#lblcCost").val();
+                                                            var order = $("#uniquecode").val();
                                                             $("#idOrderDoc").val(idOrder);
-                                                            $("#liorder").html('CC ' + idOrder + '<ul><li onclick="verContenido(' + idOrder + ')">Carpeta 1</li><li onclick="verContenido2(' + idOrder + ')">Carpeta 2</li></ul>');
-                                                            $('#tree').jstree();
+                                                            var url = get_base_url() + "Orders/get_services_order?jsoncallback=?";
+                                                            $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                                                                $.each(res["serv"], function (i, serv) {
+                                                                    var url = get_base_url() + "Services/get_model_tree?jsoncallback=?";
+                                                                    $.getJSON(url, {idService: serv.idServices}).done(function (resp) {
+                                                                        var list = '<ul><li>' + resp.serv.name_service + resp.serv.model_tree + '</li></ul>';
+                                                                        $("#liorder").html(order + list);
+                                                                        //$('#tree').jstree();
+                                                                        $('#tree').on('changed.jstree', function (e, data) {
+                                                                            var i, j, r = [];
+                                                                            for (i = 0, j = data.selected.length; i < j; i++) {
+                                                                                r.push(data.instance.get_node(data.selected[i]).text);
+                                                                            }
+                                                                            alert('Seleccionado: ' + r.join(', '));
+                                                                        }).jstree();
+                                                                        //$("#liorder").append('<ul><li>' + resp.serv.name_service + resp.serv.model_tree + '</li></ul>');
+                                                                    });
+                                                                });
+                                                            });
+                                                            //$("#liorder").html('CC ' + idOrder + '<ul><li onclick="verContenido(' + idOrder + ')">Carpeta 1</li><li onclick="verContenido2(' + idOrder + ')">Carpeta 2</li></ul>');
+
                                                             $("#tblgestion").hide();
                                                             $("#panelinferior").show();
                                                             $("#panelsup").show();

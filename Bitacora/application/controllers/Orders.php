@@ -70,6 +70,13 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
+    
+    public function get_services_order() {
+        $idOrder = $this->input->get('idOrder');
+        $data['serv'] = $this->Orders_model->get_services_order($idOrder);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
 
     public function get_details_service() {
         $id = $this->input->get('id');
@@ -97,7 +104,15 @@ class Orders extends CI_Controller {
     public function get_order_materials_cellar() {
         $idOrder = $this->input->get('idOrder');
         $idCellar = $this->input->get('cellar');
-        $data['materials'] = $this->Orders_model->get_materials_by_cellar($idOrder, $idCellar);
+        $data['materials'] = $this->Orders_model->get_materials_assign_by_cellar($idOrder, $idCellar);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+    
+    public function get_order_materials_cellar_back() {
+        $idOrder = $this->input->get('idOrder');
+        $idCellar = $this->input->get('cellar');
+        $data['materials'] = $this->Orders_model->get_materials_back_by_cellar($idOrder, $idCellar);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -209,8 +224,6 @@ class Orders extends CI_Controller {
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
                 mkdir("./documents/" . $this->input->post('id'), 0777);
-                mkdir("./documents/" . $this->input->post('id') . "/carpeta1", 0777);
-                mkdir("./documents/" . $this->input->post('id') . "/carpeta2", 0777);
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),

@@ -24,14 +24,21 @@ class Services extends CI_Controller {
             echo $input;
         }
     }
-    
+
     public function get_service_unit_measurement() {
         if ($this->input->post('idServices')) {
             $service = $this->input->post('idServices');
             $unit = $this->Services_model->get_service($service);
-            $input = '<input type="text" class="form-control" name="unidadm" id="unidadm" value="' . $unit->unit_measurement . '" readonly required/>';   
+            $input = '<input type="text" class="form-control" name="unidadm" id="unidadm" value="' . $unit->unit_measurement . '" readonly required/>';
             echo $input;
         }
+    }
+
+    public function get_model_tree() {
+        $idService = $this->input->get('idService');
+        $data['serv'] = $this->Services_model->get_service($idService);
+        $resultadosJson = json_encode($data);
+        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
 
 }

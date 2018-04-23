@@ -181,7 +181,7 @@
                     url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                         $.each(respuestaServer["materials"], function (i, materials) {
-                            stateCellar = materials.stateBack;
+                            stateCellar = materials.idStateCellar;
 
                             if (stateCellar === '0') {
                                 check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
@@ -202,7 +202,7 @@
                     $("#btnReg").show();
                     $(".pend").hide();
                     $("#btnIn").hide();
-                    url = get_base_url() + "Orders/get_order_materials_cellar?jsoncallback=?";
+                    url = get_base_url() + "Orders/get_order_materials_cellar_back?jsoncallback=?";
                     $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                         $.each(respuestaServer["materials"], function (i, materials) {
                             stateCellar = materials.stateBack;
@@ -275,7 +275,7 @@
             function register_x_order() {
                 url = get_base_url() + "Materials/assign_materials_x_order";
                 var idOrder = $("#lblcCost").html();
-                var state = <?= $state ?>
+                var state = <?= $state ?>;
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -296,7 +296,7 @@
             function register_materials_back() {
                 url = get_base_url() + "Materials/register_materials_back";
                 var idOrder = $("#lblcCost").html();
-                var state = <?= $state ?>
+                var state = <?= $state ?>;
                 $.ajax({
                     url: url,
                     type: 'POST',

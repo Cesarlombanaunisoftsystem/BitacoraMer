@@ -189,6 +189,7 @@ class Materials extends CI_Controller {
             $data = array('idCellar' => $this->input->post('selcellarorder'));
             $data1 = array(
                 'idOrderState' => 16,
+                'stateMaterial' => 1,
                 'dateUpdate' => date('Y-m-d H:i:s')
             );
             $data2 = array(
@@ -206,7 +207,7 @@ class Materials extends CI_Controller {
                 $data = array('idCellar' => $idCellar);
                 $data1 = array(
                     'idOrderState' => 16,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
+                    'stateMaterial' => 1,
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Materials_model->assign($id, $idOrder, $data, $data1);

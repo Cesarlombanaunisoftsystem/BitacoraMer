@@ -81,6 +81,16 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
+    public function get_services_order($id) {
+        $sql = "SELECT idServices FROM tbl_orders_details WHERE idOrder=$id";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
     public function get_observations_order($id) {
         $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id";
         $query = $this->db->query($sql);
@@ -411,7 +421,25 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_materials_by_cellar($idOrder, $idCellar) {
+    public function get_materials_assign_by_cellar($idOrder, $idCellar) {
+        $sql = "select tbl_orders_details.*,tbl_activities.name_activitie,"
+                . "tbl_services.name_service,tbl_services.unit_measurement"
+                . " from tbl_orders_details join tbl_activities on"
+                . " tbl_orders_details.idActivities=tbl_activities.id join"
+                . " tbl_services on tbl_orders_details.idServices=tbl_services.id where"
+                . " tbl_orders_details.idOrder = '$idOrder' and"
+                . " (tbl_orders_details.idActivities = 22 ||"
+                . " tbl_orders_details.idActivities = 34 || tbl_orders_details.idActivities = 35) and"
+                . " tbl_orders_details.idCellar = '$idCellar'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function get_materials_back_by_cellar($idOrder, $idCellar) {
         $sql = "select tbl_orders_details.*,tbl_materials_back.id idBack,"
                 . "tbl_materials_back.state stateBack,tbl_materials_back.count_back,tbl_activities.name_activitie,"
                 . "tbl_services.name_service,tbl_services.unit_measurement"
@@ -588,14 +616,14 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     public function upload_docs_center($data) {
         $this->db->insert('tbl_document_center', $data);
     }
-    
+
     public function getObsvDocCenter($idOrder) {
         $this->db->select('tbl_document_center.*,tbl_users.name_user');
         $this->db->from('tbl_document_center');
-        $this->db->join('tbl_users','tbl_document_center.idUser=tbl_users.id');
-        $this->db->where('tbl_document_center.idOrder',$idOrder);
+        $this->db->join('tbl_users', 'tbl_document_center.idUser=tbl_users.id');
+        $this->db->where('tbl_document_center.idOrder', $idOrder);
         $query = $this->db->get();
-        if($query->num_rows()>0){
+        if ($query->num_rows() > 0) {
             return $query->result();
         } else {
             return FALSE;
