@@ -10,37 +10,13 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Panel de control</li>
-                    </ol>
-                </section>
+                <div id="load_menu"></div>
 
-                <!-- Main content -->
-                <section class="content">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="#bandeja" aria-controls="binnacle" role="tab" data-toggle="tab">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="#process" aria-controls="binnacle" role="tab" data-toggle="tab">Registros Procesados</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="bandeja">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
-                                    </div>
                                     <input type="hidden" id="id" value=""/>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <table  id="data-table" class="table table-striped" style="font-size:12px">
                                             <thead>
                                                 <tr>
@@ -106,11 +82,9 @@
 
                             <div role="tabpanel" class="tab-pane" id="process">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/presup.png') ?>" style="width: 120px;">
-                                    </div>
+                                   
                                     <input type="hidden" id="id" value=""/>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <table  id="data-table" class="table table-striped" style="font-size:12px">
                                             <thead>
                                                 <tr>
@@ -622,6 +596,8 @@
                 alertify.success('Material registrado exitosamente');
                 location.reload();
             }
+            
+            cargar_menu("PL1",'bandeja de entrada');
         </script>
     </body>
 </html>

@@ -20,4 +20,18 @@ class Login_model extends CI_Model {
             redirect(base_url() . 'login', 'refresh');
         }
     }
+    
+    public function login_user_api($username, $password) {        
+        $this->db->select('tbl_users.*,tbl_users_profile.name_profile');    
+        $this->db->from('tbl_users');
+        $this->db->join('tbl_users_profile', 'tbl_users.idUserProfile = tbl_users_profile.id');
+        $this->db->where('tbl_users.email', $username);
+        $this->db->where('tbl_users.password', $password);
+        $query = $this->db->get();
+        if ($query->num_rows() == 1) {
+             return $query->row();
+        } else {
+           return false;
+        }
+    }
 }

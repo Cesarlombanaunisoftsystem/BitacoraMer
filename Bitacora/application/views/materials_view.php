@@ -82,7 +82,7 @@
                                         }
                                         ?>
                                     </div> 
-                                    <form action="Materials/assign_x_order" method="post"> 
+                                    <form action="Materials/assign_x_order" method="post"  enctype="multipart/form-data"> 
                                         <div id="divOrder" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                 <table>
@@ -152,6 +152,8 @@
                                                 <tbody id="bodyMaterials">                                                                      
                                                 </tbody>
                                             </table>
+                                            <a href="#" id="filePDF">Agregar PDf de materiales</a>
+                                            <input name="pdfFile" type="file" id="myPdf">
                                             <br><br>
                                             <div class="row">                                               
                                                 <div class="col-sm-12">
@@ -222,6 +224,10 @@
                 $(".selcellar").attr("required", true);
                 $(".selcellar").show();
                 $(".bodega").show();
+            });
+            
+            $("#filePDF").click(function(){
+               $("#myPdf").click();
             });
 
             $("#chk2").click(function () {

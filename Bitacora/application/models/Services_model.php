@@ -54,6 +54,12 @@ class Services_model extends CI_Model {
             return FALSE;
         }
     }
+    public function get_all_services_api() {
+        $query = $this->db->get('tbl_services');
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }
+    }
     
     public function get_services_order($idOrder) {
         $this->db->select('tbl_orders_details.*,tbl_services.name_service');

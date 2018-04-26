@@ -92,6 +92,7 @@
                                         <ul class="nav nav-tabs">
                                             <li class="active" id="ligestion"><a data-toggle="tab" href="#management" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
                                             <li id="lidoc"><a data-toggle="tab" href="#documents" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
+                                            <li id="lidoc"><a data-toggle="tab" href="#app" style="color: #00B0F0"><b>APP</b></a></li>
                                             &nbsp;&nbsp;<a href="#" onclick="management();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
                                         </ul>
                                         <div class="tab-content">
@@ -152,7 +153,37 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div>                                            
+                                            </div>    
+                                            <div id="app" class="tab-pane fade">
+                                                <div class="col-md-12 col-sm-12 col-lg-12" style="padding: 15px;">
+                                                    <p><a href="http://www.bitacoramer.unisoftsystem.com.co/uploads/221.pdf" target="_blank"><i class="fa fa-file-pdf-o fa-2x"></i> Verificar KingList</a></p>
+                                                    <br>
+                                                    <p><a><i class="fa fa-camera fa-2x"></i> Fotografias</a></p>
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                        <strong>UN RJ45</strong>
+                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" target="_blank">
+                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" class="img-thumbnail" style="width: 200px">
+                                                        </a>                                                       
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                        <strong>UN RJ45</strong>
+                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" target="_blank">
+                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" class="img-thumbnail" style="width: 200px">
+                                                        </a>                                                       
+                                                    </div>
+                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                        <strong>UN RJ45</strong>
+                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" target="_blank">
+                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" class="img-thumbnail" style="width: 200px"></a>                                                       
+                                                    </div>
+                                                    </div>
+                                                    <br>
+                                                    <br>
+                                                    <p><strong><a><i class="fa fa-search fa-2x"></i> Observaciones de la orden: </a></strong> Aqui etarian las observaciones</p>
+                                                   
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -288,7 +319,8 @@
                                                     </thead>
                                                     <tbody id="materialsback"></tbody>
                                                 </table>
-                                            </div>                                            
+                                            </div>
+                                            
                                             <div class="col-sm-7"></div>
                                             <div class="col-sm-3">
                                                 <button type="submit" class="form-control btn btn-success"><b>REGISTRAR</b></button>

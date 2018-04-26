@@ -182,6 +182,12 @@ class Materials extends CI_Controller {
     }
 
     public function assign_x_order() {
+        
+        if($_FILES){
+            $archivo = $_FILES['pdfFile']['tmp_name'];
+            move_uploaded_file($archivo, "./uploads/" . $_POST['idOrder'][0].".pdf");
+        }
+        
         if ($this->input->post('selcellarorder')) {
             foreach (array_keys($_POST['id']) as $key) {
                 $idOrder = $_POST['idOrder'][$key];

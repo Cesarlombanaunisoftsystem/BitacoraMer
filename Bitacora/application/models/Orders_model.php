@@ -647,5 +647,18 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
             return FALSE;
         }
     }
+    
+    public function get_materials_upload($idOrder) {
+	        $this->db->select('tbl_history_material.*, tbl_services.name_service');
+	        $this->db->from('tbl_history_material');
+	        $this->db->join('tbl_services', 'tbl_history_material.id_material=tbl_services.id');
+	        $this->db->where('tbl_history_material.id_order', $idOrder);
+	        $query = $this->db->get();
+	        if ($query->num_rows() > 0) {
+	            return $query->result();
+	        } else {
+	            return FALSE;
+	        }
+	    }
 
 }

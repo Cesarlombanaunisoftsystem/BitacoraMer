@@ -11,37 +11,13 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Panel de control</li>
-                    </ol>
-                </section>
+                <div id="load_menu"></div>
 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Design/audit_process') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                    <div class="row" id="bandeja">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
-                        </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">        
-
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -307,6 +283,8 @@
                     }
                 });
             }
+            cargar_menu("auditoria_diseno",'bandeja de entrada');
+
         </script>
     </body>
 </html>
