@@ -106,7 +106,6 @@ class Design extends CI_Controller {
                     'idTypeDocument' => '6',
                     'idOrder' => $idOrder,
                     'file' => $file,
-                    'observation' => $this->input->post('observacion'),
                     'idState' => 1,
                     'dateSave' => date('Y-m-d H:i:s')
                 );
@@ -115,12 +114,12 @@ class Design extends CI_Controller {
                     'idArea' => '2',
                     'idOrderState' => '8',
                     'observations' => $this->input->post('observacion'),
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $data2 = array(
                     'idOrder' => $idOrder,
-                    'idProcessState' => 5,
+                    'idProcessState' => 5,                    
+                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'obsvLog' => $this->input->post('observacion')
                 );
                 $this->Orders_model->register_log($data2);

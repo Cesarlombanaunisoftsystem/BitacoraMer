@@ -223,7 +223,7 @@ class Orders extends CI_Controller {
                 mkdir("./uploads/", 0777);
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
-                mkdir("./documents/" . $this->input->post('uniquecode'), 0777);
+                mkdir("./documents/" . $id, 0777);
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),

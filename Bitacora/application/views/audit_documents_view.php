@@ -127,7 +127,7 @@
                                                 <div id="display" class="col-sm-7" style="display: block;overflow:auto;width:700PX;height: 300px;border: 2px;border-style: solid;border-color: gainsboro;background-color: #D0D0D0;"></div>                                                
                                                 <div class="col-sm-12">
                                                     <h3>Observaciones del proceso</h3>
-                                                    <textarea class="form-control" disabled=""></textarea><br><br>                                                 
+                                                    <textarea class="form-control" id="obsv"></textarea><br><br>                                                 
                                                 </div>                                                
                                                 <div class="col-sm-12">
                                                     <div class="col-sm-7"><a href="#" onclick="rejectDocs()"><u style="color:blue">RECHAZO PROCESO DE DOCUMENTACIÓN</u></a></div>
@@ -207,11 +207,12 @@
 
                                                             function aceptDocs() {
                                                                 var idOrder = $("#lblcCost").val();
+                                                                var obsv = $("#obsv").val();
                                                                 var url = get_base_url() + "Documents/assign";
                                                                 $.ajax({
                                                                     url: url,
                                                                     type: "post",
-                                                                    data: {idOrder: idOrder, state: 25}
+                                                                    data: {idOrder: idOrder, state: 25, obsv: obsv}
                                                                 }).done(function (res) {
                                                                     if (res === "error") {
                                                                         $.alert('Error en BBDD');
@@ -223,14 +224,15 @@
 
                                                                 });
                                                             }
-                                                            
+
                                                             function rejectDocs() {
                                                                 var idOrder = $("#lblcCost").val();
+                                                                var obsv = $("#obsv").val();
                                                                 var url = get_base_url() + "Documents/return_order";
                                                                 $.ajax({
                                                                     url: url,
                                                                     type: "post",
-                                                                    data: {idOrder: idOrder, state: 23}
+                                                                    data: {idOrder: idOrder, state: 23, obsv: obsv}
                                                                 }).done(function (res) {
                                                                     if (res === "error") {
                                                                         $.alert('Error en BBDD');

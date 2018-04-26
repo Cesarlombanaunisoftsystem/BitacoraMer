@@ -111,10 +111,10 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateAssign' => date('Y-m-d H:i:s'));
         $data2 = array(
-            'idOrder' => $idOrder,
+            'idOrder' => $idOrder,            
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'idProcessState' => 4
         );
         $this->Orders_model->register_log($data2);
@@ -344,14 +344,14 @@ class Visit extends CI_Controller {
         $dataGen = array(
             'idArea' => 1,
             'idOrderState' => 6,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'observations' => $this->input->post('obsvgen'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
         $data2 = array(
             'idOrder' => $this->input->post('idOrder'),
-            'idProcessState' => 3,
+            'idProcessState' => 3,            
+            'idUserProcess' => $this->session->userdata('id_usuario'),
             'obsvLog' => $this->input->post('obsvgen')
         );
         $this->Orders_model->register_log($data2);

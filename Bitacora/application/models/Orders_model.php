@@ -219,7 +219,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
     }
 
     public function get_orders_design_process($status, $id) {
-        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,tbl_orders_details.idActivities,tbl_orders_details.idServices,tbl_orders_details.count,tbl_orders_details.site,'
+        $this->db->select('tbl_logs.*,tbl_orders.*,tbl_users.name_user,tbl_orders_details.id AS idOrderDetail,min(tbl_orders_details.idActivities) idActivities,min(tbl_orders_details.idServices) idServices,tbl_orders_details.count,tbl_orders_details.site,'
                 . 'tbl_activities.name_activitie,tbl_services.name_service');
         $this->db->from('tbl_logs');
         $this->db->join('tbl_orders', 'tbl_logs.idOrder=tbl_orders.id');

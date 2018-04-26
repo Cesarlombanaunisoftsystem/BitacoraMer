@@ -97,6 +97,7 @@ class Documents extends CI_Controller {
     public function return_order() {
         $id = $this->input->post('idOrder');
         $state = $this->input->post('state');
+        $obsv = $this->input->post('obsv');
         $data = array(
             'idOrderState' => $state,
             'historybackState' => 1,
@@ -105,7 +106,8 @@ class Documents extends CI_Controller {
             'idOrder' => $id,
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'idProcessState' => 18,
-            'obsvLog' => 'RECHAZADA'
+            'obsvLog' => $obsv,
+            'stateLog' => 1
         );
         $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->update_order($id, $data);
@@ -119,6 +121,7 @@ class Documents extends CI_Controller {
     public function assign() {
         $id = $this->input->post('idOrder');
         $state = $this->input->post('state');
+        $obsv = $this->input->post('obsv');
         $data = array(
             'idArea' => 3,
             'idOrderState' => $state,
@@ -127,9 +130,10 @@ class Documents extends CI_Controller {
             'dateUpdate' => date('Y-m-d H:i:s'));
         $data2 = array(
             'idOrder' => $id,
-            'obsvLog' => 'APROBADA',
+            'obsvLog' => $obsv,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'idProcessState' => 17
+            'idProcessState' => 17,  
+            'stateLog' => 0
         );
         $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->update_order($id, $data);

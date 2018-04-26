@@ -59,6 +59,11 @@
                                                 <?php
                                                 if (isset($orders) && $orders) {
                                                     foreach ($orders as $row) {
+                                                        if ($row->stateLog === 0) {
+                                                            $state = 'ACEPTADA';
+                                                        } else {
+                                                            $state = 'RECHAZADA';
+                                                        }
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
@@ -69,7 +74,7 @@
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                 
-                                                            <td><?= $row->obsvLog ?><input type="hidden" id="state_<?= $row->id ?>" value="<?= $row->obsvLog ?>"></td>
+                                                            <td><?= $state ?><input type="hidden" id="state_<?= $row->id ?>" value="<?= $state ?>"></td>
                                                         </tr>
                                                         <?php
                                                     }
