@@ -45,6 +45,31 @@ class Services_model extends CI_Model {
             return FALSE;
         }
     }
+    
+    public function get_folder_service($id) {
+        $query = $this->db->get_where('tbl_folders_services', array('idServices' => $id));
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_services_order($idOrder) {
+        $this->db->select('tbl_orders_details.*,tbl_services.name_service');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_services','tbl_orders_details.idServices=tbl_services.id');
+        $this->db->where('idOrder', $idOrder);
+        $this->db->where('idActivities !=', 22);
+        $this->db->where('idActivities !=', 34);
+        $this->db->where('idActivities !=', 35);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
 
     public function add_service($data) {
         $this->db->insert('tbl_services', $data);
@@ -70,6 +95,45 @@ class Services_model extends CI_Model {
         $this->db->update('tbl_services', $data);
         if ($this->db->affected_rows() > 0) {
             return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function register_path_tree($id, $data, $data1) {
+        $this->db->trans_start();
+        $this->db->where('id', $id);
+        $this->db->update('tbl_services', $data);
+        $this->db->insert('tbl_folders_services', $data1);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function update_path_tree($id, $data, $data1) {
+        $this->db->trans_start();
+        $this->db->where('id', $id);
+        $this->db->update('tbl_services', $data);
+        $this->db->where('idServices', $id);
+        $this->db->update('tbl_folders_services', $data1);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function get_services_path($id) {
+        $this->db->select('folder');
+        $this->db->from('tbl_folders_services');
+        $this->db->where('idServices', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return FALSE;
         }

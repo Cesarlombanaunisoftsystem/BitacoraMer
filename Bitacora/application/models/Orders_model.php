@@ -40,6 +40,18 @@ class Orders_model extends CI_Model {
         }
     }
 
+    public function get_order_uniquecode($id) {
+        $this->db->select('uniquecode,coi');
+        $this->db->from('tbl_orders');
+        $this->db->where('id', $id);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
     public function get_report_pays_xiduser($id) {
         $sql = "SELECT A.id, A.uniquecode, A.uniqueCodeCentralCost, A.idFormPay, A.idTechnicals, B.totalPays, C.name_user, C.identify_number,
 C.address, C.phone, C.email, C.contact, C.idAccount, D.name_pay, F.number_account, E.name_bank,
@@ -615,6 +627,11 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
 
     public function upload_docs_center($data) {
         $this->db->insert('tbl_document_center', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function getObsvDocCenter($idOrder) {
@@ -622,6 +639,7 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         $this->db->from('tbl_document_center');
         $this->db->join('tbl_users', 'tbl_document_center.idUser=tbl_users.id');
         $this->db->where('tbl_document_center.idOrder', $idOrder);
+        $this->db->order_by('tbl_document_center.id','desc');
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();

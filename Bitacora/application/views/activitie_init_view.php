@@ -183,7 +183,9 @@
 
             function init() {
                 var idOrder = $("#idOrder").val();
-                url = get_base_url() + "Projects/register_activitie";
+                var url1 = get_base_url() + "Projects/generate_paths";
+                $.post(url1, {idOrder: idOrder});
+                var url = get_base_url() + "Projects/register_activitie";
                 $.ajax({
                     url: url,
                     type: 'POST',

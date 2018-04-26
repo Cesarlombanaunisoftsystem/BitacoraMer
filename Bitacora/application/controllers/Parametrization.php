@@ -651,10 +651,44 @@ class Parametrization extends CI_Controller {
         }
         $data['name'] = $this->session->userdata('username');
         $data['profile'] = $this->session->userdata('perfil');
-        $data['titulo'] = 'configuración estructura documental';
+        $data['titulo'] = 'Configuración Estructura Documental';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
+        $data['services'] = $this->Services_model->get_all_services();
         $this->load->view('admin/tree_view', $data);
+    }
+    
+    public function register_path_tree() {
+        $idService = $this->input->post('selService');
+        $data = array(
+            'model_tree' => $this->input->post('txtTree')
+        );
+        $data1 = array(
+            'idServices' => $idService,
+            'folder' => $this->input->post('txtPath')
+        );
+        $res = $this->Services_model->register_path_tree($idService,$data,$data1);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
+    }
+    
+    public function update_path_tree() {
+        $idService = $this->input->post('selService');
+        $data = array(
+            'model_tree' => $this->input->post('txtTree')
+        );
+        $data1 = array(
+            'folder' => $this->input->post('txtPath')
+        );
+        $res = $this->Services_model->update_path_tree($idService,$data,$data1);
+        if ($res === TRUE) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
     }
 
 }

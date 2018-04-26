@@ -31,7 +31,7 @@ class Documents extends CI_Controller {
         $data['titulo'] = 'Centro de Documentación';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Docs_model->register_docs(0);
+        $data['orders'] = $this->Docs_model->register_docs();
         $this->load->view('documents_view', $data);
     }
 
@@ -47,7 +47,7 @@ class Documents extends CI_Controller {
         $data['orders'] = $this->Docs_model->register_docs_process($id_user);
         $this->load->view('documents_process_view', $data);
     }
-    
+
     public function audit() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -60,7 +60,7 @@ class Documents extends CI_Controller {
         $data['orders'] = $this->Projects_model->register_data_close_visit(24);
         $this->load->view('audit_documents_view', $data);
     }
-    
+
     public function audit_process() {
         if ($this->session->userdata('perfil') == FALSE) {
             redirect(base_url() . 'login');
@@ -91,23 +91,55 @@ class Documents extends CI_Controller {
             echo 'ok';
         } else {
             echo 'error';
-        }   
+        }
+    }
+
+    public function return_order() {
+        $id = $this->input->post('idOrder');
+        $state = $this->input->post('state');
+        $data = array(
+            'idOrderState' => $state,
+            'historybackState' => 1,
+            'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $id,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 18,
+            'obsvLog' => 'RECHAZADA'
+        );
+        $this->Orders_model->register_log($data2);
+        $res = $this->Orders_model->update_order($id, $data);
+        if ($res == true) {
+            echo 'ok';
+        } else {
+            echo 'error';
+        }
     }
 
     public function assign() {
         $id = $this->input->post('idOrder');
+        $state = $this->input->post('state');
         $data = array(
             'idArea' => 3,
-            'idOrderState' => 24,
+            'idOrderState' => $state,
+            'stateDoc' => 1,
             'historybackState' => 0,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $id,
+            'obsvLog' => 'APROBADA',
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 17
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->update_order($id, $data);
-        if ($res === TRUE) {
-            $param = "";
-            $titulo = 'MER GROUP, Agradece su participación como integrante fundamental de nuestros procesos, de esta manera queremos  compartir con usted la siguiente información para el trámite de auditoria de documentación';
-            $content = $this->Orders_model->get_order_by_email_coordext($id);
-            $this->Utils->sendMail($content->email, 'Auditoria de Documentación - MER', 'templates/email_audit_settlement.php', $content, $titulo, $order="",$param);
+        if ($res == true) {
+            if ($state === 24) {
+                $param = "";
+                $titulo = 'MER GROUP, Agradece su participación como integrante fundamental de nuestros procesos, de esta manera queremos  compartir con usted la siguiente información para el trámite de auditoria de documentación';
+                $content = $this->Orders_model->get_order_by_email_coordext($id);
+                $this->Utils->sendMail($content->email, 'Auditoria de Documentación - MER', 'templates/email_audit_settlement.php', $content, $titulo, $order = "", $param);
+            }
             echo 'ok';
         } else {
             echo 'error';

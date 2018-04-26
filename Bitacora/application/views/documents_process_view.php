@@ -1,6 +1,7 @@
 <html>
     <head>
         <?php $this->load->view('templates/head') ?>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -26,8 +27,8 @@
                             <div class="row">
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Documents') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Documents') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de Entrada</a></li>
+                                        <li role="presentation" class="active"><a href="<?= base_url('Documents/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
@@ -51,30 +52,23 @@
                                                     <th style="color: #00B0F0">Servicio</th>
                                                     <th style="color: #00B0F0">Cantidad</th>
                                                     <th style="color: #00B0F0">Sitio</th>
-                                                    <th style="color: #00B0F0">Gestión Documental</th>
+                                                    <th style="color: #00B0F0">Observaciones</th>
                                                 </tr>                                   
                                             </thead>
                                             <tbody>
                                                 <?php
                                                 if (isset($orders) && $orders) {
                                                     foreach ($orders as $row) {
-                                                        $total = 6;
-                                                        $totalgest = ($row->gestiondoc * 100) / 6;
                                                         ?>                                            
                                                         <tr><td><?= $row->dateAssign ?></td>
                                                             <td><?= $row->dateLog ?></td>
-                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><u><?= $row->uniquecode ?></u></a></td>
-                                                            <td><?= $row->uniqueCodeCentralCost ?></td>
-                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"><u><?= $row->uniquecode . '-' . $row->coi ?></u></a></td>
+                                                            <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
+                                                            <td><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></td>
                                                             <td><?= $row->name_service ?></td>
                                                             <td><?= $row->count ?></td>
-                                                            <td><?= $row->site ?></td>                                                
-                                                            <td><div class="progress">
-                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= round($totalgest, 2) . '%'; ?>">
-                                                                        <?= round($totalgest, 2) . '%'; ?>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
+                                                            <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                
+                                                            <td><?= $row->observations ?></td>
                                                         </tr>
                                                         <?php
                                                     }
@@ -82,33 +76,71 @@
                                                 ?>                                                                      
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-                                <div class="row" id="panelinferior" hidden="">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a href="#" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
-                                        </ul>
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <td style="color: #00B0F0">Fecha de cargue</td>
-                                                    <td style="color: #00B0F0">Tipo de documento</td>
-                                                    <td style="color: #00B0F0">Estado</td>
-                                                    <td style="color: #00B0F0">Acción</td>
-                                                </tr>                                   
-                                            </thead>
-                                            <tbody id="bodyPanelDoc">  
-                                            </tbody>
-                                        </table>
-                                        <div class="col-sm-9"></div>
-                                        <div class="col-sm-3" id="btnRegister">
+                                        <div id="panelinfo" style="display:none">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                <table>
+                                                    <tr>
+                                                        <td>No. ORDEN: <label id="lblOrder"></label></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <table>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Centro de Costos |</td>
+                                                        <td>&nbsp;
+                                                            <label id="lblCost"></label>
+                                                            <input type="hidden" name="idOrderDaily" id="lblcCost">
+                                                            <input type="hidden" name="uniquecode" id="uniquecode">
+                                                            <input type="hidden" name="attendant" id="attendant">                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Actividad &nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;|</td>
+                                                        <td>&nbsp;<label id="lblActiv"></label></td>
+                                                    </tr>
+                                                    <tr style="font-size: 12px;">
+                                                        <td style="color: #00B0F0">| Sitio &nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            &nbsp;&nbsp;&nbsp;|</td>
+                                                        <td>&nbsp;<label id="lblSite"></label></td>
+                                                    </tr>
+                                                </table><br><br>                                            
+                                            </div>
+                                            <div id="documents">
+                                                <div class="col-sm-4" id="tree" style="display: block;overflow:auto;width:255px;height: 300px;border: 2px;border-style: solid;border-color: gainsboro">                                                    
+                                                    <ul>
+                                                        <li id="liorder">
 
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-sm-1"></div>
+                                                <div id="display" class="col-sm-7" style="display: block;overflow:auto;width:700PX;height: 300px;border: 2px;border-style: solid;border-color: gainsboro;background-color: #D0D0D0;"></div>
+                                                <div class="col-sm-1"></div>                                                
+                                                <div class="col-sm-12">
+                                                    <h3>VISUALIZADOR DE EVENTOS</h3>
+                                                    <table class="table table-bordered" style="display: block;height:140px;width: 950px; overflow:auto;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Fecha</th>
+                                                                <th>Detalles</th>
+                                                                <th>Usuario</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tblevents">
+
+                                                        </tbody>
+                                                    </table>                                                    
+                                                </div>
+                                            </div> 
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>                          
                         </div>
                     </div>
@@ -121,51 +153,72 @@
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
         <script type="text/javascript">
+                                                                function verPanelInferior(idOrder) {
+                                                                    $("#data-table").hide();
+                                                                    $("#panelinfo").show();
+                                                                    var order = $("#norder_" + idOrder).val();
+                                                                    var ccost = $("#ccost_" + idOrder).val();
+                                                                    var activ = $("#activ_" + idOrder).val();
+                                                                    var site = $("#site_" + idOrder).val();
+                                                                    $("#lblOrder").html(order);
+                                                                    $("#lblActiv").html(activ);
+                                                                    $("#lblCost").html(ccost);
+                                                                    $("#lblcCost").val(ccost);
+                                                                    $("#uniquecode").val(order);
+                                                                    $("#lblSite").html(site);
+                                                                    getDocuments();
+                                                                }
 
-            function verPanelInferior(idOrder) {
-                $("#panelinferior").show();
-                var state = "";
-                $("#panelinferior").show();
-                url = get_base_url() + "Documents/get_documents_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (response) {
-                    $.each(response["res"], function (i, res) {
-                        if (res.file === "") {
-                            state = 'SIN DOCUMENTO';
-                        } else {
-                            state = 'CARGADO';
-                        }
-                        $('#bodyPanelDoc').append('<tr><td>' + res.dateSave +
-                                '</td><td>' + res.name_type +
-                                '</td><td>' + state + '</td><td>' +
-                                '<a href="#"><img src="' + get_base_url() + 'dist/img/upfile.png"></a>' +
-                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/editfile.png"></a>' +
-                                ' <a href="#">' + '<img src="' + get_base_url() + 'dist/img/deletefile.png"></a>' +
-                                '</td></tr>'
-                                );
-                        $("#btnRegister").html('<button type="submit" class="form-control btn btn-success" onclick="assign(' + idOrder + ')">REGISTRAR</button>');
-                    });
-                }
-                );
-            }
-            
-            function assign(idOrder) {
-                url = get_base_url() + "Documents/assign";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder: idOrder},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Registro exitoso, pasa a auditoria.');
-                            location.reload();
-                        }
-                    }
-                });
-            }
+                                                                function getDocuments() {
+                                                                    $("#liorder").empty();
+                                                                    var idOrder = $("#lblcCost").val();
+                                                                    var order = $("#uniquecode").val();
+                                                                    $("#idOrderDoc").val(idOrder);
+                                                                    var url = get_base_url() + "Orders/get_services_order?jsoncallback=?";
+                                                                    var url2 = get_base_url() + "Services/get_model_tree?jsoncallback=?";
+
+                                                                    $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                                                                        $.each(res["serv"], function (i, serv) {
+                                                                            $.getJSON(url2, {idService: serv.idServices}).done(function (resp) {
+                                                                                $("#liorder").html(order + "<ul><li>" + resp.serv.name_service + resp.serv.model_tree + "</li></ul>");
+                                                                                $('#tree').on('changed.jstree', function (e, data) {
+                                                                                    var sel = data.instance.get_path(data.selected);
+                                                                                    getContent(sel);
+                                                                                }).jstree();
+                                                                            });
+
+                                                                        });
+                                                                    });
+                                                                    getObsvDocCenter(idOrder);
+                                                                }
+
+                                                                function getContent(filesel) {
+                                                                    var idOrder = $("#lblcCost").val();
+                                                                    $("#display").html('');
+                                                                    $("#files").prop('disabled', false);
+                                                                    $("#btnSubmitDocs").prop('disabled', false);
+                                                                    $("#obsvdocs").prop('disabled', false);
+                                                                    $("#filesel").val(filesel);
+                                                                    $.get(get_base_url() + "Projects/content", {filesel: filesel}).done(function (response) {
+                                                                        $("#display").html(response);
+                                                                    });
+                                                                    getObsvDocCenter(idOrder);
+                                                                }
+
+                                                                function getObsvDocCenter(idOrder) {
+                                                                    $("#tblevents").empty();
+                                                                    $.getJSON(get_base_url() + "Projects/getObsvDocCenter?jsoncallback=?", {idOrder: idOrder}).done(function (res) {
+                                                                        $.each(res["obsv"], function (i, obsv) {
+                                                                            $("#tblevents").append('<tr><td>' + obsv.dateSaveDoc + '</td><td>' + obsv.obsvDocs + '</td><td>' + obsv.name_user + '</td></tr>');
+                                                                        });
+                                                                    });
+                                                                }
+                                                                function getFileName(elm) {
+                                                                    var fn = $(elm).val();
+                                                                    $("#datofile").html(fn);
+                                                                }
         </script>
     </body>
 </html>

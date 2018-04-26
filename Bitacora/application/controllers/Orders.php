@@ -20,7 +20,7 @@ class Orders extends CI_Controller {
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
         $this->load->model(array('Activities_model', 'Users_model', 'Payments_model',
-            'Orders_model', 'Areas_model', 'Taxes_model', 'Cellars_model'));
+            'Orders_model', 'Areas_model', 'Taxes_model', 'Cellars_model', 'Services_model'));
     }
 
     public function index() {
@@ -70,10 +70,10 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_services_order() {
         $idOrder = $this->input->get('idOrder');
-        $data['serv'] = $this->Orders_model->get_services_order($idOrder);
+        $data['serv'] = $this->Services_model->get_services_order($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -108,7 +108,7 @@ class Orders extends CI_Controller {
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
-    
+
     public function get_order_materials_cellar_back() {
         $idOrder = $this->input->get('idOrder');
         $idCellar = $this->input->get('cellar');
@@ -223,7 +223,7 @@ class Orders extends CI_Controller {
                 mkdir("./uploads/", 0777);
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
-                mkdir("./documents/" . $this->input->post('id'), 0777);
+                mkdir("./documents/" . $this->input->post('uniquecode'), 0777);
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),

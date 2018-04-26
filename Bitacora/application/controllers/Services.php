@@ -15,6 +15,26 @@ class Services extends CI_Controller {
         $this->load->model(array('Services_model'));
     }
 
+    public function get_service() {
+        if ($this->input->post('selService')) {
+            $service = $this->input->post('selService');
+            $datos = $this->Services_model->get_service($service);
+            if ($datos != FALSE) {
+                echo $datos->model_tree;
+            }
+        }
+    }
+
+    public function get_folder_service() {
+        if ($this->input->post('selService')) {
+            $service = $this->input->post('selService');
+            $datos = $this->Services_model->get_folder_service($service);
+            if ($datos != FALSE) {
+                echo $datos->folder;
+            }
+        }
+    }
+
     public function get_service_price() {
         if ($this->input->post('idServices')) {
             $service = $this->input->post('idServices');

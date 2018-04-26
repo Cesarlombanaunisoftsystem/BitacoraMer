@@ -11,7 +11,7 @@ if (!defined('BASEPATH')) {
  */
 class Docs_model extends CI_Model {
 
-    public function register_docs($stateDoc) {
+    public function register_docs() {
         $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
@@ -51,8 +51,7 @@ class Docs_model extends CI_Model {
    FROM tbl_orders_documents
     GROUP BY idOrder) docs
     ON tbl_orders.id = docs.idOrder
-    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = 23
-    AND tbl_orders.stateDoc = '$stateDoc'";
+    where tbl_orders.idArea = 3 AND tbl_orders.idOrderState = 23";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

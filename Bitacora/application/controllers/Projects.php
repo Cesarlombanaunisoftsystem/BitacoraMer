@@ -20,7 +20,7 @@ class Projects extends CI_Controller {
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
         $this->load->model(array('Users_model', 'Orders_model', 'Projects_model',
-            'Materials_model', 'Utils'));
+            'Materials_model', 'Utils', 'Services_model'));
     }
 
     public function activitie_init() {
@@ -69,9 +69,14 @@ class Projects extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 18,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 15
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Orders_model->assign_state($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -472,20 +477,6 @@ class Projects extends CI_Controller {
         }
     }
 
-    /* public function content() {
-      $idOrder = $this->input->get('idOrder');
-      $directorio = opendir("./documents/" . $idOrder . "/carpeta1");
-      while ($archivo = readdir($directorio)) { //obtenemos un archivo y luego otro sucesivamente
-      $path = base_url() . "/documents/" . $idOrder . "/carpeta1/" . $archivo;
-      $info = new SplFileInfo($archivo);
-      if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
-      echo "<a href=" . $path . " target='blank'>" . $archivo . "</a>" . "<br />";
-      } else {
-      echo "<a href=" . $path . " target='blank'><img src=" . $path . " heigth='120px' width='120px'></a>" . "  ";
-      }
-      }
-      } */
-
     public function content() {
         $path = "";
         $filesel = $this->input->get('filesel');
@@ -497,9 +488,11 @@ class Projects extends CI_Controller {
             $dirfile = base_url() . "documents/" . $path . $file;
             $info = new SplFileInfo($file);
             if (($info->getExtension() !== "jpg") && ($info->getExtension() !== "png")) {
-                echo "<a href='" . $dirfile . "' target='blank'>" . $file . "</a>" . "<br />";
+                echo "<a href='" . $dirfile . "' target='blank'>" . $file .
+                "</a><i class='fa fa-trash' style='color:red' onclick='trush();'></i>" . "&nbsp;&nbsp;&nbsp;";
             } else {
-                echo "<a href='" . $dirfile . "' target='blank'><img src='" . $dirfile . "' heigth='120px' width='120px'></a>" . "  ";
+                echo "<a href='" . $dirfile . "' target='blank'><img src='" .
+                $dirfile . "' heigth='60px' width='60px'></a><i class='fa fa-trash' style='color:red' onclick='trush();'></i>" . "&nbsp;&nbsp;&nbsp;";
             }
         }
     }
@@ -508,20 +501,24 @@ class Projects extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $filesel = $this->input->post('filesel');
         $obsv = $this->input->post('obsvdocs');
-        // Produce: Hll Wrld f PHP
-        $path = str_replace(",", "/", $filesel);
-        $quantity = count($_FILES['files']['name']);
-        for ($i = 0; $i < $quantity; $i++) {
-            //subimos el archivo ha subido
-            move_uploaded_file($_FILES['files']['tmp_name'][$i], "./documents/" . $path . "/" . $_FILES['files']['name'][$i]);
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+
+            $path = str_replace(",", "/", $filesel);
+            $quantity = count($_FILES['files']['name']);
+            for ($i = 0; $i < $quantity; $i++) {
+                //subimos el archivo
+                move_uploaded_file($_FILES['files']['tmp_name'][$i], "./documents/" . $path . "/" . $_FILES['files']['name'][$i]);
+            }
+            $data = array(
+                'idOrder' => $idOrder,
+                'obsvDocs' => $obsv,
+                'idUser' => $this->session->userdata('id_usuario')
+            );
+            $res = $this->Orders_model->upload_docs_center($data);
+            echo $this->valida($res);
+        } else {
+            throw new Exception("Error Processing Request", 1);
         }
-        $data = array(
-            'idOrder' => $idOrder,
-            'obsvDocs' => $obsv,
-            'idUser' => $this->session->userdata('id_usuario')
-        );
-        $this->Orders_model->upload_docs_center($data);
-        redirect(base_url('Projects/register_activities'));
     }
 
     public function getObsvDocCenter() {
@@ -529,6 +526,20 @@ class Projects extends CI_Controller {
         $data['obsv'] = $this->Orders_model->getObsvDocCenter($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+    }
+
+    public function generate_paths() {
+        $query = $this->Orders_model->get_order_uniquecode($this->input->post('idOrder'));
+        $order = $query->uniquecode . '-' . $query->coi;
+        $sql = $this->Services_model->get_services_order($this->input->post('idOrder'));
+        foreach ($sql as $value) {
+            $q = $this->Services_model->get_services_path($value->idServices);
+            $string = $q->folder;
+            $array = explode(",", $string);
+            for ($i = 0; $i < count($array); $i++) {
+                mkdir("./documents/" . $order . "/" . $value->name_service . "/" . $array[$i], 0777, TRUE);
+            }
+        }
     }
 
 }

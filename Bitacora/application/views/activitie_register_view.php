@@ -1,7 +1,7 @@
 <html>
     <head>
         <?php $this->load->view('templates/head') ?>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />        
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">
@@ -64,7 +64,7 @@
                                                         ?>                                            
                                                         <tr>
                                                             <td><?= $row->dateAssign ?></td>
-                                                            <td><a href="#" onclick="verPanelInferior(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
+                                                            <td><a href="#" onclick="getPanelBotton(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
                                                             <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
                                                             <td><?= $row->name_service ?></td>
@@ -88,31 +88,30 @@
                                 <div class="row" id="panelinferior" hidden="">
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 container">
                                         <ul class="nav nav-tabs">
-                                            <li class="active" id="ligestion"><a href="#" onclick="verGestion();" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
-                                            <li id="lidoc"><a href="#" onclick="documentacion();" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
-                                            &nbsp;&nbsp;<a href="#" onclick="gestion();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
-                                        </ul><br>
-                                        <table id="tblgestion" class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <td style="color: #00B0F0">Fecha de Gestión</td>
-                                                    <td style="color: #00B0F0">Tipo de Gestión</td>
-                                                    <td style="color: #00B0F0">Avance Ejecución</td>
-                                                    <td style="color: #00B0F0">Consumo de Materiales</td>
-                                                    <td style="color: #00B0F0">Gestión</td>
-                                                </tr>                                   
-                                            </thead>
-                                            <tbody id="bodyPanelGestion">  
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10" id="divdocuments" style="display:none">
-                                        <div class="container-fluid">
-                                            <div class="row">
+                                            <li class="active" id="ligestion"><a data-toggle="tab" href="#management" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
+                                            <li id="lidoc"><a data-toggle="tab" href="#documents" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
+                                            &nbsp;&nbsp;<a href="#" onclick="management();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="management" class="tab-pane fade in active">
+                                                <table id="tblgestion" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <td style="color: #00B0F0">Fecha de Gestión</td>
+                                                            <td style="color: #00B0F0">Tipo de Gestión</td>
+                                                            <td style="color: #00B0F0">Avance Ejecución</td>
+                                                            <td style="color: #00B0F0">Consumo de Materiales</td>
+                                                            <td style="color: #00B0F0">Gestión</td>
+                                                        </tr>                                   
+                                                    </thead>
+                                                    <tbody id="bodyPanelGestion">  
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div id="documents" class="tab-pane fade">
+
                                                 <div class="col-sm-4" id="tree" style="display: block;overflow:auto;width:255px;height: 300px;border: 2px;border-style: solid;border-color: gainsboro">                                                    
                                                     <ul>
                                                         <li id="liorder">
@@ -124,7 +123,7 @@
                                                 <div id="display" class="col-sm-7" style="display: block;overflow:auto;width:700PX;height: 250px;border: 2px;border-style: solid;border-color: gainsboro;background-color: #D0D0D0;"></div>
                                                 <div class="col-sm-1"></div>
                                                 <div class="col-sm-7" style="width:700PX;height: 50px;border: 1px;border-style: solid;border-color: gainsboro">
-                                                    <form action="register_docs" method="post" enctype="multipart/form-data">
+                                                    <form id="frmUploadDocuments" enctype="multipart/form-data">
                                                         <div class="col-sm-5"><input type="text" id="obsvdocs" name="obsvdocs" class="form-control" placeholder="Observaciones" disabled></div>
                                                         <div class="col-sm-1">
                                                             <label class="control-label" for="files"><div style="background-color: #777;border-radius: 50%;width: 40px;height: 40px;"><img src="<?= base_url('dist/img/clip.png') ?>" style="width: 25px;margin-top: 10px;margin-right: 1px;margin-left: 7px;"></div></label>   
@@ -140,7 +139,7 @@
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <h3>VISUALIZADOR DE EVENTOS</h3>
-                                                    <table class="table table-bordered" style="display: block;height:200px;overflow:auto;">
+                                                    <table class="table table-bordered" style="display: block;height:140px;width: 950px;overflow:auto;">
                                                         <thead>
                                                             <tr>
                                                                 <th>Fecha</th>
@@ -153,8 +152,8 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div>
-                                        </div>                                   
+                                            </div>                                            
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row" id="gestiondeavance" hidden="">
@@ -439,6 +438,42 @@
                                                                 });
                                                             });
                                                         });
+
+                                                        $("#frmUploadDocuments").on("submit", function (e) {
+                                                            e.preventDefault();
+                                                            $.confirm({
+                                                                title: '',
+                                                                content: 'En realidad desea realizar este registro?',
+                                                                buttons: {
+                                                                    si: function () {
+                                                                        var formData = new FormData(document.getElementById("frmUploadDocuments"));
+                                                                        var url = get_base_url() + "Projects/register_docs";
+                                                                        $.ajax({
+                                                                            url: url,
+                                                                            type: "post",
+                                                                            dataType: "html",
+                                                                            data: formData,
+                                                                            cache: false,
+                                                                            contentType: false,
+                                                                            processData: false
+                                                                        })
+                                                                                .done(function (res) {
+                                                                                    if (res === "error") {
+                                                                                        $.alert('Error en BBDD');
+                                                                                    }
+                                                                                    if (res === "ok") {
+                                                                                        $.alert('Documento cargado exitosamente');
+                                                                                    }
+
+                                                                                });
+                                                                    },
+                                                                    no: function () {
+                                                                        $.alert('Cancelado!');
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+
                                                         function getActivities(idOrder) {
                                                             $("#activities").empty();
                                                             url = get_base_url() + "Visit/get_activities_x_order?jsoncallback=?";
@@ -575,12 +610,12 @@
                                                             $("#datofile").html(fn);
                                                         }
 
-                                                        function gestion() {
+                                                        function management() {
                                                             var idOrder = $("#lblcCost").val();
                                                             $("#gestiondeavance").show();
                                                             $("#panelinferior").hide();
                                                             $("#panelsup").hide();
-                                                            url = get_base_url() + "Projects/get_accum_management?jsoncallback=?";
+                                                            var url = get_base_url() + "Projects/get_accum_management?jsoncallback=?";
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                                                                 var percentExecute = parseInt(response.accums.percent_execute);
                                                                 var percentMaterials = parseInt(response.accums.percent_materials);
@@ -594,36 +629,31 @@
                                                             );
                                                         }
 
-                                                        function documentacion() {
-                                                            $("#liorder").html('');
+                                                        function getDocuments() {
+                                                            $("#liorder").empty();
                                                             var idOrder = $("#lblcCost").val();
                                                             var order = $("#uniquecode").val();
                                                             $("#idOrderDoc").val(idOrder);
                                                             var url = get_base_url() + "Orders/get_services_order?jsoncallback=?";
+                                                            var url2 = get_base_url() + "Services/get_model_tree?jsoncallback=?";
+
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (res) {
                                                                 $.each(res["serv"], function (i, serv) {
-                                                                    var url = get_base_url() + "Services/get_model_tree?jsoncallback=?";
-                                                                    $.getJSON(url, {idService: serv.idServices}).done(function (resp) {
-                                                                        var list = '<ul><li>' + resp.serv.name_service + resp.serv.model_tree + '</li></ul>';
-                                                                        $("#liorder").html(order + list);
+                                                                    $.getJSON(url2, {idService: serv.idServices}).done(function (resp) {
+                                                                        $("#liorder").html(order + "<ul><li>" + resp.serv.name_service + resp.serv.model_tree + "</li></ul>");
                                                                         $('#tree').on('changed.jstree', function (e, data) {
                                                                             var sel = data.instance.get_path(data.selected);
-                                                                            verContenido(sel);
+                                                                            getContent(sel);
                                                                         }).jstree();
                                                                     });
+
                                                                 });
                                                             });
-
-                                                            $("#tblgestion").hide();
-                                                            $("#panelinferior").show();
-                                                            $("#panelsup").show();
-                                                            $("#divdocuments").show();
-                                                            $("#lidoc").addClass("active");
-                                                            $("#ligestion").removeClass("active");
                                                             getObsvDocCenter(idOrder);
                                                         }
 
-                                                        function verContenido(filesel) {
+                                                        function getContent(filesel) {
+                                                            var idOrder = $("#lblcCost").val();
                                                             $("#display").html('');
                                                             $("#files").prop('disabled', false);
                                                             $("#btnSubmitDocs").prop('disabled', false);
@@ -632,6 +662,7 @@
                                                             $.get("content", {filesel: filesel}).done(function (response) {
                                                                 $("#display").html(response);
                                                             });
+                                                            getObsvDocCenter(idOrder);
                                                         }
 
                                                         function getObsvDocCenter(idOrder) {
@@ -643,17 +674,9 @@
                                                             });
                                                         }
 
-                                                        function verGestion() {
-                                                            $("#divdocuments").hide();
-                                                            $("#tblgestion").show();
-                                                            $("#panelinferior").show();
-                                                            $("#panelsup").show();
-                                                            $("#lidoc").removeClass("active");
-                                                            $("#ligestion").addClass("active");
-                                                        }
-
-                                                        function verPanelInferior(idOrder) {
+                                                        function getPanelBotton(idOrder) {
                                                             $("#bodyPanelGestion").empty();
+                                                            $("#display").html('');
                                                             $("#panelinferior").show();
                                                             var order = $("#norder_" + idOrder).val();
                                                             var ccost = $("#ccost_" + idOrder).val();
@@ -710,6 +733,7 @@
                                                             }
                                                             );
                                                             getMaterials(idOrder);
+                                                            getDocuments();
                                                         }
 
                                                         function detail(id) {
@@ -847,6 +871,21 @@
                                                                             + materials.count + '" min="0"></td>' + '<td>'
                                                                             + materials.observation + '</td></tr>');
                                                                 });
+                                                            });
+                                                        }
+
+                                                        function trush() {
+                                                            $.confirm({
+                                                                title: 'Confirmación!',
+                                                                content: 'En realidad deseas borrar?',
+                                                                buttons: {
+                                                                    si: function () {
+                                                                        $.alert('Confirmado!');
+                                                                    },
+                                                                    no: function () {
+                                                                        $.alert('Cancelado!');
+                                                                    }
+                                                                }
                                                             });
                                                         }
         </script>
