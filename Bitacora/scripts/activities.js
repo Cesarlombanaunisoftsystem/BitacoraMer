@@ -41,8 +41,16 @@ $(document).ready(function () {
                 selService: selService
             }, function (data) {
                 $("#txtPath").val(data);
+                if ($("#txtPath").val() !== "") {
+                    $("#btnReg").html("Actualizar");
+                    $("#btnReg").attr('onclick', "actualizar()");
+                } else {
+                    $("#btnReg").html("Registrar");
+                    $("#btnReg").attr('onclick', "registar()");
+                }
             });
         });
     });
 });
+
 /*========================================================================*/

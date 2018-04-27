@@ -113,7 +113,7 @@
                     data: $("#frmAddActivitie").serialize(),
                     success: function (resp) {
                         if (resp === "error") {
-                            alertify.error('Erro en BBDD');
+                            alertify.error('Error en BBDD');
                             location.reload();
                         }
                         if (resp === "ok") {

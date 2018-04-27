@@ -47,7 +47,7 @@
                                     <label for="txtPath">Indique directorios separados por comas con los nombres creados en la lista de arbol:</label>
                                     <input type="text" class="form-control" id="txtPath" name="txtPath" placeholder="Ej: GSM/Registro Fotográfico,GSM/Registro Operativo,LTE/Registro Fotográfico,LTE/Registro Operativo,..">
                                 </div>
-                                <button type="submit" class="btn btn-primary">Registrar</button>
+                                <button id="btnReg" type="submit" class="btn btn-primary"></button>
                             </form>                           
                         </div>
                     </div> 
@@ -60,34 +60,39 @@
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
         <script type="text/javascript">
-            $(function () {
-                $("#frmTree").on("submit", function (e) {
-                    e.preventDefault();
-                    var url = get_base_url() + "Parametrization/register_path_tree";
-                    if ($("#txtPath").val() !== " ") {
-                        url = get_base_url() + "Parametrization/update_path_tree";
+            function actualizar() {
+                var url = get_base_url() + "Parametrization/update_path_tree";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: $("#frmTree").serialize()
+                }).done(function (res) {
+                    if (res === "error") {
+                        alertify.error('Error en BBDD');
                     }
-                    $.ajax({
-                        url: url,
-                        type: "POST",
-                        data: $("#frmTree").serialize()
-                    }).done(function (res) {
-                        if (res === "error") {
-                            $.alert({
-                                title: 'Alerta!',
-                                content: 'Error en bbdd!',
-                            });
-                        }
-                        if (res === "ok") {
-                            $.alert({
-                                title: 'Exito!',
-                                content: 'Configuración registrada exitosamente!',
-                                location.reload();
-                            });
-                        }
-                    });
+                    if (res === "ok") {
+                        alertify.success('Actividad actualizada exitosamente');
+                        location.reload();
+                    }
                 });
-            });
+            }
+
+            function registar() {
+                var url = get_base_url() + "Parametrization/register_path_tree";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: $("#frmTree").serialize()
+                }).done(function (res) {
+                    if (res === "error") {
+                        alertify.error('Error en BBDD');
+                    }
+                    if (res === "ok") {
+                        alertify.success('Actividad agregada exitosamente');
+                        location.reload();
+                    }
+                });
+            }
         </script>
     </body>
 </html>

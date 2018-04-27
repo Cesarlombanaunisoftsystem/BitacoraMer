@@ -28,7 +28,7 @@
                                 <div class="col-xs-12 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation" class="active"><a href="<?= base_url('Documents/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Documents/audit_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
+                                        <li role="presentation"><a href="<?= base_url('Documents/audit_process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros procesados</a></li>
                                     </ul>
                                 </div>
                             </div>                            
