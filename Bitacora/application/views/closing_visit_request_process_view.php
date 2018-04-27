@@ -570,7 +570,7 @@
                 url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                     $.each(response["res"], function (i, res) {
-                        if(res.id_type_management === '3'){
+                        if (res.id_type_management === '3') {
                             $("#obsvgen").val(res.detail);
                         }
                         $('#bodyDetalleReg').append('<tr><td>' + res.dateSave +
@@ -600,7 +600,7 @@
             function show(id) {
                 galery = false;
                 $(".slides").html("");
-                url = get_base_url() + "Projects/get_photos_daily_xid?jsoncallback=?";
+                url = get_base_url() + "Orders/get_reg_photos_xid_stage2?jsoncallback=?";
                 $.getJSON(url, {id: id}).done(function (res) {
                     var pos = 1;
                     var image = res.split(",");
@@ -614,23 +614,35 @@
                         galery = true;
                         pos++;
                     }
-
                 });
             }
 
             function showRegisters(idOrder) {
                 $("#bodyRegisters").html('');
-                galery = false;
-                $(".slides").html("");
+                $("#bodyRegisters").html('<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr><td><label class="blue bold upload_design">' +
+                        '<a class="disable photos photo' + idOrder + '">VER REGISTRO FOTOGRAFICO</a></label>' +
+                        '<td>OBSERVACIONES</td>'
+                        + '<td><input type="text" class="form-control" size=40 id="obsvRegPic" readonly><td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm' + idOrder + '">' +
+                        'VER FORMATO PSINM</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss' + idOrder + '">VER FORMATO TSS</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss" readonly></td>' +
+                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable das' + idOrder + '">VER FORMATO DAS</a></label>' +
+                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvDas" readonly></td>' +
+                        '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
+                        '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
+                        '<tr><td></td><td><a target="_blank" class="disable docs" disabeld>' +
+                        '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
+                        '</table>');
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
-                    var pos = 1;
                     $.each(respuestaServer["docs"], function (i, doc) {
                         if (doc.idTypeDocument === "2") {
                             if (doc.idState2 !== '0') {
-                                $(".pisnm").removeClass("disable");
-                                $(".pisnm").addClass("pointer");
-                                $(".pisnm").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $(".pisnm" + idOrder).removeClass("disable");
+                                $(".pisnm" + idOrder).addClass("pointer");
+                                $(".pisnm" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file2);
                                 $("#obsvPsinm").val(doc.observation2);
                             } else {
                                 $(".pisnm" + idOrder).css("color", "red");
@@ -638,9 +650,9 @@
                         }
                         if (doc.idTypeDocument === "3") {
                             if (doc.idState2 !== '0') {
-                                $(".tss").removeClass("disable");
-                                $(".tss").addClass("pointer");
-                                $(".tss").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $(".tss" + idOrder).removeClass("disable");
+                                $(".tss" + idOrder).addClass("pointer");
+                                $(".tss" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file2);
                                 $("#obsvTss").val(doc.observation2);
                             } else {
                                 $(".tss" + idOrder).css("color", "red");
@@ -648,9 +660,9 @@
                         }
                         if (doc.idTypeDocument === "4") {
                             if (doc.idState2 !== '0') {
-                                $(".das").removeClass("disable");
-                                $(".das").addClass("pointer");
-                                $(".das").attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $(".das" + idOrder).removeClass("disable");
+                                $(".das" + idOrder).addClass("pointer");
+                                $(".das" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file2);
                                 $("#obsvDas").val(doc.observation2);
                             } else {
                                 $(".tss" + idOrder).css("color", "red");
@@ -658,52 +670,28 @@
                         }
                         if (doc.idTypeDocument === "7") {
                             if (doc.idState2 !== '0') {
-                                $(".docs").removeClass("disable");
-                                $(".docs").addClass("pointer");
-                                $(".docs").attr('href', get_base_url() + 'uploads/' + doc.file2);
-                                $(".docs").attr('disabled', false);
+                                $(".docs" + idOrder).removeClass("disable");
+                                $(".docs" + idOrder).addClass("pointer");
+                                $(".docs" + idOrder).attr('href', get_base_url() + 'uploads/' + doc.file2);
+                                $(".docs" + idOrder).attr('disabled', false);
                             } else {
                                 $(".docs" + idOrder).css("color", "red");
                             }
                         }
                         if (doc.idTypeDocument === "1") {
                             if (doc.idState2 !== '0') {
-                                var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
-                                html += '<li class="slide-container"><div class="slide">';
-                                html += '<img src="' + get_base_url() + "/uploads/" + doc.file2 + '" /></div> ';
-                                html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
-                                html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
-                                $(".photo").removeClass("disable");
-                                $(".photo").addClass("pointer");
+                                $(".photo" + idOrder).removeClass("disable");
+                                $(".photo" + idOrder).addClass("pointer");
                                 $("#obsvRegPic").val(doc.observation2);
-                                $(".slides").prepend(html);
-                                galery = true;
-                                pos++;
                             } else {
                                 $(".photo" + idOrder).css("color", "red");
                             }
                         }
                     });
-                });               
+                });
                 getObservations(idOrder);
-                $("#bodyRegisters").html('<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
-                        '<tr><td><label class="blue bold upload_design">' +
-                        '<a class="disable photos photo">VER REGISTRO FOTOGRAFICO</a></label>' +
-                        '<td>OBSERVACIONES</td>'
-                        + '<td><input type="text" class="form-control" size=40 id="obsvRegPic" readonly><td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable pisnm">' +
-                        'VER FORMATO PSINM</a></label><td>OBSERVACIONES</td><td><input type="text" class="form-control" size=40 id="obsvPsinm" readonly></td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable tss">VER FORMATO TSS</a></label>' +
-                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvTss" readonly></td>' +
-                        '</tr><tr><td><label class="blue bold upload_design"><a href="#" target="_blank" class="disable das">VER FORMATO DAS</a></label>' +
-                        '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvDas" readonly></td>' +
-                        '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
-                        '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
-                        '<tr><td></td><td><a target="_blank" class="disable docs" disabeld>' +
-                        '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
-                        '</table>');
+                show(idOrder);
             }
-            
             function getObservations(idOrder) {
                 $("#obsvgen").val("");
                 url = get_base_url() + "Projects/get_observation_close?jsoncallback=?";

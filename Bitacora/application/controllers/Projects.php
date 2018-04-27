@@ -194,7 +194,6 @@ class Projects extends CI_Controller {
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 19,
                     'id_type_management' => 2,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -214,7 +213,6 @@ class Projects extends CI_Controller {
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 23,
                     'id_type_management' => 3,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -234,7 +232,6 @@ class Projects extends CI_Controller {
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 22,
                     'id_type_management' => 6,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -254,7 +251,6 @@ class Projects extends CI_Controller {
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 18,
                     'id_type_management' => 5,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -274,7 +270,6 @@ class Projects extends CI_Controller {
                     'observations' => $this->input->post('detailgest'),
                     'idOrderState' => 23,
                     'id_type_management' => 6,
-                    'idUserProcess' => $this->session->userdata('id_usuario'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -314,7 +309,6 @@ class Projects extends CI_Controller {
                 'observations' => $this->input->post('detailgest'),
                 'idOrderState' => 22,
                 'id_type_management' => 6,
-                'idUserProcess' => $this->session->userdata('id_usuario'),
                 'dateUpdate' => date('Y-m-d H:i:s')
             );
             $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
@@ -328,7 +322,6 @@ class Projects extends CI_Controller {
             );
             $data1 = array(
                 'idOrderState' => 21,
-                'idUserProcess' => $this->session->userdata('id_usuario')
             );
             $res = $this->Projects_model->closing_visit_request($data, $idOrder, $data1);
             echo $this->valida($res);
@@ -368,7 +361,6 @@ class Projects extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $data = array(
             'idOrderState' => 20,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);
@@ -384,7 +376,6 @@ class Projects extends CI_Controller {
         $data = array(
             'idOrderState' => 22,
             'id_type_management' => 4,
-            'idUserProcess' => $this->session->userdata('id_usuario'),
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $res = $this->Orders_model->assign_state($idOrder, $data);

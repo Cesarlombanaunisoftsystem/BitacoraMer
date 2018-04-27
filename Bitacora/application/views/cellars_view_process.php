@@ -59,12 +59,20 @@
                                                 if (isset($process) && $process) {
                                                     foreach ($process as $row) {
                                                         if ($row->stateMaterial === '1') {
-                                                            $color = "#FEAE4E";
+                                                            $color = "";
                                                             $proces = 'ASIGNACIÓN';
                                                         }
-                                                        if ($row->stateMaterial === '3') {
+                                                        if ($row->stateMaterial === '2') {
                                                             $color = "";
                                                             $proces = 'DEVOLUCIÓN';
+                                                        }
+                                                        if ($row->stateMaterial === '3') {
+                                                            $color = "#FEAE4E";
+                                                            $proces = 'DEVOLUCIÓN';
+                                                        }
+                                                        if ($row->stateMaterial === '4') {
+                                                            $color = "";
+                                                            $proces = 'ASIGNACIÓN';
                                                         }
                                                         ?>
                                                         <tr style="color: <?= $color ?>">

@@ -58,10 +58,20 @@
                                                 if (isset($materials) && $materials) {
                                                     foreach ($materials as $row) {
                                                         if ($row->stateMaterial === '1') {
-                                                            $process = 'ASIGNACIÓN';
+                                                            $color = "";
+                                                            $proces = 'ASIGNACIÓN';
                                                         }
                                                         if ($row->stateMaterial === '2') {
-                                                            $process = 'DEVOLUCIÓN';
+                                                            $color = "";
+                                                            $proces = 'DEVOLUCIÓN';
+                                                        }
+                                                        if ($row->stateMaterial === '3') {
+                                                            $color = "#FEAE4E";
+                                                            $proces = 'DEVOLUCIÓN';
+                                                        }
+                                                        if ($row->stateMaterial === '4') {
+                                                            $color = "";
+                                                            $proces = 'ASIGNACIÓN';
                                                         }
                                                         ?>                                            
                                                         <tr>

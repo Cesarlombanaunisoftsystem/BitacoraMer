@@ -150,15 +150,15 @@ class Projects_model extends CI_Model {
         }
     }
 
-    public function register_data_close_visit_process($id) {
+    public function register_data_close_visit_process($state,$idUser) {
         $sql = "SELECT tbl_logs.*,tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             details.idActivities, details.count, details.site,
             details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.name_user, daily.gestion,
             daily.id_type_management, typeGest.type, docs.gestiondoc
-    FROM tbl_logs JOIN tbl_orders ON tbl_logs.idOrder = tbl_orders.id
+    FROM tbl_logs JOIN tbl_orders ON tbl_logs.idOrder=tbl_orders.id
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
-   idServices, count, site, sum(total) totalOrder, sum(cost) totalCost
+   idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
    FROM tbl_orders_details
     GROUP BY idOrder) details
     ON tbl_orders.id = details.idOrder
@@ -190,7 +190,7 @@ class Projects_model extends CI_Model {
    FROM tbl_orders_documents
     GROUP BY idOrder) docs
     ON tbl_orders.id = docs.idOrder
-    where tbl_logs.idUserProcess='$id' AND tbl_logs.idProcessState=18";
+    where tbl_logs.idProcessState = '$state' AND tbl_logs.idUserProcess = '$idUser'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

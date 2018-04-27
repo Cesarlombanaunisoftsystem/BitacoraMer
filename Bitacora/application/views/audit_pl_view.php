@@ -17,7 +17,7 @@
                                 <div class="row">
                                     <input type="hidden" id="id" value=""/>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <table  id="data-table" class="table table-striped" style="font-size:12px">
+                                        <table  id="table" class="table table-striped" style="font-size:12px">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -120,7 +120,7 @@
                                                                 ?></td>
                                                             <td><?php
                                                                 $dif = $row->totalOrder - $row->totalCost;
-                                                                $util = ($dif * 100) / $row->totalOrder;
+                                                                $util = ($dif * 100) / $row->totalCost;
                                                                 echo round($util, 2) . ' %';
                                                                 ?></td>                                                            
                                                         </tr>
@@ -283,7 +283,7 @@
                         $('#modalGalery').modal('show');
                 });
             });
-            $('#data-table tbody').on('click', 'td.details-control', function () {
+            $('#table tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
                 var row = dt.row(tr);
                 order_id = $(this).attr("id");

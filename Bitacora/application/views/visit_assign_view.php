@@ -17,7 +17,7 @@
                     <div class="row">
                         <input type="hidden" id="id" value=""/>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
-                            <table id="data-table" class="table table-striped">
+                            <table id="data-table" class="table table-striped" style="font-size:12pt">
                                 <thead>
                                     <tr>
                                         <th style="color: #00B0F0">Fecha de ordén</th>

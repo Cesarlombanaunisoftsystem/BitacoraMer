@@ -47,6 +47,7 @@
                                     <tr>
                                         <th></th>
                                         <th style="color: #00B0F0">Fecha de ordén</th>
+                                        <th style="color: #00B0F0">Fecha procesado</th>
                                         <th style="color: #00B0F0">No. Ordén</th>
                                         <th style="color: #00B0F0">Centro de Costos</th>
                                         <th style="color: #00B0F0">Actividad</th>
@@ -66,6 +67,7 @@
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
                                                 <td><?= $visit->dateSave ?></td>
+                                                <td><?= $visit->dateLog ?></td>
                                                 <td><?= $visit->uniquecode . '-' . $visit->coi ?></td>
                                                 <td><?= $visit->uniqueCodeCentralCost ?></td>
                                                 <td><?= $visit->name_activitie ?></td>
@@ -212,8 +214,8 @@
             function getObservations(idOrder) {
                 $("#obsvgen" + idOrder).val("");
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-                    $("#obsvgen" + idOrder).val(res.observation.observations);
+                $.getJSON(url, {idOrder: idOrder,state:16}).done(function (res) {
+                    $("#obsvgen" + idOrder).val(res.observation.obsvLog);
                 });
             }
             function generateid(idOrder) {

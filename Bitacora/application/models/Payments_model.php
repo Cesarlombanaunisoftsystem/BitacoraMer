@@ -119,13 +119,13 @@ class Payments_model extends CI_Model {
         }
     }
 
-    public function get_pays_process($state, $id) {
-        $sql = "SELECT tbl_orders.*, pagos.percent_pay, pagos.sumValue,
+    public function get_pays_process($state, $idUser) {
+        $sql = "SELECT tbl_logs.*,tbl_orders.*, pagos.percent_pay, pagos.sumValue,
             pagos.state,pagos.dateProcess,details.idActivities, details.count,
             details.site,details.totalOrder, details.totalCost, act.name_activitie,
             serv.name_service, tecn.id as idTech, tecn.name_user,
             paysdo.percentdo, paysdo.sumdo
-    FROM tbl_orders
+    FROM tbl_logs JOIN tbl_orders ON tbl_logs.idOrder=tbl_orders.id
    LEFT JOIN (SELECT idOrder, min(idActivities) idActivities, min(idServices)
    idServices, count, site, sum(total) totalOrder, sum(total_cost) totalCost
    FROM tbl_orders_details
@@ -150,7 +150,7 @@ class Payments_model extends CI_Model {
     LEFT JOIN (SELECT idOrder, SUM(percent) percentdo, sum(value) sumdo
     FROM tbl_orders_pays_pay
     GROUP BY idOrder) paysdo
-    ON tbl_orders.id = paysdo.idOrder WHERE pagos.state>'$state' AND tbl_orders.idUser = '$id'";
+    ON tbl_logs.idOrder = paysdo.idOrder WHERE tbl_logs.idProcessState='$state' AND tbl_logs.idUserProcess='$idUser'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

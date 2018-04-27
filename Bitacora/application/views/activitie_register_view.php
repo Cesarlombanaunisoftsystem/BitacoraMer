@@ -97,7 +97,7 @@
                                         </ul>
                                         <div class="tab-content">
                                             <div id="management" class="tab-pane fade in active">
-                                                <table id="tblgestion" class="table table-striped">
+                                                <table id="tblgestion" class="table table-striped" style="font-size:12pt">
                                                     <thead>
                                                         <tr>
                                                             <td style="color: #00B0F0">Fecha de Gestión</td>
@@ -160,28 +160,28 @@
                                                     <br>
                                                     <p><a><i class="fa fa-camera fa-2x"></i> Fotografias</a></p>
                                                     <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                        <strong>UN RJ45</strong>
-                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" target="_blank">
-                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" class="img-thumbnail" style="width: 200px">
-                                                        </a>                                                       
-                                                    </div>
-                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                        <strong>UN RJ45</strong>
-                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" target="_blank">
-                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" class="img-thumbnail" style="width: 200px">
-                                                        </a>                                                       
-                                                    </div>
-                                                    <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                        <strong>UN RJ45</strong>
-                                                        <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" target="_blank">
-                                                            <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" class="img-thumbnail" style="width: 200px"></a>                                                       
-                                                    </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                            <strong>UN RJ45</strong>
+                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" target="_blank">
+                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" class="img-thumbnail" style="width: 200px">
+                                                            </a>                                                       
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                            <strong>UN RJ45</strong>
+                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" target="_blank">
+                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" class="img-thumbnail" style="width: 200px">
+                                                            </a>                                                       
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
+                                                            <strong>UN RJ45</strong>
+                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" target="_blank">
+                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" class="img-thumbnail" style="width: 200px"></a>                                                       
+                                                        </div>
                                                     </div>
                                                     <br>
                                                     <br>
                                                     <p><strong><a><i class="fa fa-search fa-2x"></i> Observaciones de la orden: </a></strong> Aqui etarian las observaciones</p>
-                                                   
+
                                                 </div>
                                             </div>
                                         </div>
@@ -200,7 +200,7 @@
                                             <li><a href="#" style="color: white">.</a></li>
                                         </ul>
                                         <br><br>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <table>
                                                 <tr>
                                                     <td>No. ORDEN: <label id="lblOrder"></label></td>
@@ -208,7 +208,7 @@
                                             </table>
                                         </div>                                        
                                         <form id="frmRegisterDaily" enctype="multipart/form-data">
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                 <table>
                                                     <tr style="font-size: 12px;">
                                                         <td style="color: #00B0F0">| Centro de Costos |</td>
@@ -290,8 +290,8 @@
                                                 <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="divadjimg">
                                                     <label for="userfile"><img src="<?= base_url('dist/img/camera.png') ?>">
                                                         ADJUNTAR IMAGEN</label>   
-                                                    <p id="datofile"></p>
-                                                    <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName(this)" accept=".jpg,.png" size="2048" multiple>
+                                                    <p id="datofile2"></p>
+                                                    <input type="file"  name="userfile[]" id="userfile" style="display: none" onchange="getFileName2(this)" accept=".jpg,.png" size="2048" multiple>
                                                 </div>
                                             </div>                                            
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="divAttendant">
@@ -320,7 +320,7 @@
                                                     <tbody id="materialsback"></tbody>
                                                 </table>
                                             </div>
-                                            
+
                                             <div class="col-sm-7"></div>
                                             <div class="col-sm-3">
                                                 <button type="submit" class="form-control btn btn-success"><b>REGISTRAR</b></button>
@@ -640,6 +640,11 @@
                                                         function getFileName(elm) {
                                                             var fn = $(elm).val();
                                                             $("#datofile").html(fn);
+                                                        }
+
+                                                        function getFileName2(elm) {
+                                                            var fn = $(elm).val();
+                                                            $("#datofile2").html(fn);
                                                         }
 
                                                         function management() {
