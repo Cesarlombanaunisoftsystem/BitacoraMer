@@ -75,7 +75,7 @@
                                                         }
                                                         ?>                                            
                                                         <tr>
-                                                            <td><?= $process ?></td>
+                                                            <td><?= $proces ?></td>
                                                             <td><?= $row->dateSave ?></td>
                                                             <td><a href="#" onclick="verOrden(<?= $row->idOrder ?>,<?= $row->stateMaterial ?>);">
                                                                     <u><?= $row->uniquecode . '-' . $row->coi ?></u><input type="hidden" id="norder_<?= $row->idOrder ?>" value="<?= $row->uniquecode ?>"></a></td>

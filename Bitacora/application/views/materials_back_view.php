@@ -44,14 +44,14 @@
                                             <li><a href="#" style="color: white">.</a></li>
                                         </ul>
                                         <br><br>
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                             <table>
                                                 <tr>
                                                     <td>No. ORDEN: <label id="lblOrder"><?= $order->uniquecode ?></label></td>
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <table>
                                                 <tr style="font-size: 12px;">
                                                     <td style="color: #00B0F0">| Centro de Costos |</td>

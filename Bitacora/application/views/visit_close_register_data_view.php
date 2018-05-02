@@ -152,7 +152,7 @@
                         '<tr><td></td><td colspan="2"><label class="col-xs-4 control-label" for="userfile">' +
                         '<div style="background-color: #777;border-radius: 50%;width: 30px;height: 30px;">' +
                         '<img src="' + get_base_url() + '/dist/img/clip.png" style="width: 15px;margin-top: 10px;margin-right: 1px;margin-left: 7px;">' +
-                        '</div></label><label class="btn btn-default btn-sm">ADJUNTAR</label><p id="datofile"></p>' +
+                        '</div></label><p id="datofile"></p>' +
                         '<input type="file" name="userfile" id="userfile" style="display: none" onchange="getFileNameDoc(this)"><p id="p_4"></p>' +
                         '</td><td><a href="#" class="blue bold"><input type="submit" value="REGISTRAR" class="blue bold"></a></td></tr>' +
                         '</table></form>';

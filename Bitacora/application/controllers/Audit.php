@@ -124,7 +124,7 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        $data['paysProcess'] = $this->Payments_model->get_pays_process(10, $id_user);
+        $data['paysProcess'] = $this->Payments_model->get_pays_process(1, $id_user);
         $this->load->view('coord_pays_process_view', $data);
     }
 
@@ -154,7 +154,7 @@ class Audit extends CI_Controller {
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities();
         $data['services'] = $this->Services_model->get_all_services();
-        $data['pays_process'] = $this->Payments_model->get_pays_process(11, $id_user);
+        $data['pays_process'] = $this->Payments_model->get_pays_financial(11, $id_user);
         $this->load->view('financial_process_view', $data);
     }
 
@@ -203,7 +203,8 @@ class Audit extends CI_Controller {
             'state' => 1,
             'value' => $valor);
         $data1 = array(
-            'historyBackState' => 0);
+            'historyBackState' => 0,
+            'statePays' => 1);
         $res = $this->Payments_model->assign_pay($idOrder, $data, $data1);
         if ($res === TRUE) {
             echo 'ok';
@@ -213,7 +214,6 @@ class Audit extends CI_Controller {
     }
 
     public function process_pays() {
-        $idUser = $this->session->userdata('id_usuario');
         $date = date('Y-m-d H:i:s');
         foreach (array_keys($_POST['idorder']) as $key) {
             $idorder = $_POST['idorder'][$key];
@@ -235,6 +235,7 @@ class Audit extends CI_Controller {
                 'idArea' => 3,
                 'idOrderState' => 12,
                 'historyBackState' => 0,
+                'statepays' => 0,
                 'dateUpdate' => $date
             );
             $data3 = array(

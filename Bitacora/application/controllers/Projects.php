@@ -59,7 +59,7 @@ class Projects extends CI_Controller {
         $data['titulo'] = 'Mis Proyectos';
         $id_user = $this->session->userdata('id_usuario');
         $data['order'] = $this->Orders_model->get_order_by_id($id);
-        $data['types'] = $this->Projects_model->get_types_management();
+        $data['types'] = $this->Projects_model->get_types_management(1);
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['materials'] = $this->Materials_model->get_materials_order($id);
         $this->load->view('materials_back_view', $data);
@@ -130,8 +130,7 @@ class Projects extends CI_Controller {
     public function get_photos_daily_xid() {
         $id = $this->input->get('id');
         $res = $this->Projects_model->get_photos_daily_xid($id);
-        $resultadosJson = json_encode($res->image);
-        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+        echo $res->image;
     }
 
     public function register_daily_management() {

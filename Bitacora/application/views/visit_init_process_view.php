@@ -253,8 +253,8 @@
     function getRegPhoto(id) {
         galery = false;
         $(".slides").html("");
-        url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-        $.getJSON(url, {id: id}).done(function (res) {
+        url = get_base_url() + "Orders/get_reg_photos_xid";
+        $.get(url, {id: id}).done(function (res) {
             var pos = 1;
             var image = res.split(",");
             for (var i = 0; i < image.length; i++) {

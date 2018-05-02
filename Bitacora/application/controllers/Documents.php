@@ -70,7 +70,7 @@ class Documents extends CI_Controller {
         $data['titulo'] = 'Auditoria de Documentación';
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
-        $data['orders'] = $this->Projects_model->register_data_close_visit_process($id_user);
+        $data['orders'] = $this->Projects_model->register_data_close_visit_process(18,$id_user);
         $this->load->view('audit_documents_process_view', $data);
     }
 

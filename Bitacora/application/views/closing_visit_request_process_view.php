@@ -600,8 +600,28 @@
             function show(id) {
                 galery = false;
                 $(".slides").html("");
-                url = get_base_url() + "Orders/get_reg_photos_xid_stage2?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
+                url = get_base_url() + "Projects/get_photos_daily_xid";
+                $.get(url, {id: id}).done(function (res) {
+                    var pos = 1;
+                    var image = res.split(",");
+                    for (var i = 0; i < image.length; i++) {
+                        var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                        html += '<li class="slide-container"><div class="slide">';
+                        html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                        html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                        html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                        $(".slides").prepend(html);
+                        galery = true;
+                        pos++;
+                    }
+                });
+            }
+
+            function showDetailAudit(id) {
+                galery = false;
+                $(".slides").html("");
+                url = get_base_url() + "Orders/get_reg_photos_xid_stage2";
+                $.get(url, {id: id}).done(function (res) {
                     var pos = 1;
                     var image = res.split(",");
                     for (var i = 0; i < image.length; i++) {
@@ -632,7 +652,7 @@
                         '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" size=40 id="obsvDas" readonly></td>' +
                         '</tr><tr><td>OBSERVACIONES GENERALES</td><td colspan="3"><input type="hidden" value="" name="idOrder">' +
                         '<input type="text" class="form-control" id="obsvgen" readonly></td></tr>' +
-                        '<tr><td></td><td><a target="_blank" class="disable docs" disabeld>' +
+                        '<tr><td></td><td><a target="_blank" class="disable docs' + idOrder + '" disabeld>' +
                         '<button type="button" class="btn btn-default">Ver Adjuntos</button></a></td></tr>' +
                         '</table>');
                 url = get_base_url() + "Visit/get_docs_visit_init_register?jsoncallback=?";
@@ -690,7 +710,7 @@
                     });
                 });
                 getObservations(idOrder);
-                show(idOrder);
+                showDetailAudit(idOrder);
             }
             function getObservations(idOrder) {
                 $("#obsvgen").val("");

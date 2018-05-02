@@ -190,7 +190,7 @@ class Projects_model extends CI_Model {
    FROM tbl_orders_documents
     GROUP BY idOrder) docs
     ON tbl_orders.id = docs.idOrder
-    where tbl_logs.idProcessState = '$state' AND tbl_logs.idUserProcess = '$idUser'";
+    where tbl_logs.idProcessState = '$state' AND tbl_logs.idUserProcess = '$idUser' order by tbl_logs.id desc";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             return $query->result();

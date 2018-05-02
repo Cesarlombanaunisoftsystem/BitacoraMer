@@ -223,7 +223,6 @@ class Orders extends CI_Controller {
                 mkdir("./uploads/", 0777);
             //comprobamos si el archivo ha subido
             if ($file && move_uploaded_file($_FILES['userfile']['tmp_name'], "./uploads/" . $file)) {
-                mkdir("./documents/" . $this->input->post('uniquecode'), 0777);
                 $veryState = $this->verify_step($this->input->post('idArea'));
                 $data = array(
                     'uniqueCodeCentralCost' => $this->input->post('uniqueCodeCentralCost'),
@@ -308,15 +307,13 @@ class Orders extends CI_Controller {
     public function get_reg_photos_xid() {
         $id = $this->input->get('id');
         $res = $this->Orders_model->get_reg_photos_xid($id);
-        $resultadosJson = json_encode($res->file);
-        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+        echo $res->file;
     }
 
     public function get_reg_photos_xid_stage2() {
         $id = $this->input->get('id');
         $res = $this->Orders_model->get_reg_photos_xid_stage2($id);
-        $resultadosJson = json_encode($res->file2);
-        echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
+        echo $res->file2;
     }
 
 }
