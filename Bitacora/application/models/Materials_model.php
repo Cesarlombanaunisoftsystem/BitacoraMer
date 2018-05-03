@@ -93,9 +93,17 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function return_materials($idOrder, $data, $data1, $data2) {
-        $this->db->trans_start();
+    public function return_materials($data) {
         $this->db->insert('tbl_materials_back', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function return_materials_log($idOrder, $data1, $data2) {
+        $this->db->trans_start();
         $this->db->insert('tbl_daily_management', $data1);
         $this->db->where('id', $idOrder);
         $this->db->update('tbl_orders', $data2);

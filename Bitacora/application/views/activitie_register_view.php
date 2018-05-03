@@ -11,88 +11,70 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="<?= base_url('Projects/activitie_init') ?>"><i class="fa fa-refresh"></i></a></li>
-                    </ol>
-                </section>
+                <div id="load_menu"></div>
 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Projects/activitie_init') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Projects/register_activities') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registro de Actividad</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
+
                         <div id="spinner"></div>
                         <div class="tab-content">                            
                             <div role="tabpanel" class="tab-pane active" id="process">
                                 <div class="row" id="panelsup">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/gestion.png') ?>" style="width: 120px;">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a href="#" style="color: #00B0F0"><b>PROYECTOS</b></a></li>                                            
                                         </ul>
-                                        <table id="data-table" class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <td style="color: #00B0F0">Fecha de asignación</td>
-                                                    <td style="color: #00B0F0">No. Ordén</td>
-                                                    <td style="color: #00B0F0">Centro de Costos</td>
-                                                    <td style="color: #00B0F0">Actividad</td>
-                                                    <td style="color: #00B0F0">Servicio</td>
-                                                    <td style="color: #00B0F0">Cantidad</td>
-                                                    <td style="color: #00B0F0">Sitio</td>
-                                                    <td style="color: #00B0F0">Gestión</td>
-                                                </tr>                                   
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                if (isset($registers) && $registers) {
-                                                    foreach ($registers as $row) {
-                                                        ?>                                            
-                                                        <tr>
-                                                            <td><?= $row->dateAssign ?></td>
-                                                            <td><a href="#" onclick="getPanelBotton(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
-                                                            <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
-                                                            <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
-                                                            <td><?= $row->name_service ?></td>
-                                                            <td><?= $row->count ?></td>
-                                                            <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                
-                                                            <td><div class="progress">
-                                                                    <div class="progress-bar progress-bar-warning" style="width: <?= $row->gestion ?>%">
-                                                                        <?= $row->gestion ?>%
+                                        <div style="border:2px solid #c1bdbd;height: 300px; overflow-y: scroll;padding:15px;">
+                                            <table id="data-table" class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <td style="color: #00B0F0">Fecha de asignación</td>
+                                                        <td style="color: #00B0F0">No. Ordén</td>
+                                                        <td style="color: #00B0F0">Centro de Costos</td>
+                                                        <td style="color: #00B0F0">Actividad</td>
+                                                        <td style="color: #00B0F0">Servicio</td>
+                                                        <td style="color: #00B0F0">Cantidad</td>
+                                                        <td style="color: #00B0F0">Sitio</td>
+                                                        <td style="color: #00B0F0">Gestión</td>
+                                                    </tr>                                   
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if (isset($registers) && $registers) {
+                                                        foreach ($registers as $row) {
+                                                            ?>                                            
+                                                            <tr>
+                                                                <td><?= $row->dateAssign ?></td>
+                                                                <td><a href="#" onclick="getPanelBotton(<?= $row->id ?>);"><?= $row->uniquecode . '-' . $row->coi ?><input type="hidden" id="norder_<?= $row->id ?>" value="<?= $row->uniquecode . '-' . $row->coi ?>"></a></td>
+                                                                <td><?= $row->uniqueCodeCentralCost ?><input type="hidden" id="ccost_<?= $row->id ?>" value="<?= $row->uniqueCodeCentralCost ?>"></td>
+                                                                <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
+                                                                <td><?= $row->name_service ?></td>
+                                                                <td><?= $row->count ?></td>
+                                                                <td><?= $row->site ?><input type="hidden" id="site_<?= $row->id ?>" value="<?= $row->site ?>"></td>                                                
+                                                                <td><div class="progress">
+                                                                        <div class="progress-bar progress-bar-warning" style="width: <?= $row->gestion ?>%">
+                                                                            <?= $row->gestion ?>%
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <?php
+                                                                </td>
+                                                            </tr>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                ?>  
-                                            </tbody>
-                                        </table>
+                                                    ?>  
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row" id="panelinferior" hidden="">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 container">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1 container">
                                         <ul class="nav nav-tabs">
                                             <li class="active" id="ligestion"><a data-toggle="tab" href="#management" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
                                             <li id="lidoc"><a data-toggle="tab" href="#documents" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
-                                            <li id="lidoc"><a data-toggle="tab" href="#app" style="color: #00B0F0"><b>APP</b></a></li>
+                                            <li id="lidoc"><a data-toggle="tab" href="#app" style="color: #00B0F0"><b>MATERIALES</b></a></li>
                                             &nbsp;&nbsp;<a href="#" onclick="management();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
                                         </ul>
                                         <div class="tab-content">
@@ -156,31 +138,15 @@
                                             </div>    
                                             <div id="app" class="tab-pane fade">
                                                 <div class="col-md-12 col-sm-12 col-lg-12" style="padding: 15px;">
-                                                    <p><a href="http://www.bitacoramer.unisoftsystem.com.co/uploads/221.pdf" target="_blank"><i class="fa fa-file-pdf-o fa-2x"></i> Verificar KingList</a></p>
+                                                    <p id="material_paking"><a href="http://www.bitacoramer.unisoftsystem.com.co/uploads/221.pdf" target="_blank"><i class="fa fa-file-pdf-o fa-2x"></i> Verificar Packing List</a></p>
                                                     <br>
                                                     <p><a><i class="fa fa-camera fa-2x"></i> Fotografias</a></p>
-                                                    <div class="col-md-12 col-sm-12 col-lg-12">
-                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                            <strong>UN RJ45</strong>
-                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" target="_blank">
-                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_6.png" class="img-thumbnail" style="width: 200px">
-                                                            </a>                                                       
-                                                        </div>
-                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                            <strong>UN RJ45</strong>
-                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" target="_blank">
-                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_7.png" class="img-thumbnail" style="width: 200px">
-                                                            </a>                                                       
-                                                        </div>
-                                                        <div class="col-md-3 col-lg-3 col-sm-3 text-center">
-                                                            <strong>UN RJ45</strong>
-                                                            <a href="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" target="_blank">
-                                                                <img src="http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/216_8.png" class="img-thumbnail" style="width: 200px"></a>                                                       
-                                                        </div>
+                                                    <div class="col-md-12 col-sm-12 col-lg-12" id="material_photos">
+
                                                     </div>
                                                     <br>
                                                     <br>
-                                                    <p><strong><a><i class="fa fa-search fa-2x"></i> Observaciones de la orden: </a></strong> Aqui etarian las observaciones</p>
+                                                    <p><strong><a><i class="fa fa-search fa-2x"></i> Observaciones de la orden: </a></strong></p><p id="material_obser"></p>
 
                                                 </div>
                                             </div>
@@ -188,10 +154,7 @@
                                     </div>
                                 </div>
                                 <div class="row" id="gestiondeavance" hidden="">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/gestion.png') ?>" style="width: 120px;">
-                                    </div>
-                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
                                         <ul class="nav nav-tabs nav-justified">
                                             <li><a href="#" style="color: white">.</a></li>
                                             <li class="active">
@@ -200,7 +163,7 @@
                                             <li><a href="#" style="color: white">.</a></li>
                                         </ul>
                                         <br><br>
-                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                             <table>
                                                 <tr>
                                                     <td>No. ORDEN: <label id="lblOrder"></label></td>
@@ -208,7 +171,7 @@
                                             </table>
                                         </div>                                        
                                         <form id="frmRegisterDaily" enctype="multipart/form-data">
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <table>
                                                     <tr style="font-size: 12px;">
                                                         <td style="color: #00B0F0">| Centro de Costos |</td>
@@ -235,6 +198,7 @@
                                                     </tr>
                                                 </table>                                            
                                             </div>
+                                            <br>
                                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                     <p style="color: #00B0F0">TIPO DE GESTIÓN</p>
@@ -262,10 +226,13 @@
                                                 </div>
                                                 <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                                     <div class="progress">
-                                                        <div id="percentexe" class="progress-bar progress-bar-warning" style="width: 0%">
-                                                            0%
+                                                        <div id="percentexe" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+
                                                         </div>
                                                     </div>
+
+
+
                                                     <input type="hidden" name="valpercentexe" id="valpercentexe">
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
@@ -411,26 +378,25 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" style="text-align: center; color: #00B1EB"><b>ACTIVIDADES RELACIONADAS</b></h5>                                
+                        <h5 class="modal-title title-modals-visit"><b>ACTIVIDADES RELACIONADAS</b></h5>                                
                     </div>
-                    <div class="modal-body">
-                        <div class="row">                                    
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th style="background-color: #00B1EB; color: white">Categoria</th>
-                                        <th style="background-color: #00B1EB; color: white">Producto</th>
-                                        <th style="background-color: #00B1EB; color: white">Cantidad</th>
-                                        <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
-                                    </tr>                                            
-                                </thead>
-                                <tbody id="activities">
-                                </tbody>
-                            </table> 
-                            <hr style="border-color: #00B1EB">
-                            <p>Bitácora</p>
-                        </div>                   
-                    </div>                            
+                    <div class="modal-body">                                 
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-head-modals">Categoria</th>
+                                    <th class="th-head-modals">Producto</th>
+                                    <th class="th-head-modals">Cantidad</th>
+                                    <th class="th-head-modals">Unidad de medida</th>
+                                </tr>                                            
+                            </thead>
+                            <tbody id="activities">
+                            </tbody>
+                        </table> 
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn color-btn-modal" data-dismiss="modal">Cerrar </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -446,6 +412,8 @@
                                                                     $('#modalshow').modal('show');
                                                             });
                                                             $("#frmRegisterDaily").on("submit", function (e) {
+                                                                console.log(formData);
+                                                                return;
                                                                 e.preventDefault();
                                                                 var formData = new FormData(document.getElementById("frmRegisterDaily"));
                                                                 url = get_base_url() + "Projects/register_daily_management";
@@ -593,7 +561,7 @@
                                                                 valor++;
                                                                 // Modificamos el valor de la variable value del progressbar
                                                                 $("#percentexe").html(valor + "%");
-                                                                $("#percentexe").width(valor);
+                                                                $("#percentexe").width(valor + "%");
                                                                 $("#valpercentexe").val(valor);
                                                             }
                                                         }
@@ -605,7 +573,7 @@
                                                                 valor--;
                                                                 // Modificamos el valor de la variable value del progressbar
                                                                 $("#percentexe").html(valor + "%");
-                                                                $("#percentexe").width(valor);
+                                                                $("#percentexe").width(valor + "%");
                                                                 $("#valpercentexe").val(valor);
                                                             }
                                                         }
@@ -620,7 +588,7 @@
                                                                 valor++;
                                                                 // Modificamos el valor de la variable value del progressbar
                                                                 $("#percentmat").html(valor + "%");
-                                                                $("#percentmat").width(valor);
+                                                                $("#percentmat").width(valor + "%");
                                                                 $("#valpercentmat").val(valor);
                                                             }
                                                         }
@@ -632,7 +600,7 @@
                                                                 valor--;
                                                                 // Modificamos el valor de la variable value del progressbar
                                                                 $("#percentmat").html(valor + "%");
-                                                                $("#percentmat").width(valor);
+                                                                $("#percentmat").width(valor + "%");
                                                                 $("#valpercentmat").val(valor);
                                                             }
                                                         }
@@ -657,10 +625,10 @@
                                                                 var percentExecute = parseInt(response.accums.percent_execute);
                                                                 var percentMaterials = parseInt(response.accums.percent_materials);
                                                                 $("#percentexe").html(percentExecute + "%");
-                                                                $("#percentexe").width(percentExecute);
+                                                                $("#percentexe").width(percentExecute + "%");
                                                                 $("#valpercentexe").val(percentExecute);
                                                                 $("#percentmat").html(percentMaterials + "%");
-                                                                $("#percentmat").width(percentMaterials);
+                                                                $("#percentmat").width(percentMaterials + "%");
                                                                 $("#valpercentmat").val(percentMaterials);
                                                             }
                                                             );
@@ -728,49 +696,62 @@
                                                             url = get_base_url() + "Projects/get_daily_management?jsoncallback=?";
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (response) {
                                                                 $.each(response["res"], function (i, res) {
+
+                                                                    if (res.id_type_management === '1' || res.id_type_management === '2' || res.id_type_management === '3') {
+                                                                        var percentExecute = '<div class="progress">' +
+                                                                                '<div class="progress-bar progress-bar-warning" style="width: '
+                                                                                + res.percent_execute + '%">' + res.percent_execute + '</div></div>';
+                                                                        var percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning" style="width: '
+                                                                                + res.percent_materials + '%">' + res.percent_materials +
+                                                                                '</div></div>';
+                                                                        var detail = '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a>';
+                                                                        var obsv = '<input type="text" data-toggle="modal" data-target="#modalDetail" value="' + res.detail + '" id="detail_' + res.id + '" onclick="detail(' + res.id + ')" readonly>';
+                                                                    }
                                                                     if (res.id_type_management === '4') {
-                                                                        var percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
-                                                                        var percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
-                                                                        var detail = '<a data-toggle="modal" data-target="#modalRegisters" onclick="showRegisters(' + idOrder + ')">Detalle</a>';
+                                                                        percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                                                                        percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                                                                        detail = '<a data-toggle="modal" data-target="#modalRegisters" onclick="showRegisters(' + idOrder + ')">Detalle</a>';
+                                                                        obsv = '';
                                                                     }
-                                                                    if (res.id_type_management === '1') {
-                                                                        percentExecute = '<div class="progress">' +
-                                                                                '<div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_execute + '%">' + res.percent_execute + '</div></div>';
-                                                                        percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_materials + '%">' + res.percent_materials +
-                                                                                '</div></div>';
-                                                                        detail = '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a>';
+                                                                    if (res.id_type_management === '5' || res.id_type_management === '6' || res.id_type_management === '7') {
+                                                                        percentExecute = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                                                                        percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning"></div></div>';
+                                                                        detail = '';
+                                                                        obsv = '';
                                                                     }
-                                                                    if (res.id_type_management === '2') {
-                                                                        percentExecute = '<div class="progress">' +
-                                                                                '<div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_execute + '%">' + res.percent_execute + '</div></div>';
-                                                                        percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_materials + '%">' + res.percent_materials +
-                                                                                '</div></div>';
-                                                                        detail = '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a>';
-                                                                    }
-                                                                    if (res.id_type_management === '3') {
-                                                                        percentExecute = '<div class="progress">' +
-                                                                                '<div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_execute + '%">' + res.percent_execute + '</div></div>';
-                                                                        percentMaterials = '<div class="progress"><div class="progress-bar progress-bar-warning" style="width: '
-                                                                                + res.percent_materials + '%">' + res.percent_materials +
-                                                                                '</div></div>';
-                                                                        detail = '<a data-toggle="modal" data-target="#modalshow" onclick="show(' + res.id + ')"><img src="' + get_base_url() + 'dist/img/camera.png"></a>';
-                                                                    }
-                                                                    $('#bodyPanelGestion').append('<tr><td>' + res.dateSave +
-                                                                            '</td><td>' + res.type +
-                                                                            '</td><td>' + percentExecute + '</td><td>' + percentMaterials + '<td>' +
-                                                                            '<input type="text" data-toggle="modal" data-target="#modalDetail" value="' + res.detail + '" id="detail_' + res.id + '" onclick="detail(' + res.id + ')" readonly></td><td>'
-                                                                            + detail + '</td></tr>'
-                                                                            );
+                                                                    $('#bodyPanelGestion').append('<tr><td>' + res.dateSave + '</td><td>' + res.type + '</td><td>' + percentExecute + '</td><td>' + percentMaterials + '<td>' + obsv + '</td><td>' + detail + '</td></tr>');
                                                                 });
                                                             }
                                                             );
                                                             getMaterials(idOrder);
                                                             getDocuments();
+                                                            loadMaterialTab(idOrder);
+                                                        }
+
+                                                        function loadMaterialTab(id) {
+                                                            $("#material_paking a").attr("href", "http://www.bitacoramer.unisoftsystem.com.co/uploads/".concat(id, ".pdf"));
+                                                            $("#material_photos").empty();
+                                                            var urlPhoto = "http://www.bitacoramer.unisoftsystem.com.co/reportes/material_fotos/".concat(id);
+                                                            $.ajax({
+                                                                url: "/Projects/getMaterials",
+                                                                type: "post",
+                                                                data: {idOrder: id},
+                                                                success: function (data) {
+                                                                    $.each(JSON.parse(data), function (i, material) {
+                                                                        var text = '<div class="col-md-3 col-lg-3 col-sm-3 text-center">';
+                                                                        text += '<strong>' + material.name_service.substring(0, 18) + '..</strong>';
+                                                                        text += '<a href="' + urlPhoto + '_' + material.id_material + '.png" target="_blank">';
+                                                                        text += '<img src="' + urlPhoto + '_' + material.id_material + '.png" class="img-thumbnail" style="width: 200px">';
+                                                                        text += '</a>';
+                                                                        text += '</div>';
+                                                                        $("#material_photos").append(text);
+                                                                        console.log(text);
+                                                                    });
+                                                                },
+                                                                error: function (data) {
+                                                                    console.log(data);
+                                                                }
+                                                            });
                                                         }
 
                                                         function detail(id) {
@@ -901,7 +882,7 @@
                                                                     $('#materialsback').append('<tr><td>' + materials.name_service +
                                                                             '</td><td>' + materials.unit_measurement + '</td><td>'
                                                                             + materials.count + '</td>' +
-                                                                            '<td><input type="hidden" name="idOrder[]" value="'
+                                                                            '<td><input type="hidden" name="idOrder" value="'
                                                                             + idOrder + '"><input type="hidden" name="idCellar[]" value="'
                                                                             + materials.idCellar + '"><input type="hidden" name="idDetail[]" value="'
                                                                             + materials.id + '"><input type="number" class="form-control" name="countback[]" max="'
@@ -925,6 +906,7 @@
                                                                 }
                                                             });
                                                         }
+                                                        cargar_menu("mis_proyectos", 'REGISTROS PROCESADOS');
         </script>
     </body>
 </html>

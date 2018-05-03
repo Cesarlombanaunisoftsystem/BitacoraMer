@@ -20,7 +20,7 @@ class Projects extends CI_Controller {
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
         $this->load->model(array('Users_model', 'Orders_model', 'Projects_model',
-            'Materials_model', 'Utils', 'Services_model'));
+            'Materials_model', 'Utils', 'Services_model', 'HistoryMaterial_model'));
     }
 
     public function activitie_init() {
@@ -432,32 +432,33 @@ class Projects extends CI_Controller {
     public function return_materials() {
         $idUser = $this->session->userdata('id_usuario');
         $date = date('Y-m-d H:i:s');
+        $idOrder = $_POST['idOrder'];
         foreach (array_keys($_POST['idDetail']) as $key) {
             $idCellar = $_POST['idCellar'][$key];
             $idDetail = $_POST['idDetail'][$key];
-            $idOrder = $_POST['idOrder'][$key];
             $countback = $_POST['countback'][$key];
             $data = array(
                 'idCellar' => $idCellar,
                 'idDetail' => $idDetail,
                 'count_back' => $countback,
             );
-            $data1 = array(
-                'idOrder' => $idOrder,
-                'id_type_management' => 6
-            );
-            $data2 = array(
-                'stateMaterial' => 2,
-                'dateUpdate' => $date
-            );
-            $dataLog = array(
-                'idOrder' => $idOrder,
-                'idUserProcess' => $idUser,
-                'idProcessState' => 15
-            );
-            $this->Orders_model->register_log($dataLog);
-            $res = $this->Materials_model->return_materials($idOrder, $data, $data1, $data2);
+            $this->Materials_model->return_materials($data);
         }
+        $data1 = array(
+            'idOrder' => $idOrder,
+            'id_type_management' => 6
+        );
+        $data2 = array(
+            'stateMaterial' => 2,
+            'dateUpdate' => $date
+        );
+        $dataLog = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $idUser,
+            'idProcessState' => 15
+        );
+        $this->Orders_model->register_log($dataLog);
+        $res = $this->Materials_model->return_materials_log($idOrder, $data1, $data2);
         if ($res === TRUE) {
             $this->session->set_flashdata('item', array('message' => 'Material devuelto exitosamente', 'class' => 'success'));
             redirect('Projects/register_activities');
@@ -530,6 +531,11 @@ class Projects extends CI_Controller {
                 mkdir("./documents/" . $order . "/" . $value->name_service . "/" . $array[$i], 0777, TRUE);
             }
         }
+    }
+
+    public function getMaterials() {
+        $query = $this->HistoryMaterial_model->getDataFromHistory($this->input->post('idOrder'));
+        echo json_encode($query);
     }
 
 }
