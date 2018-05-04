@@ -192,7 +192,6 @@
                     $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
                         $.each(respuestaServer["materials"], function (i, materials) {
                             stateCellar = materials.idStateCellar;
-
                             if (stateCellar === '0') {
                                 check = '<input type="checkbox" checked onclick="register(' + materials.id + ')">';
                             }
@@ -217,11 +216,11 @@
                         $.each(respuestaServer["materials"], function (i, materials) {
                             stateCellar = materials.stateBack;
                             if (stateCellar === '0') {
-                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.idBack + ')">';
+                                check = '<input type="checkbox" onclick="registerMaterialBack(' + materials.idBack + ',' + materials.id + ')">';
                             }
 
                             if (stateCellar === '1') {
-                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idBack + ')">';
+                                check = '<input type="checkbox" checked onclick="unregisterMaterialBack(' + materials.idBack + ',' + materials.id + ')">';
                             }
 
                             $('#bodyMaterials').append('<tr><td>' + process + '</td><td>' + materials.name_service +
@@ -234,24 +233,24 @@
                 }
 
             }
-            function registerMaterialBack(id) {
+            function registerMaterialBack(id, idDetail) {
                 url = get_base_url() + "Materials/register_back";
                 $.ajax({
                     url: url,
                     type: "POST",
-                    data: {id: id},
+                    data: {id: id, idDetail: idDetail},
                     success: function (resp) {
                         console.log(resp);
                     }
                 });
             }
 
-            function unregisterMaterialBack(id) {
+            function unregisterMaterialBack(id, idDetail) {
                 url = get_base_url() + "Materials/unregister_back";
                 $.ajax({
                     url: url,
                     type: "POST",
-                    data: {id: id},
+                    data: {id: id, idDetail: idDetail},
                     success: function (resp) {
                         console.log(resp);
                     }

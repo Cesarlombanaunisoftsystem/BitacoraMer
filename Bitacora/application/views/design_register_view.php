@@ -55,7 +55,8 @@
                                     }
                                     ?> 
                                 </tbody>
-                            </table>                            
+                            </table> 
+                            <div id="spinner"></div>
                         </div>
                     </div>
                 </section>
@@ -189,11 +190,12 @@
             }
 
             function return_order(idOrder) {
+                var obsvgen = $("#obsvgen").val();
                 url = get_base_url() + "Design/return_order_design";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder, state: 2},
+                    data: {idOrder: idOrder, state: 2, obsv: obsvgen},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');

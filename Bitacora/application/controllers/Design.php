@@ -78,7 +78,16 @@ class Design extends CI_Controller {
         $data = array(
             'idArea' => 2,
             'idOrderState' => $this->input->post('state'),
+            'historybackState' => 1,
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 5,
+            'obsvLog' => $this->input->post('obsv'),
+            'stateLog' => 1
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -113,13 +122,15 @@ class Design extends CI_Controller {
                 $data1 = array(
                     'idArea' => '2',
                     'idOrderState' => '8',
+                    'historybackState' => 0,
                     'observations' => $this->input->post('observacion'),
                     'dateUpdate' => date('Y-m-d H:i:s')
                 );
                 $data2 = array(
                     'idOrder' => $idOrder,
-                    'idProcessState' => 5,                    
+                    'idProcessState' => 5,
                     'idUserProcess' => $this->session->userdata('id_usuario'),
+                    'stateLog' => 0,
                     'obsvLog' => $this->input->post('observacion')
                 );
                 $this->Orders_model->register_log($data2);

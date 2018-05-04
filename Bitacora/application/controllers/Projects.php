@@ -441,6 +441,7 @@ class Projects extends CI_Controller {
                 'idCellar' => $idCellar,
                 'idDetail' => $idDetail,
                 'count_back' => $countback,
+                'state' => 0,
             );
             $this->Materials_model->return_materials($data);
         }
@@ -455,7 +456,8 @@ class Projects extends CI_Controller {
         $dataLog = array(
             'idOrder' => $idOrder,
             'idUserProcess' => $idUser,
-            'idProcessState' => 15
+            'idProcessState' => 15,
+            'stateLog' => 0
         );
         $this->Orders_model->register_log($dataLog);
         $res = $this->Materials_model->return_materials_log($idOrder, $data1, $data2);

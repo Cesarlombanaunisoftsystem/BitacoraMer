@@ -347,7 +347,7 @@ class Audit extends CI_Controller {
     public function generate_pdf($param) {
         $data['pay'] = $this->Payments_model->get_pays_xid($param);
         $this->load->library('pdfgenerator');
-        $html = $this->load->view('pays_report', $data, true);
+        $html = $this->load->view('templates/pdf_factura', $data, true);
         $filename = 'report_' . $param;
         $folder = './reportes/pagos/';
         $this->pdfgenerator->saveDisk($filename, $html, $folder);

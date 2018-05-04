@@ -11,9 +11,6 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('Materials') ?>"><i class="fa fa-dashboard"></i> Volver</a></li>
                         <li class="active"></li>
@@ -25,7 +22,13 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
+                                </div>
+                                <section class="content-header">
+                                    <h2><?= $titulo ?></h2>        
+                                </section>
+                                <div class="col-xs-10  col-md-10 nav-tabs-custom">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation"><a href="<?= base_url('Materials') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
                                         <li role="presentation" class="active"><a href="<?= base_url('Materials/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
@@ -36,10 +39,8 @@
                         <div class="tab-content">                            
                             <div role="tabpanel" class="tab-pane active" id="regprocess">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
-                                    </div>
-                                    <div id="tableProcess" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    
+                                    <div id="tableProcess" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
                                         <table id="table-regprocess" class="table table-striped">
                                             <thead>
                                                 <tr>
@@ -78,15 +79,15 @@
                                             </tbody>
                                         </table>                                                                                
                                     </div>
-                                    <div id="divOrderProcess"  class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <div id="divOrderProcess"  class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                             <table>
                                                 <tr>
                                                     <td>No. ORDEN: <label id="lblOrderProcess"></label></td>
                                                 </tr>
                                             </table>
                                         </div>
-                                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                             <table>
                                                 <tr style="font-size: 12px;">
                                                     <td style="color: #00B0F0">| Centro de Costos |</td>
@@ -104,10 +105,18 @@
                                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                                         &nbsp;&nbsp;|</td>
                                                     <td>&nbsp;<label id="lblTechProcess"></label></td>
-                                                    <td>&nbsp;&nbsp;<i class="fa fa-file-pdf-o fa-2x" style="color: red" id="pdf" onclick="generatePdf();"></i></td>
                                                 </tr>
                                             </table>
-                                        </div><br><br>
+                                        </div>
+                                        <div class="col-md-1 text-center" style="cursor: pointer" onclick="generatePdf();">
+                                            <i class="fa fa-file-pdf-o fa-2x" style="color: red" id="pdf" ></i><br>
+                                            <strong style="font-size: 9px;">Orden de entrega de materiales</strong>
+                                        </div>
+                                        <div class="col-md-1 text-center" style="cursor: pointer" onclick="generatePakingList();">
+                                            <i class="fa fa-file-pdf-o fa-2x" style="color: blue" id="pdf" ></i><br>
+                                            <strong style="font-size: 9px;">Paking List</strong>
+                                        </div>
+                                        <br><br>
                                         <table class="table table-striped" style="font-size: 12px">
                                             <thead>
                                                 <tr>
@@ -243,8 +252,32 @@
                                 '</td><td>' + materials.count +
                                 '</td><td>' + materials.unit_measurement + '</td><td>'
                                 + materials.observation + '</td>' +
-                                '<td>' + materials.name_cellar + '</td></tr>');
+                                '<td>' + materials.name_cellar + '</td>'
+                                +'<td><div id="btn_'+idOrder+'_'+i+'"></div></td></tr>'
+                                        );
+                                //checkPdf(idOrder,i);
                     });
+                });
+            }
+            
+            
+            function generatePakingList(){
+                var ccost = $("#lblcCostProcess").html();
+                checkPdf(ccost);
+            }
+            
+            function checkPdf(idPay){                                
+            var mUrl = '<?= base_url('/uploads/') ?>'+idPay+'.pdf';
+            var a = false;
+            $.ajax({
+                type: 'HEAD',
+                url: mUrl,
+                success:function(data){
+                    window.open(mUrl, 'Paking List');
+                },
+                error: function(data){
+                    alert("NO EXISTE")
+                }     
                 });
             }
 

@@ -40,7 +40,7 @@
                                         <img src="<?= base_url('dist/img/projects.png') ?>" style="width: 120px;">
                                     </div>
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table class="table table-striped" style="font-size: 12px">
+                                        <table id="data-table" class="table table-striped" style="font-size: 12px">
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Fecha de Asignación</th>

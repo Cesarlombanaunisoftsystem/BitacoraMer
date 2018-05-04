@@ -175,113 +175,56 @@
                 $("#lblActivProcess").html(activ);
                 $("#lblcCostProcess").html(ccost);
                 $("#lblTechProcess").html(tech);
-                var stateCellar = "";
-                url = get_base_url() + "Materials/get_materials?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
-                    $.each(respuestaServer["materials"], function (i, materials) {
-                        stateCellar = materials.idStateCellar;
-                        if (stateCellar === '1') {
-                            check = '<input type="checkbox" checked disabled>';
-                            color = '#555555';
-                        } else {
-                            check = '<input type="checkbox" disabled>';
-                            color = '#FEAE4E';
-                        }
-                        $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +
-                                '<input type="hidden" value=' + materials.idOrder +
-                                ' name="idOrder" id="idOrder">' + materials.name_service +
-                                '</td><td>' + materials.count + '</td><td>' +
-                                materials.unit_measurement + '</td><td>'
-                                + materials.observation + '</td>' +
-                                '<td>' + check + '</td></tr>');
-                    });
-                });
-            }
-
-            function registerMaterialBack(idCellar, id, count_back) {
-                url = get_base_url() + "Materials/register_back";
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {idCellar: idCellar, id: id, count_back: count_back},
-                    success: function (resp) {
-                        console.log(resp);
+                var stateMaterial = "";
+                var url = get_base_url() + "Orders/get_order_xid?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    stateMaterial = res.res.stateMaterial;
+                    if (stateMaterial === '1') {
+                        var stateCellar = "";
+                        var url2 = get_base_url() + "Materials/get_materials?jsoncallback=?";
+                        $.getJSON(url2, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
+                            $.each(respuestaServer["materials"], function (i, materials) {
+                                stateCellar = materials.idStateCellar;
+                                if (stateCellar === '1') {
+                                    check = '<input type="checkbox" checked disabled>';
+                                    color = '#555555';
+                                } else {
+                                    check = '<input type="checkbox" disabled>';
+                                    color = '#FEAE4E';
+                                }
+                                $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +
+                                        '<input type="hidden" value=' + materials.idOrder +
+                                        ' name="idOrder" id="idOrder">' + materials.name_service +
+                                        '</td><td>' + materials.count + '</td><td>' +
+                                        materials.unit_measurement + '</td><td>'
+                                        + materials.observation + '</td>' +
+                                        '<td>' + check + '</td></tr>');
+                            });
+                        });
+                    } else {
+                        var stateCellar = "";
+                        var url2 = get_base_url() + "Materials/get_materials_back?jsoncallback=?";
+                        $.getJSON(url2, {idOrder: idOrder, cellar: cellar}).done(function (respuestaServer) {
+                            $.each(respuestaServer["materials"], function (i, materials) {
+                                stateCellar = materials.stateBack;
+                                if (stateCellar === '1') {
+                                    check = '<input type="checkbox" checked disabled>';
+                                    color = '#555555';
+                                } else {
+                                    check = '<input type="checkbox" disabled>';
+                                    color = '#FEAE4E';
+                                }
+                                $('#bodyMaterialsProcess').append('<tr style="color: ' + color + '"><td>' +
+                                        '<input type="hidden" value=' + materials.idOrder +
+                                        ' name="idOrder" id="idOrder">' + materials.name_service +
+                                        '</td><td>' + materials.count + '</td><td>' +
+                                        materials.unit_measurement + '</td><td>'
+                                        + materials.observation + '</td>' +
+                                        '<td>' + check + '</td></tr>');
+                            });
+                        });
                     }
                 });
-            }
-
-            function unregisterMaterialBack(idCellar, id) {
-                url = get_base_url() + "Materials/unregister_back";
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {idCellar: idCellar, id: id},
-                    success: function (resp) {
-                        console.log(resp);
-                    }
-                });
-            }
-
-            function register(id) {
-                url = get_base_url() + "Materials/assign_state";
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {id: id, state: 1},
-                    success: function (resp) {
-                        console.log(resp);
-                    }
-                });
-            }
-
-            function unregister(id) {
-                url = get_base_url() + "Materials/assign_state";
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {id: id, state: 0},
-                    success: function (resp) {
-                        console.log(resp);
-                    }
-                });
-            }
-
-            function register_materials_back() {
-                url = get_base_url() + "Materials/register_materials_back";
-                var idOrder = $("#lblcCost").html();
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {idOrder: idOrder},
-                    success: function (resp) {
-                        if (resp === "error") {
-                            alertify.error('Error en BBDD');
-                        }
-                        if (resp === "ok") {
-                            alertify.success('Devolución registrada exitosamente');
-                            location.reload();
-                        }
-                    }
-                });
-            }
-
-            function register_x_order_process() {
-                var idOrder = $("#lblcCostProcess").html();
-                alertify.success('Orden de entrega de materiales generada exitosamente');
-                location.reload();
-                generatePdf(idOrder);
-            }
-
-            function generatePdf(idOrder) {
-                var cellar = $('#divCellar').html(); // Tipo de bodega
-                url = get_base_url() + "Materials/pdf_order_materials/" + idOrder + "/" + cellar;
-                var a = document.createElement('a');
-                a.href = url;
-                a.target = '_blank';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                alertify.success('Orden de mercancia generada exitosamente.');
             }
         </script>
     </body>

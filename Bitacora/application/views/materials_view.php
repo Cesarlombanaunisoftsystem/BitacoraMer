@@ -11,36 +11,21 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('Materials') ?>"><i class="fa fa-dashboard"></i> Volver</a></li>
                         <li class="active"></li>
                     </ol>
                 </section>
+                <div id="load_menu"></div>
 
-                <!-- Main content -->
-                <section class="content">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation" class="active"><a href="<?= base_url('Materials') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation"><a href="<?= base_url('Materials/process') ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="bandeja">
+                <!--Main content -->
+                <section class = "content">
+                    <div class = "row">
+                        <div class = "tab-content">                            
+                            <div role="tabpanel" class="tab-pane active" id="pagosges">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
-                                    </div>                                    
-                                    <div id="table1" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                        <table  id="data-table" class="table table-striped">
+                                    <div class="col-xs-10 col-sm-10 col-md-10 col-md-offset-1 col-lg-10">
+                                        <table id="data-table" class="table table-striped" style="font-size:12px">
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Proceso</th>
@@ -81,90 +66,93 @@
                                             echo '<div class="' . $message['class'] . '"><h3 style="color:green">' . $message['message'] . '</h3></div>';
                                         }
                                         ?>
-                                    </div> 
-                                    <form action="Materials/assign_x_order" method="post"  enctype="multipart/form-data"> 
-                                        <div id="divOrder" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                                                <table>
-                                                    <tr>
-                                                        <td>No. ORDEN: <label id="lblOrder"></label></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <table>
-                                                    <tr style="font-size: 12px;">
-                                                        <td style="color: #00B0F0">| Centro de Costos |</td>
-                                                        <td>&nbsp;<label id="lblcCost"></label></td>
-                                                    </tr>
-                                                    <tr style="font-size: 12px;">
-                                                        <td style="color: #00B0F0">| Actividad &nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;|</td>
-                                                        <td>&nbsp;<label id="lblActiv"></label></td>
-                                                    </tr>
-                                                    <tr style="font-size: 12px;">
-                                                        <td style="color: #00B0F0">| Técnico &nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                                            &nbsp;&nbsp;|</td>
-                                                        <td>&nbsp;<label id="lblTech"></label></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <br><br><br>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1" checked>
-                                                    Asignación de Bodega por producto
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                                                <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk2">
-                                                    Asignación de Bodega por Ordén
-                                                </label>
-                                            </div>
-                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                <select id="selectasign" name="selcellarorder" class="form-control" required="">
-                                                    <option value="" selected="selected"></option>
-                                                    <?php
-                                                    if (isset($cellars) && $cellars) {
-                                                        foreach ($cellars as $cellar) {
-                                                            ?>
-                                                            <option value="<?= $cellar->id ?>"><?= $cellar->name_cellar ?></option>
-                                                            }
-                                                            <?php
-                                                        }
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div> 
-                                            <br><br>                                        
-                                            <table class="table table-striped" style="font-size: 12px">
-                                                <thead>
-                                                    <tr>
-                                                        <td style="color: #00B0F0">Descripción</td>
-                                                        <td style="color: #00B0F0">| Cantidad</td>
-                                                        <td style="color: #00B0F0">| Unidad de medida</td>
-                                                        <td style="color: #00B0F0">| Observaciones</td>
-                                                        <td class="bodega" style="color: #00B0F0">| Bodega</td>
-                                                    </tr>                                   
-                                                </thead>
-                                                <tbody id="bodyMaterials">                                                                      
-                                                </tbody>
-                                            </table>
-                                            <a href="#" id="filePDF">Agregar PDf de materiales</a>
-                                            <input name="pdfFile" type="file" id="myPdf">
-                                            <br><br>
-                                            <div class="row">                                               
-                                                <div class="col-sm-12">
-                                                    <div class="col-sm-8"></div>
-                                                    <div class="col-sm-4">
-                                                        <button type="submit" class="form-control btn btn-default color-blue">REGISTRAR</button>
-                                                    </div>
+                                    </div>
+                                    <div class="col-md-10 col-md-offset-1">
+                                        <form action="Materials/assign_x_order" method="post"  enctype="multipart/form-data"> 
+                                            <div id="divOrder" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <table>
+                                                        <tr>
+                                                            <td>No. ORDEN: <label id="lblOrder"></label></td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
-                                            </div> 
-                                        </div>
-                                    </form>
+                                                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                                    <table>
+                                                        <tr style="font-size: 12px;">
+                                                            <td style="color: #00B0F0">| Centro de Costos |</td>
+                                                            <td>&nbsp;<label id="lblcCost"></label></td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;">
+                                                            <td style="color: #00B0F0">| Actividad &nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;|</td>
+                                                            <td>&nbsp;<label id="lblActiv"></label></td>
+                                                        </tr>
+                                                        <tr style="font-size: 12px;">
+                                                            <td style="color: #00B0F0">| Técnico &nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                &nbsp;&nbsp;|</td>
+                                                            <td>&nbsp;<label id="lblTech"></label></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <br><br><br>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                                                    <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1" checked>
+                                                        Asignación de Bodega por producto
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                                                    <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk2">
+                                                        Asignación de Bodega por Ordén
+                                                    </label>
+                                                </div>
+                                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                    <select id="selectasign" name="selcellarorder" class="form-control" required="">
+                                                        <option value="" selected="selected"></option>
+                                                        <?php
+                                                        if (isset($cellars) && $cellars) {
+                                                            foreach ($cellars as $cellar) {
+                                                                ?>
+                                                                <option value="<?= $cellar->id ?>"><?= $cellar->name_cellar ?></option>
+                                                                }
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div> 
+                                                <br><br>                                        
+                                                <table class="table table-striped" style="font-size: 12px">
+                                                    <thead>
+                                                        <tr>
+                                                            <td style="color: #00B0F0">Descripción</td>
+                                                            <td style="color: #00B0F0">| Cantidad</td>
+                                                            <td style="color: #00B0F0">| Unidad de medida</td>
+                                                            <td style="color: #00B0F0">| Observaciones</td>
+                                                            <td class="bodega" style="color: #00B0F0">| Bodega</td>
+                                                        </tr>                                   
+                                                    </thead>
+                                                    <tbody id="bodyMaterials">                                                                      
+                                                    </tbody>
+                                                </table>
+                                                <a href="#" id="filePDF" style="text-transform:uppercase; font-weight:bold;color:#4554ff;">Agregar Paking List</a>
+                                                <br><label id="nameFile"></label>
+                                                <input name="pdfFile" type="file" id="myPdf" style="display:none">
+                                                <br><br>
+                                                <div class="row">                                               
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-8"></div>
+                                                        <div class="col-sm-4">
+                                                            <button type="submit" class="form-control btn btn-default color-blue">REGISTRAR</button>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -214,6 +202,11 @@
                     }
                 });
             });
+            
+            $("#myPdf").change(function(){
+                $("#nameFile").html(this.value);
+            });
+            
 
             $("#chk1").click(function () {
                 $("#chk2").prop("checked", false);
@@ -280,6 +273,7 @@
                 document.body.removeChild(a);
                 alertify.success('Orden de mercancia generada exitosamente.');
             }
+            cargar_menu("gestion_materiales",'bandeja de entrada');
         </script>
     </body>
 </html>

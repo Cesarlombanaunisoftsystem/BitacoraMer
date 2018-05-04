@@ -4,6 +4,7 @@ var galery = false;
 var openRows = new Array();
 $(document).ready(function () {
     dt = $('#data-table').DataTable({
+        "order": [[ 1, "desc" ]],
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",

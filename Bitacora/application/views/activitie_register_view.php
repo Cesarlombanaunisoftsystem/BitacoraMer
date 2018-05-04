@@ -72,10 +72,10 @@
                                 <div class="row" id="panelinferior" hidden="">
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1 container">
                                         <ul class="nav nav-tabs">
-                                            <li class="active" id="ligestion"><a data-toggle="tab" href="#management" style="color: #00B0F0"><b>GESTIÓN</b></a></li>
+                                            <li class="active" id="ligestion"><a data-toggle="tab" href="#management" style="color: #00B0F0"><b>GESTIÓN</b> <i class="fa fa-plus-circle fa-2x" style="cursor: pointer;" onclick="management()" style="color: #00B0F0"></i></a>  </li>
                                             <li id="lidoc"><a data-toggle="tab" href="#documents" style="color: #00B0F0"><b>DOCUMENTACIÓN</b></a></li>
                                             <li id="lidoc"><a data-toggle="tab" href="#app" style="color: #00B0F0"><b>MATERIALES</b></a></li>
-                                            &nbsp;&nbsp;<a href="#" onclick="management();"><i class="fa fa-plus-circle fa-2x" style="color: #00B0F0"></i></a>                                           
+
                                         </ul>
                                         <div class="tab-content">
                                             <div id="management" class="tab-pane fade in active">
@@ -230,9 +230,6 @@
 
                                                         </div>
                                                     </div>
-
-
-
                                                     <input type="hidden" name="valpercentexe" id="valpercentexe">
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">                                                
@@ -639,17 +636,21 @@
                                                             var idOrder = $("#lblcCost").val();
                                                             var order = $("#uniquecode").val();
                                                             $("#idOrderDoc").val(idOrder);
-                                                            var url = get_base_url() + "Orders/get_services_order?jsoncallback=?";
-                                                            var url2 = get_base_url() + "Services/get_model_tree?jsoncallback=?";
+                                                            var url = get_base_url() + "Orders/get_services_order";
+                                                            var url2 = get_base_url() + "Services/get_model_tree";
 
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (res) {
                                                                 $.each(res["serv"], function (i, serv) {
                                                                     $.getJSON(url2, {idService: serv.idServices}).done(function (resp) {
+                                                                        console.log(serv.idServices);
                                                                         $("#liorder").html(order + "<ul><li>" + resp.serv.name_service + resp.serv.model_tree + "</li></ul>");
                                                                         $('#tree').on('changed.jstree', function (e, data) {
                                                                             var sel = data.instance.get_path(data.selected);
                                                                             getContent(sel);
                                                                         }).jstree();
+                                                                    }).fail(function (data) {
+                                                                        console.log("error");
+                                                                        console.log(data);
                                                                     });
 
                                                                 });
@@ -763,7 +764,7 @@
                                                             galery = false;
                                                             $(".slides").html("");
                                                             url = get_base_url() + "Projects/get_photos_daily_xid?jsoncallback=?";
-                                                            $.getJSON(url, {id: id}).done(function (res) {
+                                                            $.get(url, {id: id}).done(function (res) {
                                                                 var pos = 1;
                                                                 var image = res.split(",");
                                                                 for (var i = 0; i < image.length; i++) {
@@ -830,17 +831,20 @@
                                                                     }
                                                                     if (doc.idTypeDocument === "1") {
                                                                         if (doc.idState2 !== '0') {
-                                                                            var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
-                                                                            html += '<li class="slide-container"><div class="slide">';
-                                                                            html += '<img src="' + get_base_url() + "/uploads/" + doc.file2 + '" /></div> ';
-                                                                            html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
-                                                                            html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                                                                            var image = doc.file2.split(",");
+                                                                            for (var i = 0; i < image.length; i++) {
+                                                                                var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
+                                                                                html += '<li class="slide-container"><div class="slide">';
+                                                                                html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                                                                                html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
+                                                                                html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
+                                                                                $(".slides").prepend(html);
+                                                                                galery = true;
+                                                                                pos++;
+                                                                            }
                                                                             $(".photo").removeClass("disable");
                                                                             $(".photo").addClass("pointer");
                                                                             $("#obsvRegPic").val(doc.observation2);
-                                                                            $(".slides").prepend(html);
-                                                                            galery = true;
-                                                                            pos++;
                                                                         } else {
                                                                             $(".photo" + idOrder).css("color", "red");
                                                                         }

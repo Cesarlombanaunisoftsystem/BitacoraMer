@@ -83,10 +83,14 @@ class Materials_model extends CI_Model {
         }
     }
 
-    public function register_back($id, $data) {
+    public function register_back($id, $idDetail, $data, $data2) {
+        $this->db->trans_start();
         $this->db->where('id', $id);
         $this->db->update('tbl_materials_back', $data);
-        if ($this->db->affected_rows() > 0) {
+        $this->db->where('id', $idDetail);
+        $this->db->update('tbl_orders_details', $data2);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === TRUE) {
             return TRUE;
         } else {
             return FALSE;
@@ -159,13 +163,36 @@ class Materials_model extends CI_Model {
     }
 
     public function get_materials($idOrder, $cellar) {
-        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
+        $this->db->select('tbl_orders_details.*,tbl_orders.statematerial,tbl_activities.name_activitie,'
                 . 'tbl_services.name_service,tbl_services.unit_measurement,'
                 . 'tbl_cellars.name_cellar, tbl_cellars.contact_cellar');
+        $this->db->from('tbl_orders_details');
+        $this->db->join('tbl_orders', 'tbl_orders_details.idOrder=tbl_orders.id');
+        $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
+        $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
+        $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
+        $this->db->where('tbl_orders_details.idOrder', $idOrder);
+        $this->db->where('tbl_orders_details.idActivities', 22);
+        $this->db->or_where('tbl_orders_details.idActivities', 34);
+        $this->db->or_where('tbl_orders_details.idActivities', 35);
+        $this->db->where('tbl_orders_details.idCellar', $cellar);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return $query->result();
+        }
+    }
+
+    public function get_materials_back($idOrder, $cellar) {
+        $this->db->select('tbl_orders_details.*,tbl_activities.name_activitie,'
+                . 'tbl_services.name_service,tbl_services.unit_measurement,'
+                . 'tbl_cellars.name_cellar, tbl_cellars.contact_cellar,tbl_materials_back.state stateBack');
         $this->db->from('tbl_orders_details');
         $this->db->join('tbl_activities', 'tbl_orders_details.idActivities=tbl_activities.id');
         $this->db->join('tbl_services', 'tbl_orders_details.idServices=tbl_services.id');
         $this->db->join('tbl_cellars', 'tbl_orders_details.idCellar=tbl_cellars.id');
+        $this->db->join('tbl_materials_back', 'tbl_orders_details.id=tbl_materials_back.iddetail');
         $this->db->where('tbl_orders_details.idOrder', $idOrder);
         $this->db->where('tbl_orders_details.idActivities', 22);
         $this->db->or_where('tbl_orders_details.idActivities', 34);

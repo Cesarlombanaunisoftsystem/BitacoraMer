@@ -111,11 +111,13 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
+            'historybackState' => 0,
             'dateAssign' => date('Y-m-d H:i:s'));
         $data2 = array(
             'idOrder' => $idOrder,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'idProcessState' => 4
+            'idProcessState' => 4,
+            'stateLog' => 0
         );
         $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->assign_order($idOrder, $data);
@@ -131,8 +133,17 @@ class Visit extends CI_Controller {
         $data = array(
             'idArea' => $this->input->post('idArea'),
             'idOrderState' => $this->input->post('idState'),
+            'historybackState' => 0,
             'observations' => $this->input->post('obsv'),
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 4,
+            'obsvLog' => $this->input->post('obsv'),
+            'stateLog' => 1
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->assign_order($idOrder, $data);
         if ($res === TRUE) {
             $content = $this->Orders_model->get_order_by_id_email($idOrder);
@@ -274,7 +285,7 @@ class Visit extends CI_Controller {
         $id_user = $this->session->userdata('id_usuario');
         $data['datos'] = $this->Users_model->get_user_permits($id_user);
         $data['activities'] = $this->Activities_model->get_activities_xtype(1);
-        $data['visits'] = $this->Projects_model->register_data_close_visit_process(16,$id_user);
+        $data['visits'] = $this->Projects_model->register_data_close_visit_process(16, $id_user);
         $this->load->view('visit_close_process_view', $data);
     }
 

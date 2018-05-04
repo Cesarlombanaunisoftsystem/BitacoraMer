@@ -37,8 +37,13 @@
                                     <?php
                                     if (isset($process) && $process) {
                                         foreach ($process as $order) {
+                                            if($order->stateLog===0){
+                                                $color = '';
+                                            } else {
+                                                $color = '#FCF8E5';
+                                            }
                                             ?> 
-                                            <tr>
+                                            <tr style="background-color:<?= $color ?>">
                                                 <td class="details-control" id="<?= $order->id ?>">
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>

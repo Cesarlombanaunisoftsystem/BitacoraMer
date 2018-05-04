@@ -30,6 +30,25 @@ class Orders_model extends CI_Model {
         }
     }
 
+    public function get_order_xid($idOrder) {
+        $sql = "SELECT tbl_orders.*,tbl_logs.obsvLog,min(tbl_orders_details.idActivities),"
+                . "tbl_orders_details.idServices,tbl_orders_details.site,"
+                . "tbl_orders_details.count,tbl_activities.name_activitie,"
+                . "tbl_services.name_service,tbl_areas.name_area FROM tbl_orders JOIN"
+                . " tbl_logs ON tbl_orders.id=tbl_logs.idOrder"
+                . " JOIN tbl_areas ON tbl_orders.idAreaSend=tbl_areas.id JOIN"
+                . " tbl_orders_details ON tbl_orders.id = tbl_orders_details.idOrder"
+                . " JOIN tbl_activities ON tbl_orders_details.idActivities = tbl_activities.id"
+                . " JOIN tbl_services ON tbl_orders_details.idServices = tbl_services.id"
+                . " WHERE tbl_orders.id=$idOrder";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return FALSE;
+        }
+    }
+
     public function get_order_by_id($idOrder) {
         $sql = "SELECT tbl_orders.*,tbl_logs.obsvLog,min(tbl_orders_details.idActivities),"
                 . "tbl_orders_details.idServices,tbl_orders_details.site,"
