@@ -37,8 +37,13 @@
                                     <?php
                                     if (isset($process) && $process) {
                                         foreach ($process as $order) {
+                                            if ($order->stateLog === '1') {
+                                                $color = '#FCF8E5';
+                                            } else {
+                                                $color = '';
+                                            }
                                             ?> 
-                                            <tr>
+                                            <tr style="background-color:<?= $color ?>">
                                                 <td class="details-control" id="<?= $order->id ?>">
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
@@ -128,13 +133,10 @@
     <!-- modal activities -->
     <!-- Modal Galery -->
     <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <ul class="slides"></ul> 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -299,10 +301,18 @@
     }
 
     function getObservations(idOrder) {
-        $("#obsv").html("");
+        $("#obsv").empty();
         url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-        $.getJSON(url, {idOrder: idOrder, state: 3}).done(function (res) {
-            $("#obsv").html(res.observation.obsvLog);
+        $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+            $.each(res["observation"], function (i, observation) {
+                var obsv = observation.obsvLog;
+                if (obsv === null) {
+                    obsv = '';
+                } else {
+                    obsv = observation.obsvLog;
+                }
+                $("#obsv").append(obsv + "<br>");
+            });
         });
     }
 

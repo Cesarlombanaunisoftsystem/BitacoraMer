@@ -11,37 +11,13 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                        <li class="active">Panel de control</li>
-                    </ol>
-                </section>
+                <div id="load_menu"></div>
 
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
-                                    <ul class="nav nav-tabs" role="tablist">
-                                        <li role="presentation"><a href="<?= base_url('Design/audit') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
-                                        <li role="presentation" class="active"><a href="<?= base_url('Design/audit_process') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
-                        </div>
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                            <div id="spinner"></div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -106,15 +82,14 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                                <h3 class="modal-title th-head-modals" ><b>OBSERVACIONES GENERALES</b></h3>                                
                             </div>
                             <div class="modal-body">
-                                <div class="row">
-                                    <div id="obsv"></div>
-                                </div>                   
+                                <div id="obsv"></div>       
                             </div>
-                            <hr style="border-color: #00B1EB">
-                            <p>Bitácora</p>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-lg btn-default pull-right" style="color:#006e92" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,10 +142,18 @@
             }
 
             function getObservations(idOrder) {
-                $("#obsv").html("");
+                $("#obsv").empty();
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, state: 6}).done(function (res) {
-                    $("#obsv").html(res.observation.obsvLog);
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $.each(res["observation"], function (i, observation) {
+                        var obsv = observation.obsvLog;
+                        if (obsv === null) {
+                            obsv = '';
+                        } else {
+                            obsv = observation.obsvLog;
+                        }
+                        $("#obsv").append(obsv + "<br>");
+                    });
                 });
             }
 
@@ -230,8 +213,9 @@
             function getRegPhoto(id) {
                 galery = false;
                 $(".slides").html("");
-                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
+                url = get_base_url() + "Orders/get_reg_photos_xid";
+                $.get(url, {id: id}).done(function (res) {
+
                     var pos = 1;
                     var image = res.split(",");
                     for (var i = 0; i < image.length; i++) {
@@ -246,6 +230,8 @@
                     }
                 });
             }
+
+            cargar_menu("auditoria_diseno", 'registros procesados');
         </script>
     </body>
 </html>

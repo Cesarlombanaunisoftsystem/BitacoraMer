@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
     <head>
         <?php $this->load->view('templates/head') ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />        
@@ -631,30 +632,39 @@
                                                             );
                                                         }
 
-                                                        function getDocuments() {
+                                                        /*function getDocuments() {
+                                                         var order = $("#uniquecode").val();
+                                                         $("#liorder").html(order + "<ul><li>GSM</li></ul>");
+                                                         $('#tree').on('changed.jstree', function (e, data) {
+                                                         var sel = data.instance.get_path(data.selected);
+                                                         getContent(sel);
+                                                         }).jstree();
+                                                         }*/
+
+                                                        function getDocuments(idOrder) {
                                                             $("#liorder").empty();
-                                                            var idOrder = $("#lblcCost").val();
                                                             var order = $("#uniquecode").val();
                                                             $("#idOrderDoc").val(idOrder);
-                                                            var url = get_base_url() + "Orders/get_services_order";
-                                                            var url2 = get_base_url() + "Services/get_model_tree";
-
+                                                            //$("#liorder").append(order);
+                                                            var url = get_base_url() + "Orders/get_services_order?jsoncallback=?";
+                                                            var url2 = get_base_url() + "Services/get_model_tree?jsoncallback=?";
                                                             $.getJSON(url, {idOrder: idOrder}).done(function (res) {
                                                                 $.each(res["serv"], function (i, serv) {
                                                                     $.getJSON(url2, {idService: serv.idServices}).done(function (resp) {
                                                                         console.log(serv.idServices);
-                                                                        $("#liorder").html(order + "<ul><li>" + resp.serv.name_service + resp.serv.model_tree + "</li></ul>");
+                                                                        //$("#liorder").append(order + "<ul><li>" + resp.tree.name_service + resp.tree.model_tree + "</li></ul>");
+                                                                        $("#liorder").append(order + "<ul><li>" + resp.tree.name_service + resp.tree.model_tree + "</li></ul>");
                                                                         $('#tree').on('changed.jstree', function (e, data) {
-                                                                            var sel = data.instance.get_path(data.selected);
-                                                                            getContent(sel);
-                                                                        }).jstree();
+                                                                         var sel = data.instance.get_path(data.selected);
+                                                                         getContent(sel);
+                                                                         }).jstree();
                                                                     }).fail(function (data) {
                                                                         console.log("error");
                                                                         console.log(data);
                                                                     });
-
                                                                 });
                                                             });
+                                                            
                                                             getObsvDocCenter(idOrder);
                                                         }
 
@@ -725,7 +735,7 @@
                                                             }
                                                             );
                                                             getMaterials(idOrder);
-                                                            getDocuments();
+                                                            getDocuments(idOrder);
                                                             loadMaterialTab(idOrder);
                                                         }
 

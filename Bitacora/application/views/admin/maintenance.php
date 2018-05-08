@@ -24,10 +24,10 @@
                                             <div class="box-body">
                                                 <?php $this->load->view('admin/bitacoraForm/header'); ?>
                                                 <?php //$this->load->view('admin/maintenance/header'); ?>
-                                                <div class="col-xs-12 col-md-11 col-md-offset-1">
+                                                <div class="col-xs-12 col-md-12">
                                                     <?php $this->load->view('admin/maintenance/details'); ?>
                                                 </div>
-                                                <div class="col-xs-12 col-md-11 col-md-offset-1">
+                                                <div class="col-xs-12 col-md-12">
                                                     <?php $this->load->view('admin/maintenance/footer'); ?>
                                                 </div>
                                             </div>

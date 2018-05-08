@@ -8,11 +8,11 @@ $menu = $json->{$miMenu};
 
 <div class="col-sm-12 col-md-12">
     <div class="col-md-2">
-        <img src="<?= $menu->icono ?>" class="img-responsive">
+        <img src="<?= $menu->icono ?>" class="img-responsive" style="max-height: 130px;">
     </div>
 
     <section class="content-header">
-        <h2><?= strtoupper($miMenu) ?></h2>        
+        <h2><?= strtoupper( $menu->label) ?></h2>        
     </section>
     <div class="col-xs-9 nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">

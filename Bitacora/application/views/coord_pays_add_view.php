@@ -294,7 +294,7 @@
         galery = false;
         $(".slides").html("");
         url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-        $.getJSON(url, {id: id}).done(function (res) {
+        $.get(url, {id: id}).done(function (res) {
             var pos = 1;
             var image = res.split(",");
             for (var i = 0; i < image.length; i++) {
@@ -326,10 +326,16 @@
 
     function getObservations(idOrder) {
         $("#obsv").empty();
-        url = get_base_url() + "Orders/get_observations_order?jsoncallback=?";
+        url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
         $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-            $.each(res["observations"], function (i, observations) {
-                $("#obsv").append(observations.obsvLog + "<br>");
+            $.each(res["observation"], function (i, observation) {
+                var obsv = observation.obsvLog;
+                if (obsv === null) {
+                    obsv = '';
+                } else {
+                    obsv = observation.obsvLog;
+                }
+                $("#obsv").append(obsv + "<br>");
             });
         });
     }

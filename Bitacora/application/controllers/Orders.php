@@ -126,8 +126,7 @@ class Orders extends CI_Controller {
 
     public function get_observation_order() {
         $idOrder = $this->input->get('idOrder');
-        $state = $this->input->get('state');
-        $data['observation'] = $this->Orders_model->get_observation_order($idOrder, $state);
+        $data['observation'] = $this->Orders_model->get_observation_order($idOrder);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -265,7 +264,8 @@ class Orders extends CI_Controller {
                     'idOrder' => $this->input->post('id'),
                     'idUserProcess' => $this->session->userdata('id_usuario'),
                     'idProcessState' => 1,
-                    'obsvLog' => $this->input->post('observations')
+                    'obsvLog' => $this->input->post('observations'),
+                    'stateLog' => 0
                 );
                 $this->Orders_model->register_log($data2);
                 $this->Orders_model->upload_pdf($id, $file);

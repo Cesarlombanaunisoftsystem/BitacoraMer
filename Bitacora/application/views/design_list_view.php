@@ -12,9 +12,7 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
+
                     <ol class="breadcrumb">
                         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
                         <li class="active">Panel de control</li>
@@ -26,7 +24,13 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
+                                </div>
+                                <div class="col-xs-10 nav-tabs-custom">
+                                    <h1>
+                                        <?= $titulo ?>
+                                    </h1>
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation"><a href="<?= base_url('Design/register') ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
                                         <li role="presentation" class="active"><a href="<?= base_url('Design/proccess') ?>" role="tab" data-toggle="">Registros Procesados</a></li>
@@ -36,11 +40,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/design.jpg') ?>" style="width: 120px;">
-                        </div>
+
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div id="spinner"></div>
                             <table id="data-table" class="table table-striped">
                                 <thead>
@@ -61,8 +63,13 @@
                                     <?php
                                     if (isset($orders) && $orders) {
                                         foreach ($orders as $order) {
+                                            if ($order->stateLog === '1') {
+                                                $color = '#FCF8E5';
+                                            } else {
+                                                $color = '';
+                                            }
                                             ?> 
-                                            <tr>
+                                            <tr style="background-color:<?= $color ?>">
                                                 <td class="details-control" id="<?php echo $order->id; ?>">
                                                     <i class="fa fa-plus-square-o"></i>
                                                 </td>
@@ -88,13 +95,10 @@
                 <!-- /.content -->
                 <!-- Modal Galery -->
                 <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <ul class="slides"></ul> 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
@@ -106,15 +110,14 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                                <h3 class="modal-title title-modals-visit"><b>OBSERVACIONES GENERALES</b></h3>                                
                             </div>
                             <div class="modal-body">
-                                <div class="row">
-                                    <div id="obsv"></div>
-                                </div>                   
+                                <div id="obsv"></div>                 
                             </div>
-                            <hr style="border-color: #00B1EB">
-                            <p>Bitácora</p>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,10 +170,18 @@
             }
 
             function getObservations(idOrder) {
-                $("#obsv").html("");
+                $("#obsv").empty();
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, state: 5}).done(function (res) {
-                    $("#obsv").html(res.observation.obsvLog);
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $.each(res["observation"], function (i, observation) {
+                        var obsv = observation.obsvLog;
+                        if (obsv === null) {
+                            obsv = '';
+                        } else {
+                            obsv = observation.obsvLog;
+                        }
+                        $("#obsv").append(obsv + "<br>");
+                    });
                 });
             }
 
@@ -231,7 +242,7 @@
                 galery = false;
                 $(".slides").html("");
                 url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
+                $.get(url, {id: id}).done(function (res) {
                     var pos = 1;
                     var image = res.split(",");
                     for (var i = 0; i < image.length; i++) {

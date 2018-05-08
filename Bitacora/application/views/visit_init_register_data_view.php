@@ -211,7 +211,7 @@
                             '</tr>' +
                             '<tr>' +
                             '<td><label class="blue bold upload_design"><a href="#" data-toggle="modal" data-target="#modalMaterials" onclick="addIdOrder(' + d + ')">ADJUNTAR SOLICITUD DE MATERIALES</a></label></td>' +
-                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvMat" disabled></td>' +
+                            '<td>OBSERVACIONES</td>' + '<td><input type="text" class="form-control" name="obsvMat"></td>' +
                             '</tr>' +
                             '<tr>' +
                             '<td>OBSERVACIONES GENERALES</td>' +

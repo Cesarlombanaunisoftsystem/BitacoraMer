@@ -59,7 +59,7 @@ class Visits_model extends CI_Model {
             max(tbl_orders_details.idActivities),tbl_orders_details.idServices,
             tbl_orders_details.site,tbl_orders_details.count,
             tbl_activities.name_activitie,tbl_services.name_service from tbl_logs
-            join tbl_orders on tbl_logs.idOrder = tbl_orders.id  join tbl_users
+            join tbl_orders on tbl_logs.idOrder = tbl_orders.id join tbl_users
             on tbl_orders.idTechnicals = tbl_users.id join tbl_orders_details
             on tbl_orders.id = tbl_orders_details.idOrder join tbl_activities on 
             tbl_orders_details.idActivities = tbl_activities.id join tbl_services on

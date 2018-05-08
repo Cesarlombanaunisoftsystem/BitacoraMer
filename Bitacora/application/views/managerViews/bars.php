@@ -40,8 +40,13 @@ for ($i = 1; $i <= 13; $i++) {
                 title: 'Estado de los servicios',
                 bars: 'horizontal',
                 width: 900,
-                 height:500,
+                height:500,
                 isStacked:true,
+                animation: {
+           startup:true,
+           duration: 2000,
+           easing: 'in',
+        },
                 series: {
                     0:{color:'#337ab7'},
                     1:{color:'#F48024'},
@@ -52,11 +57,15 @@ for ($i = 1; $i <= 13; $i++) {
             // Instantiate and draw the chart.
             
           var chart = new google.charts.Bar(document.getElementById('top_y_div'));
-            chart.draw(data, google.charts.Bar.convertOptions(options));
+          chart.draw(data, google.charts.Bar.convertOptions(options));
+          
+          
+         
       }
     </script>
 <div class="content">
-    <div id="top_y_div"></div>
+    <img class="center-block" id="loading" src="<?= base_url('dist/img/spinner.gif')?>"/>
+    <div id="top_y_div" style="display: none;"></div>
 </div>
 <?php
 

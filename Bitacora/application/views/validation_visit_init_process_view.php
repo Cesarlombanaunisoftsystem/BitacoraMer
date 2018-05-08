@@ -37,7 +37,7 @@
                                     <?php
                                     if (isset($process) && $process) {
                                         foreach ($process as $order) {
-                                            if($order->stateLog===0){
+                                            if ($order->stateLog === '0') {
                                                 $color = '';
                                             } else {
                                                 $color = '#FCF8E5';
@@ -72,31 +72,30 @@
     <!-- /.content -->  
     <!-- Modal Materiales-->
     <div id="modalMaterials" class="modal fade" role="dialog">
-        <div class="modal-dialog" style="width: 80%;">
+        <div class="modal-dialog modal-lg">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>MATERIALES</b></h3>                                
+                    <h3 class="modal-title title-modals-visit"><b>MATERIALES</b></h3>                                
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <form class="form-horizontal" id="frmMaterials" method="post">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th style="background-color: #00B1EB; color: white">CATEGORIA</th>
-                                        <th style="background-color: #00B1EB; color: white">PRODUCTO</th>
-                                        <th style="background-color: #00B1EB; color: white">CANTIDAD</th>
-                                        <th style="background-color: #00B1EB; color: white">Unidad de Medida</th>
-                                    </tr>                                                
-                                </thead>
-                                <tbody id="materials">
-                                </tbody>
-                            </table>
-                        </form>                                     
-                        <hr style="border-color: #00B1EB">
-                        <p>Bitácora</p>
-                    </div>                   
+                    <form class="form-horizontal" id="frmMaterials" method="post">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-head-modals">CATEGORIA</th>
+                                    <th class="th-head-modals">PRODUCTO</th>
+                                    <th class="th-head-modals">CANTIDAD</th>
+                                    <th class="th-head-modals">Unidad de Medida</th>
+                                </tr>                                                
+                            </thead>
+                            <tbody id="materials">
+                            </tbody>
+                        </table>
+                    </form>        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn-default pull-right" style="color:#006e92" data-dismiss="modal">Cerrar</button>                   
                 </div>
             </div>
         </div>
@@ -114,10 +113,10 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="background-color: #00B1EB; color: white">Categoria</th>
-                                    <th style="background-color: #00B1EB; color: white">Producto</th>
-                                    <th style="background-color: #00B1EB; color: white">Cantidad</th>
-                                    <th style="background-color: #00B1EB; color: white">Unidad de medida</th>
+                                    <th class="th-head-modals">Categoria</th>
+                                    <th class="th-head-modals">Producto</th>
+                                    <th class="th-head-modals">Cantidad</th>
+                                    <th class="th-head-modals">Unidad de medida</th>
                                 </tr>                                            
                             </thead>
                             <tbody id="activities">
@@ -133,13 +132,10 @@
     <!-- modal activities -->
     <!-- Modal Galery -->
     <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <ul class="slides"></ul> 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -150,15 +146,14 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                    <h3 class="modal-title title-modals-visit"><b>OBSERVACIONES GENERALES</b></h3>                                
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div id="obsv"></div>
-                    </div>                   
+                    <div id="obsv"></div>                  
                 </div>
-                <hr style="border-color: #00B1EB">
-                <p>Bitácora</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn-default pull-right" style="color:#006e92" data-dismiss="modal">Cerrar</button>                   
+                </div>
             </div>
         </div>
     </div>
@@ -259,13 +254,13 @@
         galery = false;
         $(".slides").html("");
         url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-        $.getJSON(url, {id: id}).done(function (res) {
+        $.get(url, {id: id}).done(function (res) {
             var pos = 1;
             var image = res.split(",");
             for (var i = 0; i < image.length; i++) {
                 var html = '<input type="radio" name="radio-btn" id="img-' + pos + '" ' + (pos === 1 ? 'checked' : '') + ' />';
                 html += '<li class="slide-container"><div class="slide">';
-                html += '<img src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
+                html += '<img class="img-responsive" src="' + get_base_url() + "uploads/" + image[i] + '" /></div> ';
                 html += '<div class="nav"><label for="img-' + (pos === 1 ? 1 : pos - 1) + '" class="prev">&#x2039;</label>';
                 html += '<label for="img-' + (pos + 1) + '" class="next">&#x203a;</label></div></li>';
                 $(".slides").prepend(html);
@@ -304,10 +299,18 @@
     }
 
     function getObservations(idOrder) {
-        $("#obsv").html("");
+        $("#obsv").empty();
         url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-        $.getJSON(url, {idOrder: idOrder, state: 4}).done(function (res) {
-            $("#obsv").html(res.observation.obsvLog);
+        $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+            $.each(res["observation"], function (i, observation) {
+                var obsv = observation.obsvLog;
+                if (obsv === null) {
+                    obsv = '';
+                } else {
+                    obsv = observation.obsvLog;
+                }
+                $("#obsv").append(obsv + "<br>");
+            });
         });
     }
 

@@ -53,8 +53,8 @@ class Orders_model extends CI_Model {
         $sql = "SELECT tbl_orders.*,tbl_logs.obsvLog,min(tbl_orders_details.idActivities),"
                 . "tbl_orders_details.idServices,tbl_orders_details.site,"
                 . "tbl_orders_details.count,tbl_activities.name_activitie,"
-                . "tbl_services.name_service,tbl_areas.name_area,tbl_users.name_user,"
-                . "tbl_users.identify_number,tbl_users.address,tbl_users.mobile"
+                . "tbl_services.name_service,tbl_areas.name_area,tbl_users.name_user,tbl_users.email,"
+                . "tbl_users.identify_number,tbl_users.address,tbl_users.mobile,tbl_users.phone,tbl_users.contact"
                 . " FROM tbl_orders JOIN tbl_logs ON tbl_orders.id=tbl_logs.idOrder"
                 . " JOIN tbl_areas ON tbl_orders.idAreaSend=tbl_areas.id JOIN"
                 . " tbl_orders_details ON tbl_orders.id = tbl_orders_details.idOrder"
@@ -142,12 +142,11 @@ F.number_account, G.count, G.site, H.name_activitie FROM tbl_orders A
         }
     }
 
-    public function get_observation_order($id, $state) {
-        $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id"
-                . " and tbl_logs.idProcessState=$state";
+    public function get_observation_order($id) {
+        $sql = "SELECT tbl_logs.obsvLog FROM tbl_logs WHERE tbl_logs.idOrder=$id";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
-            return $query->row();
+            return $query->result();
         } else {
             return false;
         }

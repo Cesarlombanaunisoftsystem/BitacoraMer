@@ -94,6 +94,7 @@
                     });
                 });
             });
+            
             $("#idArea").change(function () {
                 var area = $("#idArea").val();
                 if (area !== '1') {
@@ -318,6 +319,7 @@
             function getFoot(idOrder) {
                 var url = get_base_url() + "Orders/get_order_xid?jsoncallback=?";
                 $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    console.log(res);
                     $("#bodyfoot_" + idOrder).html('<tr><td class="text-center">' + formatNumber(res.res.subtotal) +
                             '</td><td class="text-center">' + res.res.discount +
                             '</td><td class="text-center">' + res.res.iva + '%</td><td class="text-center">' + formatNumber(res.res.total) +

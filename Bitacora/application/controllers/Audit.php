@@ -175,7 +175,7 @@ class Audit extends CI_Controller {
             'idOrder' => $idOrder,
             'idUserProcess' => $this->session->userdata('id_usuario'),
             'idProcessState' => $stateLog,
-            'obsvLog' => 'Auditoria Aceptada'
+            'stateLog' => 0
         );
         $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->assign_order($idOrder, $data);
@@ -290,6 +290,7 @@ class Audit extends CI_Controller {
         $idOrder = $this->input->post('idOrder');
         $idArea = $this->input->post('idArea');
         $idState = $this->input->post('idState');
+        $stateLog = $this->input->post('stateLog');
         $data = array(
             'idArea' => $idArea,
             'idOrderState' => $idState,
@@ -299,8 +300,8 @@ class Audit extends CI_Controller {
         $data2 = array(
             'idOrder' => $idOrder,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'idProcessState' => 7,
-            'obsvLog' => 'Orden devuelta'
+            'idProcessState' => $stateLog,
+            'stateLog' => 1
         );
         $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->return_order($idOrder, $data);

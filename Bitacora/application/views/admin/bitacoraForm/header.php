@@ -3,7 +3,7 @@
     <input type="hidden" name="id" id="id" value="<?php if ($order) {echo $order->id;}?>"/>
     <div class="head1 text-center">
         
-        <div class="col-sm-2 col-md-2"><strong>Número de Orden:</strong></div>
+        <div class="col-sm-2 col-md-2"><br><strong>Número de Orden:</strong></div>
     <div class="col-sm-2 col-md-2 bordesOut">
         <input type="text" class="form-control sinborde" name="uniquecode" id="idOrder" value="<?php
         if ($order) {
@@ -11,7 +11,7 @@
         }
         ?>" required/>
     </div>
-        <div class="col-sm-1"><strong>COI:</strong></div>
+        <div class="col-sm-1"><br><strong>COI:</strong></div>
      <div class="col-sm-1 col-md-1 bordesOut"><input type="text" class="form-control sinborde" name="coi" id="coi" value="<?php
         if ($order) {
             echo $order->coi;
@@ -35,7 +35,7 @@
 
 
     <div class="head1 text-center">
-        <div class="col-sm-2"><strong>Coordinador Externo:</strong></div>
+        <div class="col-sm-2"><br><strong>Coordinador Externo:</strong></div>
     <div class="col-sm-2" style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; ">
         <select class="form-control sinborde" name="idCoordinatorExt" id="idCoordExt" required onchange="genHead()">
             <option></option>
@@ -54,7 +54,7 @@
             ?>
 
         </select></div>
-        <div class="col-sm-2"><strong>Coordinador Interno:</strong></div>
+        <div class="col-sm-2"><br><strong>Coordinador Interno:</strong></div>
      <div class="col-sm-2 col-md-2 bordesOut">
         <select class="form-control sinborde" name="idCoordinatorInt" id="idCoordInt" required onchange="genHead()">
             <option></option>
@@ -72,7 +72,7 @@
             }
             ?>
         </select></div>
-        <div class="col-sm-2"><strong>Forma de Pago:</strong></div>
+        <div class="col-sm-2"><br><strong>Forma de Pago:</strong></div>
      <div class="col-sm-2 col-md-2 bordesOut">
         <select class="form-control sinborde" name="idFormPay" id="idFormPay" required>
             <option></option>

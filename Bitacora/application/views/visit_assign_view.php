@@ -36,11 +36,16 @@
                                     <?php
                                     if ($visits) {
                                         foreach ($visits as $visit) {
+                                            if ($visit->stateLog === '1') {
+                                                $color = '#FCF8E5';
+                                            } else {
+                                                $color = '';
+                                            }
                                             ?>                                            
-                                            <tr>
+                                            <tr style="background-color:<?= $color ?>">
                                                 <td><?= $visit->dateSave ?></td>
                                                 <td><?= $visit->dateLog ?></td>
-                                                <td><?= $visit->uniquecode."-".$visit->coi ?></td>
+                                                <td><?= $visit->uniquecode . "-" . $visit->coi ?></td>
                                                 <td><?= $visit->name_activitie . " " . $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>
                                                 <td><?= $visit->name_service ?></td>
@@ -50,7 +55,8 @@
                                                 <td><?= $visit->date ?></td>
                                             </tr>                                                                                    
                                         <?php }
-                                    } ?>                                                                         
+                                    }
+                                    ?>                                                                         
                                 </tbody>
                             </table>
                         </div>
@@ -64,9 +70,9 @@
         <!-- ./wrapper -->
         <?php $this->load->view('templates/libs') ?>
 <?php $this->load->view('templates/js') ?>
-        
+
         <script>
-        cargar_menu("programacion_visitas",'Visitas asignadas');
-            </script>
+            cargar_menu("programacion_visitas", 'Visitas asignadas');
+        </script>
     </body>
 </html>

@@ -16,8 +16,8 @@
                 <section class="content">
                     <div class="row">
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
-                            <table id="data-table" class="table table-striped" style="font-size: 12px">
+                        <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">                           
+                            <table id="data-table" class="table" style="font-size: 12px">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -75,12 +75,11 @@
                                     ?>                                                                         
                                 </tbody>
                             </table>
-                            </form>
                         </div>
                     </div>
+                </section>
             </div>
         </div>
-    </div>
 </section>
 <!-- /.content -->
 </div>
@@ -107,27 +106,26 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>MATERIALES</b></h3>                                
+                <h3 class="modal-title title-modals-visit"><b>MATERIALES</b></h3>                                
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <form class="form-horizontal" id="frmMaterials" method="post">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="background-color: #00B1EB; color: white">CATEGORIA</th>
-                                    <th style="background-color: #00B1EB; color: white">PRODUCTO</th>
-                                    <th style="background-color: #00B1EB; color: white">CANTIDAD</th>
-                                    <th style="background-color: #00B1EB; color: white">Unidad de Medida</th>
-                                </tr>                                        
-                            </thead>
-                            <tbody id="materials">
-                            </tbody>
-                        </table>
-                    </form>                                                                 
-                </div>
-                <hr style="border-color: #00B1EB">
-                <p>Bitácora</p>
+                <form class="form-horizontal" id="frmMaterials" method="post">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="th-head-modals">CATEGORIA</th>
+                                <th class="th-head-modals">PRODUCTO</th>
+                                <th class="th-head-modals">CANTIDAD</th>
+                                <th class="th-head-modals">Unidad de Medida</th>
+                            </tr>                                        
+                        </thead>
+                        <tbody id="materials">
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn color-btn-modal" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -139,54 +137,49 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" style="text-align: center; color: #00B1EB"><b>OBSERVACIONES GENERALES</b></h3>                                
+                <h3 class="modal-title title-modals-visit"><b>OBSERVACIONES GENERALES</b></h3>                                
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div id="obsv"></div>
-                </div>                   
+                <div id="obsv" style="border:1px solid #006e92;border-radius: 20px;padding: 15px"></div>                   
             </div>
-            <hr style="border-color: #00B1EB">
-            <p>Bitácora</p>
+            <div class="modal-footer">
+                <button class="btn color-btn-modal" data-dismiss="modal">Cerrar</button>
+            </div>
         </div>
     </div>
 </div>
 <!-- Modal Observaciones-->
 <!-- Modal Historial Pagos-->
 <div id="modalHistoryPays" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 40%;
+    <div class="modal-dialog" style="
          border-color: blue;
          border-style: solid;
          border-radius: 20px;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                <div class="row">
-                    <div style="height: 350px;
-                         width: 550px;
-                         overflow-y: auto;">
-                        <p style="text-align:left;"><img src="<?= base_url('dist/img/logo_mail.png') ?>" alt="logo Mer"><img src="<?= base_url('dist/img/titulo_mail.png') ?>"  height="90px" width="250px" alt="titulo" style="text-align:right"/></p>
-                        <p style="text-align:center;"><img src="<?= base_url('dist/img/hr_mail.png') ?>" width="510px" alt="hr"></p>                                
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th  style="text-align: center;">
-                                        <u style="color: blue">Fecha</u>
-                                    </th>
-                                    <th  style="text-align: center;">
-                                        <u style="color: blue">% Pagado</u>
-                                    </th>
-                                    <th  style="text-align: center;">
-                                        <u style="color: blue">Vr. Pagado</u>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyPays" style="text-align: center">
+                <div class="center-block">
+                    <p style="text-align:left;"><img src="<?= base_url('dist/img/logo_mail.png') ?>" alt="logo Mer"><img src="<?= base_url('dist/img/titulo_mail.png') ?>"/></p>
+                    <p style="text-align:center;"><img src="<?= base_url('dist/img/hr_mail.png') ?>" width="510px" alt="hr"></p>                                
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th  style="text-align: center;">
+                                    <u style="color: blue">Fecha</u>
+                                </th>
+                                <th  style="text-align: center;">
+                                    <u style="color: blue">% Pagado</u>
+                                </th>
+                                <th  style="text-align: center;">
+                                    <u style="color: blue">Vr. Pagado</u>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyPays" style="text-align: center">
 
-                            </tbody>
-                        </table>
-                    </div>                                               
-                </div>
+                        </tbody>
+                    </table>
+                </div>                                               
             </div>
         </div>
     </div>   
@@ -202,10 +195,8 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
-                    <div style="height: 350px;
-                         width: 550px;
-                         overflow-y: auto;">
-                        <p style="text-align:left;"><img src="<?= base_url('dist/img/logo_mail.png') ?>" alt="logo Mer"><img src="<?= base_url('dist/img/titulo_mail.png') ?>"  height="90px" width="250px" alt="titulo" style="text-align:right"/></p>
+                    <div>
+                        <p style="text-align:left;"><img src="<?= base_url('dist/img/logo_mail.png') ?>" alt="logo Mer"><img src="<?= base_url('dist/img/titulo_mail.png') ?>"/></p>
                         <p style="text-align:center;"><img src="<?= base_url('dist/img/hr_mail.png') ?>" width="510px" alt="hr"></p>                                
                         <table class="table table-striped">
                             <thead>
@@ -261,9 +252,9 @@
         }
     });
     function format(d) {
-        return  '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px;">' +
+        return  '<table cellpadding="5" class="tbl-detail" cellspacing="0" border="0" style="padding-left:50px; border-top:2px solid #acacac !important;border-bottom:2px solid #acacac !important;">' +
                 '<tr>' +
-                '<td>FECHA DE REGISTRO:<p></p></td>' + '<td><u><label id="fecha_' + d + '"></u></label></td>' +
+                '<td><strong>FECHA DE REGISTRO:</strong><p></p></td>' + '<td><u><label id="fecha_' + d + '"></u></label></td>' +
                 '<td>' +
                 '<a class="disable photos photo' + d + '">REGISTRO FOTOGRAFICO</a>' +
                 '</td><td>' +
@@ -274,13 +265,13 @@
                 '<a class="disable das' + d + '">FORMATO DAS</a>' +
                 '</td><td>' +
                 '<a href="#" onclick="materials(' + d + ')" data-toggle="modal" data-target="#modalMaterials">' +
-                'SOLICITUD DE MATERIALES/SERV</a><input type="hidden" value="' + d + '" name="idOrder">' +
+                'SOLICITUD DE MATERIALES / SERV</a><input type="hidden" value="' + d + '" name="idOrder">' +
                 '</td><td>' +
                 '<a href="#" onclick="getObservations(' + d + ')" data-toggle="modal" data-target="#modalObservations">' +
                 'OBSERVACIONES GENERALES</a></td></tr>' +
-                '<tr><td>FECHA DE REGISTRO:<p></p></td>' + '<td><u><label id="fecha_2_' + d + '"></u></label></td>' +
-                '<td>' +
-                '<a class="disable design' + d + '">DISEÑO</a>' +
+                '<tr><td><strong>FECHA DE REGISTRO:</strong><p></p></td>' + '<td><u><label id="fecha_2_' + d + '"></u></label></td>' +
+                '<td colspan="6">' +
+                '<a class="disable design' + d + '">DISEÑO</a></td>' +
                 '</tr></table>';
     }
     function getDocs(idOrder) {
@@ -341,7 +332,7 @@
         galery = false;
         $(".slides").html("");
         url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-        $.getJSON(url, {id: id}).done(function (res) {
+        $.get(url, {id: id}).done(function (res) {
             var pos = 1;
             var image = res.split(",");
             for (var i = 0; i < image.length; i++) {
@@ -373,10 +364,16 @@
 
     function getObservations(idOrder) {
         $("#obsv").empty();
-        url = get_base_url() + "Orders/get_observations_order?jsoncallback=?";
+        url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
         $.getJSON(url, {idOrder: idOrder}).done(function (res) {
-            $.each(res["observations"], function (i, observations) {
-                $("#obsv").append(observations.obsvLog + "<br>");
+            $.each(res["observation"], function (i, observation) {
+                var obsv = observation.obsvLog;
+                if (obsv === null) {
+                    obsv = '';
+                } else {
+                    obsv = observation.obsvLog;
+                }
+                $("#obsv").append(obsv + "<br>");
             });
         });
     }

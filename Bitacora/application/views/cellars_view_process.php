@@ -11,9 +11,7 @@
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <h1>
-                        <?= $titulo ?>
-                    </h1>
+                    
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('Materials/get_materials_cellar_mer_process') . $link ?>"><i class="fa fa-refresh"></i></a></li>
                     </ol>
@@ -24,7 +22,13 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="row">
-                                <div class="col-xs-12 nav-tabs-custom">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
+                                </div>
+                                <div class="col-xs-10 nav-tabs-custom">
+                                    <h1>
+                                        <?= $titulo ?>
+                                    </h1>
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation"><a href="<?= base_url('Materials/') . $link ?>" aria-controls="binnacle" role="tab" data-toggle="">Bandeja de entrada</a></li>
                                         <li role="presentation" class="active"><a href="<?= base_url('Materials/') . $link2 ?>" aria-controls="binnacle" role="tab" data-toggle="">Registros Procesados</a></li>
@@ -35,11 +39,9 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="regprocess">
                                 <div class="row">
-                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                        <img src="<?= base_url('dist/img/materiales.png') ?>" style="width: 120px;">
-                                    </div>
+                                    
                                     <div id="divCellar" hidden=""><?= $cellar ?></div>
-                                    <div id="tableProcess" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div id="tableProcess" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
                                         <table id="data-table" class="table table-striped">
                                             <thead>
                                                 <tr>
@@ -94,7 +96,7 @@
                                             </tbody>
                                         </table>                                                                                
                                     </div>
-                                    <div id="divOrderProcess"  class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <div id="divOrderProcess"  class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1">
                                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                             <table>
                                                 <tr>

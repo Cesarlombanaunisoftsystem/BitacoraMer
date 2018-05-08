@@ -106,6 +106,15 @@ class Materials_model extends CI_Model {
         }
     }
 
+    public function obsv_materials($data) {
+        $this->db->insert('tbl_obs_material', $data);
+        if ($this->db->affected_rows() > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     public function return_materials_log($idOrder, $data1, $data2) {
         $this->db->trans_start();
         $this->db->insert('tbl_daily_management', $data1);

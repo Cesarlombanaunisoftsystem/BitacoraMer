@@ -1,7 +1,8 @@
 <div style="height:<?php echo (count($details)>1? "245px":"auto");?>;
    overflow:auto;
     background:#fff;
-    border: 2px solid #07000071;
+    border: 2px solid #b1adad71;
+    font-size: 11px;
     margin-bottom: 15px;">
 <table id="orders-items-table" class="table table-striped" style="border-top: 15px">
     <thead>
@@ -40,7 +41,11 @@
         </td>
         <td >
             <input type="text" class="form-control" name="site" id="site" autocomplete="off" />
-            <div id="suggesstion-box"></div>
+            <div id="suggesstion-box" style="display: none;">
+                <ul style="list-style-type: none;">
+                    
+                </ul>
+            </div>
         </td>
         <td >
             <div id="price"></div>      

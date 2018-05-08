@@ -126,9 +126,24 @@
                                 '<td>' + pay.dateSave + '</td>' +
                                 '<td>' + formatNumber(pay.value) + '</td>' +
                                 '<td>' + pay.percent + '%</td>'+
-                                '<td><a href="<?= base_url('reportes/pdf/') ?>orden_'+pay.idPay+'.pdf" target="_blank"><i class="fa fa-2x fa-file-pdf-o" aria-hidden="true"></i><a></td></tr>'
+                                '<td><div id="btn_'+pay.idPay+'"></div></td></tr>'
                                         );
+                                checkPdf(pay.idPay);
                     });
+                });
+            }
+            
+            function checkPdf(idPay){
+            var mUrl = '<?= base_url('reportes/pagos/') ?>report_'+idPay+'.pdf';
+            $.ajax({
+                type: 'HEAD',
+                url: mUrl,
+                success:function(data){
+                    $("#btn_"+idPay).append('<a href="'+mUrl+'" target="_blank"><i class="fa fa-2x fa-file-pdf-o" aria-hidden="true"></i><a></td>');
+                },
+                error: function(data){
+                    $("#btn_"+idPay).append('Sin PDF disponible')
+                }     
                 });
             }
             

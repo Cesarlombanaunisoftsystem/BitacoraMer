@@ -1,9 +1,6 @@
 <div class="row">
-    <div class="col-sm-2">
-        <img src="dist/img/orden.jpg" style="width: 120px;">
-    </div>
     <input type="hidden" id="id" value=""/>
-    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">         
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">         
         <table id="data-table" class="table table-striped">
             <thead>
                 <tr>
@@ -20,12 +17,17 @@
                 <?php if ($ordersTray) { ?>
                     <?php
                     foreach ($ordersTray as $orderTray) {
+                        if ($orderTray->stateLog === '1') {
+                            $color = '#FCF8E5';
+                        } else {
+                            $color = '';
+                        }
                         ?>
-                        <tr>
+                        <tr style="background-color:<?= $color ?>">
                             <td class="details-control" id="<?php echo $orderTray->id; ?>">
                                 <i class="fa fa-plus-square-o"></i>
                             </td>
-                            <td><?= $orderTray->uniquecode."-".$orderTray->coi ?></td>
+                            <td><?= $orderTray->uniquecode . "-" . $orderTray->coi ?></td>
                             <td><?= $orderTray->uniqueCodeCentralCost ?></td>
                             <td><?= $orderTray->name_user ?></td>
                             <td><?= $orderTray->dateSave ?></td>
@@ -36,7 +38,7 @@
                                 ?></td>
                         </tr>
                     <?php } ?>                        
-<?php } ?>
+                <?php } ?>
             </tbody>
         </table>        
     </div>

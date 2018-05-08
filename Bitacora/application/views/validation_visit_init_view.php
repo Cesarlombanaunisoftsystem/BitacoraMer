@@ -66,13 +66,10 @@
     <!-- /.content -->
     <!-- Modal Galery -->
     <div id="modalGalery" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <ul class="slides"></ul> 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -353,7 +350,7 @@
         galery = false;
         $(".slides").html("");
         url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-        $.getJSON(url, {id: id}).done(function (res) {
+        $.get(url, {id: id}).done(function (res) {
             var pos = 1;
             var image = res.split(",");
             for (var i = 0; i < image.length; i++) {
@@ -401,10 +398,18 @@
     }
 
     function getObservations(idOrder) {
-        $("#obsv").html("");
+        $("#obsv").empty();
         url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-        $.getJSON(url, {idOrder: idOrder, state: 3}).done(function (res) {
-            $("#obsv").html(res.observation.obsvLog);
+        $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+            $.each(res["observation"], function (i, observation) {
+                var obsv = observation.obsvLog;
+                if (obsv === null) {
+                    obsv = '';
+                } else {
+                    obsv = observation.obsvLog;
+                }
+                $("#obsv").append(obsv + "<br>");
+            });
         });
     }
 

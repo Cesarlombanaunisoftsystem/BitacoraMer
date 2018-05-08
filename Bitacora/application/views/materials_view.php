@@ -25,7 +25,7 @@
                             <div role="tabpanel" class="tab-pane active" id="pagosges">
                                 <div class="row">
                                     <div class="col-xs-10 col-sm-10 col-md-10 col-md-offset-1 col-lg-10">
-                                        <table id="data-table" class="table table-striped" style="font-size:12px">
+                                        <table id="data-table" class="table table-striped " style="font-size:12px">
                                             <thead>
                                                 <tr>
                                                     <th style="color: #00B0F0">Proceso</th>
@@ -69,15 +69,15 @@
                                     </div>
                                     <div class="col-md-10 col-md-offset-1">
                                         <form action="Materials/assign_x_order" method="post"  enctype="multipart/form-data"> 
-                                            <div id="divOrder" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            <div id="divOrder" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                                                     <table>
                                                         <tr>
                                                             <td>No. ORDEN: <label id="lblOrder"></label></td>
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                                     <table>
                                                         <tr style="font-size: 12px;">
                                                             <td style="color: #00B0F0">| Centro de Costos |</td>
@@ -98,16 +98,18 @@
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <br><br><br>
-                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                                                    <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1" checked>
-                                                        Asignación de Bodega por producto
-                                                    </label>
-                                                </div>
-                                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
-                                                    <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk2">
-                                                        Asignación de Bodega por Ordén
-                                                    </label>
+                                                
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 30px 0;">
+                                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                                                        <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk1" checked>
+                                                            Asignación de Bodega por producto
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+                                                        <label class="radio-inline" style="color: #00B0F0;"><input type="radio" id="chk2">
+                                                            Asignación de Bodega por Ordén
+                                                        </label>
+                                                    </div>
                                                 </div>
                                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                                     <select id="selectasign" name="selcellarorder" class="form-control" required="">
@@ -204,7 +206,13 @@
             });
             
             $("#myPdf").change(function(){
-                $("#nameFile").html(this.value);
+                 if((this.value).toLowerCase().indexOf('.pdf') >= 0){
+                      $("#nameFile").html(this.value);
+                 }else{
+                     alert("Por favor ingrese un formato valido ");
+                     $("#myPdf").val(null);
+                     $("#nameFile").html(this.value);
+                 }
             });
             
 
@@ -236,8 +244,8 @@
             });
 
             function verOrden(idOrder) {
-                $("#divOrder").show();
-                $("#table1").hide();
+                $("#divOrder").fadeIn('slow');
+                $("#data-table_wrapper").fadeOut('fast');
                 $('#bodyMaterials').empty();
                 var order = $("#norder_" + idOrder).val();
                 var ccost = $("#ccost_" + idOrder).val();

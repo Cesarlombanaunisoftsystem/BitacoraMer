@@ -56,7 +56,7 @@ class Services extends CI_Controller {
 
     public function get_model_tree() {
         $idService = $this->input->get('idService');
-        $data['serv'] = $this->Services_model->get_service($idService);
+        $data['tree'] = $this->Services_model->get_service($idService);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }

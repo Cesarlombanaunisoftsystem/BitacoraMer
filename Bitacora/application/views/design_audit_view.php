@@ -17,7 +17,7 @@
                 <section class="content">
                     <div class="row">
                         <input type="hidden" id="id" value=""/>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                           
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="bandeja">                           
                             <table id="data-table" class="table table-striped">
                                 <thead>
                                     <tr>
@@ -59,10 +59,7 @@
                         </div>
                     </div>
                     <div class="row" id="divmsj" hidden>
-                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            <img src="<?= base_url('dist/img/auditsetlement.png') ?>" style="width: 120px;">
-                        </div>
-                        <div id="msj" class="col-xs-10 col-sm-10 col-md-10 col-lg-10"></div>
+                        <div id="msj" class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-md-offset-1"></div>
                     </div>
                 </section>
                 <!-- /.content -->
@@ -86,7 +83,7 @@
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title" style="text-align: center; color: #006e92"><b>OBSERVACIONES GENERALES</b></h3>                                
+                                <h3 class="modal-title th-head-modals" ><b>OBSERVACIONES GENERALES</b></h3>                                
                             </div>
                             <div class="modal-body">
                                 <div id="obsv"></div>       
@@ -157,21 +154,29 @@
             }
 
             function getObservations(idOrder) {
-                $("#obsv").html("");
+                $("#obsv").empty();
                 url = get_base_url() + "Orders/get_observation_order?jsoncallback=?";
-                $.getJSON(url, {idOrder: idOrder, state: 5}).done(function (res) {
-                    $("#obsvgen").val(res.observation.obsvLog);
-                    $("#obsv").html(res.observation.obsvLog);
+                $.getJSON(url, {idOrder: idOrder}).done(function (res) {
+                    $.each(res["observation"], function (i, observation) {
+                        var obsv = observation.obsvLog;
+                        if (obsv === null) {
+                            obsv = '';
+                        } else {
+                            obsv = observation.obsvLog;
+                        }
+                        $("#obsv").append(obsv + "<br>");
+                    });
                 });
             }
 
 
             function return_order(idOrder) {
-                url = get_base_url() + "Design/return_order_design";
+                var obsv = $("#obsvgen").val();
+                url = get_base_url() + "Design/return_order_design_audit";
                 $.ajax({
                     url: url,
                     type: 'POST',
-                    data: {idOrder: idOrder, state: 7},
+                    data: {idOrder: idOrder, obsv: obsv},
                     success: function (resp) {
                         if (resp === "error") {
                             alertify.error('Erro en BBDD');
@@ -239,8 +244,9 @@
             function getRegPhoto(id) {
                 galery = false;
                 $(".slides").html("");
-                url = get_base_url() + "Orders/get_reg_photos_xid?jsoncallback=?";
-                $.getJSON(url, {id: id}).done(function (res) {
+                url = get_base_url() + "Orders/get_reg_photos_xid";
+                $.get(url, {id: id}).done(function (res) {
+
                     var pos = 1;
                     var image = res.split(",");
                     for (var i = 0; i < image.length; i++) {
@@ -268,7 +274,7 @@
                         }
                         if (resp === "ok") {
                             $("#bandeja").hide();
-                            $('#divmsj').show();
+                            $('#divmsj').fadeIn('slow');
                             $("#msj").html("<center><h1 style='color:blue'>¡Su información ha sido capturada<br>" +
                                     "satisfactoriamente¡<br><br><br><b>MER GROUP</b>, " +
                                     "Agradece su participación<br> como integrante" +

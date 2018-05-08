@@ -591,9 +591,13 @@
                 new WOW().init();
             };
 
-            $("#barsMenu").click(function (e) {
+            $("#barsMenu").click(function (e) {                
+                 $( "#loading" ).fadeOut( "slow", function() {
+                    $( "#top_y_div" ).fadeIn( "slow" );
+                    google.charts.setOnLoadCallback(barStacked);
+
+                 });
                 google.charts.load('current', {'packages': ['bar']});
-                google.charts.setOnLoadCallback(barStacked);
             });
 
             google.charts.load("current", {packages: ["corechart"]});

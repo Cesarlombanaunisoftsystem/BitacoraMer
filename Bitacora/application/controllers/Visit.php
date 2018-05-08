@@ -15,7 +15,7 @@ class Visit extends CI_Controller {
         $this->load->library(array('session'));
         $this->load->helper(array('url'));
         $this->load->model(array('Users_model', 'Visits_model', 'Orders_model',
-            'Activities_model', 'Utils', 'Projects_model', 'Services_model'));
+            'Activities_model', 'Utils', 'Projects_model', 'Services_model','Materials_model'));
     }
 
     public function program() {
@@ -63,7 +63,8 @@ class Visit extends CI_Controller {
                 'idOrder' => $idOrder,
                 'idUserProcess' => $this->session->userdata('id_usuario'),
                 'idProcessState' => 2,
-                'obsvLog' => $this->input->post('obsv')
+                'obsvLog' => $this->input->post('obsv'),
+                'stateLog' => 0
             );
             $this->Orders_model->register_log($data2);
             if ($res === TRUE) {
@@ -161,6 +162,13 @@ class Visit extends CI_Controller {
             'idArea' => 1,
             'idOrderState' => 1,
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 2,
+            'stateLog' => 1
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -171,13 +179,19 @@ class Visit extends CI_Controller {
 
     public function return_order_assign() {
         $idOrder = $this->input->post('idOrder');
-        $obsv = $this->input->post('obsvgen');
         $data = array(
             'idArea' => 1,
             'idOrderState' => 2,
-            'observations' => $obsv,
             'historybackState' => 1,
             'dateUpdate' => date('Y-m-d H:i:s'));
+        $data2 = array(
+            'idOrder' => $idOrder,
+            'idUserProcess' => $this->session->userdata('id_usuario'),
+            'idProcessState' => 3,
+            'obsvLog' => $this->input->post('obsvgen'),
+            'stateLog' => 1
+        );
+        $this->Orders_model->register_log($data2);
         $res = $this->Visits_model->return_order($idOrder, $data);
         if ($res === TRUE) {
             echo 'ok';
@@ -359,11 +373,17 @@ class Visit extends CI_Controller {
             'dateUpdate' => date('Y-m-d H:i:s')
         );
         $this->Orders_model->update_order($this->input->post('idOrder'), $dataGen);
+        $dataM = array(
+            'idOrder' => $this->input->post('idOrder'),
+            'observacion' => $this->input->post('obsvMat')
+        );
+        $this->Materials_model->obsv_materials($dataM);
         $data2 = array(
             'idOrder' => $this->input->post('idOrder'),
             'idProcessState' => 3,
             'idUserProcess' => $this->session->userdata('id_usuario'),
-            'obsvLog' => $this->input->post('obsvgen')
+            'obsvLog' => $this->input->post('obsvgen'),
+            'stateLog' => 0
         );
         $this->Orders_model->register_log($data2);
         redirect(base_url() . 'Visit/site_init');
