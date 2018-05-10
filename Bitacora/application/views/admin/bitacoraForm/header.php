@@ -11,7 +11,7 @@
         }
         ?>" required/>
     </div>
-        <div class="col-sm-1"><br><strong>COI:</strong></div>
+        <div class="col-sm-1"><br><strong>POI:</strong></div>
      <div class="col-sm-1 col-md-1 bordesOut"><input type="text" class="form-control sinborde" name="coi" id="coi" value="<?php
         if ($order) {
             echo $order->coi;

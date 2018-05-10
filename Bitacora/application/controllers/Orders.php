@@ -318,4 +318,13 @@ class Orders extends CI_Controller {
         echo $res->file2;
     }
 
+    public function update_order_detail() {
+        $id = $this->input->post('id');
+        $data = array(
+            'cost' => $this->input->post('cost'),
+            'total_cost' => $this->input->post('total')
+        );
+        $this->Orders_model->update_order_detail($id, $data);
+    }
+
 }

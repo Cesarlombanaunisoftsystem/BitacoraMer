@@ -175,10 +175,11 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="th-head-modals">Categoria</th>
-                                    <th class="th-head-modals">Producto</th>
+                                    <th class="th-head-modals">Actividad</th>
+                                    <th class="th-head-modals">Servicio</th>
+                                    <th class="th-head-modals">Costo</th>
                                     <th class="th-head-modals">Cantidad</th>
-                                    <th class="th-head-modals">Unidad de medida</th>
+                                    <th class="th-head-modals">Total Costo</th>
                                 </tr>                                            
                             </thead>
                             <tbody id="activities">
@@ -386,9 +387,32 @@
                 $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
                     $.each(respuestaServer["act"], function (i, act) {
                         $("#activities").append("<tr><td>" + act.name_activitie +
-                                "</td><td>" + act.name_service + "</td><td>" +
-                                act.count + "</td><td>" + act.unit_measurement + "</td></tr>");
+                                "</td><td>" + act.name_service + "</td><td>" + "<input type='number' id='cost_" + act.id + "' value='" +
+                                act.cost + "' onchange='sumTotal(" + act.id + ")'></td><td><input type='hidden' id='count_" + act.id + "' value='" +
+                                act.count + "'>" + act.count + "</td><td><input type='number' id='total_" + act.id + "' value='" +
+                                act.total_cost + "' readonly></td></tr>");
                     });
+                });
+            }
+
+            function sumTotal(id) {
+                var cost = $("#cost_" + id).val();
+                var count = $("#count_" + id).val();
+                var total = cost * count;
+                $("#total_" + id).val(total);
+                $.confirm({
+                    title: 'Confirma cambiar valor a este servicio?',
+                    content: '',
+                    buttons: {
+                        confirmar: function () {
+                            url = get_base_url() + "Orders/update_order_detail";
+                            $.post(url, {id: id, cost: cost, total: total});
+                            location.reload();
+                        },
+                        cancelar: function () {
+                            $.alert('Cancelado!');
+                        }
+                    }
                 });
             }
 
@@ -634,6 +658,23 @@
             function register() {
                 alertify.success('Material registrado exitosamente');
                 location.reload();
+            }
+
+            function formatNumber(num) {
+                if (!num || num === 'NaN')
+                    return '-';
+                if (num === 'Infinity')
+                    return '&#x221e;';
+                num = num.toString().replace(/\$|\,/g, '');
+                if (isNaN(num))
+                    num = "0";
+                sign = (num === (num = Math.abs(num)));
+                num = Math.floor(num * 100 + 0.50000000001);
+                num = Math.floor(num / 100).toString();
+                for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+                    num = num.substring(0, num.length - (4 * i + 3)) + '.' +
+                            num.substring(num.length - (4 * i + 3));
+                return (((sign) ? '' : '') + '$ ' + num);
             }
         </script>
     </body>
