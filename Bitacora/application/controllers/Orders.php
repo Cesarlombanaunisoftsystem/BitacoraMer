@@ -51,7 +51,8 @@ class Orders extends CI_Controller {
     public function get_order() {
         $order = $this->input->get('order');
         $coi = $this->input->get('coi');
-        $data['res'] = $this->Orders_model->get_order($order, $coi);
+        $ccost = $this->input->get('ccost');
+        $data['res'] = $this->Orders_model->get_order($order, $coi, $ccost);
         $resultadosJson = json_encode($data);
         echo $_GET["jsoncallback"] . '(' . $resultadosJson . ');';
     }
@@ -143,6 +144,7 @@ class Orders extends CI_Controller {
         $data = array(
             'uniquecode' => $this->input->post('order'),
             'coi' => $this->input->post('coi'),
+            'uniqueCodeCentralCost' => $this->input->post('ccost'),
             'idUser' => $this->session->userdata('id_usuario'),
             'idOrderType' => $type,
             'idOrderState' => 1,

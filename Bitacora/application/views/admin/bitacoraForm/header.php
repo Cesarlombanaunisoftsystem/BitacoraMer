@@ -16,14 +16,14 @@
         if ($order) {
             echo $order->coi;
         }
-        ?>" onfocusout="addIdOrder();" required/>
+        ?>" required/>
     </div>
         <div class="col-sm-1"><strong>Centro de Costos No.</strong></div>
-     <div class="col-sm-2 col-md-2 bordesOut"><input type="number" class="form-control sinborde" name="uniqueCodeCentralCost" id="idCentCost" value="<?php
+     <div class="col-sm-2 col-md-2 bordesOut"><input type="text" class="form-control sinborde" name="uniqueCodeCentralCost" id="idCentCost" value="<?php
         if ($order) {
-            echo $order->id;
+            echo $order->uniqueCodeCentralCost;
         }
-        ?>" required/>
+        ?>" onfocusout="addIdOrder();" required/>
     </div>
         <div class="col-sm-1"><strong>Fecha de Creación:</strong></div>
     <div class="col-sm-2 col-md-2 " style=" border-left : 1pt ridge gray; border-right : 1pt ridge gray; "><input type="text" class="form-control sinborde" name="date" id="dateSave" value="<?php

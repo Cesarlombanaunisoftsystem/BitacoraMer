@@ -75,7 +75,7 @@
                                                             <td><?= $row->dateSave ?></td>
                                                             <td><a href="<?= base_url('uploads/') . $row->picture ?>"  target="ventana" onClick="window.open('', 'ventana', 'width=400,height=400,lef t=100,top=100');"><?= $row->uniquecode . '-' . $row->coi ?></a></td>
                                                             <td><?= $row->uniqueCodeCentralCost . '-' . $row->coi ?></td>
-                                                            <td><?= $row->name_activitie ?></td>
+                                                            <td><a href="#" data-toggle="modal" data-target="#modalActivities" onclick="getActivities(<?= $row->id ?>)"><?= $row->name_activitie ?><input type="hidden" id="activ_<?= $row->id ?>" value="<?= $row->name_activitie ?>"></a></td>
                                                             <td><?= $row->count ?></td>
                                                             <td><?= $row->site ?></td>
                                                             <td><?= $row->name_user ?></td>                                                
@@ -163,6 +163,35 @@
             <!-- /.content-wrapper -->
             <?php $this->load->view('templates/footer.html') ?>
         </div>
+        <!-- modal activities -->
+        <div id="modalActivities" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width: 60%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title title-modals-visit"><b>ACTIVIDADES RELACIONADAS</b></h5>                                
+                    </div>
+                    <div class="modal-body">                                 
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-head-modals">Categoria</th>
+                                    <th class="th-head-modals">Producto</th>
+                                    <th class="th-head-modals">Cantidad</th>
+                                    <th class="th-head-modals">Unidad de medida</th>
+                                </tr>                                            
+                            </thead>
+                            <tbody id="activities">
+                            </tbody>
+                        </table> 
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn color-btn-modal" data-dismiss="modal">Cerrar </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal activities -->
         <!-- Modal Materiales-->
         <div id="modalMaterials" class="modal fade" role="dialog">
             <div class="modal-dialog" style="width: 80%;">
@@ -349,6 +378,18 @@
                         '<u>SOLICITUD DE MATERIALES/SERV</u></a></label><input type="hidden" value="' + d + '" name="idOrder">' +
                         '</td>' + '<td><label class="blue bold upload_design"><a href="#" onclick="getObservations(' + d + ')" data-toggle="modal" data-target="#modalObservations">' +
                         '<u>OBSERVACIONES GENERALES</u></a></label></td></tr></table></form>';
+            }
+
+            function getActivities(idOrder) {
+                $("#activities").empty();
+                url = get_base_url() + "Visit/get_activities_x_order?jsoncallback=?";
+                $.getJSON(url, {idOrder: idOrder}).done(function (respuestaServer) {
+                    $.each(respuestaServer["act"], function (i, act) {
+                        $("#activities").append("<tr><td>" + act.name_activitie +
+                                "</td><td>" + act.name_service + "</td><td>" +
+                                act.count + "</td><td>" + act.unit_measurement + "</td></tr>");
+                    });
+                });
             }
 
             function getDocs(idOrder) {

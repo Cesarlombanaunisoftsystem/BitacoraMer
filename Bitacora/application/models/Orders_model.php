@@ -17,11 +17,12 @@ class Orders_model extends CI_Model {
         }
     }
 
-    public function get_order($order, $coi) {
+    public function get_order($order, $coi, $ccost) {
         $this->db->select('uniquecode,coi');
         $this->db->from('tbl_orders');
         $this->db->where('uniquecode', $order);
         $this->db->where('coi', $coi);
+        $this->db->where('uniqueCodeCentralCost', $ccost);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return true;

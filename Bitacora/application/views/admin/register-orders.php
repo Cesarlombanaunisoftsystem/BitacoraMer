@@ -29,7 +29,7 @@
         </div>
         <?php $this->load->view('templates/libs') ?>
         <?php $this->load->view('templates/js') ?>
-         
+
         <script type="text/javascript">
             $(function () {
 
@@ -94,7 +94,7 @@
                     });
                 });
             });
-            
+
             $("#idArea").change(function () {
                 var area = $("#idArea").val();
                 if (area !== '1') {
@@ -168,8 +168,8 @@
             }
 
             function addIdOrder() {
-                if ($('#idOrder').val() === "" && $('#coi').val() === "") {
-                    alertify.error('Debes asignar un número de ordén y coi para continuar!');
+                if ($('#idOrder').val() === "" || $('#coi').val() === "" || $('#idCentCost').val() === "") {
+                    alertify.error('Debes asignar un número de ordén, coi y centro de costos para continuar!');
                 } else {
                     generateOrder();
                 }
@@ -178,9 +178,10 @@
             function generateOrder() {
                 var order = $('#idOrder').val();
                 var coi = $('#coi').val();
+                var ccost = $('#idCentCost').val();
                 url = get_base_url() + "Orders/get_order?jsoncallback=?";
                 $('#spinner').html('<center> <i class="fa fa-spinner fa-pulse fa-4x fa-fw"></i></center>');
-                $.getJSON(url, {order: order, coi: coi}).done(function (res) {
+                $.getJSON(url, {order: order, coi: coi, ccost: ccost}).done(function (res) {
                     $('#spinner').html("");
                     if (res.res === true) {
                         alertify.error('El número de ordén digitado ya existe.');
@@ -191,7 +192,7 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            data: {order: order, coi: coi, type: '1'},
+                            data: {order: order, coi: coi, ccost: ccost, type: '1'},
                             success: function (resp) {
                                 $('#spinner').html("");
                                 if (resp === "error") {
@@ -380,8 +381,8 @@
                             num.substring(num.length - (4 * i + 3));
                 return (((sign) ? '' : '') + '$ ' + num);
             }
-            cargar_menu("registro_ordenes",'BTS');
+            cargar_menu("registro_ordenes", 'BTS');
         </script>
-       
+
     </body>
 </html>
